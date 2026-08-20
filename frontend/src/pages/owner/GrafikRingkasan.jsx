@@ -28,7 +28,7 @@ export default function GrafikRingkasan({ data }) {
     const dataChart = data.map((d) => ({
         tanggal: formatLabelTanggal(d.tanggal),
         pendapatan: d.pendapatan ?? 0,
-        petugas: d.jumlah_user ?? 0,
+        userBaru: d.jumlah_user ?? 0,
         kendaraan: d.jumlah_kendaraan ?? 0,
     }));
 
@@ -82,11 +82,11 @@ export default function GrafikRingkasan({ data }) {
                     <Line
                         yAxisId="right"
                         type="monotone"
-                        dataKey="petugas"
+                        dataKey="userBaru"
                         stroke="#5B8DEF"
                         strokeWidth={2}
                         dot={false}
-                        name="Petugas"
+                        name="User Baru"
                     />
                     <Line
                         yAxisId="right"
