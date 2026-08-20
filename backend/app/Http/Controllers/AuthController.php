@@ -15,9 +15,8 @@ class AuthController extends Controller
     /**
      * POST /api/register
      * Registrasi akun baru (publik, tidak perlu login).
-     * User boleh pilih role saat daftar, TAPI dibatasi ketat hanya
-     * "pelanggan" atau "petugas" (whitelist di validator). Role
-     * admin/owner cuma boleh dibuat oleh admin lewat menu Kelola User.
+     * Role SELALU "pelanggan" — tidak bisa dipilih/dikirim dari client.
+     * Role admin/owner/petugas hanya boleh dibuat oleh admin lewat menu Kelola User.
      * Passkey langsung digenerate saat registrasi supaya bisa
      * ditampilkan ke user (buat auto-login lain kali).
      */
@@ -28,7 +27,6 @@ class AuthController extends Controller
             'username'     => 'required|string|max:50|unique:tb_user,username',
             'no_telp'      => 'required|string|max:20|unique:tb_user,no_telp',
             'password'     => 'required|string|min:6|confirmed',
-            'role'         => 'required|string|in:pelanggan,petugas',
         ]);
 
         if ($validator->fails()) {
@@ -43,7 +41,7 @@ class AuthController extends Controller
             'username'     => $request->username,
             'no_telp'      => $request->no_telp,
             'password'     => $request->password, // otomatis ke-hash (cast 'hashed')
-            'role'         => $request->role, // sudah divalidasi: pelanggan | petugas
+            'role'         => 'pelanggan', // dipaksa di sini — registrasi publik selalu jadi pelanggan
             'status_aktif' => true,
         ]);
 
