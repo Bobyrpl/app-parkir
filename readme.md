@@ -26,7 +26,7 @@ Mencatat kendaraan masuk/keluar, booking slot parkir, dan transaksi pembayaran Q
 | Bagian                    | Link                                                                              |
 | ------------------------- | --------------------------------------------------------------------------------- |
 | **Frontend (React)**      | [app-parkir.vercel.app](https://app-parkir.vercel.app)                            |
-| **Backend API (Laravel)** | _isi link Railway kamu di sini, mis. `https://app-parkir-backend.up.railway.app`_ |
+| **Backend API (Laravel)** | [Rilway-backend](https://backend-apk-parkir-production-ec0c.up.railway.app/) |
 
 ## 📋 Tentang Proyek
 
