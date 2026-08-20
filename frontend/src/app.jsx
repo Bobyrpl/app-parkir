@@ -12,7 +12,7 @@ import Bantuan from "./pages/Bantuan";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import Users from "./pages/admin/Users";
 import Tarif from "./pages/admin/Tarif";
-import Pengaturandenda from "./pages/admin/Pengaturandenda";
+import PengaturanDenda from "./pages/admin/PengaturanDenda";
 import AreaParkir from "./pages/admin/AreaParkir";
 import Kendaraan from "./pages/admin/Kendaraan";
 import LogAktivitas from "./pages/admin/LogAktivitas";
