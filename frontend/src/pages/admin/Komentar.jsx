@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import api from '../../api/axios';
 import { useToast } from '../../context/ToastContext';
 import { PageHeader, Card, Badge, Button, ConfirmDialog } from '../../components/ui';
+
+const ITEM_PER_HALAMAN = 5;
 
 function Bintang({ jumlah }) {
     return (
@@ -102,11 +104,83 @@ function KomentarItem({ komentar, onSaved, onHapus }) {
     );
 }
 
+function FilterButton({ active, onClick, children }) {
+    return (
+        <button
+            onClick={onClick}
+            className={`rounded-md px-3 py-1.5 text-xs font-mono transition-colors ${
+                active
+                    ? 'bg-[#F4B400] text-[#14181F]'
+                    : 'bg-white/5 text-[#8B94A3] hover:bg-white/10'
+            }`}
+        >
+            {children}
+        </button>
+    );
+}
+
+function Pagination({ halaman, totalHalaman, onGanti }) {
+    if (totalHalaman <= 1) return null;
+
+    // Susun nomor halaman ringkas: selalu tampilkan halaman pertama, terakhir,
+    // halaman saat ini, dan satu tetangga di kiri-kanannya. Sisanya diwakili "...".
+    const nomor = [];
+    for (let i = 1; i <= totalHalaman; i++) {
+        const dekatDenganAktif = Math.abs(i - halaman) <= 1;
+        if (i === 1 || i === totalHalaman || dekatDenganAktif) {
+            nomor.push(i);
+        } else if (nomor[nomor.length - 1] !== '...') {
+            nomor.push('...');
+        }
+    }
+
+    return (
+        <div className="flex items-center justify-center gap-1.5 mt-6">
+            <button
+                onClick={() => onGanti(halaman - 1)}
+                disabled={halaman === 1}
+                className="rounded-md px-3 py-1.5 text-xs font-mono bg-white/5 text-[#8B94A3] hover:bg-white/10 disabled:opacity-40 disabled:hover:bg-white/5 transition-colors"
+            >
+                Sebelumnya
+            </button>
+
+            {nomor.map((n, idx) =>
+                n === '...' ? (
+                    <span key={`dots-${idx}`} className="px-1.5 text-xs text-[#8B94A3] font-mono">
+                        …
+                    </span>
+                ) : (
+                    <button
+                        key={n}
+                        onClick={() => onGanti(n)}
+                        className={`min-w-[32px] rounded-md px-2.5 py-1.5 text-xs font-mono transition-colors ${
+                            n === halaman
+                                ? 'bg-[#F4B400] text-[#14181F]'
+                                : 'bg-white/5 text-[#8B94A3] hover:bg-white/10'
+                        }`}
+                    >
+                        {n}
+                    </button>
+                )
+            )}
+
+            <button
+                onClick={() => onGanti(halaman + 1)}
+                disabled={halaman === totalHalaman}
+                className="rounded-md px-3 py-1.5 text-xs font-mono bg-white/5 text-[#8B94A3] hover:bg-white/10 disabled:opacity-40 disabled:hover:bg-white/5 transition-colors"
+            >
+                Berikutnya
+            </button>
+        </div>
+    );
+}
+
 export default function Komentar() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('semua'); // semua | belum | sudah
     const [filterRating, setFilterRating] = useState('semua'); // semua | 1 | 2 | 3 | 4 | 5
+    const [halaman, setHalaman] = useState(1);
     const [hapusTarget, setHapusTarget] = useState(null);
     const [menghapus, setMenghapus] = useState(false);
     const { showSuccess, showError } = useToast();
@@ -142,18 +216,50 @@ export default function Komentar() {
         }
     }
 
-    const filtered = data.filter((k) => {
-        if (filter === 'belum' && k.balasan) return false;
-        if (filter === 'sudah' && !k.balasan) return false;
-        if (filterRating !== 'semua' && (k.rating ?? 5) !== Number(filterRating)) return false;
-        return true;
-    });
+    // Ganti filter (status / rating) sekaligus reset ke halaman 1, supaya
+    // tidak nyangkut di halaman yang mungkin sudah kosong setelah difilter.
+    function gantiFilter(nilai) {
+        setFilter(nilai);
+        setHalaman(1);
+    }
+
+    function gantiFilterRating(nilai) {
+        setFilterRating(nilai);
+        setHalaman(1);
+    }
+
+    const filtered = useMemo(() => {
+        return data.filter((k) => {
+            if (filter === 'belum' && k.balasan) return false;
+            if (filter === 'sudah' && !k.balasan) return false;
+            if (filterRating !== 'semua' && (k.rating ?? 5) !== Number(filterRating)) return false;
+            return true;
+        });
+    }, [data, filter, filterRating]);
 
     // Jumlah komentar per rating, dipakai untuk badge angka di tombol filter.
-    const jumlahPerRating = [1, 2, 3, 4, 5].reduce((acc, r) => {
-        acc[r] = data.filter((k) => (k.rating ?? 5) === r).length;
-        return acc;
-    }, {});
+    const jumlahPerRating = useMemo(
+        () =>
+            [1, 2, 3, 4, 5].reduce((acc, r) => {
+                acc[r] = data.filter((k) => (k.rating ?? 5) === r).length;
+                return acc;
+            }, {}),
+        [data]
+    );
+
+    const totalHalaman = Math.max(1, Math.ceil(filtered.length / ITEM_PER_HALAMAN));
+    const halamanAman = Math.min(halaman, totalHalaman);
+    const ditampilkan = filtered.slice(
+        (halamanAman - 1) * ITEM_PER_HALAMAN,
+        halamanAman * ITEM_PER_HALAMAN
+    );
+
+    function gantiHalaman(n) {
+        setHalaman(Math.min(Math.max(n, 1), totalHalaman));
+        // Scroll ke atas daftar komentar biar user langsung lihat halaman baru,
+        // bukan tetap di posisi scroll lama yang mungkin sudah di bawah.
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     return (
         <div>
@@ -164,56 +270,37 @@ export default function Komentar() {
             />
 
             <div className="flex gap-2 mb-3 flex-wrap">
-                {[
-                    { key: 'semua', label: 'Semua' },
-                    { key: 'belum', label: 'Belum dibalas' },
-                    { key: 'sudah', label: 'Sudah dibalas' },
-                ].map((f) => (
-                    <button
-                        key={f.key}
-                        onClick={() => setFilter(f.key)}
-                        className={`rounded-md px-3 py-1.5 text-xs font-mono transition-colors ${
-                            filter === f.key
-                                ? 'bg-[#F4B400] text-[#14181F]'
-                                : 'bg-white/5 text-[#8B94A3] hover:bg-white/10'
-                        }`}
-                    >
-                        {f.label}
-                    </button>
-                ))}
+                <FilterButton active={filter === 'semua'} onClick={() => gantiFilter('semua')}>
+                    Semua
+                </FilterButton>
+                <FilterButton active={filter === 'belum'} onClick={() => gantiFilter('belum')}>
+                    Belum dibalas
+                </FilterButton>
+                <FilterButton active={filter === 'sudah'} onClick={() => gantiFilter('sudah')}>
+                    Sudah dibalas
+                </FilterButton>
             </div>
 
             <div className="flex items-center gap-2 mb-5 flex-wrap">
                 <span className="text-xs font-mono text-[#8B94A3]">RATING:</span>
-                <button
-                    onClick={() => setFilterRating('semua')}
-                    className={`rounded-md px-3 py-1.5 text-xs font-mono transition-colors ${
-                        filterRating === 'semua'
-                            ? 'bg-[#F4B400] text-[#14181F]'
-                            : 'bg-white/5 text-[#8B94A3] hover:bg-white/10'
-                    }`}
-                >
+                <FilterButton active={filterRating === 'semua'} onClick={() => gantiFilterRating('semua')}>
                     Semua
-                </button>
+                </FilterButton>
                 {[5, 4, 3, 2, 1].map((r) => (
-                    <button
+                    <FilterButton
                         key={r}
-                        onClick={() => setFilterRating(String(r))}
-                        className={`flex items-center gap-1 rounded-md px-3 py-1.5 text-xs font-mono transition-colors ${
-                            filterRating === String(r)
-                                ? 'bg-[#F4B400] text-[#14181F]'
-                                : 'bg-white/5 text-[#8B94A3] hover:bg-white/10'
-                        }`}
+                        active={filterRating === String(r)}
+                        onClick={() => gantiFilterRating(String(r))}
                     >
-                        <Bintang jumlah={r} />
-                        <span>({jumlahPerRating[r] ?? 0})</span>
-                    </button>
+                        <span className="flex items-center gap-1">
+                            <Bintang jumlah={r} />
+                            <span>({jumlahPerRating[r] ?? 0})</span>
+                        </span>
+                    </FilterButton>
                 ))}
             </div>
 
-            {loading && (
-                <p className="text-sm text-[#8B94A3]">Memuat komentar...</p>
-            )}
+            {loading && <p className="text-sm text-[#8B94A3]">Memuat komentar...</p>}
 
             {!loading && filtered.length === 0 && (
                 <Card className="p-6 text-center text-sm text-[#8B94A3]">
@@ -221,16 +308,27 @@ export default function Komentar() {
                 </Card>
             )}
 
-            <div className="space-y-4">
-                {filtered.map((k) => (
-                    <KomentarItem
-                        key={k.id}
-                        komentar={k}
-                        onSaved={handleSaved}
-                        onHapus={setHapusTarget}
-                    />
-                ))}
-            </div>
+            {!loading && filtered.length > 0 && (
+                <>
+                    <p className="text-xs text-[#8B94A3] font-mono mb-3">
+                        Menampilkan {ditampilkan.length} dari {filtered.length} komentar
+                        {totalHalaman > 1 && ` — halaman ${halamanAman} dari ${totalHalaman}`}
+                    </p>
+
+                    <div className="space-y-4">
+                        {ditampilkan.map((k) => (
+                            <KomentarItem
+                                key={k.id}
+                                komentar={k}
+                                onSaved={handleSaved}
+                                onHapus={setHapusTarget}
+                            />
+                        ))}
+                    </div>
+
+                    <Pagination halaman={halamanAman} totalHalaman={totalHalaman} onGanti={gantiHalaman} />
+                </>
+            )}
 
             <ConfirmDialog
                 open={!!hapusTarget}
@@ -248,10 +346,7 @@ export default function Komentar() {
 
             <footer className="border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8B94A3] text-center sm:text-left">
-                    <span>
-                        © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
-                        Perak
-                    </span>
+                    <span>© {new Date().getFullYear()} Parkir Pelabuhan Tanjung Perak</span>
                     <span className="font-mono">SISTEM MANAJEMEN PARKIR</span>
                 </div>
             </footer>
