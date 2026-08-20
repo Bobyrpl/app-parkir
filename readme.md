@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="./public/parkir_pelabuhan_tanjung_perak.png" alt="Logo Aplikasi Parkir UKK" width="180"/>
-
 # Aplikasi Parkir UKK
 
 ### Sistem Manajemen Parkir Digital Berbasis Web
