@@ -346,9 +346,18 @@ class TransaksiController extends Controller
             ], 422);
         }
 
+        // jumlah_user  = jumlah PETUGAS berbeda yang memproses transaksi hari itu (distinct id_user)
+        // jumlah_kendaraan = jumlah KENDARAAN berbeda yang keluar hari itu (distinct id_kendaraan;
+        //                    beda dari jumlah_transaksi kalau ada kendaraan yang parkir >1x di hari yang sama)
         $rekap = Transaksi::where('status', 'keluar')
             ->whereBetween('waktu_keluar', [$mulai, $selesai])
-            ->selectRaw('DATE(waktu_keluar) as tanggal, COUNT(*) as jumlah_transaksi, SUM(biaya_total) as pendapatan')
+            ->selectRaw('
+                DATE(waktu_keluar) as tanggal,
+                COUNT(*) as jumlah_transaksi,
+                SUM(biaya_total) as pendapatan,
+                COUNT(DISTINCT id_user) as jumlah_user,
+                COUNT(DISTINCT id_kendaraan) as jumlah_kendaraan
+            ')
             ->groupBy('tanggal')
             ->orderBy('tanggal')
             ->get();
@@ -363,6 +372,8 @@ class TransaksiController extends Controller
                 'tanggal' => $tanggal,
                 'jumlah_transaksi' => $data->jumlah_transaksi ?? 0,
                 'pendapatan' => (int) ($data->pendapatan ?? 0),
+                'jumlah_user' => $data->jumlah_user ?? 0,
+                'jumlah_kendaraan' => $data->jumlah_kendaraan ?? 0,
             ];
         });
 

@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 import { PageHeader, Card, Button, StatCard } from '../../components/ui';
+import GrafikRingkasan from './GrafikRingkasan';
 import {
     Receipt, Wallet, TrendingUp, TrendingDown, Minus,
     Activity, LayoutGrid, ArrowRight, RefreshCw, FileBarChart,
+    LineChart,
 } from 'lucide-react';
 
 function toDateInputValue(date) {
@@ -50,6 +52,25 @@ export default function DashboardOwner() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    const [dataGrafik, setDataGrafik] = useState([]);
+    const [loadingGrafik, setLoadingGrafik] = useState(true);
+    const [errorGrafik, setErrorGrafik] = useState('');
+
+    // Endpoint ini tanpa parameter dari/sampai defaultnya sudah 7 hari
+    // terakhir (lihat TransaksiController::rekapHarian di backend).
+    async function ambilDataGrafik() {
+        setLoadingGrafik(true);
+        setErrorGrafik('');
+        try {
+            const res = await api.get('/transaksi/rekap-harian');
+            setDataGrafik(res.data);
+        } catch (err) {
+            setErrorGrafik('Gagal memuat data grafik');
+        } finally {
+            setLoadingGrafik(false);
+        }
+    }
+
     async function ambilRingkasanHariIni() {
         setLoading(true);
         setError('');
@@ -71,6 +92,7 @@ export default function DashboardOwner() {
 
     useEffect(() => {
         ambilRingkasanHariIni();
+        ambilDataGrafik();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [today, kemarin]);
 
@@ -112,9 +134,16 @@ export default function DashboardOwner() {
                     </p>
                     <p className="text-xs text-[#8B94A3] font-mono mt-0.5">{tanggalHariIni}</p>
                 </div>
-                <Button variant="ghost" onClick={ambilRingkasanHariIni} disabled={loading}>
+                <Button
+                    variant="ghost"
+                    onClick={() => {
+                        ambilRingkasanHariIni();
+                        ambilDataGrafik();
+                    }}
+                    disabled={loading || loadingGrafik}
+                >
                     <span className="flex items-center gap-1.5">
-                        <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
+                        <RefreshCw size={14} className={(loading || loadingGrafik) ? 'animate-spin' : ''} />
                         Segarkan
                     </span>
                 </Button>
@@ -173,6 +202,33 @@ export default function DashboardOwner() {
                         )}
                     </>
                 )}
+            </div>
+
+            {/* Grafik gabungan 7 hari terakhir */}
+            <div className="mb-8">
+                <h2 className="font-display text-base text-[#EDEFF2] mb-3 flex items-center gap-2">
+                    <LineChart size={16} className="text-[#F4B400]" />
+                    Tren 7 Hari Terakhir
+                </h2>
+
+                <Card className="p-5">
+                    {loadingGrafik && (
+                        <div className="h-80 flex items-center justify-center text-sm text-[#8B94A3]">
+                            Memuat grafik...
+                        </div>
+                    )}
+
+                    {!loadingGrafik && errorGrafik && (
+                        <div className="h-80 flex flex-col items-center justify-center gap-3">
+                            <p className="text-sm text-[#E5484D]">{errorGrafik}</p>
+                            <Button variant="ghost" onClick={ambilDataGrafik}>Coba Lagi</Button>
+                        </div>
+                    )}
+
+                    {!loadingGrafik && !errorGrafik && (
+                        <GrafikRingkasan data={dataGrafik} />
+                    )}
+                </Card>
             </div>
 
             {/* Menu utama */}
