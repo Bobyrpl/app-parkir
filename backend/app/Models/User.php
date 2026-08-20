@@ -14,7 +14,11 @@ class User extends Authenticatable
 
     protected $table = 'tb_user';
 protected $primaryKey = 'id_user';
-public $timestamps = false;   // <-- TAMBAHKAN BARIS INI
+// Hanya created_at yang dilacak (dipakai buat rekap "user baru per hari").
+// updated_at tidak ada kolomnya di tabel, jadi dimatikan biar Eloquent
+// tidak coba menulis ke kolom yang tidak ada.
+public $timestamps = true;
+const UPDATED_AT = null;
     protected $fillable = [
         'nama_lengkap',
         'username',

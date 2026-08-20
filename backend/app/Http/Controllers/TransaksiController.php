@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\LogAktivitas;
 use App\Models\Tarif;
 use App\Models\Transaksi;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -346,7 +347,6 @@ class TransaksiController extends Controller
             ], 422);
         }
 
-        // jumlah_user  = jumlah PETUGAS berbeda yang memproses transaksi hari itu (distinct id_user)
         // jumlah_kendaraan = jumlah KENDARAAN berbeda yang keluar hari itu (distinct id_kendaraan;
         //                    beda dari jumlah_transaksi kalau ada kendaraan yang parkir >1x di hari yang sama)
         $rekap = Transaksi::where('status', 'keluar')
@@ -355,24 +355,32 @@ class TransaksiController extends Controller
                 DATE(waktu_keluar) as tanggal,
                 COUNT(*) as jumlah_transaksi,
                 SUM(biaya_total) as pendapatan,
-                COUNT(DISTINCT id_user) as jumlah_user,
                 COUNT(DISTINCT id_kendaraan) as jumlah_kendaraan
             ')
             ->groupBy('tanggal')
             ->orderBy('tanggal')
             ->get();
 
+        // jumlah_user = jumlah user BARU yang daftar hari itu (semua role:
+        // admin, petugas, owner, pelanggan) - berdasarkan created_at di tb_user.
+        $rekapUser = User::whereBetween('created_at', [$mulai, $selesai])
+            ->selectRaw('DATE(created_at) as tanggal, COUNT(*) as jumlah_user')
+            ->groupBy('tanggal')
+            ->orderBy('tanggal')
+            ->get();
+
         $jumlahHari = (int) $mulai->diffInDays($selesai);
 
-        $hasil = collect(range(0, $jumlahHari))->map(function ($i) use ($rekap, $mulai) {
+        $hasil = collect(range(0, $jumlahHari))->map(function ($i) use ($rekap, $rekapUser, $mulai) {
             $tanggal = $mulai->copy()->addDays($i)->format('Y-m-d');
             $data = $rekap->firstWhere('tanggal', $tanggal);
+            $dataUser = $rekapUser->firstWhere('tanggal', $tanggal);
 
             return [
                 'tanggal' => $tanggal,
                 'jumlah_transaksi' => $data->jumlah_transaksi ?? 0,
                 'pendapatan' => (int) ($data->pendapatan ?? 0),
-                'jumlah_user' => $data->jumlah_user ?? 0,
+                'jumlah_user' => $dataUser->jumlah_user ?? 0,
                 'jumlah_kendaraan' => $data->jumlah_kendaraan ?? 0,
             ];
         });
