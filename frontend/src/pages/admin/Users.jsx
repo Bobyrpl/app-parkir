@@ -19,12 +19,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Phone,
-  Users2,
-  ShieldCheck,
-  ClipboardList,
-  UserRound,
-  CheckCircle2,
-  XCircle,
   Inbox,
 } from "lucide-react";
 
@@ -260,37 +254,31 @@ export default function Users() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             <StatCard
-              icon={<ShieldCheck size={16} />}
               label="ADMIN"
               value={ringkasan.admin}
               accent="#F4B400"
             />
             <StatCard
-              icon={<ClipboardList size={16} />}
               label="PETUGAS"
               value={ringkasan.petugas}
               accent="#5B8DEF"
             />
             <StatCard
-              icon={<UserRound size={16} />}
               label="PELANGGAN"
               value={ringkasan.pelanggan}
               accent="#C792EA"
             />
             <StatCard
-              icon={<Users2 size={16} />}
               label="TOTAL USER"
               value={ringkasan.total}
               accent="#EDEFF2"
             />
             <StatCard
-              icon={<CheckCircle2 size={16} />}
               label="AKTIF"
               value={ringkasan.aktif}
               accent="#35C48D"
             />
             <StatCard
-              icon={<XCircle size={16} />}
               label="TIDAK AKTIF"
               value={ringkasan.nonaktif}
               accent="#E5484D"
