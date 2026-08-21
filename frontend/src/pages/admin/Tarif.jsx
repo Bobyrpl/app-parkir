@@ -10,8 +10,36 @@ import {
     Badge,
     ConfirmDialog,
 } from "../../components/ui";
+import {
+    Ticket,
+    Pencil,
+    Trash2,
+    X,
+    Inbox,
+    Bike,
+    Car,
+    Bus,
+    Truck,
+    HelpCircle,
+} from "lucide-react";
 
 const KOSONG = { jenis_kendaraan: "motor", tarif_per_jam: "" };
+
+const JENIS_BADGE_TONE = {
+    motor: "info",
+    mobil: "success",
+    bus: "warning",
+    truk: "danger",
+    lainnya: "neutral",
+};
+
+const JENIS_ICON = {
+    motor: Bike,
+    mobil: Car,
+    bus: Bus,
+    truk: Truck,
+    lainnya: HelpCircle,
+};
 
 export default function Tarif() {
     const [data, setData] = useState([]);
@@ -19,16 +47,21 @@ export default function Tarif() {
     const [editId, setEditId] = useState(null);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [loadingData, setLoadingData] = useState(true);
     const [hapusId, setHapusId] = useState(null);
     const [menghapus, setMenghapus] = useState(false);
+    const [showForm, setShowForm] = useState(false);
     const { showSuccess, showError } = useToast();
 
     async function load() {
+        setLoadingData(true);
         try {
             const res = await api.get("/tarif");
             setData(res.data);
         } catch (err) {
             showError("Gagal memuat data tarif.");
+        } finally {
+            setLoadingData(false);
         }
     }
 
@@ -51,6 +84,7 @@ export default function Tarif() {
             }
             setForm(KOSONG);
             setEditId(null);
+            setShowForm(false);
             load();
         } catch (err) {
             const pesan = err.response?.data?.errors
@@ -69,6 +103,14 @@ export default function Tarif() {
             jenis_kendaraan: item.jenis_kendaraan,
             tarif_per_jam: item.tarif_per_jam,
         });
+        setShowForm(true);
+    }
+
+    function handleTambahBaru() {
+        setEditId(null);
+        setForm(KOSONG);
+        setError("");
+        setShowForm(true);
     }
 
     function mintaHapus(id) {
@@ -91,8 +133,10 @@ export default function Tarif() {
     }
 
     function handleCancel() {
+        setShowForm(false);
         setEditId(null);
         setForm(KOSONG);
+        setError("");
     }
 
     return (
@@ -103,114 +147,189 @@ export default function Tarif() {
                 description="Atur tarif per jam untuk setiap jenis kendaraan."
             />
 
-            <div className="grid md:grid-cols-3 gap-6">
-                <Card className="p-5 md:col-span-1 h-fit">
-                    <h2 className="font-display text-base text-[#EDEFF2] mb-4">
-                        {editId ? "Edit Tarif" : "Tambah Tarif"}
-                    </h2>
-                    <form onSubmit={handleSubmit} className="space-y-3">
-                        <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
-                                JENIS KENDARAAN
-                            </label>
-                            <select
-                                value={form.jenis_kendaraan}
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        jenis_kendaraan: e.target.value,
-                                    })
-                                }
-                                className="w-full rounded-md bg-[#14181F] border border-white/10 px-3 py-2 text-sm text-[#EDEFF2] focus:outline-none focus:ring-2 focus:ring-[#F4B400]"
+            <div className="flex items-center justify-between mb-4">
+                <h2 className="font-display text-base text-[#EDEFF2]">
+                    Daftar Tarif
+                </h2>
+                {!showForm && (
+                    <Button
+                        onClick={handleTambahBaru}
+                        className="inline-flex items-center gap-1.5"
+                    >
+                        <Ticket size={15} />
+                        Tambah Tarif
+                    </Button>
+                )}
+            </div>
+
+            <div
+                className={`grid grid-cols-1 gap-4 md:gap-6 ${
+                    showForm ? "md:grid-cols-3" : ""
+                }`}
+            >
+                {showForm && (
+                    <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
+                        <div className="flex items-center justify-between mb-5">
+                            <div className="flex items-center gap-2">
+                                <span className="w-8 h-8 rounded-lg bg-[#F4B400]/10 text-[#F4B400] flex items-center justify-center shrink-0">
+                                    {editId ? <Pencil size={15} /> : <Ticket size={15} />}
+                                </span>
+                                <h2 className="font-display text-base text-[#EDEFF2]">
+                                    {editId ? "Edit Tarif" : "Tambah Tarif"}
+                                </h2>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={handleCancel}
+                                className="w-7 h-7 rounded-md flex items-center justify-center text-[#8B94A3] hover:text-[#EDEFF2] hover:bg-white/5 transition-colors shrink-0"
+                                aria-label="Tutup form"
                             >
-                                <option value="motor">Motor</option>
-                                <option value="mobil">Mobil</option>
-                                <option value="bus">Bus</option>
-                                <option value="truk">Truk</option>
-                                <option value="lainnya">Lainnya</option>
-                            </select>
+                                <X size={15} />
+                            </button>
                         </div>
-                        <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
-                                TARIF PER JAM (Rp)
-                            </label>
-                            <Input
-                                type="number"
-                                min="0"
-                                value={form.tarif_per_jam}
-                                onChange={(e) =>
-                                    setForm({
-                                        ...form,
-                                        tarif_per_jam: e.target.value,
-                                    })
-                                }
-                                required
-                            />
-                        </div>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div>
+                                <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+                                    JENIS KENDARAAN
+                                </label>
+                                <select
+                                    value={form.jenis_kendaraan}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            jenis_kendaraan: e.target.value,
+                                        })
+                                    }
+                                    className="w-full rounded-md bg-[#14181F] border border-white/10 px-3 py-2 text-sm text-[#EDEFF2] focus:outline-none focus:ring-2 focus:ring-[#F4B400] transition-shadow"
+                                >
+                                    <option value="motor">Motor</option>
+                                    <option value="mobil">Mobil</option>
+                                    <option value="bus">Bus</option>
+                                    <option value="truk">Truk</option>
+                                    <option value="lainnya">Lainnya</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+                                    TARIF PER JAM (Rp)
+                                </label>
+                                <Input
+                                    type="number"
+                                    min="0"
+                                    value={form.tarif_per_jam}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            tarif_per_jam: e.target.value,
+                                        })
+                                    }
+                                    placeholder="cth. 3000"
+                                    required
+                                />
+                            </div>
 
-                        {error && (
-                            <p className="text-sm text-[#E5484D]">{error}</p>
-                        )}
+                            {error && (
+                                <p className="text-sm text-[#E5484D] bg-[#E5484D]/10 border border-[#E5484D]/20 rounded-md px-3 py-2">
+                                    {error}
+                                </p>
+                            )}
 
-                        <div className="flex gap-2 pt-2">
-                            <Button type="submit" disabled={loading}>
-                                {editId ? "Simpan Perubahan" : "Tambah Tarif"}
-                            </Button>
-                            {editId && (
+                            <div className="flex flex-wrap gap-2 pt-1">
+                                <Button type="submit" disabled={loading} className="flex-1 sm:flex-none">
+                                    {loading
+                                        ? "Menyimpan..."
+                                        : editId
+                                        ? "Simpan Perubahan"
+                                        : "Tambah Tarif"}
+                                </Button>
                                 <Button
                                     type="button"
                                     variant="ghost"
+                                    className="flex-1 sm:flex-none"
                                     onClick={handleCancel}
                                 >
                                     Batal
                                 </Button>
-                            )}
-                        </div>
-                    </form>
-                </Card>
+                            </div>
+                        </form>
+                    </Card>
+                )}
 
-                <div className="md:col-span-2">
+                <div className={showForm ? "md:col-span-2" : ""}>
                     <Table columns={["Jenis Kendaraan", "Tarif/Jam", "Aksi"]}>
-                        {data.map((item) => (
-                            <tr key={item.id_tarif}>
-                                <td className="px-4 py-3 capitalize">
-                                    <Badge tone="neutral">
-                                        {item.jenis_kendaraan}
-                                    </Badge>
-                                </td>
-                                <td className="px-4 py-3 font-mono">
-                                    Rp{" "}
-                                    {Number(item.tarif_per_jam).toLocaleString(
-                                        "id-ID",
-                                    )}
-                                </td>
-                                <td className="px-4 py-3">
-                                    <div className="flex gap-2">
-                                        <Button
-                                            variant="ghost"
-                                            onClick={() => handleEdit(item)}
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button
-                                            variant="danger"
-                                            onClick={() =>
-                                                mintaHapus(item.id_tarif)
-                                            }
-                                        >
-                                            Hapus
-                                        </Button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                        {data.length === 0 && (
+                        {loadingData &&
+                            Array.from({ length: 4 }).map((_, i) => (
+                                <tr key={i}>
+                                    <td className="px-4 py-3" colSpan={3}>
+                                        <div className="h-9 rounded-md bg-white/5 animate-pulse" />
+                                    </td>
+                                </tr>
+                            ))}
+
+                        {!loadingData &&
+                            data.map((item) => {
+                                const Icon = JENIS_ICON[item.jenis_kendaraan] ?? HelpCircle;
+                                return (
+                                    <tr
+                                        key={item.id_tarif}
+                                        className="transition-colors hover:bg-white/[0.03]"
+                                    >
+                                        <td className="px-4 py-3 capitalize">
+                                            <Badge
+                                                tone={
+                                                    JENIS_BADGE_TONE[item.jenis_kendaraan] ??
+                                                    "neutral"
+                                                }
+                                            >
+                                                <span className="inline-flex items-center gap-1.5">
+                                                    <Icon size={12} />
+                                                    {item.jenis_kendaraan}
+                                                </span>
+                                            </Badge>
+                                        </td>
+                                        <td className="px-4 py-3 font-mono text-[#EDEFF2]">
+                                            Rp{" "}
+                                            {Number(
+                                                item.tarif_per_jam,
+                                            ).toLocaleString("id-ID")}
+                                        </td>
+                                        <td className="px-4 py-3">
+                                            <div className="flex items-center gap-2">
+                                                <Button
+                                                    variant="ghost"
+                                                    onClick={() => handleEdit(item)}
+                                                    className="inline-flex items-center gap-1.5"
+                                                >
+                                                    <Pencil size={13} />
+                                                    Edit
+                                                </Button>
+                                                <Button
+                                                    variant="danger"
+                                                    onClick={() =>
+                                                        mintaHapus(item.id_tarif)
+                                                    }
+                                                    className="inline-flex items-center gap-1.5"
+                                                >
+                                                    <Trash2 size={13} />
+                                                    Hapus
+                                                </Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+
+                        {!loadingData && data.length === 0 && (
                             <tr>
-                                <td
-                                    colSpan={3}
-                                    className="px-4 py-6 text-center text-[#8B94A3] text-sm"
-                                >
-                                    Belum ada data tarif.
+                                <td colSpan={3} className="px-4 py-14 text-center">
+                                    <div className="flex flex-col items-center gap-2.5 text-[#8B94A3]">
+                                        <span className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center">
+                                            <Inbox size={18} />
+                                        </span>
+                                        <p className="text-sm">
+                                            Belum ada data tarif.
+                                        </p>
+                                    </div>
                                 </td>
                             </tr>
                         )}
