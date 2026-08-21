@@ -12,6 +12,7 @@ export default function AreaParkir() {
     const [error, setError] = useState('');
     const [hapusId, setHapusId] = useState(null);
     const [menghapus, setMenghapus] = useState(false);
+    const [showForm, setShowForm] = useState(false); // form disembunyikan by default
     const { showSuccess, showError } = useToast();
 
     async function load() {
@@ -41,6 +42,7 @@ export default function AreaParkir() {
             }
             setForm(KOSONG);
             setEditId(null);
+            setShowForm(false); // tutup form setelah berhasil simpan
             load();
         } catch (err) {
             const pesan = 'Gagal menyimpan area parkir';
@@ -49,9 +51,25 @@ export default function AreaParkir() {
         }
     }
 
+    function handleTambahBaru() {
+        setEditId(null);
+        setForm(KOSONG);
+        setError('');
+        setShowForm(true);
+    }
+
     function handleEdit(item) {
         setEditId(item.id_area);
         setForm({ nama_area: item.nama_area, kapasitas: item.kapasitas });
+        setError('');
+        setShowForm(true); // munculkan form saat tombol Edit ditekan
+    }
+
+    function handleBatal() {
+        setEditId(null);
+        setForm(KOSONG);
+        setError('');
+        setShowForm(false);
     }
 
     function mintaHapus(id) {
@@ -81,50 +99,56 @@ export default function AreaParkir() {
                 description="Kelola zona parkir beserta kapasitasnya."
             />
 
-            <div className="grid md:grid-cols-3 gap-6">
-                <Card className="p-5 md:col-span-1 h-fit">
-                    <h2 className="font-display text-base text-[#EDEFF2] mb-4">
-                        {editId ? 'Edit Area' : 'Tambah Area'}
-                    </h2>
-                    <form onSubmit={handleSubmit} className="space-y-3">
-                        <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
-                                NAMA AREA
-                            </label>
-                            <Input
-                                value={form.nama_area}
-                                onChange={(e) => setForm({ ...form, nama_area: e.target.value })}
-                                placeholder="mis. Area A - Motor"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
-                                KAPASITAS
-                            </label>
-                            <Input
-                                type="number"
-                                min="0"
-                                value={form.kapasitas}
-                                onChange={(e) => setForm({ ...form, kapasitas: e.target.value })}
-                                required
-                            />
-                        </div>
+            {!showForm && (
+                <div className="mb-4 flex justify-end">
+                    <Button onClick={handleTambahBaru}>+ Tambah Area</Button>
+                </div>
+            )}
 
-                        {error && <p className="text-sm text-[#E5484D]">{error}</p>}
+            <div className={showForm ? 'grid md:grid-cols-3 gap-6' : ''}>
+                {showForm && (
+                    <Card className="p-5 md:col-span-1 h-fit">
+                        <h2 className="font-display text-base text-[#EDEFF2] mb-4">
+                            {editId ? 'Edit Area' : 'Tambah Area'}
+                        </h2>
+                        <form onSubmit={handleSubmit} className="space-y-3">
+                            <div>
+                                <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+                                    NAMA AREA
+                                </label>
+                                <Input
+                                    value={form.nama_area}
+                                    onChange={(e) => setForm({ ...form, nama_area: e.target.value })}
+                                    placeholder="mis. Area A - Motor"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+                                    KAPASITAS
+                                </label>
+                                <Input
+                                    type="number"
+                                    min="0"
+                                    value={form.kapasitas}
+                                    onChange={(e) => setForm({ ...form, kapasitas: e.target.value })}
+                                    required
+                                />
+                            </div>
 
-                        <div className="flex gap-2 pt-2">
-                            <Button type="submit">{editId ? 'Simpan' : 'Tambah'}</Button>
-                            {editId && (
-                                <Button type="button" variant="ghost" onClick={() => { setEditId(null); setForm(KOSONG); }}>
+                            {error && <p className="text-sm text-[#E5484D]">{error}</p>}
+
+                            <div className="flex gap-2 pt-2">
+                                <Button type="submit">{editId ? 'Simpan' : 'Tambah'}</Button>
+                                <Button type="button" variant="ghost" onClick={handleBatal}>
                                     Batal
                                 </Button>
-                            )}
-                        </div>
-                    </form>
-                </Card>
+                            </div>
+                        </form>
+                    </Card>
+                )}
 
-                <div className="md:col-span-2">
+                <div className={showForm ? 'md:col-span-2' : ''}>
                     <Table columns={['Nama Area', 'Kapasitas', 'Terisi', 'Status', 'Aksi']}>
                         {data.map((item) => (
                             <tr key={item.id_area}>

@@ -12,6 +12,7 @@ export default function Kendaraan() {
     const [error, setError] = useState('');
     const [hapusId, setHapusId] = useState(null);
     const [menghapus, setMenghapus] = useState(false);
+    const [showForm, setShowForm] = useState(false); // form disembunyikan by default
 
     // pencarian plat nomor (pakai endpoint /kendaraan/cari/{plat_nomor})
     const [cariKata, setCariKata] = useState('');
@@ -80,6 +81,7 @@ export default function Kendaraan() {
             }
             setForm(KOSONG);
             setEditId(null);
+            setShowForm(false); // tutup form setelah berhasil simpan
             if (modePencarian) {
                 setCariKata('');
             } else {
@@ -94,6 +96,13 @@ export default function Kendaraan() {
         }
     }
 
+    function handleTambahBaru() {
+        setEditId(null);
+        setForm(KOSONG);
+        setError('');
+        setShowForm(true);
+    }
+
     function handleEdit(item) {
         setEditId(item.id_kendaraan);
         setForm({
@@ -102,6 +111,15 @@ export default function Kendaraan() {
             warna: item.warna ?? '',
             pemilik: item.pemilik ?? '',
         });
+        setError('');
+        setShowForm(true); // munculkan form saat tombol Edit ditekan
+    }
+
+    function handleBatal() {
+        setEditId(null);
+        setForm(KOSONG);
+        setError('');
+        setShowForm(false);
     }
 
     function mintaHapus(id) {
@@ -135,58 +153,64 @@ export default function Kendaraan() {
                 description="Kelola data kendaraan yang terdaftar di sistem."
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                <Card className="p-4 sm:p-5 md:col-span-1 h-fit">
-                    <h2 className="font-display text-base text-[#EDEFF2] mb-4">
-                        {editId ? 'Edit Kendaraan' : 'Tambah Kendaraan'}
-                    </h2>
-                    <form onSubmit={handleSubmit} className="space-y-3">
-                        <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">PLAT NOMOR</label>
-                            <Input
-                                value={form.plat_nomor}
-                                onChange={(e) => setForm({ ...form, plat_nomor: e.target.value.toUpperCase() })}
-                                required
-                                maxLength={15}
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">JENIS KENDARAAN</label>
-                            <select
-                                value={form.jenis_kendaraan}
-                                onChange={(e) => setForm({ ...form, jenis_kendaraan: e.target.value })}
-                                className="w-full rounded-md bg-[#14181F] border border-white/10 px-3 py-2 text-sm text-[#EDEFF2] focus:outline-none focus:ring-2 focus:ring-[#F4B400]"
-                            >
-                                <option value="motor">Motor</option>
-                                <option value="mobil">Mobil</option>
-                                <option value="truk">Truk</option>
-                                <option value="bus">Bus</option>
-                                <option value="lainnya">Lainnya</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">WARNA</label>
-                            <Input value={form.warna} onChange={(e) => setForm({ ...form, warna: e.target.value })} maxLength={20} />
-                        </div>
-                        <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">PEMILIK</label>
-                            <Input value={form.pemilik} onChange={(e) => setForm({ ...form, pemilik: e.target.value })} maxLength={100} />
-                        </div>
+            {!showForm && (
+                <div className="mb-4 flex justify-end">
+                    <Button onClick={handleTambahBaru}>+ Tambah Kendaraan</Button>
+                </div>
+            )}
 
-                        {error && <p className="text-sm text-[#E5484D]">{error}</p>}
+            <div className={showForm ? 'grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6' : ''}>
+                {showForm && (
+                    <Card className="p-4 sm:p-5 md:col-span-1 h-fit">
+                        <h2 className="font-display text-base text-[#EDEFF2] mb-4">
+                            {editId ? 'Edit Kendaraan' : 'Tambah Kendaraan'}
+                        </h2>
+                        <form onSubmit={handleSubmit} className="space-y-3">
+                            <div>
+                                <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">PLAT NOMOR</label>
+                                <Input
+                                    value={form.plat_nomor}
+                                    onChange={(e) => setForm({ ...form, plat_nomor: e.target.value.toUpperCase() })}
+                                    required
+                                    maxLength={15}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">JENIS KENDARAAN</label>
+                                <select
+                                    value={form.jenis_kendaraan}
+                                    onChange={(e) => setForm({ ...form, jenis_kendaraan: e.target.value })}
+                                    className="w-full rounded-md bg-[#14181F] border border-white/10 px-3 py-2 text-sm text-[#EDEFF2] focus:outline-none focus:ring-2 focus:ring-[#F4B400]"
+                                >
+                                    <option value="motor">Motor</option>
+                                    <option value="mobil">Mobil</option>
+                                    <option value="truk">Truk</option>
+                                    <option value="bus">Bus</option>
+                                    <option value="lainnya">Lainnya</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">WARNA</label>
+                                <Input value={form.warna} onChange={(e) => setForm({ ...form, warna: e.target.value })} maxLength={20} />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">PEMILIK</label>
+                                <Input value={form.pemilik} onChange={(e) => setForm({ ...form, pemilik: e.target.value })} maxLength={100} />
+                            </div>
 
-                        <div className="flex flex-wrap gap-2 pt-2">
-                            <Button type="submit" className="flex-1 sm:flex-none">{editId ? 'Simpan' : 'Tambah'}</Button>
-                            {editId && (
-                                <Button type="button" variant="ghost" className="flex-1 sm:flex-none" onClick={() => { setEditId(null); setForm(KOSONG); }}>
+                            {error && <p className="text-sm text-[#E5484D]">{error}</p>}
+
+                            <div className="flex flex-wrap gap-2 pt-2">
+                                <Button type="submit" className="flex-1 sm:flex-none">{editId ? 'Simpan' : 'Tambah'}</Button>
+                                <Button type="button" variant="ghost" className="flex-1 sm:flex-none" onClick={handleBatal}>
                                     Batal
                                 </Button>
-                            )}
-                        </div>
-                    </form>
-                </Card>
+                            </div>
+                        </form>
+                    </Card>
+                )}
 
-                <div className="md:col-span-2 -mx-4 sm:mx-0 overflow-x-auto">
+                <div className={`${showForm ? 'md:col-span-2' : ''} -mx-4 sm:mx-0 overflow-x-auto`}>
                     <div className="px-4 sm:px-0 mb-3 flex items-center gap-3">
                         <div className="flex-1">
                             <Input
