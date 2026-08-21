@@ -330,7 +330,7 @@ export default function DashboardAdmin() {
                         </span>
                         <div className="min-w-0">
                             <h2 className="font-display text-base text-[#EDEFF2] truncate">
-                                Tren Transaksi &amp; Registrasi
+                                 Transaksi &amp; daftar user
                             </h2>
                             <p className="text-xs text-[#8B94A3] truncate">{periodeLabel}</p>
                         </div>
@@ -369,7 +369,7 @@ export default function DashboardAdmin() {
                                             return [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Pendapatan'];
                                         }
                                         if (name === 'jumlah_user') {
-                                            return [value, 'Registrasi Pelanggan'];
+                                            return [value, ' Pelanggan'];
                                         }
                                         return [value, 'Jumlah Transaksi'];
                                     }}
