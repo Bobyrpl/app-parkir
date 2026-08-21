@@ -20,6 +20,7 @@ import {
   ChevronRight,
   Phone,
   Inbox,
+  X,
 } from "lucide-react";
 
 const KOSONG = {
@@ -67,6 +68,7 @@ export default function Users() {
   const [menghapus, setMenghapus] = useState(false);
   const [cariKata, setCariKata] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
   const { showSuccess, showError } = useToast();
 
   // pagination (index users dipaginasi di backend, mengikuti pola /kendaraan)
@@ -171,6 +173,7 @@ export default function Users() {
       }
       setForm(KOSONG);
       setEditId(null);
+      setShowForm(false);
       load(editId ? halaman : 1);
       loadRingkasan();
     } catch (err) {
@@ -192,6 +195,21 @@ export default function Users() {
       role: item.role,
       status_aktif: !!item.status_aktif,
     });
+    setShowForm(true);
+  }
+
+  function handleTambahBaru() {
+    setEditId(null);
+    setForm(KOSONG);
+    setError("");
+    setShowForm(true);
+  }
+
+  function handleTutupForm() {
+    setShowForm(false);
+    setEditId(null);
+    setForm(KOSONG);
+    setError("");
   }
 
   function mintaHapus(item) {
@@ -287,15 +305,45 @@ export default function Users() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="font-display text-base text-[#EDEFF2]">
+          Daftar Pengguna
+        </h2>
+        {!showForm && (
+          <Button
+            onClick={handleTambahBaru}
+            className="inline-flex items-center gap-1.5"
+          >
+            <UserPlus size={15} />
+            Tambah Pengguna
+          </Button>
+        )}
+      </div>
+
+      <div
+        className={`grid grid-cols-1 gap-4 md:gap-6 ${
+          showForm ? "md:grid-cols-3" : ""
+        }`}
+      >
+        {showForm && (
         <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
-          <div className="flex items-center gap-2 mb-5">
-            <span className="w-8 h-8 rounded-lg bg-[#F4B400]/10 text-[#F4B400] flex items-center justify-center shrink-0">
-              {editId ? <Pencil size={15} /> : <UserPlus size={15} />}
-            </span>
-            <h2 className="font-display text-base text-[#EDEFF2]">
-              {editId ? "Edit Pengguna" : "Tambah Pengguna"}
-            </h2>
+          <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center gap-2">
+              <span className="w-8 h-8 rounded-lg bg-[#F4B400]/10 text-[#F4B400] flex items-center justify-center shrink-0">
+                {editId ? <Pencil size={15} /> : <UserPlus size={15} />}
+              </span>
+              <h2 className="font-display text-base text-[#EDEFF2]">
+                {editId ? "Edit Pengguna" : "Tambah Pengguna"}
+              </h2>
+            </div>
+            <button
+              type="button"
+              onClick={handleTutupForm}
+              className="w-7 h-7 rounded-md flex items-center justify-center text-[#8B94A3] hover:text-[#EDEFF2] hover:bg-white/5 transition-colors shrink-0"
+              aria-label="Tutup form"
+            >
+              <X size={15} />
+            </button>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -388,25 +436,24 @@ export default function Users() {
               <Button type="submit" className="flex-1 sm:flex-none">
                 {editId ? "Simpan Perubahan" : "Tambah Pengguna"}
               </Button>
-              {editId && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="flex-1 sm:flex-none"
-                  onClick={() => {
-                    setEditId(null);
-                    setForm(KOSONG);
-                    setError("");
-                  }}
-                >
-                  Batal
-                </Button>
-              )}
+              <Button
+                type="button"
+                variant="ghost"
+                className="flex-1 sm:flex-none"
+                onClick={handleTutupForm}
+              >
+                Batal
+              </Button>
             </div>
           </form>
         </Card>
+        )}
 
-        <div className="md:col-span-2 -mx-4 sm:mx-0 overflow-x-auto">
+        <div
+          className={`${
+            showForm ? "md:col-span-2" : ""
+          } -mx-4 sm:mx-0 overflow-x-auto`}
+        >
           <div className="px-4 sm:px-0 mb-3 flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-3">
             <div className="flex-1 relative">
               <Search
