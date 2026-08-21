@@ -74,8 +74,8 @@ function playFile(src, volume, fallback) {
 }
 
 // Ganti path di bawah ini sesuai nama file MP3 Anda.
-const SUCCESS_SOUND_SRC = "/sounds/success.mp3";
-const ERROR_SOUND_SRC = "/sounds/error.mp3";
+const SUCCESS_SOUND_SRC = "public/sounds/success.mp3";
+const ERROR_SOUND_SRC = "public/sounds/error.mp3";
 
 export function playSuccessSound() {
     playFile(SUCCESS_SOUND_SRC, 0.6, () => {

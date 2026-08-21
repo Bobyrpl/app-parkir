@@ -10,7 +10,14 @@ const ROLE_BADGE_TONE = { admin: 'warning', petugas: 'info', owner: 'success' };
 
 export default function Users() {
     const [data, setData] = useState([]);
-    const [ringkasan, setRingkasan] = useState({ admin: 0, petugas: 0, pelanggan: 0, total: 0 });
+    const [ringkasan, setRingkasan] = useState({
+        admin: 0,
+        petugas: 0,
+        pelanggan: 0,
+        total: 0,
+        aktif: 0,
+        nonaktif: 0,
+    });
     const [ringkasanLoading, setRingkasanLoading] = useState(true);
     const [form, setForm] = useState(KOSONG);
     const [editId, setEditId] = useState(null);
@@ -68,8 +75,15 @@ export default function Users() {
             }
 
             const hitung = { admin: 0, petugas: 0, pelanggan: 0 };
+            let aktif = 0;
+            let nonaktif = 0;
             semuaUser.forEach((u) => {
                 if (hitung[u.role] !== undefined) hitung[u.role] += 1;
+                if (u.status_aktif) {
+                    aktif += 1;
+                } else {
+                    nonaktif += 1;
+                }
             });
 
             setRingkasan({
@@ -77,9 +91,11 @@ export default function Users() {
                 petugas: hitung.petugas,
                 pelanggan: hitung.pelanggan,
                 total: semuaUser.length,
+                aktif,
+                nonaktif,
             });
         } catch (err) {
-            setRingkasan({ admin: 0, petugas: 0, pelanggan: 0, total: 0 });
+            setRingkasan({ admin: 0, petugas: 0, pelanggan: 0, total: 0, aktif: 0, nonaktif: 0 });
         } finally {
             setRingkasanLoading(false);
         }
@@ -177,7 +193,7 @@ export default function Users() {
             />
 
             {/* Ringkasan jumlah user per role */}
-            <div className="mb-6">
+            <div className="mb-4">
                 {ringkasanLoading ? (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl">
                         <Card className="p-5 animate-pulse h-20" />
@@ -191,6 +207,21 @@ export default function Users() {
                         <StatCard label="TOTAL PETUGAS" value={ringkasan.petugas} accent="#35C48D" />
                         <StatCard label="TOTAL PELANGGAN" value={ringkasan.pelanggan} accent="#5B8DEF" />
                         <StatCard label="TOTAL SELURUH USER" value={ringkasan.total} accent="#EDEFF2" />
+                    </div>
+                )}
+            </div>
+
+            {/* Ringkasan jumlah user aktif / tidak aktif */}
+            <div className="mb-6">
+                {ringkasanLoading ? (
+                    <div className="grid grid-cols-2 gap-4 max-w-3xl">
+                        <Card className="p-5 animate-pulse h-20" />
+                        <Card className="p-5 animate-pulse h-20" />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-2 gap-4 max-w-3xl">
+                        <StatCard label="USER AKTIF" value={ringkasan.aktif} accent="#35C48D" />
+                        <StatCard label="USER TIDAK AKTIF" value={ringkasan.nonaktif} accent="#E5484D" />
                     </div>
                 )}
             </div>
