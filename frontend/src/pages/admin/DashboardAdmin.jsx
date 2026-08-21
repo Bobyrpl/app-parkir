@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import api from '../../api/axios';
 import { PageHeader, StatCard, Card, Table, Button } from '../../components/ui';
 import {
-    PieChart, Pie, Cell, Legend, LineChart, Line, XAxis, YAxis,
+    Legend, LineChart, Line, XAxis, YAxis,
     CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import {
@@ -10,19 +10,10 @@ import {
     TextRun, HeadingLevel, WidthType, AlignmentType,
 } from 'docx';
 import {
-    Users, Ticket, MapPin, Car, PieChart as PieChartIcon,
+    Users, Ticket, MapPin, Car,
     TrendingUp, FileText, FileDown, Printer, CalendarRange, Compass,
     Wallet, Receipt,
 } from 'lucide-react';
-
-// Warna tiap kategori disamakan dengan accent warna StatCard di atasnya,
-// supaya pie chart dan kartu ringkasan terasa satu bahasa visual.
-const RINGKASAN_COLORS = {
-    Pengguna: '#F4B400',
-    Tarif: '#35C48D',
-    Area: '#5B8DEF',
-    Kendaraan: '#E5484D',
-};
 
 function toDateInputValue(date) {
     return date.toISOString().slice(0, 10);
@@ -117,17 +108,6 @@ export default function DashboardAdmin() {
         setSampai(s);
         loadRekap(d, s);
     }
-
-    const dataRingkasan = [
-        { nama: 'Pengguna', jumlah: Number(stats.users) || 0 },
-        { nama: 'Tarif', jumlah: Number(stats.tarif) || 0 },
-        { nama: 'Area', jumlah: Number(stats.area) || 0 },
-        { nama: 'Kendaraan', jumlah: Number(stats.kendaraan) || 0 },
-    ];
-
-    // Pie chart tidak enak menampilkan slice bernilai 0 (bikin label
-    // menumpuk di titik yang sama), jadi disaring dulu di sini.
-    const dataRingkasanPie = dataRingkasan.filter((d) => d.jumlah > 0);
 
     const { totalTransaksi, totalPendapatan } = useMemo(() => {
         return {
@@ -269,27 +249,6 @@ export default function DashboardAdmin() {
     return (
         <div>
             <style>{`
-                /* Menghilangkan kotak yang muncul saat pie chart disentuh/
-                   diklik. Ada dua penyebab berbeda, jadi dua fix berbeda:
-                   1) outline fokus bawaan browser saat elemen SVG (sector)
-                      menerima focus setelah diklik/tap — dimatikan lewat
-                      outline: none di semua elemen turunannya.
-                   2) tap-highlight bawaan browser mobile (kotak abu-abu
-                      transparan yang muncul sesaat saat disentuh di layar
-                      sentuh) — dimatikan lewat -webkit-tap-highlight-color.
-                   Diberi !important karena Recharts kadang menyisipkan
-                   style inline pada elemen SVG-nya sendiri. */
-                #perbandingan-data-master-chart,
-                #perbandingan-data-master-chart * {
-                    outline: none !important;
-                    -webkit-tap-highlight-color: transparent !important;
-                }
-                #perbandingan-data-master-chart svg,
-                #perbandingan-data-master-chart path,
-                #perbandingan-data-master-chart g {
-                    outline: none !important;
-                }
-
                 @media print {
                     @page {
                         margin: 12mm;
@@ -363,58 +322,7 @@ export default function DashboardAdmin() {
                 </Card>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-8 no-print">
-                <Card className="p-6">
-                    <div className="flex items-center gap-2.5 mb-4">
-                        <span className="w-8 h-8 rounded-lg bg-[#F4B400]/10 text-[#F4B400] flex items-center justify-center shrink-0">
-                            <PieChartIcon size={16} />
-                        </span>
-                        <h2 className="font-display text-base text-[#EDEFF2]">
-                            Perbandingan Data Master
-                        </h2>
-                    </div>
-                    {dataRingkasanPie.length === 0 ? (
-                        <p className="text-sm text-[#8B94A3]">Belum ada data untuk ditampilkan.</p>
-                    ) : (
-                        <div id="perbandingan-data-master-chart">
-                        <ResponsiveContainer
-                            width="100%"
-                            height={300}
-                        >
-                            <PieChart margin={{ top: 24, right: 16, bottom: 8, left: 16 }}>
-                                <Pie
-                                    data={dataRingkasanPie}
-                                    dataKey="jumlah"
-                                    nameKey="nama"
-                                    cx="50%"
-                                    cy="48%"
-                                    innerRadius={50}
-                                    outerRadius={78}
-                                    paddingAngle={2}
-                                    label={({ nama, percent }) => `${nama} ${(percent * 100).toFixed(0)}%`}
-                                    labelLine={false}
-                                >
-                                    {dataRingkasanPie.map((d) => (
-                                        <Cell key={d.nama} fill={RINGKASAN_COLORS[d.nama] || '#8B94A3'} stroke="none" />
-                                    ))}
-                                </Pie>
-                                <Tooltip
-                                    contentStyle={{ background: '#1F2530', border: '1px solid #2A303C', borderRadius: 8 }}
-                                    labelStyle={{ color: '#EDEFF2' }}
-                                />
-                                <Legend
-                                    verticalAlign="bottom"
-                                    height={32}
-                                    formatter={(value) => (
-                                        <span style={{ color: '#C3C9D3', fontSize: 12 }}>{value}</span>
-                                    )}
-                                />
-                            </PieChart>
-                        </ResponsiveContainer>
-                        </div>
-                    )}
-                </Card>
-
+            <div className="mb-8 no-print">
                 <Card className="p-6">
                     <div className="flex items-center gap-2.5 mb-4">
                         <span className="w-8 h-8 rounded-lg bg-[#5B8DEF]/10 text-[#5B8DEF] flex items-center justify-center shrink-0">
@@ -432,7 +340,7 @@ export default function DashboardAdmin() {
                     ) : rekap.length === 0 ? (
                         <p className="text-sm text-[#8B94A3]">Belum ada data transaksi.</p>
                     ) : (
-                        <ResponsiveContainer width="100%" height={260}>
+                        <ResponsiveContainer width="100%" height={340}>
                             <LineChart data={rekap}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#2A303C" />
                                 <XAxis dataKey="label" stroke="#8B94A3" fontSize={11} />
