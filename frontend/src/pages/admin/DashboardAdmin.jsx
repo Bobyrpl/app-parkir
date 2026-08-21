@@ -363,7 +363,7 @@ export default function DashboardAdmin() {
                 <Card className="p-6">
                     <h2 className="font-display text-base text-[#EDEFF2] mb-4 flex items-center gap-2">
                         <TrendingUp size={17} className="text-[#5B8DEF]" />
-                        Tren Transaksi ({periodeLabel})
+                        Tren Transaksi & Registrasi ({periodeLabel})
                     </h2>
                     {loadingRekap ? (
                         <p className="text-sm text-[#8B94A3]">Memuat data...</p>
@@ -374,18 +374,50 @@ export default function DashboardAdmin() {
                             <LineChart data={rekap}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#2A303C" />
                                 <XAxis dataKey="label" stroke="#8B94A3" fontSize={11} />
-                                <YAxis stroke="#8B94A3" fontSize={12} allowDecimals={false} />
+                                {/* Sumbu kiri: jumlah transaksi & registrasi pelanggan (skala kecil, satuan orang/transaksi) */}
+                                <YAxis
+                                    yAxisId="jumlah"
+                                    stroke="#8B94A3"
+                                    fontSize={12}
+                                    allowDecimals={false}
+                                />
+                                {/* Sumbu kanan: pendapatan (skala rupiah, jauh lebih besar) -
+                                    dipisah supaya garis jumlah transaksi/registrasi tidak
+                                    kelihatan datar/gepeng tertindih skala rupiah. */}
+                                <YAxis
+                                    yAxisId="rupiah"
+                                    orientation="right"
+                                    stroke="#8B94A3"
+                                    fontSize={12}
+                                    tickFormatter={(value) => `Rp${(value / 1000).toLocaleString('id-ID')}rb`}
+                                />
                                 <Tooltip
                                     contentStyle={{ background: '#1F2530', border: '1px solid #2A303C', borderRadius: 8 }}
                                     labelStyle={{ color: '#EDEFF2' }}
-                                    formatter={(value, name) =>
-                                        name === 'pendapatan'
-                                            ? [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Pendapatan']
-                                            : [value, 'Jumlah Transaksi']
-                                    }
+                                    formatter={(value, name) => {
+                                        if (name === 'pendapatan') {
+                                            return [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Pendapatan'];
+                                        }
+                                        if (name === 'jumlah_user') {
+                                            return [value, 'Registrasi Pelanggan'];
+                                        }
+                                        return [value, 'Jumlah Transaksi'];
+                                    }}
                                 />
-                                <Line type="monotone" dataKey="jumlah_transaksi" stroke="#5B8DEF" strokeWidth={2} dot={{ r: 3 }} />
-                                <Line type="monotone" dataKey="pendapatan" stroke="#35C48D" strokeWidth={2} dot={{ r: 3 }} />
+                                <Legend
+                                    formatter={(value) => {
+                                        const label =
+                                            value === 'pendapatan'
+                                                ? 'Pendapatan'
+                                                : value === 'jumlah_user'
+                                                ? 'Registrasi Pelanggan'
+                                                : 'Jumlah Transaksi';
+                                        return <span style={{ color: '#C3C9D3', fontSize: 12 }}>{label}</span>;
+                                    }}
+                                />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#5B8DEF" strokeWidth={2} dot={{ r: 3 }} />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#F4B400" strokeWidth={2} dot={{ r: 3 }} />
+                                <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#35C48D" strokeWidth={2} dot={{ r: 3 }} />
                             </LineChart>
                         </ResponsiveContainer>
                     )}
