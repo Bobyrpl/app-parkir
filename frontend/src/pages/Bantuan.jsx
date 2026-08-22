@@ -160,7 +160,7 @@ export default function Bantuan() {
                 aria-hidden="true"
             />
 
-            <header className="sticky top-0 z-10 border-b border-black/[0.06] bg-black/85 backdrop-blur-md">
+            <header className="sticky top-0 z-10 border-b border-black/[0.06] bg-white/85 backdrop-blur-md">
                 <div className="max-w-4xl mx-auto w-full px-6 md:px-12 py-5 flex items-center justify-between gap-4">
                     <Link
                         to="/"

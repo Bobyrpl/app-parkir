@@ -464,9 +464,6 @@ export default function Landing() {
     const prefersReducedMotion = usePrefersReducedMotion();
 
     // Intro splash: tampilkan logo dulu, baru landing page terlihat.
-    // showIntro mengontrol apakah overlay masih ada di DOM sama sekali;
-    // introExiting memicu transisi fade-out-nya. Kalau pengguna memilih
-    // prefers-reduced-motion, lewati splash sepenuhnya.
     const [showIntro, setShowIntro] = useState(!prefersReducedMotion);
     const [introExiting, setIntroExiting] = useState(false);
     const [logoIn, setLogoIn] = useState(false);
@@ -486,8 +483,6 @@ export default function Landing() {
         };
     }, [prefersReducedMotion]);
 
-    // Kunci scroll halaman selama splash tampil supaya pengguna tidak
-    // bisa scroll ke konten yang masih tertutup overlay.
     useEffect(() => {
         if (showIntro) {
             const prevOverflow = document.body.style.overflow;
@@ -497,6 +492,7 @@ export default function Landing() {
             };
         }
     }, [showIntro]);
+
     // Efek parallax hero: foto latar bergerak lebih lambat dari scroll
     // (kesan kedalaman), sementara teks di atasnya bergerak sedikit lebih
     // cepat dan memudar seiring pengguna scroll melewati hero. Dimatikan
@@ -813,7 +809,7 @@ export default function Landing() {
             )}
 
             {/* ================= Header ================= */}
-            <header className="sticky top-0 z-30 bg-black/95 backdrop-blur-md border-b border-black/5">
+            <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-black/5">
                 <div className="flex items-center justify-between gap-4 px-4 sm:px-6 md:px-12 h-16 md:h-[72px] max-w-7xl mx-auto">
                     {/* Logo + mobile trigger */}
                     <div className="flex items-center gap-2 sm:gap-3 min-w-0">
