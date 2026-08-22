@@ -148,7 +148,7 @@ export default function Tarif() {
             />
 
             <div className="flex items-center justify-between mb-4">
-                <h2 className="font-display text-base text-[#EDEFF2]">
+                <h2 className="font-display text-base text-[#10131A]">
                     Daftar Tarif
                 </h2>
                 {!showForm && (
@@ -171,17 +171,17 @@ export default function Tarif() {
                     <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
                         <div className="flex items-center justify-between mb-5">
                             <div className="flex items-center gap-2">
-                                <span className="w-8 h-8 rounded-lg bg-[#F4B400]/10 text-[#F4B400] flex items-center justify-center shrink-0">
+                                <span className="w-8 h-8 rounded-lg bg-[#1B2A6B]/10 text-[#1B2A6B] flex items-center justify-center shrink-0">
                                     {editId ? <Pencil size={15} /> : <Ticket size={15} />}
                                 </span>
-                                <h2 className="font-display text-base text-[#EDEFF2]">
+                                <h2 className="font-display text-base text-[#10131A]">
                                     {editId ? "Edit Tarif" : "Tambah Tarif"}
                                 </h2>
                             </div>
                             <button
                                 type="button"
                                 onClick={handleCancel}
-                                className="w-7 h-7 rounded-md flex items-center justify-center text-[#8B94A3] hover:text-[#EDEFF2] hover:bg-white/5 transition-colors shrink-0"
+                                className="w-7 h-7 rounded-md flex items-center justify-center text-[#64708A] hover:text-[#10131A] hover:bg-black/5 transition-colors shrink-0"
                                 aria-label="Tutup form"
                             >
                                 <X size={15} />
@@ -189,7 +189,7 @@ export default function Tarif() {
                         </div>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+                                <label className="block text-xs font-mono text-[#64708A] mb-1.5">
                                     JENIS KENDARAAN
                                 </label>
                                 <select
@@ -200,7 +200,7 @@ export default function Tarif() {
                                             jenis_kendaraan: e.target.value,
                                         })
                                     }
-                                    className="w-full rounded-md bg-[#14181F] border border-white/10 px-3 py-2 text-sm text-[#EDEFF2] focus:outline-none focus:ring-2 focus:ring-[#F4B400] transition-shadow"
+                                    className="w-full rounded-md bg-white border border-black/10 px-3 py-2 text-sm text-[#10131A] focus:outline-none focus:ring-2 focus:ring-[#1B2A6B] transition-shadow"
                                 >
                                     <option value="motor">Motor</option>
                                     <option value="mobil">Mobil</option>
@@ -210,7 +210,7 @@ export default function Tarif() {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+                                <label className="block text-xs font-mono text-[#64708A] mb-1.5">
                                     TARIF PER JAM (Rp)
                                 </label>
                                 <Input
@@ -261,7 +261,7 @@ export default function Tarif() {
                             Array.from({ length: 4 }).map((_, i) => (
                                 <tr key={i}>
                                     <td className="px-4 py-3" colSpan={3}>
-                                        <div className="h-9 rounded-md bg-white/5 animate-pulse" />
+                                        <div className="h-9 rounded-md bg-black/5 animate-pulse" />
                                     </td>
                                 </tr>
                             ))}
@@ -272,7 +272,7 @@ export default function Tarif() {
                                 return (
                                     <tr
                                         key={item.id_tarif}
-                                        className="transition-colors hover:bg-white/[0.03]"
+                                        className="transition-colors hover:bg-black/[0.03]"
                                     >
                                         <td className="px-4 py-3 capitalize">
                                             <Badge
@@ -287,7 +287,7 @@ export default function Tarif() {
                                                 </span>
                                             </Badge>
                                         </td>
-                                        <td className="px-4 py-3 font-mono text-[#EDEFF2]">
+                                        <td className="px-4 py-3 font-mono text-[#10131A]">
                                             Rp{" "}
                                             {Number(
                                                 item.tarif_per_jam,
@@ -322,8 +322,8 @@ export default function Tarif() {
                         {!loadingData && data.length === 0 && (
                             <tr>
                                 <td colSpan={3} className="px-4 py-14 text-center">
-                                    <div className="flex flex-col items-center gap-2.5 text-[#8B94A3]">
-                                        <span className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center">
+                                    <div className="flex flex-col items-center gap-2.5 text-[#64708A]">
+                                        <span className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center">
                                             <Inbox size={18} />
                                         </span>
                                         <p className="text-sm">
@@ -347,8 +347,8 @@ export default function Tarif() {
                 onCancel={() => setHapusId(null)}
             />
 
-            <footer className="border-t border-white/5">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8B94A3] text-center sm:text-left">
+            <footer className="border-t border-black/5">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#64708A] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

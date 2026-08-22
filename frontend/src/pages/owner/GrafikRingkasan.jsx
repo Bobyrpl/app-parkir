@@ -19,7 +19,7 @@ function formatLabelTanggal(isoDate) {
 export default function GrafikRingkasan({ data }) {
     if (!data || data.length === 0) {
         return (
-            <div className="h-80 flex items-center justify-center text-sm text-[#8B94A3]">
+            <div className="h-80 flex items-center justify-center text-sm text-[#64708A]">
                 Belum ada data untuk ditampilkan.
             </div>
         );
@@ -37,19 +37,19 @@ export default function GrafikRingkasan({ data }) {
             <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={dataChart} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                    <XAxis dataKey="tanggal" tick={{ fill: '#8B94A3', fontSize: 12 }} />
+                    <XAxis dataKey="tanggal" tick={{ fill: '#64708A', fontSize: 12 }} />
 
                     {/* Sumbu kiri: Rupiah */}
                     <YAxis
                         yAxisId="left"
-                        tick={{ fill: '#8B94A3', fontSize: 11 }}
+                        tick={{ fill: '#64708A', fontSize: 11 }}
                         tickFormatter={(v) => `Rp${(v / 1000).toFixed(0)}rb`}
                     />
                     {/* Sumbu kanan: jumlah (petugas & kendaraan) */}
                     <YAxis
                         yAxisId="right"
                         orientation="right"
-                        tick={{ fill: '#8B94A3', fontSize: 11 }}
+                        tick={{ fill: '#64708A', fontSize: 11 }}
                         allowDecimals={false}
                     />
 
@@ -59,7 +59,7 @@ export default function GrafikRingkasan({ data }) {
                             border: '1px solid rgba(255,255,255,0.1)',
                             borderRadius: 8,
                         }}
-                        labelStyle={{ color: '#EDEFF2' }}
+                        labelStyle={{ color: '#10131A' }}
                         formatter={(value, name) => {
                             if (name === 'Pendapatan') {
                                 return [`Rp ${Number(value).toLocaleString('id-ID')}`, name];
@@ -67,7 +67,7 @@ export default function GrafikRingkasan({ data }) {
                             return [value, name];
                         }}
                     />
-                    <Legend wrapperStyle={{ fontSize: 12, color: '#8B94A3' }} />
+                    <Legend wrapperStyle={{ fontSize: 12, color: '#64708A' }} />
 
                     <Area
                         yAxisId="left"
@@ -92,7 +92,7 @@ export default function GrafikRingkasan({ data }) {
                         yAxisId="right"
                         type="monotone"
                         dataKey="kendaraan"
-                        stroke="#F4B400"
+                        stroke="#1B2A6B"
                         strokeWidth={2}
                         dot={false}
                         name="Kendaraan"

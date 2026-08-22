@@ -29,15 +29,15 @@ export default function StrukCard({ struk, onClose }) {
 
             <div className="relative w-full max-w-sm">
                 {/* notch kiri-kanan meniru sobekan tiket */}
-                <div className="absolute -left-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-[#14181F] no-print" />
-                <div className="absolute -right-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-[#14181F] no-print" />
+                <div className="absolute -left-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-white no-print" />
+                <div className="absolute -right-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-white no-print" />
 
                 <div id="struk-print-area" className="bg-[#F7F7F5] text-[#14181F] rounded-lg overflow-hidden">
                     <div
                         className="h-2 w-full"
                         style={{
                             backgroundImage:
-                                'repeating-linear-gradient(45deg, #F4B400 0 10px, #14181F 10px 20px)',
+                                'repeating-linear-gradient(45deg, #1B2A6B 0 10px, #14181F 10px 20px)',
                         }}
                     />
                     <div className="p-6 font-mono text-sm">
@@ -48,7 +48,7 @@ export default function StrukCard({ struk, onClose }) {
                             STRUK PARKIR — {struk.no_struk}
                         </p>
 
-                        <div className="border-t border-dashed border-[#C3C9D3] my-3" />
+                        <div className="border-t border-dashed border-[#38424F] my-3" />
 
                         <Row label="Plat Nomor" value={struk.plat_nomor} strong />
                         <Row label="Jenis" value={struk.jenis_kendaraan} />
@@ -58,14 +58,14 @@ export default function StrukCard({ struk, onClose }) {
                         <Row label="Durasi" value={`${struk.durasi_jam} jam`} />
                         <Row label="Tarif/Jam" value={formatRupiah(struk.tarif_per_jam)} />
 
-                        <div className="border-t border-dashed border-[#C3C9D3] my-3" />
+                        <div className="border-t border-dashed border-[#38424F] my-3" />
 
                         <Row label="Biaya Parkir" value={formatRupiah(struk.biaya_parkir ?? struk.biaya_total)} />
                         {adaDenda && (
                             <Row label="Denda Keterlambatan" value={formatRupiah(struk.denda)} strong />
                         )}
 
-                        <div className="border-t border-dashed border-[#C3C9D3] my-3" />
+                        <div className="border-t border-dashed border-[#38424F] my-3" />
 
                         <div className="flex justify-between items-baseline">
                             <span className="text-xs text-[#6B7280]">TOTAL BAYAR</span>
@@ -81,13 +81,13 @@ export default function StrukCard({ struk, onClose }) {
                 <div className="mt-4 flex gap-2 no-print">
                     <button
                         onClick={handleCetak}
-                        className="flex-1 rounded-md bg-[#F4B400] text-[#14181F] py-2.5 text-sm font-semibold hover:bg-[#F4B400]/90 transition-colors"
+                        className="flex-1 rounded-md bg-[#1B2A6B] text-white py-2.5 text-sm font-semibold hover:bg-[#1B2A6B]/90 transition-colors"
                     >
                         Cetak Struk
                     </button>
                     <button
                         onClick={onClose}
-                        className="flex-1 rounded-md bg-[#1B212B] text-[#EDEFF2] py-2.5 text-sm hover:bg-[#262E3A] transition-colors"
+                        className="flex-1 rounded-md bg-[#F1F4FA] text-[#10131A] py-2.5 text-sm hover:bg-[#E3E8F0] transition-colors"
                     >
                         Tutup
                     </button>

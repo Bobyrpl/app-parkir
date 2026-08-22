@@ -149,8 +149,8 @@ export default function Booking() {
                             onClick={() => setFilter(value)}
                             className={`rounded-md px-3 py-1.5 text-xs font-mono border ${
                                 filter === value
-                                    ? 'border-[#F4B400] bg-[#F4B400]/10 text-[#F4B400]'
-                                    : 'border-white/10 text-[#C3C9D3] hover:bg-white/5'
+                                    ? 'border-[#1B2A6B] bg-[#1B2A6B]/10 text-[#1B2A6B]'
+                                    : 'border-black/10 text-[#38424F] hover:bg-black/5'
                             }`}
                         >
                             {label}
@@ -188,14 +188,14 @@ export default function Booking() {
                                         type="checkbox"
                                         checked={selected.has(b.id_booking)}
                                         onChange={() => toggleSatu(b.id_booking)}
-                                        className="h-4 w-4 accent-[#F4B400]"
+                                        className="h-4 w-4 accent-[#1B2A6B]"
                                     />
                                 )}
                             </td>
-                            <td className="px-4 py-3 font-mono text-[#F4B400]">{b.kode_booking}</td>
+                            <td className="px-4 py-3 font-mono text-[#1B2A6B]">{b.kode_booking}</td>
                             <td className="px-4 py-3">
                                 <p>{b.user?.nama_lengkap}</p>
-                                <p className="text-xs text-[#8B94A3]">{b.user?.no_telp}</p>
+                                <p className="text-xs text-[#64708A]">{b.user?.no_telp}</p>
                             </td>
                             <td className="px-4 py-3 font-mono uppercase">{b.kendaraan?.plat_nomor}</td>
                             <td className="px-4 py-3">{b.area?.nama_area}</td>
@@ -222,14 +222,14 @@ export default function Booking() {
                 })}
                 {!loading && data.length === 0 && (
                     <tr>
-                        <td colSpan={8} className="px-4 py-6 text-center text-[#8B94A3] text-sm">
+                        <td colSpan={8} className="px-4 py-6 text-center text-[#64708A] text-sm">
                             Tidak ada booking pada status ini.
                         </td>
                     </tr>
                 )}
                 {loading && (
                     <tr>
-                        <td colSpan={8} className="px-4 py-6 text-center text-[#8B94A3] text-sm">
+                        <td colSpan={8} className="px-4 py-6 text-center text-[#64708A] text-sm">
                             Memuat data...
                         </td>
                     </tr>
@@ -253,8 +253,8 @@ export default function Booking() {
                 onCancel={() => setConfirmMode(null)}
             />
 
-            <footer className="border-t border-white/5">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8B94A3] text-center sm:text-left">
+            <footer className="border-t border-black/5">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#64708A] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

@@ -169,11 +169,11 @@ export default function RiwayatBooking() {
                                         type="checkbox"
                                         checked={selected.has(b.id_booking)}
                                         onChange={() => toggleSatu(b.id_booking)}
-                                        className="h-4 w-4 accent-[#F4B400]"
+                                        className="h-4 w-4 accent-[#1B2A6B]"
                                     />
                                 )}
                             </td>
-                            <td className="px-4 py-3 font-mono text-[#F4B400]">{b.kode_booking}</td>
+                            <td className="px-4 py-3 font-mono text-[#1B2A6B]">{b.kode_booking}</td>
                             <td className="px-4 py-3 font-mono uppercase">{b.kendaraan?.plat_nomor}</td>
                             <td className="px-4 py-3">{b.area?.nama_area}</td>
                             <td className="px-4 py-3 font-mono text-xs">
@@ -200,7 +200,7 @@ export default function RiwayatBooking() {
                                     ) : (
                                         b.status === 'dikonfirmasi' &&
                                         b.transaksi?.status === 'masuk' && (
-                                            <span className="text-xs text-[#8B94A3]">
+                                            <span className="text-xs text-[#64708A]">
                                                 Kendaraan sudah masuk area parkir
                                             </span>
                                         )
@@ -212,14 +212,14 @@ export default function RiwayatBooking() {
                 })}
                 {!loading && data.length === 0 && (
                     <tr>
-                        <td colSpan={7} className="px-4 py-6 text-center text-[#8B94A3] text-sm">
+                        <td colSpan={7} className="px-4 py-6 text-center text-[#64708A] text-sm">
                             Belum ada booking. Buat booking baru lewat menu "Booking Parkir".
                         </td>
                     </tr>
                 )}
                 {loading && (
                     <tr>
-                        <td colSpan={7} className="px-4 py-6 text-center text-[#8B94A3] text-sm">
+                        <td colSpan={7} className="px-4 py-6 text-center text-[#64708A] text-sm">
                             Memuat data...
                         </td>
                     </tr>
@@ -254,8 +254,8 @@ export default function RiwayatBooking() {
                 onCancel={() => setConfirmMode(null)}
             />
 
-            <footer className="border-t border-white/5">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8B94A3] text-center sm:text-left">
+            <footer className="border-t border-black/5">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#64708A] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

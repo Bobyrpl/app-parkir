@@ -73,15 +73,15 @@ export default function ModalQris({ transaksiId, onLunas, onBatal, demoMode = fa
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-            <div className="w-80 rounded-xl bg-[#1B212B] border border-white/10 p-6 text-center">
+            <div className="w-80 rounded-xl bg-[#F1F4FA] border border-black/10 p-6 text-center">
                 <p className="font-display text-lg mb-4">Pembayaran QRIS (DANA)</p>
 
-                {status === 'memuat' && <p className="text-sm text-[#8B94A3]">Menyiapkan QR code...</p>}
+                {status === 'memuat' && <p className="text-sm text-[#64708A]">Menyiapkan QR code...</p>}
 
                 {status === 'menunggu' && (
                     <>
                         <img src={qrImage} alt="QRIS Pembayaran" className="w-56 h-56 mx-auto rounded-lg bg-white p-2" />
-                        <p className="text-sm text-[#8B94A3] mt-3 animate-pulse">Menunggu pembayaran...</p>
+                        <p className="text-sm text-[#64708A] mt-3 animate-pulse">Menunggu pembayaran...</p>
                         <div className="flex flex-col gap-2 mt-4">
                             <button onClick={onBatal} className="text-xs text-[#D4537E] hover:underline">
                                 Batalkan
@@ -89,7 +89,7 @@ export default function ModalQris({ transaksiId, onLunas, onBatal, demoMode = fa
                             {demoMode && (
                                 <button
                                     onClick={handleTandaiLunasManual}
-                                    className="text-xs text-[#F4B400] border border-[#F4B400]/40 rounded-md py-1.5 hover:bg-[#F4B400]/10 transition-colors"
+                                    className="text-xs text-[#1B2A6B] border border-[#1B2A6B]/40 rounded-md py-1.5 hover:bg-[#1B2A6B]/10 transition-colors"
                                 >
                                     Tandai Lunas (Demo)
                                 </button>
@@ -105,7 +105,7 @@ export default function ModalQris({ transaksiId, onLunas, onBatal, demoMode = fa
                 {status === 'gagal' && (
                     <>
                         <p className="text-sm text-[#D4537E]">{errorMsg}</p>
-                        <button onClick={onBatal} className="text-xs text-[#8B94A3] mt-3 hover:underline">
+                        <button onClick={onBatal} className="text-xs text-[#64708A] mt-3 hover:underline">
                             Tutup
                         </button>
                     </>

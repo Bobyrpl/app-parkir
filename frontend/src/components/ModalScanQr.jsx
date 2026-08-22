@@ -66,8 +66,8 @@ export default function ModalScanQr({ onDetected, onClose }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-            <div className="w-full max-w-sm rounded-xl bg-[#1B212B] border border-white/10 p-6">
-                <h3 className="font-display text-base text-[#EDEFF2] mb-3">Scan QR Booking</h3>
+            <div className="w-full max-w-sm rounded-xl bg-[#F1F4FA] border border-black/10 p-6">
+                <h3 className="font-display text-base text-[#10131A] mb-3">Scan QR Booking</h3>
 
                 {error ? (
                     <p className="text-sm text-[#E5484D] mb-2">{error}</p>
@@ -76,14 +76,14 @@ export default function ModalScanQr({ onDetected, onClose }) {
                 )}
 
                 {!error && (
-                    <p className="text-xs text-[#8B94A3] mt-3">
+                    <p className="text-xs text-[#64708A] mt-3">
                         Arahkan kamera ke QR kode booking milik pelanggan.
                     </p>
                 )}
 
                 <button
                     onClick={onClose}
-                    className="mt-4 w-full rounded-md bg-[#262E3A] text-[#EDEFF2] py-2 text-sm hover:bg-[#2E3746] transition-colors"
+                    className="mt-4 w-full rounded-md bg-[#E3E8F0] text-[#10131A] py-2 text-sm hover:bg-[#D6DEEA] transition-colors"
                 >
                     Tutup
                 </button>

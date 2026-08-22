@@ -25,18 +25,18 @@ class ErrorBoundary extends Component {
                         padding: 24,
                         minHeight: "100vh",
                         background: "#14181F",
-                        color: "#EDEFF2",
+                        color: "#10131A",
                         fontFamily: "monospace",
                     }}
                 >
                     <h2 style={{ marginBottom: 8 }}>Terjadi kesalahan</h2>
-                    <p style={{ color: "#8B94A3", marginBottom: 16 }}>
+                    <p style={{ color: "#64708A", marginBottom: 16 }}>
                         {this.state.error.message || "Aplikasi mengalami error yang tidak terduga."}
                     </p>
                     <button
                         onClick={() => window.location.reload()}
                         style={{
-                            background: "#F4B400",
+                            background: "#1B2A6B",
                             color: "#14181F",
                             border: "none",
                             borderRadius: 6,

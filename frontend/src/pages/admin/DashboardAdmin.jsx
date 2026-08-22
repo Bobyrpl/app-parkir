@@ -157,7 +157,7 @@ export default function DashboardAdmin() {
 
             const headerCell = (text) =>
                 new TableCell({
-                    shading: { fill: '1F2530' },
+                    shading: { fill: 'E8ECF5' },
                     children: [new Paragraph({ children: [new TextRun({ text, bold: true, color: 'FFFFFF' })] })],
                 });
 
@@ -301,11 +301,11 @@ export default function DashboardAdmin() {
                         <Receipt size={20} />
                     </span>
                     <div className="min-w-0">
-                        <p className="font-mono text-[11px] tracking-widest text-[#8B94A3]">TRANSAKSI PERIODE INI</p>
-                        <p className="font-display text-2xl text-[#EDEFF2] leading-tight truncate">
+                        <p className="font-mono text-[11px] tracking-widest text-[#64708A]">TRANSAKSI PERIODE INI</p>
+                        <p className="font-display text-2xl text-[#10131A] leading-tight truncate">
                             {loadingRekap ? '—' : totalTransaksi.toLocaleString('id-ID')}
                         </p>
-                        <p className="text-xs text-[#8B94A3] mt-0.5 truncate">{periodeLabel}</p>
+                        <p className="text-xs text-[#64708A] mt-0.5 truncate">{periodeLabel}</p>
                     </div>
                 </Card>
                 <Card className="p-5 flex items-center gap-4 border-l-4" style={{ borderLeftColor: '#35C48D' }}>
@@ -313,11 +313,11 @@ export default function DashboardAdmin() {
                         <Wallet size={20} />
                     </span>
                     <div className="min-w-0">
-                        <p className="font-mono text-[11px] tracking-widest text-[#8B94A3]">PENDAPATAN PERIODE INI</p>
-                        <p className="font-display text-2xl text-[#EDEFF2] leading-tight truncate">
+                        <p className="font-mono text-[11px] tracking-widest text-[#64708A]">PENDAPATAN PERIODE INI</p>
+                        <p className="font-display text-2xl text-[#10131A] leading-tight truncate">
                             {loadingRekap ? '—' : `Rp ${totalPendapatan.toLocaleString('id-ID')}`}
                         </p>
-                        <p className="text-xs text-[#8B94A3] mt-0.5 truncate">{periodeLabel}</p>
+                        <p className="text-xs text-[#64708A] mt-0.5 truncate">{periodeLabel}</p>
                     </div>
                 </Card>
             </div>
@@ -329,25 +329,25 @@ export default function DashboardAdmin() {
                             <TrendingUp size={16} />
                         </span>
                         <div className="min-w-0">
-                            <h2 className="font-display text-base text-[#EDEFF2] truncate">
+                            <h2 className="font-display text-base text-[#10131A] truncate">
                                  Transaksi &amp; daftar user
                             </h2>
-                            <p className="text-xs text-[#8B94A3] truncate">{periodeLabel}</p>
+                            <p className="text-xs text-[#64708A] truncate">{periodeLabel}</p>
                         </div>
                     </div>
                     {loadingRekap ? (
-                        <p className="text-sm text-[#8B94A3]">Memuat data...</p>
+                        <p className="text-sm text-[#64708A]">Memuat data...</p>
                     ) : rekap.length === 0 ? (
-                        <p className="text-sm text-[#8B94A3]">Belum ada data transaksi.</p>
+                        <p className="text-sm text-[#64708A]">Belum ada data transaksi.</p>
                     ) : (
                         <ResponsiveContainer width="100%" height={340}>
                             <LineChart data={rekap}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#2A303C" />
-                                <XAxis dataKey="label" stroke="#8B94A3" fontSize={11} />
+                                <CartesianGrid strokeDasharray="3 3" stroke="#D8DEE8" />
+                                <XAxis dataKey="label" stroke="#64708A" fontSize={11} />
                                 {/* Sumbu kiri: jumlah transaksi & registrasi pelanggan (skala kecil, satuan orang/transaksi) */}
                                 <YAxis
                                     yAxisId="jumlah"
-                                    stroke="#8B94A3"
+                                    stroke="#64708A"
                                     fontSize={12}
                                     allowDecimals={false}
                                 />
@@ -357,13 +357,13 @@ export default function DashboardAdmin() {
                                 <YAxis
                                     yAxisId="rupiah"
                                     orientation="right"
-                                    stroke="#8B94A3"
+                                    stroke="#64708A"
                                     fontSize={12}
                                     tickFormatter={(value) => `Rp${(value / 1000).toLocaleString('id-ID')}rb`}
                                 />
                                 <Tooltip
-                                    contentStyle={{ background: '#1F2530', border: '1px solid #2A303C', borderRadius: 8 }}
-                                    labelStyle={{ color: '#EDEFF2' }}
+                                    contentStyle={{ background: '#E8ECF5', border: '1px solid #D8DEE8', borderRadius: 8 }}
+                                    labelStyle={{ color: '#10131A' }}
                                     formatter={(value, name) => {
                                         if (name === 'pendapatan') {
                                             return [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Pendapatan'];
@@ -382,11 +382,11 @@ export default function DashboardAdmin() {
                                                 : value === 'jumlah_user'
                                                 ? 'Registrasi Pelanggan'
                                                 : 'Jumlah Transaksi';
-                                        return <span style={{ color: '#C3C9D3', fontSize: 12 }}>{label}</span>;
+                                        return <span style={{ color: '#38424F', fontSize: 12 }}>{label}</span>;
                                     }}
                                 />
                                 <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#5B8DEF" strokeWidth={2} dot={{ r: 3 }} />
-                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#F4B400" strokeWidth={2} dot={{ r: 3 }} />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#1B2A6B" strokeWidth={2} dot={{ r: 3 }} />
                                 <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#35C48D" strokeWidth={2} dot={{ r: 3 }} />
                             </LineChart>
                         </ResponsiveContainer>
@@ -398,14 +398,14 @@ export default function DashboardAdmin() {
             <Card className="p-6 mb-8">
                 <div className="flex items-start justify-between mb-4 flex-wrap gap-3">
                     <div className="flex items-start gap-2.5">
-                        <span className="w-8 h-8 rounded-lg bg-[#F4B400]/10 text-[#F4B400] flex items-center justify-center shrink-0 print:hidden">
+                        <span className="w-8 h-8 rounded-lg bg-[#1B2A6B]/10 text-[#1B2A6B] flex items-center justify-center shrink-0 print:hidden">
                             <FileText size={16} />
                         </span>
                         <div>
-                            <h2 className="font-display text-lg text-[#EDEFF2] print:text-[#14181F]">
+                            <h2 className="font-display text-lg text-[#10131A] print:text-[#14181F]">
                                 Tabel Laporan Transaksi
                             </h2>
-                            <p className="text-xs text-[#8B94A3] print:text-[#6B7280] mt-1">
+                            <p className="text-xs text-[#64708A] print:text-[#6B7280] mt-1">
                                 Periode: {periodeLabel}
                             </p>
                             <p className="hidden print:block text-xs text-[#6B7280] mt-1">
@@ -431,21 +431,21 @@ export default function DashboardAdmin() {
 
                 <form
                     onSubmit={handleFilterSubmit}
-                    className="no-print flex flex-wrap items-end gap-3 mb-5 pb-5 border-b border-white/5"
+                    className="no-print flex flex-wrap items-end gap-3 mb-5 pb-5 border-b border-black/5"
                 >
                     <div className="flex flex-col gap-1">
-                        <label className="text-xs text-[#8B94A3]" htmlFor="dari-date">Dari tanggal</label>
+                        <label className="text-xs text-[#64708A]" htmlFor="dari-date">Dari tanggal</label>
                         <input
                             id="dari-date"
                             type="date"
                             value={dari}
                             max={sampai}
                             onChange={(e) => setDari(e.target.value)}
-                            className="bg-[#1F2530] border border-[#2A303C] rounded-md px-3 py-2 text-sm text-[#EDEFF2] focus:outline-none focus:ring-2 focus:ring-[#F4B400] transition-shadow"
+                            className="bg-[#E8ECF5] border border-[#D8DEE8] rounded-md px-3 py-2 text-sm text-[#10131A] focus:outline-none focus:ring-2 focus:ring-[#1B2A6B] transition-shadow"
                         />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label className="text-xs text-[#8B94A3]" htmlFor="sampai-date">Sampai tanggal</label>
+                        <label className="text-xs text-[#64708A]" htmlFor="sampai-date">Sampai tanggal</label>
                         <input
                             id="sampai-date"
                             type="date"
@@ -453,7 +453,7 @@ export default function DashboardAdmin() {
                             min={dari}
                             max={toDateInputValue(new Date())}
                             onChange={(e) => setSampai(e.target.value)}
-                            className="bg-[#1F2530] border border-[#2A303C] rounded-md px-3 py-2 text-sm text-[#EDEFF2] focus:outline-none focus:ring-2 focus:ring-[#F4B400] transition-shadow"
+                            className="bg-[#E8ECF5] border border-[#D8DEE8] rounded-md px-3 py-2 text-sm text-[#10131A] focus:outline-none focus:ring-2 focus:ring-[#1B2A6B] transition-shadow"
                         />
                     </div>
                     <Button type="submit" disabled={loadingRekap}>
@@ -462,14 +462,14 @@ export default function DashboardAdmin() {
                             {loadingRekap ? 'Memuat...' : 'Terapkan'}
                         </span>
                     </Button>
-                    <div className="flex gap-1 ml-auto bg-[#14181F] border border-white/10 rounded-full p-1">
+                    <div className="flex gap-1 ml-auto bg-white border border-black/10 rounded-full p-1">
                         <button
                             type="button"
                             onClick={() => handlePreset(7)}
                             className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors ${
                                 activePreset === 7
-                                    ? 'bg-[#F4B400] text-[#14181F]'
-                                    : 'text-[#8B94A3] hover:text-[#EDEFF2]'
+                                    ? 'bg-[#1B2A6B] text-white'
+                                    : 'text-[#64708A] hover:text-[#10131A]'
                             }`}
                         >
                             7 Hari
@@ -479,8 +479,8 @@ export default function DashboardAdmin() {
                             onClick={() => handlePreset(30)}
                             className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors ${
                                 activePreset === 30
-                                    ? 'bg-[#F4B400] text-[#14181F]'
-                                    : 'text-[#8B94A3] hover:text-[#EDEFF2]'
+                                    ? 'bg-[#1B2A6B] text-white'
+                                    : 'text-[#64708A] hover:text-[#10131A]'
                             }`}
                         >
                             30 Hari
@@ -489,7 +489,7 @@ export default function DashboardAdmin() {
                 </form>
 
                 {loadingRekap ? (
-                    <p className="text-sm text-[#8B94A3]">Memuat data...</p>
+                    <p className="text-sm text-[#64708A]">Memuat data...</p>
                 ) : rekapError ? (
                     <div className="text-sm text-[#E5484D] flex items-center gap-3">
                         <span>{rekapError}</span>
@@ -500,7 +500,7 @@ export default function DashboardAdmin() {
                         {rekap.map((d, idx) => (
                             <tr
                                 key={d.tanggal}
-                                className={idx % 2 === 1 ? 'bg-white/[0.015]' : undefined}
+                                className={idx % 2 === 1 ? 'bg-black/[0.015]' : undefined}
                             >
                                 <td className="px-4 py-3 font-mono text-xs">
                                     {new Date(d.tanggal).toLocaleDateString('id-ID', {
@@ -519,7 +519,7 @@ export default function DashboardAdmin() {
                                         {/* Bar visual proporsional terhadap pendapatan tertinggi
                                             pada rentang yang sama — murni dekoratif, dihitung dari
                                             data yang sudah ada, tidak mengubah data itu sendiri. */}
-                                        <span className="hidden sm:block flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden min-w-[60px] max-w-[120px] print:hidden">
+                                        <span className="hidden sm:block flex-1 h-1.5 rounded-full bg-black/5 overflow-hidden min-w-[60px] max-w-[120px] print:hidden">
                                             <span
                                                 className="block h-full rounded-full bg-[#35C48D]"
                                                 style={{
@@ -533,13 +533,13 @@ export default function DashboardAdmin() {
                         ))}
                         {rekap.length === 0 && (
                             <tr>
-                                <td colSpan={3} className="px-4 py-6 text-center text-[#8B94A3] text-sm">
+                                <td colSpan={3} className="px-4 py-6 text-center text-[#64708A] text-sm">
                                     Belum ada data transaksi pada periode ini.
                                 </td>
                             </tr>
                         )}
                         {rekap.length > 0 && (
-                            <tr className="bg-[#1F2530] font-semibold">
+                            <tr className="bg-[#E8ECF5] font-semibold">
                                 <td className="px-4 py-3 font-mono text-xs">TOTAL</td>
                                 <td className="px-4 py-3 font-mono">{totalTransaksi}</td>
                                 <td className="px-4 py-3 font-mono">
@@ -554,27 +554,27 @@ export default function DashboardAdmin() {
 
             <Card className="p-6 no-print">
                 <div className="flex items-center gap-2.5 mb-4">
-                    <span className="w-8 h-8 rounded-lg bg-[#F4B400]/10 text-[#F4B400] flex items-center justify-center shrink-0">
+                    <span className="w-8 h-8 rounded-lg bg-[#1B2A6B]/10 text-[#1B2A6B] flex items-center justify-center shrink-0">
                         <Compass size={16} />
                     </span>
-                    <h2 className="font-display text-lg text-[#EDEFF2]">
+                    <h2 className="font-display text-lg text-[#10131A]">
                         Akses cepat
                     </h2>
                 </div>
-                <p className="text-sm text-[#8B94A3] mb-4">
+                <p className="text-sm text-[#64708A] mb-4">
                     Gunakan menu di sidebar untuk mengelola data master dan
                     melihat log aktivitas seluruh pengguna sistem.
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {[
-                        { label: 'Pengguna', icon: Users, accent: '#F4B400' },
+                        { label: 'Pengguna', icon: Users, accent: '#1B2A6B' },
                         { label: 'Tarif', icon: Ticket, accent: '#35C48D' },
                         { label: 'Area Parkir', icon: MapPin, accent: '#5B8DEF' },
                         { label: 'Kendaraan', icon: Car, accent: '#E5484D' },
                     ].map(({ label, icon: Icon, accent }) => (
                         <div
                             key={label}
-                            className="flex flex-col items-center text-center gap-2 rounded-xl border border-white/5 bg-[#14181F] px-3 py-4"
+                            className="flex flex-col items-center text-center gap-2 rounded-xl border border-black/5 bg-white px-3 py-4"
                         >
                             <span
                                 className="w-9 h-9 rounded-lg flex items-center justify-center"
@@ -582,13 +582,13 @@ export default function DashboardAdmin() {
                             >
                                 <Icon size={17} />
                             </span>
-                            <span className="text-xs text-[#C3C9D3]">{label}</span>
+                            <span className="text-xs text-[#38424F]">{label}</span>
                         </div>
                     ))}
                 </div>
             </Card>
-            <footer className="border-t border-white/5">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8B94A3] text-center sm:text-left">
+            <footer className="border-t border-black/5">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#64708A] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

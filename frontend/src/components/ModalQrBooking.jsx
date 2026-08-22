@@ -26,13 +26,13 @@ export default function ModalQrBooking({ booking, onClose }) {
             onClick={onClose}
         >
             <div
-                className="w-full max-w-xs rounded-xl bg-[#1B212B] border border-white/10 p-6 text-center"
+                className="w-full max-w-xs rounded-xl bg-[#F1F4FA] border border-black/10 p-6 text-center"
                 onClick={(e) => e.stopPropagation()}
                 role="dialog"
                 aria-modal="true"
             >
-                <p className="font-display text-lg text-[#EDEFF2] mb-1">QR Booking</p>
-                <p className="text-xs text-[#8B94A3] mb-4">
+                <p className="font-display text-lg text-[#10131A] mb-1">QR Booking</p>
+                <p className="text-xs text-[#64708A] mb-4">
                     Tunjukkan QR ini ke petugas saat tiba di lokasi
                 </p>
 
@@ -43,19 +43,19 @@ export default function ModalQrBooking({ booking, onClose }) {
                         className="w-56 h-56 mx-auto rounded-lg bg-white p-2"
                     />
                 ) : (
-                    <p className="text-sm text-[#8B94A3] py-20">Menyiapkan QR...</p>
+                    <p className="text-sm text-[#64708A] py-20">Menyiapkan QR...</p>
                 )}
 
-                <p className="mt-4 font-mono text-[#F4B400] text-sm tracking-wider">
+                <p className="mt-4 font-mono text-[#1B2A6B] text-sm tracking-wider">
                     {booking.kode_booking}
                 </p>
-                <p className="text-xs text-[#8B94A3] mt-1">
+                <p className="text-xs text-[#64708A] mt-1">
                     {booking.kendaraan?.plat_nomor} — {booking.area?.nama_area}
                 </p>
 
                 <button
                     onClick={onClose}
-                    className="mt-5 w-full rounded-md bg-[#262E3A] text-[#EDEFF2] py-2 text-sm hover:bg-[#2E3746] transition-colors"
+                    className="mt-5 w-full rounded-md bg-[#E3E8F0] text-[#10131A] py-2 text-sm hover:bg-[#D6DEEA] transition-colors"
                 >
                     Tutup
                 </button>

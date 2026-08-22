@@ -38,7 +38,7 @@ const ROLE_BADGE_TONE = { admin: "warning", petugas: "info", owner: "success" };
 // Palet warna avatar inisial — dirotasi berdasarkan nama, biar daftar
 // panjang tidak terasa monoton semua warna kuning.
 const AVATAR_PALETTE = [
-  { bg: "bg-[#F4B400]/10", text: "text-[#F4B400]" },
+  { bg: "bg-[#1B2A6B]/10", text: "text-[#1B2A6B]" },
   { bg: "bg-[#5B8DEF]/10", text: "text-[#5B8DEF]" },
   { bg: "bg-[#35C48D]/10", text: "text-[#35C48D]" },
   { bg: "bg-[#C792EA]/10", text: "text-[#C792EA]" },
@@ -260,7 +260,7 @@ export default function Users() {
 
       {/* Ringkasan */}
       <div className="mb-8">
-        <h2 className="font-mono text-[11px] tracking-widest text-[#8B94A3] mb-3">
+        <h2 className="font-mono text-[11px] tracking-widest text-[#64708A] mb-3">
           RINGKASAN PENGGUNA
         </h2>
         {ringkasanLoading ? (
@@ -274,7 +274,7 @@ export default function Users() {
             <StatCard
               label="ADMIN"
               value={ringkasan.admin}
-              accent="#F4B400"
+              accent="#1B2A6B"
             />
             <StatCard
               label="PETUGAS"
@@ -289,7 +289,7 @@ export default function Users() {
             <StatCard
               label="TOTAL USER"
               value={ringkasan.total}
-              accent="#EDEFF2"
+              accent="#10131A"
             />
             <StatCard
               label="AKTIF"
@@ -306,7 +306,7 @@ export default function Users() {
       </div>
 
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-display text-base text-[#EDEFF2]">
+        <h2 className="font-display text-base text-[#10131A]">
           Daftar Pengguna
         </h2>
         {!showForm && (
@@ -329,17 +329,17 @@ export default function Users() {
         <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
-              <span className="w-8 h-8 rounded-lg bg-[#F4B400]/10 text-[#F4B400] flex items-center justify-center shrink-0">
+              <span className="w-8 h-8 rounded-lg bg-[#1B2A6B]/10 text-[#1B2A6B] flex items-center justify-center shrink-0">
                 {editId ? <Pencil size={15} /> : <UserPlus size={15} />}
               </span>
-              <h2 className="font-display text-base text-[#EDEFF2]">
+              <h2 className="font-display text-base text-[#10131A]">
                 {editId ? "Edit Pengguna" : "Tambah Pengguna"}
               </h2>
             </div>
             <button
               type="button"
               onClick={handleTutupForm}
-              className="w-7 h-7 rounded-md flex items-center justify-center text-[#8B94A3] hover:text-[#EDEFF2] hover:bg-white/5 transition-colors shrink-0"
+              className="w-7 h-7 rounded-md flex items-center justify-center text-[#64708A] hover:text-[#10131A] hover:bg-black/5 transition-colors shrink-0"
               aria-label="Tutup form"
             >
               <X size={15} />
@@ -348,7 +348,7 @@ export default function Users() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+              <label className="block text-xs font-mono text-[#64708A] mb-1.5">
                 NAMA LENGKAP
               </label>
               <Input
@@ -361,7 +361,7 @@ export default function Users() {
               />
             </div>
             <div>
-              <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+              <label className="block text-xs font-mono text-[#64708A] mb-1.5">
                 USERNAME
               </label>
               <Input
@@ -372,7 +372,7 @@ export default function Users() {
               />
             </div>
             <div>
-              <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+              <label className="block text-xs font-mono text-[#64708A] mb-1.5">
                 NO. TELEPON
               </label>
               <Input
@@ -382,7 +382,7 @@ export default function Users() {
               />
             </div>
             <div>
-              <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+              <label className="block text-xs font-mono text-[#64708A] mb-1.5">
                 PASSWORD
                 {editId && (
                   <span className="normal-case text-[#5F6774]">
@@ -400,13 +400,13 @@ export default function Users() {
               />
             </div>
             <div>
-              <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">
+              <label className="block text-xs font-mono text-[#64708A] mb-1.5">
                 ROLE
               </label>
               <select
                 value={form.role}
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
-                className="w-full rounded-md bg-[#14181F] border border-white/10 px-3 py-2 text-sm text-[#EDEFF2] focus:outline-none focus:ring-2 focus:ring-[#F4B400] transition-shadow"
+                className="w-full rounded-md bg-white border border-black/10 px-3 py-2 text-sm text-[#10131A] focus:outline-none focus:ring-2 focus:ring-[#1B2A6B] transition-shadow"
               >
                 <option value="petugas">Petugas</option>
                 <option value="owner">Owner</option>
@@ -414,14 +414,14 @@ export default function Users() {
               </select>
             </div>
 
-            <label className="flex items-center gap-2.5 text-sm text-[#C3C9D3] rounded-md border border-white/10 bg-[#14181F] px-3 py-2.5 cursor-pointer">
+            <label className="flex items-center gap-2.5 text-sm text-[#38424F] rounded-md border border-black/10 bg-white px-3 py-2.5 cursor-pointer">
               <input
                 type="checkbox"
                 checked={form.status_aktif}
                 onChange={(e) =>
                   setForm({ ...form, status_aktif: e.target.checked })
                 }
-                className="accent-[#F4B400]"
+                className="accent-[#1B2A6B]"
               />
               Akun aktif
             </label>
@@ -467,7 +467,7 @@ export default function Users() {
                 onChange={(e) => setCariKata(e.target.value)}
               />
             </div>
-            <span className="text-xs font-mono text-[#8B94A3] whitespace-nowrap shrink-0">
+            <span className="text-xs font-mono text-[#64708A] whitespace-nowrap shrink-0">
               {loading
                 ? "Memuat..."
                 : sedangMencari
@@ -491,7 +491,7 @@ export default function Users() {
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
                     <td className="px-3 sm:px-4 py-3" colSpan={6}>
-                      <div className="h-9 rounded-md bg-white/5 animate-pulse" />
+                      <div className="h-9 rounded-md bg-black/5 animate-pulse" />
                     </td>
                   </tr>
                 ))}
@@ -502,7 +502,7 @@ export default function Users() {
                   return (
                     <tr
                       key={item.id_user}
-                      className="transition-colors hover:bg-white/[0.03]"
+                      className="transition-colors hover:bg-black/[0.03]"
                     >
                       <td className="px-3 sm:px-4 py-2.5 sm:py-3 whitespace-nowrap">
                         <div className="flex items-center gap-2.5">
@@ -511,15 +511,15 @@ export default function Users() {
                           >
                             {inisial(item.nama_lengkap)}
                           </span>
-                          <span className="text-[#EDEFF2]">
+                          <span className="text-[#10131A]">
                             {item.nama_lengkap}
                           </span>
                         </div>
                       </td>
-                      <td className="px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-[#C3C9D3] whitespace-nowrap">
+                      <td className="px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-[#38424F] whitespace-nowrap">
                         {item.username}
                       </td>
-                      <td className="px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-[#C3C9D3] whitespace-nowrap">
+                      <td className="px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-[#38424F] whitespace-nowrap">
                         {item.no_telp ? (
                           <span className="inline-flex items-center gap-1.5">
                             <Phone size={12} className="text-[#5F6774]" />
@@ -568,8 +568,8 @@ export default function Users() {
               {!loading && dataTersaring.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-4 py-14 text-center">
-                    <div className="flex flex-col items-center gap-2.5 text-[#8B94A3]">
-                      <span className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-2.5 text-[#64708A]">
+                      <span className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center">
                         <Inbox size={18} />
                       </span>
                       <p className="text-sm">
@@ -585,7 +585,7 @@ export default function Users() {
           </div>
 
           {!loading && !sedangMencari && halamanTerakhir > 1 && (
-            <div className="px-4 sm:px-0 mt-4 flex items-center justify-between text-xs font-mono text-[#8B94A3]">
+            <div className="px-4 sm:px-0 mt-4 flex items-center justify-between text-xs font-mono text-[#64708A]">
               <span>Total {total} pengguna</span>
               <div className="flex items-center gap-1.5">
                 <Button
@@ -597,7 +597,7 @@ export default function Users() {
                   <ChevronLeft size={14} />
                   Sebelumnya
                 </Button>
-                <span className="px-2 text-[#C3C9D3]">
+                <span className="px-2 text-[#38424F]">
                   Hal {halaman} / {halamanTerakhir}
                 </span>
                 <Button
@@ -625,8 +625,8 @@ export default function Users() {
         onCancel={() => setHapusId(null)}
       />
 
-      <footer className="border-t border-white/5 mt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8B94A3] text-center sm:text-left">
+      <footer className="border-t border-black/5 mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#64708A] text-center sm:text-left">
           <span>
             © {new Date().getFullYear()} Parkir Pelabuhan Tanjung Perak
           </span>

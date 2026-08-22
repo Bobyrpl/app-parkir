@@ -56,10 +56,10 @@ export default function TambahKendaraan() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 <Card className="p-4 sm:p-5 md:col-span-1 h-fit">
-                    <h2 className="font-display text-base text-[#EDEFF2] mb-4">Tambah Kendaraan</h2>
+                    <h2 className="font-display text-base text-[#10131A] mb-4">Tambah Kendaraan</h2>
                     <form onSubmit={handleSubmit} className="space-y-3">
                         <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">PLAT NOMOR</label>
+                            <label className="block text-xs font-mono text-[#64708A] mb-1.5">PLAT NOMOR</label>
                             <Input
                                 value={form.plat_nomor}
                                 onChange={(e) => setForm({ ...form, plat_nomor: e.target.value.toUpperCase() })}
@@ -68,11 +68,11 @@ export default function TambahKendaraan() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">JENIS KENDARAAN</label>
+                            <label className="block text-xs font-mono text-[#64708A] mb-1.5">JENIS KENDARAAN</label>
                             <select
                                 value={form.jenis_kendaraan}
                                 onChange={(e) => setForm({ ...form, jenis_kendaraan: e.target.value })}
-                                className="w-full rounded-md bg-[#14181F] border border-white/10 px-3 py-2 text-sm text-[#EDEFF2] focus:outline-none focus:ring-2 focus:ring-[#F4B400]"
+                                className="w-full rounded-md bg-white border border-black/10 px-3 py-2 text-sm text-[#10131A] focus:outline-none focus:ring-2 focus:ring-[#1B2A6B]"
                             >
                                 <option value="motor">Motor</option>
                                 <option value="mobil">Mobil</option>
@@ -82,11 +82,11 @@ export default function TambahKendaraan() {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">WARNA</label>
+                            <label className="block text-xs font-mono text-[#64708A] mb-1.5">WARNA</label>
                             <Input value={form.warna} onChange={(e) => setForm({ ...form, warna: e.target.value })} maxLength={20} />
                         </div>
                         <div>
-                            <label className="block text-xs font-mono text-[#8B94A3] mb-1.5">PEMILIK</label>
+                            <label className="block text-xs font-mono text-[#64708A] mb-1.5">PEMILIK</label>
                             <Input value={form.pemilik} onChange={(e) => setForm({ ...form, pemilik: e.target.value })} maxLength={100} />
                         </div>
 
@@ -111,7 +111,7 @@ export default function TambahKendaraan() {
                             ))}
                             {data.length === 0 && (
                                 <tr>
-                                    <td colSpan={4} className="px-4 py-6 text-center text-[#8B94A3] text-sm">
+                                    <td colSpan={4} className="px-4 py-6 text-center text-[#64708A] text-sm">
                                         Belum ada kendaraan.
                                     </td>
                                 </tr>

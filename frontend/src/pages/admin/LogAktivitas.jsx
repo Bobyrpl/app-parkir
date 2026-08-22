@@ -20,7 +20,7 @@ export default function LogAktivitas() {
     async function handleDownloadWord() {
         const headerCell = (text) =>
             new TableCell({
-                shading: { fill: '1F2530' },
+                shading: { fill: 'E8ECF5' },
                 children: [new Paragraph({ children: [new TextRun({ text, bold: true, color: 'FFFFFF' })] })],
             });
 
@@ -95,19 +95,19 @@ export default function LogAktivitas() {
                         <td className="px-4 py-3">
                             <Badge tone="neutral">{item.user?.role ?? '-'}</Badge>
                         </td>
-                        <td className="px-4 py-3 text-[#C3C9D3]">{item.aktivitas}</td>
+                        <td className="px-4 py-3 text-[#38424F]">{item.aktivitas}</td>
                     </tr>
                 ))}
                 {data.length === 0 && (
                     <tr>
-                        <td colSpan={4} className="px-4 py-6 text-center text-[#8B94A3] text-sm">
+                        <td colSpan={4} className="px-4 py-6 text-center text-[#64708A] text-sm">
                             Belum ada aktivitas tercatat.
                         </td>
                     </tr>
                 )}
             </Table>
-            <footer className="border-t border-white/5">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8B94A3] text-center sm:text-left">
+            <footer className="border-t border-black/5">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#64708A] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

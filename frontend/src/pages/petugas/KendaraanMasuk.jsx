@@ -226,7 +226,7 @@ export default function KendaraanMasuk() {
 
             <div className="max-w-xl space-y-6">
                 <Card className="p-5">
-                    <h2 className="font-display text-base text-[#EDEFF2] mb-3">
+                    <h2 className="font-display text-base text-[#10131A] mb-3">
                         Punya Kode Booking?
                     </h2>
                     <form onSubmit={handleCariBooking} className="flex gap-2">
@@ -257,7 +257,7 @@ export default function KendaraanMasuk() {
                 </Card>
 
                 <Card className="p-5">
-                    <h2 className="font-display text-base text-[#EDEFF2] mb-3">
+                    <h2 className="font-display text-base text-[#10131A] mb-3">
                         atau Cari Kendaraan (plat nomor)
                     </h2>
                     <form onSubmit={handleCari} className="flex gap-2">
@@ -280,18 +280,18 @@ export default function KendaraanMasuk() {
                                     onClick={() => handlePilihKendaraan(k)}
                                     className={`w-full flex items-center justify-between gap-2 text-left rounded-md px-3 py-2 text-sm font-mono border transition ${
                                         k.sedang_parkir
-                                            ? "border-white/5 bg-white/[0.02] text-[#5B6472] cursor-not-allowed"
+                                            ? "border-black/5 bg-black/[0.02] text-[#5B6472] cursor-not-allowed"
                                             : form.id_kendaraan ===
                                                 k.id_kendaraan
-                                              ? "border-[#F4B400] bg-[#F4B400]/10 text-[#F4B400]"
-                                              : "border-white/10 text-[#C3C9D3] hover:bg-white/5"
+                                              ? "border-[#1B2A6B] bg-[#1B2A6B]/10 text-[#1B2A6B]"
+                                              : "border-black/10 text-[#38424F] hover:bg-black/5"
                                     }`}
                                 >
                                     <span className="truncate">
                                         {k.plat_nomor} — {k.jenis_kendaraan}
                                     </span>
                                     {k.sedang_parkir && (
-                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#F4B400]/15 text-[#F4B400] shrink-0">
+                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#1B2A6B]/15 text-[#1B2A6B] shrink-0">
                                             SUDAH PARKIR
                                         </span>
                                     )}
@@ -302,13 +302,13 @@ export default function KendaraanMasuk() {
                 </Card>
 
                 <Card className="p-5">
-                    <h2 className="font-display text-base text-[#EDEFF2] mb-3">
+                    <h2 className="font-display text-base text-[#10131A] mb-3">
                         Detail Parkir
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-3">
                         <div>
                             <div className="flex items-center justify-between mb-1.5">
-                                <label className="block text-xs font-mono text-[#8B94A3]">
+                                <label className="block text-xs font-mono text-[#64708A]">
                                     TARIF
                                 </label>
                                 {tarifOtomatis && form.id_tarif && (
@@ -327,7 +327,7 @@ export default function KendaraanMasuk() {
                                     setTarifOtomatis(false);
                                 }}
                                 required
-                                className="w-full rounded-md bg-[#14181F] border border-white/10 px-3 py-2 text-sm text-[#EDEFF2] focus:outline-none focus:ring-2 focus:ring-[#F4B400]"
+                                className="w-full rounded-md bg-white border border-black/10 px-3 py-2 text-sm text-[#10131A] focus:outline-none focus:ring-2 focus:ring-[#1B2A6B]"
                             >
                                 <option value="">Pilih tarif</option>
                                 {tarifList.map((t) => (
@@ -343,7 +343,7 @@ export default function KendaraanMasuk() {
                         </div>
                         <div>
                             <div className="flex items-center justify-between mb-1.5">
-                                <label className="block text-xs font-mono text-[#8B94A3]">
+                                <label className="block text-xs font-mono text-[#64708A]">
                                     AREA PARKIR
                                 </label>
                                 {areaOtomatis && form.id_area && (
@@ -379,10 +379,10 @@ export default function KendaraanMasuk() {
                                             }}
                                             className={`w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm border transition ${
                                                 penuh
-                                                    ? "border-white/5 bg-white/[0.02] text-[#5B6472] cursor-not-allowed"
+                                                    ? "border-black/5 bg-black/[0.02] text-[#5B6472] cursor-not-allowed"
                                                     : dipilih
-                                                      ? "border-[#F4B400] bg-[#F4B400]/10 text-[#F4B400]"
-                                                      : "border-white/10 text-[#C3C9D3] hover:bg-white/5"
+                                                      ? "border-[#1B2A6B] bg-[#1B2A6B]/10 text-[#1B2A6B]"
+                                                      : "border-black/10 text-[#38424F] hover:bg-black/5"
                                             }`}
                                         >
                                             <span className="font-mono truncate">
@@ -397,7 +397,7 @@ export default function KendaraanMasuk() {
                                                         PENUH
                                                     </span>
                                                 ) : hampirPenuh ? (
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#F4B400]/15 text-[#F4B400]">
+                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#1B2A6B]/15 text-[#1B2A6B]">
                                                         HAMPIR PENUH
                                                     </span>
                                                 ) : (
@@ -410,7 +410,7 @@ export default function KendaraanMasuk() {
                                     );
                                 })}
                                 {areaList.length === 0 && (
-                                    <p className="text-xs text-[#8B94A3]">
+                                    <p className="text-xs text-[#64708A]">
                                         Belum ada data area parkir.
                                     </p>
                                 )}
@@ -418,7 +418,7 @@ export default function KendaraanMasuk() {
                         </div>
 
                         {!form.id_kendaraan && (
-                            <p className="text-xs text-[#8B94A3]">
+                            <p className="text-xs text-[#64708A]">
                                 Cari &amp; pilih kendaraan terlebih dahulu di
                                 atas.
                             </p>
@@ -447,8 +447,8 @@ export default function KendaraanMasuk() {
                 />
             )}
 
-            <footer className="border-t border-white/5">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8B94A3] text-center sm:text-left">
+            <footer className="border-t border-black/5">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#64708A] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak
