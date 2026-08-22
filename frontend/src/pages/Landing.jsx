@@ -462,6 +462,41 @@ export default function Landing() {
     const [heroTextBgError, setHeroTextBgError] = useState(false);
     const scrollY = useScrollY();
     const prefersReducedMotion = usePrefersReducedMotion();
+
+    // Intro splash: tampilkan logo dulu, baru landing page terlihat.
+    // showIntro mengontrol apakah overlay masih ada di DOM sama sekali;
+    // introExiting memicu transisi fade-out-nya. Kalau pengguna memilih
+    // prefers-reduced-motion, lewati splash sepenuhnya.
+    const [showIntro, setShowIntro] = useState(!prefersReducedMotion);
+    const [introExiting, setIntroExiting] = useState(false);
+    const [logoIn, setLogoIn] = useState(false);
+
+    useEffect(() => {
+        if (prefersReducedMotion) {
+            setShowIntro(false);
+            return;
+        }
+        const popTimer = requestAnimationFrame(() => setLogoIn(true));
+        const exitTimer = setTimeout(() => setIntroExiting(true), 1100);
+        const hideTimer = setTimeout(() => setShowIntro(false), 1650);
+        return () => {
+            cancelAnimationFrame(popTimer);
+            clearTimeout(exitTimer);
+            clearTimeout(hideTimer);
+        };
+    }, [prefersReducedMotion]);
+
+    // Kunci scroll halaman selama splash tampil supaya pengguna tidak
+    // bisa scroll ke konten yang masih tertutup overlay.
+    useEffect(() => {
+        if (showIntro) {
+            const prevOverflow = document.body.style.overflow;
+            document.body.style.overflow = "hidden";
+            return () => {
+                document.body.style.overflow = prevOverflow;
+            };
+        }
+    }, [showIntro]);
     // Efek parallax hero: foto latar bergerak lebih lambat dari scroll
     // (kesan kedalaman), sementara teks di atasnya bergerak sedikit lebih
     // cepat dan memudar seiring pengguna scroll melewati hero. Dimatikan
@@ -667,6 +702,41 @@ export default function Landing() {
 
     return (
         <div className="min-h-screen bg-[#14181F] text-[#EDEFF2] relative">
+            {/* ================= Intro splash ================= */}
+            {/* Logo tampil dan sedikit membesar (pop-in), lalu seluruh
+                overlay fade-out untuk menyingkap landing page yang sudah
+                dirender di baliknya. Total durasi ~1.65s, dilewati kalau
+                pengguna memilih prefers-reduced-motion. */}
+            {showIntro && (
+                <div
+                    className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-white transition-opacity duration-500 ease-in ${
+                        introExiting
+                            ? "opacity-0 pointer-events-none"
+                            : "opacity-100"
+                    }`}
+                    aria-hidden="true"
+                >
+                    <img
+                        src="/images/logo.png"
+                        alt=""
+                        className={`w-24 sm:w-32 md:w-36 transition-all duration-700 ease-out ${
+                            logoIn
+                                ? "opacity-100 scale-100"
+                                : "opacity-0 scale-75"
+                        }`}
+                    />
+                    <p
+                        className={`text-xs sm:text-sm font-mono tracking-[0.14em] uppercase text-[#8B94A3] transition-all duration-700 ease-out delay-150 ${
+                            logoIn
+                                ? "opacity-100 translate-y-0"
+                                : "opacity-0 translate-y-1"
+                        }`}
+                    >
+                        by Abdulloh Mahbuby
+                    </p>
+                </div>
+            )}
+
             {/* ================= Mobile sidebar ================= */}
             {sidebarOpen && (
                 <div className="fixed inset-0 z-40 flex">
