@@ -182,20 +182,32 @@ export default function Bantuan() {
                 </div>
             </header>
 
-            <section className="max-w-4xl mx-auto w-full px-6 md:px-12 pt-10 pb-16 flex-1">
-                <p className="text-xs font-mono text-[#1B2A6B] tracking-[0.15em] mb-3">
-                    PUSAT BANTUAN
-                </p>
-                <h1 className="font-display text-3xl md:text-4xl mb-3 tracking-tight">
-                    Bantuan &amp; Dukungan Akun
-                </h1>
-                <p className="text-sm text-[#64708A] leading-relaxed max-w-xl mb-9">
-                    Temukan jawaban seputar akun, login, dan penggunaan{" "}
-                    {BRAND_NAME}. Tidak menemukan yang Anda cari? Hubungi tim
-                    support kami.
-                </p>
+            <section className="relative bg-gradient-to-br from-[#1B2A6B] to-[#0B1533] py-16 px-6 md:px-12 text-center overflow-hidden">
+                <div
+                    className="absolute inset-0 opacity-[0.05]"
+                    style={{
+                        backgroundImage:
+                            "repeating-linear-gradient(-45deg, #FFFFFF 0 18px, transparent 18px 36px)",
+                    }}
+                    aria-hidden="true"
+                />
+                <div className="relative max-w-2xl mx-auto">
+                    <p className="text-xs font-mono text-white/70 tracking-[0.15em] mb-3">
+                        PUSAT BANTUAN
+                    </p>
+                    <h1 className="font-display font-bold text-3xl md:text-4xl text-white tracking-tight mb-3">
+                        Bantuan &amp; Dukungan Akun
+                    </h1>
+                    <p className="text-sm text-white/70 leading-relaxed max-w-xl mx-auto">
+                        Temukan jawaban seputar akun, login, dan penggunaan{" "}
+                        {BRAND_NAME}. Tidak menemukan yang Anda cari? Hubungi
+                        tim support kami.
+                    </p>
+                </div>
+            </section>
 
-                <div className="relative mb-9 max-w-md">
+            <section className="max-w-4xl mx-auto w-full px-6 md:px-12 pt-10 pb-16 flex-1">
+                <div className="relative mb-9 max-w-md mx-auto md:mx-0">
                     <Search
                         size={16}
                         className="absolute left-3 top-1/2 -translate-y-1/2 text-[#64708A]"
@@ -398,7 +410,7 @@ export default function Bantuan() {
                                 <div className="flex gap-2">
                                     <Link
                                         to="/register"
-                                        className="flex-1 text-center rounded-md bg-[#1B2A6B] text-white font-medium px-3 py-2 text-xs shadow-[0_2px_8px_-2px_rgba(244,180,0,0.5)] hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
+                                        className="flex-1 text-center rounded-full bg-[#1B2A6B] text-white font-medium px-3 py-2 text-xs shadow-[0_2px_8px_-2px_rgba(27,42,107,0.5)] hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
                                     >
                                         Daftar
                                     </Link>
@@ -521,7 +533,7 @@ export default function Bantuan() {
                                 <button
                                     type="submit"
                                     disabled={akLoading}
-                                    className="w-full rounded-md bg-[#1B2A6B] text-white font-medium py-2.5 text-sm shadow-[0_2px_10px_-2px_rgba(244,180,0,0.45)] hover:bg-[#111B3E] transition-colors disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
+                                    className="w-full rounded-full bg-[#1B2A6B] text-white font-medium py-2.5 text-sm shadow-[0_2px_10px_-2px_rgba(27,42,107,0.45)] hover:bg-[#111B3E] transition-colors disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
                                 >
                                     {akLoading ? "Mengirim..." : "Kirim Permintaan Aktivasi"}
                                 </button>

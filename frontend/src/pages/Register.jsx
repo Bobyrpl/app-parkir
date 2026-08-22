@@ -51,47 +51,42 @@ export default function Register() {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-6">
       <div className="w-full max-w-4xl grid md:grid-cols-2 rounded-2xl overflow-hidden shadow-2xl">
-        {/* Panel kiri - identitas / signature visual */}
-        <div className="relative hidden md:flex flex-col justify-between bg-[#F1F4FA] p-10 overflow-hidden">
+        {/* Panel kiri - hero biru bergaya banner, judul putih di tengah */}
+        <div className="relative hidden md:flex flex-col items-center justify-center text-center bg-gradient-to-br from-[#1B2A6B] to-[#0B1533] p-10 overflow-hidden">
           <div
-            className="absolute inset-y-0 -left-6 w-16 opacity-90"
+            className="absolute inset-0 opacity-[0.06]"
             style={{
               backgroundImage:
-                "repeating-linear-gradient(-45deg, #1B2A6B 0 18px, #14181F 18px 36px)",
+                "repeating-linear-gradient(-45deg, #FFFFFF 0 18px, transparent 18px 36px)",
             }}
+            aria-hidden="true"
           />
-          <div className="relative pl-10">
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#1B2A6B]" />
-              <span className="font-display text-2xl tracking-tight text-[#10131A]">
-                SISTEM PARKIR PELABUHAN TANJUNG PERAK
-              </span>
-            </div>
-            <p className="mt-2 text-sm text-[#64708A] font-mono">
-              SISTEM MANAJEMEN PARKIR PELABUHAN TANJUNG PERAK
-            </p>
-          </div>
-
-          <div className="relative pl-10">
-            <p className="text-[#38424F] text-sm leading-relaxed">
+          <div className="relative">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-white mb-5" />
+            <h2 className="font-display font-bold text-2xl text-white leading-snug mb-3">
+              Sistem Parkir
+              <br />
+              Pelabuhan Tanjung Perak
+            </h2>
+            <p className="text-sm text-white/70 leading-relaxed max-w-xs mx-auto mb-8">
               Daftar sebagai pelanggan untuk booking slot parkir online.
               Akun petugas hanya bisa dibuat oleh admin.
             </p>
-            <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-xs font-mono text-[#64708A]">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-mono text-white/70">
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck size={13} className="text-[#1B2A6B]" />
+                <ShieldCheck size={13} className="text-white" />
                 ADMIN
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <UserCog size={13} className="text-[#35C48D]" />
+                <UserCog size={13} className="text-white" />
                 PETUGAS
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Crown size={13} className="text-[#5B8DEF]" />
+                <Crown size={13} className="text-white" />
                 OWNER
               </span>
-              <span className="inline-flex items-center gap-1.5 text-[#1B2A6B]">
-                <UsersIcon size={13} />
+              <span className="inline-flex items-center gap-1.5">
+                <UsersIcon size={13} className="text-white" />
                 PELANGGAN
               </span>
             </div>
@@ -272,7 +267,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-md bg-[#1B2A6B] text-white font-medium py-2.5 text-sm hover:bg-[#111B3E] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+              className="w-full rounded-full bg-[#1B2A6B] text-white font-medium py-2.5 text-sm hover:bg-[#111B3E] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>

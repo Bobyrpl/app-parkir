@@ -728,7 +728,7 @@ export default function Landing() {
                                 : "opacity-0 translate-y-1"
                         }`}
                     >
-                        by Abdulloh Mahbuby
+                        by Abdulloh Mahbuby  XII RPL I
                     </p>
                 </div>
             )}
@@ -800,7 +800,7 @@ export default function Landing() {
                         <Link
                             to={navPath}
                             onClick={() => setSidebarOpen(false)}
-                            className="mt-4 rounded-md bg-[#1B2A6B] text-white font-medium px-4 py-2.5 text-sm text-center hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
+                            className="mt-4 rounded-full bg-[#1B2A6B] text-white font-medium px-4 py-2.5 text-sm text-center hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
                         >
                             {navLabel}
                         </Link>
@@ -879,7 +879,7 @@ export default function Landing() {
                         pernah membungkus baris atau mendorong logo. */}
                     <Link
                         to={navPath}
-                        className="shrink-0 inline-flex items-center gap-1.5 rounded-md bg-[#1B2A6B] text-white font-medium px-3 sm:px-4 py-2 text-sm hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                        className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#1B2A6B] text-white font-medium px-3 sm:px-4 py-2 text-sm hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                     >
                         <span className="hidden sm:inline">{navLabel}</span>
                         <span className="sm:hidden">
@@ -936,7 +936,7 @@ export default function Landing() {
                     ke kanan supaya fotonya tetap kelihatan, plus gradasi
                     bawah supaya menyatu mulus dengan section berikutnya. */}
                 <div
-                    className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-white/10"
+                    className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_50%,white_25%,rgba(255,255,255,0.85)_55%,rgba(255,255,255,0.3)_100%)]"
                     aria-hidden="true"
                 />
                 <div
@@ -949,7 +949,7 @@ export default function Landing() {
                     supaya hero terasa merespons langsung gerakan scroll
                     alih-alih diam total. */}
                 <div
-                    className="relative h-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-center will-change-transform"
+                    className="relative h-full max-w-3xl mx-auto px-6 md:px-12 flex flex-col items-center justify-center text-center will-change-transform"
                     style={{
                         transform: `translate3d(0, ${heroContentOffset}px, 0)`,
                         opacity: heroContentOpacity,
@@ -963,7 +963,7 @@ export default function Landing() {
                             4.8 dari pengguna aktif
                         </span>
                     </div>
-                    <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-[1.08] mb-5 max-w-2xl">
+                    <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl leading-[1.08] mb-5">
                         Kelola parkir Anda,{" "}
                         <span className="text-[#1B2A6B]">
                             dari pintu masuk hingga selesai
@@ -974,10 +974,10 @@ export default function Landing() {
                         laporan parkir dalam satu portal — dengan akses
                         berbeda untuk Admin, Petugas, dan Owner.
                     </p>
-                    <div className="flex flex-wrap items-center gap-6">
+                    <div className="flex flex-col items-center gap-6">
                         <Link
                             to={navPath}
-                            className="rounded-md bg-[#1B2A6B] text-white font-medium px-6 py-3 text-sm hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                            className="rounded-full bg-[#1B2A6B] text-white font-medium px-8 py-3.5 text-sm hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                         >
                             {user ? "Ke Dashboard" : "Masuk ke Portal"}
                         </Link>
@@ -1020,15 +1020,17 @@ export default function Landing() {
                 className="scroll-mt-24 max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24"
             >
                 <Reveal>
-                    <SectionEyebrow>Keunggulan</SectionEyebrow>
-                    <p className="font-display text-2xl md:text-3xl mb-10 max-w-lg">
-                        Kenapa pakai {BRAND_NAME}
-                    </p>
+                    <div className="text-center mb-10">
+                        <SectionEyebrow>Keunggulan</SectionEyebrow>
+                        <p className="font-display font-bold text-2xl md:text-3xl">
+                            Kenapa pakai {BRAND_NAME}
+                        </p>
+                    </div>
                 </Reveal>
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
                     {FEATURES.map((f, i) => (
                         <Reveal key={f.title} delay={i * 80}>
-                            <SectionCard hoverable className="h-full">
+                            <SectionCard hoverable className="h-full text-center flex flex-col items-center">
                                 <svg
                                     width="22"
                                     height="22"
@@ -1039,7 +1041,7 @@ export default function Landing() {
                                 >
                                     {f.icon}
                                 </svg>
-                                <h3 className="font-display text-base mb-2">
+                                <h3 className="font-display font-semibold text-base mb-2">
                                     {f.title}
                                 </h3>
                                 <p className="text-sm text-[#64708A] leading-relaxed">
@@ -1451,7 +1453,7 @@ export default function Landing() {
                                 <button
                                     type="submit"
                                     disabled={commentSubmitting}
-                                    className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-md bg-[#1B2A6B] text-white font-medium px-4 py-2.5 text-sm hover:bg-[#111B3E] disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
+                                    className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-[#1B2A6B] text-white font-medium px-4 py-2.5 text-sm hover:bg-[#111B3E] disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
                                 >
                                     {commentSubmitting ? (
                                         <>
@@ -1626,7 +1628,7 @@ export default function Landing() {
                         </div>
                         <Link
                             to="/bantuan"
-                            className="shrink-0 rounded-md bg-[#1B2A6B] text-white font-medium px-5 py-2.5 text-sm hover:bg-[#111B3E] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
+                            className="shrink-0 rounded-full bg-[#1B2A6B] text-white font-medium px-5 py-2.5 text-sm hover:bg-[#111B3E] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
                         >
                             Buka Halaman Bantuan
                         </Link>
@@ -1652,7 +1654,7 @@ export default function Landing() {
                                 href={WHATSAPP_URL}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="flex items-center justify-center gap-2 rounded-md bg-[#1B2A6B] text-white font-medium px-3 py-2 text-xs hover:bg-[#111B3E] transition-colors"
+                                className="flex items-center justify-center gap-2 rounded-full bg-[#1B2A6B] text-white font-medium px-3 py-2 text-xs hover:bg-[#111B3E] transition-colors"
                             >
                                 <svg
                                     width="14"
