@@ -67,7 +67,7 @@ const FEATURES = [
         icon: (
             <path
                 d="M4 12h16M4 12l4-4M4 12l4 4"
-                stroke="#1B2A6B"
+                stroke="#078DE9"
                 strokeWidth="1.75"
                 fill="none"
                 strokeLinecap="round"
@@ -81,7 +81,7 @@ const FEATURES = [
         icon: (
             <path
                 d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20c0-4 3.5-6 8-6s8 2 8 6"
-                stroke="#1B2A6B"
+                stroke="#078DE9"
                 strokeWidth="1.75"
                 fill="none"
                 strokeLinecap="round"
@@ -95,7 +95,7 @@ const FEATURES = [
         icon: (
             <path
                 d="M5 20V10M12 20V4M19 20v-7"
-                stroke="#1B2A6B"
+                stroke="#078DE9"
                 strokeWidth="1.75"
                 fill="none"
                 strokeLinecap="round"
@@ -138,7 +138,7 @@ const TESTIMONI = [
     },
 ];
 
-const AVATAR_COLORS = ["#1B2A6B", "#5DCAA5", "#D4537E"];
+const AVATAR_COLORS = ["#078DE9", "#57B393", "#D4537E"];
 
 // Ditampilkan sesaat sementara komentar asli sedang diambil dari API
 // (GET /api/komentar), supaya kolom komentar tidak kosong saat loading.
@@ -214,7 +214,7 @@ function Bintang({ jumlah }) {
                 >
                     <path
                         d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6L10 1z"
-                        fill={i <= jumlah ? "#1B2A6B" : "#3A3F49"}
+                        fill={i <= jumlah ? "#078DE9" : "#3A3F49"}
                     />
                 </svg>
             ))}
@@ -243,7 +243,7 @@ function RatingInput({ value, onChange }) {
                         onClick={() => onChange(i)}
                         onMouseEnter={() => setHover(i)}
                         onMouseLeave={() => setHover(0)}
-                        className="p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] rounded-sm"
+                        className="p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9] rounded-sm"
                     >
                         <svg
                             width="22"
@@ -253,13 +253,13 @@ function RatingInput({ value, onChange }) {
                         >
                             <path
                                 d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6L10 1z"
-                                fill={i <= shown ? "#1B2A6B" : "#3A3F49"}
+                                fill={i <= shown ? "#078DE9" : "#3A3F49"}
                             />
                         </svg>
                     </button>
                 ))}
             </div>
-            <span className="text-xs text-[#64708A]">
+            <span className="text-xs text-[#8B96C4]">
                 {value > 0 ? `${value}/5` : "Pilih rating"}
             </span>
         </div>
@@ -374,9 +374,9 @@ function AnimatedCounter({ value, duration = 1200, format = (n) => Math.round(n)
 function SectionCard({ children, className = "", hoverable = false }) {
     return (
         <div
-            className={`rounded-xl bg-[#F1F4FA] border border-black/[0.06] p-6 ${
+            className={`rounded-xl bg-white/[0.04] border border-white/[0.06] p-6 ${
                 hoverable
-                    ? "transition-colors duration-200 hover:border-black/[0.12]"
+                    ? "transition-colors duration-200 hover:border-white/[0.12]"
                     : ""
             } ${className}`}
         >
@@ -389,7 +389,7 @@ function SectionCard({ children, className = "", hoverable = false }) {
 // menandai bagian halaman secara konsisten.
 function SectionEyebrow({ children }) {
     return (
-        <p className="text-xs font-mono tracking-[0.14em] text-[#1B2A6B] mb-3 uppercase">
+        <p className="text-xs font-mono tracking-[0.14em] text-[#078DE9] mb-3 uppercase">
             {children}
         </p>
     );
@@ -437,17 +437,17 @@ function Reveal({ children, delay = 0, className = "" }) {
 // teks "Memuat...".
 function KomentarSkeleton() {
     return (
-        <div className="rounded-xl bg-[#F1F4FA] border border-black/[0.06] p-4 animate-pulse">
+        <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4 animate-pulse">
             <div className="flex items-center gap-3 mb-3">
-                <div className="h-9 w-9 rounded-full bg-black/10" />
+                <div className="h-9 w-9 rounded-full bg-white/10" />
                 <div className="space-y-1.5">
-                    <div className="h-2.5 w-24 rounded bg-black/10" />
-                    <div className="h-2 w-16 rounded bg-black/5" />
+                    <div className="h-2.5 w-24 rounded bg-white/10" />
+                    <div className="h-2 w-16 rounded bg-white/5" />
                 </div>
             </div>
             <div className="space-y-1.5">
-                <div className="h-2.5 w-full rounded bg-black/5" />
-                <div className="h-2.5 w-4/5 rounded bg-black/5" />
+                <div className="h-2.5 w-full rounded bg-white/5" />
+                <div className="h-2.5 w-4/5 rounded bg-white/5" />
             </div>
         </div>
     );
@@ -697,7 +697,20 @@ export default function Landing() {
     }, [sidebarOpen]);
 
     return (
-        <div className="min-h-screen bg-white text-[#10131A] relative">
+        <div className="min-h-screen bg-[#080F28] text-white relative">
+            {/* Titik dekoratif warna-warni, terinspirasi dari referensi Fusion.
+                pointer-events-none + aria-hidden supaya tidak mengganggu
+                interaksi maupun pembaca layar. */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden -z-10" aria-hidden="true">
+                <span className="absolute h-1.5 w-1.5 rounded-full bg-[#078DE9] top-[12%] left-[8%]" />
+                <span className="absolute h-1.5 w-1.5 rounded-full bg-[#F0C268] top-[18%] right-[12%]" />
+                <span className="absolute h-1.5 w-1.5 rounded-full bg-[#57B393] top-[46%] left-[4%]" />
+                <span className="absolute h-1.5 w-1.5 rounded-full bg-[#935AB3] top-[52%] right-[6%]" />
+                <span className="absolute h-1.5 w-1.5 rounded-full bg-[#F0C268] top-[68%] left-[10%]" />
+                <span className="absolute h-1.5 w-1.5 rounded-full bg-[#078DE9] top-[74%] right-[16%]" />
+                <span className="absolute h-1.5 w-1.5 rounded-full bg-[#935AB3] top-[88%] left-[6%]" />
+                <span className="absolute h-1.5 w-1.5 rounded-full bg-[#57B393] top-[93%] right-[9%]" />
+            </div>
             {/* ================= Intro splash ================= */}
             {/* Logo tampil dan sedikit membesar (pop-in), lalu seluruh
                 overlay fade-out untuk menyingkap landing page yang sudah
@@ -728,7 +741,7 @@ export default function Landing() {
                                 : "opacity-0 translate-y-1"
                         }`}
                     >
-                        by Abdulloh Mahbuby  XII RPL I
+                        by Abdulloh Mahbuby
                     </p>
                 </div>
             )}
@@ -737,7 +750,7 @@ export default function Landing() {
             {sidebarOpen && (
                 <div className="fixed inset-0 z-40 flex">
                     <div
-                        className="fixed inset-0 bg-black/60"
+                        className="fixed inset-0 bg-white/60"
                         onClick={() => setSidebarOpen(false)}
                     />
                     <div
@@ -745,11 +758,11 @@ export default function Landing() {
                         role="dialog"
                         aria-modal="true"
                         aria-label="Menu navigasi"
-                        className="relative w-72 max-w-[85vw] bg-[#F1F4FA] h-full p-6 flex flex-col gap-1 z-50 shadow-2xl shadow-black/50"
+                        className="relative w-72 max-w-[85vw] bg-white/[0.04] h-full p-6 flex flex-col gap-1 z-50 shadow-2xl shadow-black/50"
                     >
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center gap-2.5">
-                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#1B2A6B] text-white font-display text-sm">
+                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#078DE9] text-white font-display text-sm">
                                     P
                                 </span>
                                 <span className="font-display text-base">
@@ -760,7 +773,7 @@ export default function Landing() {
                                 ref={closeBtnRef}
                                 onClick={() => setSidebarOpen(false)}
                                 aria-label="Tutup menu"
-                                className="h-9 w-9 flex items-center justify-center rounded-lg text-[#64708A] hover:text-[#10131A] hover:bg-black/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B]"
+                                className="h-9 w-9 flex items-center justify-center rounded-lg text-[#8B96C4] hover:text-white hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9]"
                             >
                                 <svg
                                     width="18"
@@ -784,7 +797,7 @@ export default function Landing() {
                                     key={item.href}
                                     href={item.href}
                                     onClick={() => setSidebarOpen(false)}
-                                    className="text-sm text-[#38424F] hover:text-[#10131A] hover:bg-black/5 px-3 py-3 rounded-lg border-b border-black/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B]"
+                                    className="text-sm text-[#C9D3EA] hover:text-white hover:bg-white/5 px-3 py-3 rounded-lg border-b border-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9]"
                                 >
                                     {item.label}
                                 </a>
@@ -792,7 +805,7 @@ export default function Landing() {
                             <Link
                                 to="/bantuan"
                                 onClick={() => setSidebarOpen(false)}
-                                className="text-sm text-[#38424F] hover:text-[#10131A] hover:bg-black/5 px-3 py-3 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B]"
+                                className="text-sm text-[#C9D3EA] hover:text-white hover:bg-white/5 px-3 py-3 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9]"
                             >
                                 Bantuan
                             </Link>
@@ -800,7 +813,7 @@ export default function Landing() {
                         <Link
                             to={navPath}
                             onClick={() => setSidebarOpen(false)}
-                            className="mt-4 rounded-full bg-[#1B2A6B] text-white font-medium px-4 py-2.5 text-sm text-center hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
+                            className="mt-4 rounded-full bg-[#078DE9] text-white font-medium px-4 py-2.5 text-sm text-center hover:bg-[#0670C0] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080F28]"
                         >
                             {navLabel}
                         </Link>
@@ -809,7 +822,7 @@ export default function Landing() {
             )}
 
             {/* ================= Header ================= */}
-            <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-black/5">
+            <header className="sticky top-0 z-30 bg-[#080F28]/90 backdrop-blur-md border-b border-white/10">
                 <div className="flex items-center justify-between gap-4 px-4 sm:px-6 md:px-12 h-16 md:h-[72px] max-w-7xl mx-auto">
                     {/* Logo + mobile trigger */}
                     <div className="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -817,7 +830,7 @@ export default function Landing() {
                             ref={hamburgerBtnRef}
                             onClick={() => setSidebarOpen(true)}
                             aria-label="Buka menu"
-                            className="lg:hidden shrink-0 -ml-1.5 h-9 w-9 flex items-center justify-center rounded-lg text-[#38424F] hover:text-[#10131A] hover:bg-black/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B]"
+                            className="lg:hidden shrink-0 -ml-1.5 h-9 w-9 flex items-center justify-center rounded-lg text-[#C9D3EA] hover:text-white hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9]"
                         >
                             <svg
                                 width="20"
@@ -837,16 +850,16 @@ export default function Landing() {
 
                         <Link
                             to="/"
-                            className="flex items-center gap-2 sm:gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B]"
+                            className="flex items-center gap-2 sm:gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9]"
                         >
-                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#1B2A6B] text-white font-display text-sm">
+                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#078DE9] text-white font-display text-sm">
                                 P
                             </span>
                             <div className="min-w-0 leading-tight">
                                 <p className="font-display text-base md:text-lg tracking-tight truncate">
                                     {BRAND_NAME}
                                 </p>
-                                <p className="hidden sm:block text-[11px] font-mono text-[#64708A] tracking-wide truncate">
+                                <p className="hidden sm:block text-[11px] font-mono text-[#8B96C4] tracking-wide truncate">
                                     {BRAND_LOCATION}
                                 </p>
                             </div>
@@ -860,18 +873,18 @@ export default function Landing() {
                             <a
                                 key={item.href}
                                 href={item.href}
-                                className="group relative px-3 py-2 text-sm text-[#64708A] hover:text-[#10131A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] rounded-md"
+                                className="group relative px-3 py-2 text-sm text-[#8B96C4] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9] rounded-md"
                             >
                                 {item.label}
-                                <span className="pointer-events-none absolute left-3 right-3 -bottom-px h-px bg-[#1B2A6B] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-200" />
+                                <span className="pointer-events-none absolute left-3 right-3 -bottom-px h-px bg-[#078DE9] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-200" />
                             </a>
                         ))}
                         <Link
                             to="/bantuan"
-                            className="group relative px-3 py-2 text-sm text-[#64708A] hover:text-[#10131A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] rounded-md"
+                            className="group relative px-3 py-2 text-sm text-[#8B96C4] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9] rounded-md"
                         >
                             Bantuan
-                            <span className="pointer-events-none absolute left-3 right-3 -bottom-px h-px bg-[#1B2A6B] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-200" />
+                            <span className="pointer-events-none absolute left-3 right-3 -bottom-px h-px bg-[#078DE9] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-200" />
                         </Link>
                     </nav>
 
@@ -879,7 +892,7 @@ export default function Landing() {
                         pernah membungkus baris atau mendorong logo. */}
                     <Link
                         to={navPath}
-                        className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#1B2A6B] text-white font-medium px-3 sm:px-4 py-2 text-sm hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                        className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#078DE9] text-white font-medium px-3 sm:px-4 py-2 text-sm hover:bg-[#0670C0] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080F28]"
                     >
                         <span className="hidden sm:inline">{navLabel}</span>
                         <span className="sm:hidden">
@@ -925,22 +938,21 @@ export default function Landing() {
                     />
                 ) : (
                     <div
-                        className="absolute inset-0 h-[130%] bg-gradient-to-br from-[#F1F4FA] via-[#F1F4FA] to-white will-change-transform"
+                        className="absolute inset-0 h-[130%] bg-gradient-to-br from-[#0B1638] via-[#0B1638] to-[#080F28] will-change-transform"
                         style={{
                             transform: `translate3d(0, ${heroImgOffset}px, 0)`,
                         }}
                         aria-hidden="true"
                     />
                 )}
-                {/* Gradasi gelap dari kiri (biar teks kontras) yang memudar
-                    ke kanan supaya fotonya tetap kelihatan, plus gradasi
-                    bawah supaya menyatu mulus dengan section berikutnya. */}
+                {/* Scrim navy gelap di tengah supaya teks putih tetap kontras
+                    di atas foto, memudar ke tepi supaya fotonya tetap terlihat. */}
                 <div
-                    className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_50%,white_25%,rgba(255,255,255,0.85)_55%,rgba(255,255,255,0.3)_100%)]"
+                    className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_50%,rgba(8,15,40,0.92)_25%,rgba(8,15,40,0.75)_55%,rgba(8,15,40,0.3)_100%)]"
                     aria-hidden="true"
                 />
                 <div
-                    className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white to-transparent"
+                    className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#080F28] to-transparent"
                     aria-hidden="true"
                 />
 
@@ -955,21 +967,21 @@ export default function Landing() {
                         opacity: heroContentOpacity,
                     }}
                 >
-                    <div className="inline-flex w-fit items-center gap-2 rounded-full bg-black/5 border border-black/10 pl-2 pr-3 py-1 mb-6">
-                        <span className="flex items-center gap-0.5 rounded-full bg-[#1B2A6B]/15 px-1.5 py-0.5">
+                    <div className="inline-flex w-fit items-center gap-2 rounded-full bg-white/5 border border-white/10 pl-2 pr-3 py-1 mb-6">
+                        <span className="flex items-center gap-0.5 rounded-full bg-[#078DE9]/15 px-1.5 py-0.5">
                             <Bintang jumlah={5} />
                         </span>
-                        <span className="text-xs text-[#38424F]">
+                        <span className="text-xs text-[#C9D3EA]">
                             4.8 dari pengguna aktif
                         </span>
                     </div>
-                    <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl leading-[1.08] mb-5">
+                    <h1 className="font-serif font-bold text-4xl sm:text-5xl md:text-6xl leading-[1.08] mb-5">
                         Kelola parkir Anda,{" "}
-                        <span className="text-[#1B2A6B]">
+                        <span className="text-[#078DE9]">
                             dari pintu masuk hingga selesai
                         </span>
                     </h1>
-                    <p className="text-[#38424F] text-base md:text-lg leading-relaxed mb-8 max-w-md">
+                    <p className="text-[#C9D3EA] text-base md:text-lg leading-relaxed mb-8 max-w-md">
                         {BRAND_NAME} menyatukan transaksi, tarif, area, dan
                         laporan parkir dalam satu portal — dengan akses
                         berbeda untuk Admin, Petugas, dan Owner.
@@ -977,15 +989,15 @@ export default function Landing() {
                     <div className="flex flex-col items-center gap-6">
                         <Link
                             to={navPath}
-                            className="rounded-full bg-[#1B2A6B] text-white font-medium px-8 py-3.5 text-sm hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                            className="rounded-full bg-[#078DE9] text-white font-medium px-8 py-3.5 text-sm hover:bg-[#0670C0] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080F28]"
                         >
                             {user ? "Ke Dashboard" : "Masuk ke Portal"}
                         </Link>
-                        <div className="flex items-center gap-2 text-xs font-mono text-[#64708A] tracking-wide">
+                        <div className="flex items-center gap-2 text-xs font-mono text-[#8B96C4] tracking-wide">
                             <span>ADMIN</span>
-                            <span className="text-black/20">/</span>
+                            <span className="text-white/20">/</span>
                             <span>PETUGAS</span>
-                            <span className="text-black/20">/</span>
+                            <span className="text-white/20">/</span>
                             <span>OWNER</span>
                         </div>
                     </div>
@@ -1002,10 +1014,10 @@ export default function Landing() {
                                 hoverable
                                 className="h-full shadow-xl shadow-black/30"
                             >
-                                <p className="font-display text-sm text-[#1B2A6B] mb-1.5">
+                                <p className="font-display text-sm text-[#078DE9] mb-1.5">
                                     {r.name}
                                 </p>
-                                <p className="text-sm text-[#38424F] leading-relaxed">
+                                <p className="text-sm text-[#C9D3EA] leading-relaxed">
                                     {r.desc}
                                 </p>
                             </SectionCard>
@@ -1022,7 +1034,7 @@ export default function Landing() {
                 <Reveal>
                     <div className="text-center mb-10">
                         <SectionEyebrow>Keunggulan</SectionEyebrow>
-                        <p className="font-display font-bold text-2xl md:text-3xl">
+                        <p className="font-serif font-bold text-2xl md:text-3xl">
                             Kenapa pakai {BRAND_NAME}
                         </p>
                     </div>
@@ -1044,7 +1056,7 @@ export default function Landing() {
                                 <h3 className="font-display font-semibold text-base mb-2">
                                     {f.title}
                                 </h3>
-                                <p className="text-sm text-[#64708A] leading-relaxed">
+                                <p className="text-sm text-[#8B96C4] leading-relaxed">
                                     {f.desc}
                                 </p>
                             </SectionCard>
@@ -1060,18 +1072,18 @@ export default function Landing() {
                         <p className="font-display text-lg mb-1">
                              transaksi 7 hari terakhir
                         </p>
-                        <p className="text-sm text-[#64708A] mb-6">
+                        <p className="text-sm text-[#8B96C4] mb-6">
                             {grafikIlustrasi
                                 ? "Ilustrasi jumlah transaksi per hari"
                                 : "Jumlah transaksi per hari, 7 hari terakhir"}
                         </p>
 
                         {grafikLoading ? (
-                            <p className="text-sm text-[#64708A]">
+                            <p className="text-sm text-[#8B96C4]">
                                 Memuat data...
                             </p>
                         ) : grafikData.length === 0 ? (
-                            <p className="text-sm text-[#64708A]">
+                            <p className="text-sm text-[#8B96C4]">
                                 Belum ada data transaksi.
                             </p>
                         ) : (
@@ -1079,18 +1091,18 @@ export default function Landing() {
                                 <LineChart data={grafikData}>
                                     <CartesianGrid
                                         strokeDasharray="3 3"
-                                        stroke="#D8DEE8"
+                                        stroke="#1E2A4A"
                                         vertical={false}
                                     />
                                     <XAxis
                                         dataKey="label"
-                                        stroke="#64708A"
+                                        stroke="#8B96C4"
                                         fontSize={11}
                                         tickLine={false}
-                                        axisLine={{ stroke: "#D8DEE8" }}
+                                        axisLine={{ stroke: "#1E2A4A" }}
                                     />
                                     <YAxis
-                                        stroke="#64708A"
+                                        stroke="#8B96C4"
                                         fontSize={12}
                                         allowDecimals={false}
                                         tickLine={false}
@@ -1098,11 +1110,11 @@ export default function Landing() {
                                     />
                                     <Tooltip
                                         contentStyle={{
-                                            background: "#E8ECF5",
-                                            border: "1px solid #D8DEE8",
+                                            background: "#0B1638",
+                                            border: "1px solid #1E2A4A",
                                             borderRadius: 8,
                                         }}
-                                        labelStyle={{ color: "#10131A" }}
+                                        labelStyle={{ color: "#FFFFFF" }}
                                         formatter={(value) => [
                                             value,
                                             "Jumlah Transaksi",
@@ -1111,11 +1123,11 @@ export default function Landing() {
                                     <Line
                                         type="monotone"
                                         dataKey="val"
-                                        stroke="#1B2A6B"
+                                        stroke="#078DE9"
                                         strokeWidth={2}
                                         dot={{
                                             r: 3,
-                                            fill: "#1B2A6B",
+                                            fill: "#078DE9",
                                             strokeWidth: 0,
                                         }}
                                         activeDot={{ r: 5 }}
@@ -1134,7 +1146,7 @@ export default function Landing() {
                         <p className="font-display text-lg mb-2">
                             Cara kerja {BRAND_NAME}
                         </p>
-                        <p className="text-sm text-[#64708A] mb-4">
+                        <p className="text-sm text-[#8B96C4] mb-4">
                             Video singkat alur transaksi masuk sampai cetak
                             struk.
                         </p>
@@ -1158,21 +1170,21 @@ export default function Landing() {
                             {ALUR.map((a, i) => (
                                 <div key={a.no} className="flex gap-4">
                                     <div className="flex flex-col items-center">
-                                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#1B2A6B]/15 font-mono text-xs text-[#1B2A6B]">
+                                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#078DE9]/15 font-mono text-xs text-[#078DE9]">
                                             {a.no}
                                         </span>
                                         {i < ALUR.length - 1 && (
                                             <span
-                                                className="w-px flex-1 bg-black/10 mt-1"
+                                                className="w-px flex-1 bg-white/10 mt-1"
                                                 aria-hidden="true"
                                             />
                                         )}
                                     </div>
                                     <div className="pb-1">
-                                        <p className="text-sm font-medium text-[#10131A] mb-0.5">
+                                        <p className="text-sm font-medium text-white mb-0.5">
                                             {a.title}
                                         </p>
-                                        <p className="text-sm text-[#64708A] leading-relaxed">
+                                        <p className="text-sm text-[#8B96C4] leading-relaxed">
                                             {a.desc}
                                         </p>
                                     </div>
@@ -1190,18 +1202,18 @@ export default function Landing() {
             >
                 <Reveal>
                     <SectionEyebrow>Informasi</SectionEyebrow>
-                    <p className="font-display text-2xl md:text-3xl mb-10 max-w-lg">
+                    <p className="font-serif text-2xl md:text-3xl mb-10 max-w-lg">
                         Sekilas kondisi layanan
                     </p>
                 </Reveal>
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
                     <Reveal delay={0}>
                         <SectionCard className="h-full">
-                            <p className="text-xs font-mono text-[#64708A] mb-3 tracking-wider">
+                            <p className="text-xs font-mono text-[#8B96C4] mb-3 tracking-wider">
                                 SLOT TERSEDIA
                             </p>
                             <div className="flex items-end gap-2 mb-3">
-                                <p className="font-display text-3xl text-[#5DCAA5]">
+                                <p className="font-display text-3xl text-[#57B393]">
                                     <AnimatedCounter
                                         value={Math.max(
                                             0,
@@ -1210,13 +1222,13 @@ export default function Landing() {
                                         )}
                                     />
                                 </p>
-                                <p className="text-sm text-[#64708A] mb-1">
+                                <p className="text-sm text-[#8B96C4] mb-1">
                                     / {statistik.kapasitas} slot
                                 </p>
                             </div>
-                            <div className="h-1.5 rounded-full bg-black/5 overflow-hidden">
+                            <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
                                 <div
-                                    className="h-full rounded-full bg-[#5DCAA5]"
+                                    className="h-full rounded-full bg-[#57B393]"
                                     style={{
                                         width: `${
                                             statistik.kapasitas > 0
@@ -1235,11 +1247,11 @@ export default function Landing() {
                     </Reveal>
                     <Reveal delay={80}>
                         <SectionCard className="h-full">
-                            <p className="text-xs font-mono text-[#64708A] mb-3 tracking-wider">
+                            <p className="text-xs font-mono text-[#8B96C4] mb-3 tracking-wider">
                                 KUALITAS LAYANAN
                             </p>
                             <div className="flex items-center gap-2">
-                                <p className="font-display text-3xl text-[#1B2A6B]">
+                                <p className="font-display text-3xl text-[#078DE9]">
                                     <AnimatedCounter
                                         value={Number(statistik.rating_rata)}
                                         format={(n) => n.toFixed(1)}
@@ -1249,7 +1261,7 @@ export default function Landing() {
                                     jumlah={Math.round(statistik.rating_rata)}
                                 />
                             </div>
-                            <p className="text-sm text-[#64708A] mt-1">
+                            <p className="text-sm text-[#8B96C4] mt-1">
                                 Dari {statistik.jumlah_ulasan}+ ulasan
                                 pengguna
                             </p>
@@ -1260,10 +1272,10 @@ export default function Landing() {
                         className="sm:col-span-2 md:col-span-1"
                     >
                         <SectionCard className="h-full">
-                            <p className="text-xs font-mono text-[#64708A] mb-3 tracking-wider">
+                            <p className="text-xs font-mono text-[#8B96C4] mb-3 tracking-wider">
                                 TRANSAKSI SELESAI
                             </p>
-                            <p className="font-display text-3xl text-[#10131A]">
+                            <p className="font-display text-3xl text-white">
                                 <AnimatedCounter
                                     value={statistik.transaksi_selesai}
                                     duration={1600}
@@ -1273,14 +1285,14 @@ export default function Landing() {
                                 />
                                 +
                             </p>
-                            <p className="text-sm text-[#64708A] mt-1">
+                            <p className="text-sm text-[#8B96C4] mt-1">
                                 Diproses sejak {BRAND_NAME} digunakan
                             </p>
                         </SectionCard>
                     </Reveal>
                 </div>
                 {statistikIlustrasi && (
-                    <p className="text-xs text-[#64708A]/70 italic mt-4">
+                    <p className="text-xs text-[#8B96C4]/70 italic mt-4">
                         *Angka di atas adalah contoh tampilan dan akan
                         otomatis mengikuti data asli saat sistem berjalan.
                     </p>
@@ -1294,7 +1306,7 @@ export default function Landing() {
             >
                 <Reveal>
                     <SectionEyebrow>Testimoni</SectionEyebrow>
-                    <p className="font-display text-2xl md:text-3xl mb-10 max-w-lg">
+                    <p className="font-serif text-2xl md:text-3xl mb-10 max-w-lg">
                         Apa kata pengguna
                     </p>
                 </Reveal>
@@ -1303,16 +1315,16 @@ export default function Landing() {
                         <Reveal key={t.nama} delay={i * 80}>
                             <SectionCard hoverable className="h-full">
                                 <Bintang jumlah={t.bintang} />
-                                <p className="text-sm text-[#38424F] mt-3 mb-5 leading-relaxed">
+                                <p className="text-sm text-[#C9D3EA] mt-3 mb-5 leading-relaxed">
                                     {t.teks}
                                 </p>
                                 <div className="flex items-center gap-3">
                                     <Avatar nama={t.nama} index={i} />
                                     <div className="min-w-0">
-                                        <p className="text-sm text-[#10131A] truncate">
+                                        <p className="text-sm text-white truncate">
                                             {t.nama}
                                         </p>
-                                        <p className="text-xs font-mono text-[#64708A] truncate">
+                                        <p className="text-xs font-mono text-[#8B96C4] truncate">
                                             {t.peran}
                                         </p>
                                     </div>
@@ -1331,14 +1343,14 @@ export default function Landing() {
                 <Reveal>
                     <SectionEyebrow>Diskusi</SectionEyebrow>
                     <div className="flex items-center gap-3 mb-1">
-                        <p className="font-display text-2xl md:text-3xl">
+                        <p className="font-serif text-2xl md:text-3xl">
                             Komentar pengguna
                         </p>
-                        <span className="rounded-full bg-[#1B2A6B]/15 text-[#1B2A6B] text-xs font-mono px-2 py-0.5">
+                        <span className="rounded-full bg-[#078DE9]/15 text-[#078DE9] text-xs font-mono px-2 py-0.5">
                             {comments.length}
                         </span>
                     </div>
-                    <p className="text-sm text-[#64708A] mb-10">
+                    <p className="text-sm text-[#8B96C4] mb-10">
                         Pengalaman langsung dari pengguna {BRAND_NAME}.
                     </p>
 
@@ -1348,7 +1360,7 @@ export default function Landing() {
                             <p className="text-sm font-medium mb-1">
                                 Tinggalkan komentar Anda
                             </p>
-                            <p className="text-xs text-[#64708A] mb-5">
+                            <p className="text-xs text-[#8B96C4] mb-5">
                                 Bagikan pengalaman Anda memakai {BRAND_NAME}{" "}
                                 di sini.
                             </p>
@@ -1357,8 +1369,8 @@ export default function Landing() {
                                 className="space-y-4"
                                 noValidate
                             >
-                                <div className="rounded-lg bg-white border border-black/10 px-3 py-3">
-                                    <p className="text-xs text-[#64708A] mb-2">
+                                <div className="rounded-lg bg-white/[0.05] border border-white/15 px-3 py-3">
+                                    <p className="text-xs text-[#8B96C4] mb-2">
                                         Rating Anda
                                     </p>
                                     <RatingInput
@@ -1369,7 +1381,7 @@ export default function Landing() {
                                 <div>
                                     <label
                                         htmlFor="comment-name"
-                                        className="block text-xs text-[#64708A] mb-1.5"
+                                        className="block text-xs text-[#8B96C4] mb-1.5"
                                     >
                                         Nama
                                     </label>
@@ -1381,14 +1393,14 @@ export default function Landing() {
                                             setCommentName(e.target.value)
                                         }
                                         placeholder="Nama Anda"
-                                        className="w-full rounded-md bg-white border border-black/10 px-3 py-2.5 text-sm text-[#10131A] placeholder:text-[#64708A]/70 focus:outline-none focus:ring-2 focus:ring-[#1B2A6B] focus:border-transparent transition-shadow"
+                                        className="w-full rounded-md bg-white/[0.05] border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-[#8B96C4]/70 focus:outline-none focus:ring-2 focus:ring-[#078DE9] focus:border-transparent transition-shadow"
                                     />
                                 </div>
                                 <div>
                                     <div className="flex items-center justify-between mb-1.5">
                                         <label
                                             htmlFor="comment-text"
-                                            className="text-xs text-[#64708A]"
+                                            className="text-xs text-[#8B96C4]"
                                         >
                                             Komentar
                                         </label>
@@ -1397,7 +1409,7 @@ export default function Landing() {
                                                 commentText.length >
                                                 KOMENTAR_MAX_LEN
                                                     ? "text-[#D4537E]"
-                                                    : "text-[#64708A]/70"
+                                                    : "text-[#8B96C4]/70"
                                             }`}
                                         >
                                             {commentText.length}/
@@ -1417,7 +1429,7 @@ export default function Landing() {
                                         }
                                         placeholder="Tulis komentar Anda..."
                                         rows={4}
-                                        className="w-full rounded-md bg-white border border-black/10 px-3 py-2.5 text-sm text-[#10131A] placeholder:text-[#64708A]/70 focus:outline-none focus:ring-2 focus:ring-[#1B2A6B] focus:border-transparent resize-none transition-shadow"
+                                        className="w-full rounded-md bg-white/[0.05] border border-white/15 px-3 py-2.5 text-sm text-white placeholder:text-[#8B96C4]/70 focus:outline-none focus:ring-2 focus:ring-[#078DE9] focus:border-transparent resize-none transition-shadow"
                                     />
                                 </div>
                                 {commentError && (
@@ -1453,7 +1465,7 @@ export default function Landing() {
                                 <button
                                     type="submit"
                                     disabled={commentSubmitting}
-                                    className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-[#1B2A6B] text-white font-medium px-4 py-2.5 text-sm hover:bg-[#111B3E] disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
+                                    className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-full bg-[#078DE9] text-white font-medium px-4 py-2.5 text-sm hover:bg-[#0670C0] disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080F28]"
                                 >
                                     {commentSubmitting ? (
                                         <>
@@ -1510,7 +1522,7 @@ export default function Landing() {
                             horizontal. */}
                         <div className="min-w-0">
                             <div
-                                className="flex gap-3 overflow-x-auto overflow-y-hidden pb-2 snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-black/10 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+                                className="flex gap-3 overflow-x-auto overflow-y-hidden pb-2 snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
                                 aria-busy={commentsLoading}
                             >
                                 {commentsLoading && (
@@ -1532,7 +1544,7 @@ export default function Landing() {
                                                 height="28"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
-                                                className="mx-auto mb-3 text-[#64708A]"
+                                                className="mx-auto mb-3 text-[#8B96C4]"
                                                 aria-hidden="true"
                                             >
                                                 <path
@@ -1543,10 +1555,10 @@ export default function Landing() {
                                                     strokeLinejoin="round"
                                                 />
                                             </svg>
-                                            <p className="text-sm text-[#38424F]">
+                                            <p className="text-sm text-[#C9D3EA]">
                                                 Belum ada komentar.
                                             </p>
-                                            <p className="text-xs text-[#64708A] mt-1">
+                                            <p className="text-xs text-[#8B96C4] mt-1">
                                                 Jadilah yang pertama berbagi
                                                 pengalaman Anda.
                                             </p>
@@ -1565,7 +1577,7 @@ export default function Landing() {
                                                     nama={c.nama}
                                                     index={i}
                                                 />
-                                                <p className="text-sm text-[#10131A] truncate">
+                                                <p className="text-sm text-white truncate">
                                                     {c.nama}
                                                 </p>
                                             </div>
@@ -1573,13 +1585,13 @@ export default function Landing() {
                                                 jumlah={c.rating ?? 5}
                                             />
                                         </div>
-                                        <p className="text-sm text-[#64708A] leading-relaxed">
+                                        <p className="text-sm text-[#8B96C4] leading-relaxed">
                                             {c.teks}
                                         </p>
 
                                         {c.balasan && (
-                                            <div className="mt-3 pl-3 border-l-2 border-[#1B2A6B]/40 bg-[#1B2A6B]/5 rounded-r-md py-2 pr-2">
-                                                <p className="flex items-center gap-1.5 text-xs font-mono text-[#1B2A6B] mb-1">
+                                            <div className="mt-3 pl-3 border-l-2 border-[#078DE9]/40 bg-[#078DE9]/5 rounded-r-md py-2 pr-2">
+                                                <p className="flex items-center gap-1.5 text-xs font-mono text-[#078DE9] mb-1">
                                                     <svg
                                                         width="12"
                                                         height="12"
@@ -1597,7 +1609,7 @@ export default function Landing() {
                                                     </svg>
                                                     Balasan Admin
                                                 </p>
-                                                <p className="text-sm text-[#38424F] leading-relaxed">
+                                                <p className="text-sm text-[#C9D3EA] leading-relaxed">
                                                     {c.balasan}
                                                 </p>
                                             </div>
@@ -1621,14 +1633,14 @@ export default function Landing() {
                             <p className="font-display text-lg mb-1">
                                 Butuh bantuan?
                             </p>
-                            <p className="text-sm text-[#64708A]">
+                            <p className="text-sm text-[#8B96C4]">
                                 Lihat pertanyaan umum seputar akun dan cara
                                 pakai {BRAND_NAME} di halaman Bantuan.
                             </p>
                         </div>
                         <Link
                             to="/bantuan"
-                            className="shrink-0 rounded-full bg-[#1B2A6B] text-white font-medium px-5 py-2.5 text-sm hover:bg-[#111B3E] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F4FA]"
+                            className="shrink-0 rounded-full bg-[#078DE9] text-white font-medium px-5 py-2.5 text-sm hover:bg-[#0670C0] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080F28]"
                         >
                             Buka Halaman Bantuan
                         </Link>
@@ -1641,11 +1653,11 @@ export default function Landing() {
                 (langsung chat admin), bukan menuju halaman FAQ lengkap. */}
             <div className="fixed bottom-6 right-6 z-50">
                 {helpOpen && (
-                    <div className="mb-3 w-64 rounded-xl bg-[#F1F4FA] border border-black/10 p-4 shadow-xl">
+                    <div className="mb-3 w-64 rounded-xl bg-white/[0.04] border border-white/10 p-4 shadow-xl">
                         <p className="text-sm font-medium mb-1">
                             Bantuan cepat
                         </p>
-                        <p className="text-xs text-[#64708A] mb-3">
+                        <p className="text-xs text-[#8B96C4] mb-3">
                             Chat langsung dengan admin, atau buka daftar
                             pertanyaan umum.
                         </p>
@@ -1654,7 +1666,7 @@ export default function Landing() {
                                 href={WHATSAPP_URL}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="flex items-center justify-center gap-2 rounded-full bg-[#1B2A6B] text-white font-medium px-3 py-2 text-xs hover:bg-[#111B3E] transition-colors"
+                                className="flex items-center justify-center gap-2 rounded-full bg-[#078DE9] text-white font-medium px-3 py-2 text-xs hover:bg-[#0670C0] transition-colors"
                             >
                                 <svg
                                     width="14"
@@ -1676,7 +1688,7 @@ export default function Landing() {
                             <Link
                                 to="/bantuan"
                                 onClick={() => setHelpOpen(false)}
-                                className="text-center text-xs text-[#1B2A6B] hover:underline py-1"
+                                className="text-center text-xs text-[#078DE9] hover:underline py-1"
                             >
                                 Lihat halaman Bantuan →
                             </Link>
@@ -1693,7 +1705,7 @@ export default function Landing() {
                     }
                     aria-label="Bantuan cepat"
                     aria-expanded={helpOpen}
-                    className="h-12 w-12 rounded-full bg-[#1B2A6B] text-white flex items-center justify-center shadow-lg hover:bg-[#111B3E] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1B2A6B] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                    className="h-12 w-12 rounded-full bg-[#078DE9] text-white flex items-center justify-center shadow-lg hover:bg-[#0670C0] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#078DE9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080F28]"
                 >
                     <svg
                         width="20"
@@ -1721,12 +1733,12 @@ export default function Landing() {
             </div>
 
             {/* ================= Footer ================= */}
-            <footer className="border-t border-black/5">
+            <footer className="border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-4 justify-between text-center sm:text-left">
                     <div className="flex flex-col items-center sm:items-start gap-4">
                         <div className="flex items-center gap-2.5">
                             <span
-                                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#1B2A6B] text-white font-display text-base"
+                                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#078DE9] text-white font-display text-base"
                                 aria-hidden="true"
                             >
                                 P
@@ -1735,55 +1747,55 @@ export default function Landing() {
                                 <p className="font-display text-base tracking-tight">
                                     {BRAND_NAME}
                                 </p>
-                                <p className="text-[11px] font-mono text-[#64708A] tracking-wide">
+                                <p className="text-[11px] font-mono text-[#8B96C4] tracking-wide">
                                     {BRAND_LOCATION}
                                 </p>
                             </div>
                         </div>
 
                         <div className="flex items-center gap-3 pl-0.5">
-                            <span className="hidden sm:block h-8 w-px bg-black/10" />
+                            <span className="hidden sm:block h-8 w-px bg-white/10" />
                             <img
                                 src="/images/logo-smkn1sanden.png"
                                 alt="Logo SMK Negeri 1 Sanden"
                                 className="h-10 w-10 shrink-0 object-contain"
                             />
                             <div className="leading-tight text-left">
-                                <p className="text-xs text-[#38424F]">
+                                <p className="text-xs text-[#C9D3EA]">
                                     Dikembangkan oleh siswa
                                 </p>
-                                <p className="text-xs font-medium text-[#10131A]">
+                                <p className="text-xs font-medium text-white">
                                     SMK Negeri 1 Sanden, Bantul
                                 </p>
                             </div>
                         </div>
 
-                        <p className="text-xs text-[#64708A]">
+                        <p className="text-xs text-[#8B96C4]">
                             © {new Date().getFullYear()} {BRAND_NAME}. Seluruh
                             hak cipta dilindungi.
                         </p>
                     </div>
 
                     <div className="flex flex-col items-center sm:items-end gap-2">
-                        <span className="font-mono text-[11px] text-[#64708A] tracking-wider">
+                        <span className="font-mono text-[11px] text-[#8B96C4] tracking-wider">
                             SISTEM MANAJEMEN PARKIR
                         </span>
-                        <div className="flex items-center gap-4 text-xs text-[#64708A]">
+                        <div className="flex items-center gap-4 text-xs text-[#8B96C4]">
                             <a
                                 href="#fitur"
-                                className="hover:text-[#10131A] transition-colors"
+                                className="hover:text-white transition-colors"
                             >
                                 Fitur
                             </a>
                             <a
                                 href="#testimoni"
-                                className="hover:text-[#10131A] transition-colors"
+                                className="hover:text-white transition-colors"
                             >
                                 Testimoni
                             </a>
                             <Link
                                 to="/bantuan"
-                                className="hover:text-[#10131A] transition-colors"
+                                className="hover:text-white transition-colors"
                             >
                                 Bantuan
                             </Link>
