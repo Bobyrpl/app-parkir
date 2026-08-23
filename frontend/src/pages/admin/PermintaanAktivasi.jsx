@@ -96,8 +96,8 @@ export default function PermintaanAktivasi() {
                         onClick={() => setFilter(value)}
                         className={`rounded-md px-3 py-1.5 text-xs font-mono border ${
                             filter === value
-                                ? 'border-[#1B2A6B] bg-[#1B2A6B]/10 text-[#1B2A6B]'
-                                : 'border-black/10 text-[#38424F] hover:bg-black/5'
+                                ? 'border-[#F97316] bg-[#F97316]/10 text-[#F97316]'
+                                : 'border-[#262626] text-[#A0A0A0] hover:bg-[#1F1F1F]'
                         }`}
                     >
                         {label}
@@ -108,19 +108,19 @@ export default function PermintaanAktivasi() {
             <Table columns={['Username', 'Nama Akun', 'Catatan Pemohon', 'Diajukan', 'Status', 'Aksi']}>
                 {data.map((p) => (
                     <tr key={p.id_permintaan}>
-                        <td className="px-4 py-3 font-mono text-[#1B2A6B]">{p.username}</td>
+                        <td className="px-4 py-3 font-mono text-[#F97316]">{p.username}</td>
                         <td className="px-4 py-3">
                             {p.user ? (
                                 <>
                                     <p>{p.user.nama_lengkap}</p>
-                                    <p className="text-xs text-[#64708A] capitalize">{p.user.role}</p>
+                                    <p className="text-xs text-[#8A8A8A] capitalize">{p.user.role}</p>
                                 </>
                             ) : (
-                                <span className="text-xs text-[#64708A]">Akun tidak ditemukan</span>
+                                <span className="text-xs text-[#8A8A8A]">Akun tidak ditemukan</span>
                             )}
                         </td>
-                        <td className="px-4 py-3 text-sm text-[#38424F] max-w-xs">
-                            {p.catatan || <span className="text-[#64708A]">—</span>}
+                        <td className="px-4 py-3 text-sm text-[#A0A0A0] max-w-xs">
+                            {p.catatan || <span className="text-[#8A8A8A]">—</span>}
                         </td>
                         <td className="px-4 py-3 font-mono text-xs">
                             {new Date(p.created_at).toLocaleString('id-ID')}
@@ -144,14 +144,14 @@ export default function PermintaanAktivasi() {
                 ))}
                 {!loading && data.length === 0 && (
                     <tr>
-                        <td colSpan={6} className="px-4 py-6 text-center text-[#64708A] text-sm">
+                        <td colSpan={6} className="px-4 py-6 text-center text-[#8A8A8A] text-sm">
                             Tidak ada permintaan aktivasi pada status ini.
                         </td>
                     </tr>
                 )}
                 {loading && (
                     <tr>
-                        <td colSpan={6} className="px-4 py-6 text-center text-[#64708A] text-sm">
+                        <td colSpan={6} className="px-4 py-6 text-center text-[#8A8A8A] text-sm">
                             Memuat data...
                         </td>
                     </tr>
@@ -166,16 +166,16 @@ export default function PermintaanAktivasi() {
                     onClick={() => setTolakTarget(null)}
                 >
                     <div
-                        className="w-full max-w-sm rounded-xl bg-[#F1F4FA] border border-black/10 p-6"
+                        className="w-full max-w-sm rounded-xl bg-[#161616] border border-[#262626] p-6"
                         onClick={(e) => e.stopPropagation()}
                         role="alertdialog"
                         aria-modal="true"
                     >
-                        <h3 className="font-display text-base text-[#10131A] mb-2">Tolak Permintaan Aktivasi</h3>
-                        <p className="text-sm text-[#64708A] mb-4">
+                        <h3 className="font-display text-base text-white mb-2">Tolak Permintaan Aktivasi</h3>
+                        <p className="text-sm text-[#8A8A8A] mb-4">
                             Yakin ingin menolak permintaan ini? Akun akan tetap nonaktif.
                         </p>
-                        <label className="block text-xs font-mono text-[#64708A] mb-1.5">
+                        <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
                             CATATAN UNTUK PEMOHON <span className="normal-case">(opsional)</span>
                         </label>
                         <textarea
@@ -184,7 +184,7 @@ export default function PermintaanAktivasi() {
                             rows={3}
                             maxLength={500}
                             placeholder="Alasan penolakan..."
-                            className="w-full rounded-md bg-white border border-black/10 px-3 py-2 text-sm text-[#10131A] focus:outline-none focus:ring-2 focus:ring-[#1B2A6B] focus:border-transparent resize-none mb-4"
+                            className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent resize-none mb-4"
                         />
                         <div className="flex justify-end gap-2">
                             <Button variant="ghost" onClick={() => setTolakTarget(null)} disabled={processingId === tolakTarget}>
@@ -198,8 +198,8 @@ export default function PermintaanAktivasi() {
                 </div>
             )}
 
-            <footer className="border-t border-black/5">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#64708A] text-center sm:text-left">
+            <footer className="border-t border-[#262626]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8A8A8A] text-center sm:text-left">
                     <span>© {new Date().getFullYear()} Parkir Pelabuhan Tanjung Perak</span>
                     <span className="font-mono">SISTEM MANAJEMEN PARKIR</span>
                 </div>

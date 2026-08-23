@@ -136,7 +136,7 @@ function ProfileAvatar() {
       onClick={pilihFile}
       disabled={uploading}
       title="Ganti foto profil"
-      className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden bg-[#1B2A6B]/15 text-[#1B2A6B] text-xs font-semibold ring-1 ring-[#1B2A6B]/25 disabled:cursor-wait"
+      className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden bg-[#F97316]/15 text-[#F97316] text-xs font-semibold ring-1 ring-[#F97316]/25 disabled:cursor-wait"
     >
       {user?.foto_profil_url ? (
         <img
@@ -226,7 +226,7 @@ export default function Layout({ children }) {
   }
 
   return (
-    <div className="min-h-screen bg-white text-[#10131A] flex">
+    <div className="min-h-screen bg-[#0D0D0D] text-white flex">
       {/* Overlay gelap di belakang sidebar saat dibuka di mobile */}
       {sidebarOpen && (
         <div
@@ -237,7 +237,7 @@ export default function Layout({ children }) {
 
       {/* Sidebar: off-canvas di mobile, statis + bisa dikecilkan di layar md ke atas */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 shrink-0 bg-[#F1F4FA] border-r border-black/[0.06] flex flex-col
+        className={`fixed inset-y-0 left-0 z-40 shrink-0 bg-[#161616] border-r border-[#262626] flex flex-col
                 shadow-2xl shadow-black/40
                 transition-[transform,width] duration-200 ease-in-out
                 md:static md:translate-x-0 md:shadow-none
@@ -249,7 +249,7 @@ export default function Layout({ children }) {
         <button
           onClick={toggleCollapsed}
           title={collapsed ? "Lebarkan menu" : "Kecilkan menu"}
-          className="hidden md:flex absolute -right-3 top-8 z-10 h-6 w-6 items-center justify-center rounded-full bg-[#F1F4FA] border border-black/10 text-[#64708A] hover:text-[#1B2A6B] hover:border-[#1B2A6B]/40 transition-colors"
+          className="hidden md:flex absolute -right-3 top-8 z-10 h-6 w-6 items-center justify-center rounded-full bg-[#161616] border border-[#262626] text-[#8A8A8A] hover:text-[#F97316] hover:border-[#F97316]/40 transition-colors"
         >
           <svg
             viewBox="0 0 24 24"
@@ -268,12 +268,12 @@ export default function Layout({ children }) {
 
         {/* Brand */}
         <div
-          className={`px-5 py-5 border-b border-black/[0.06] flex items-center ${collapsed ? "md:justify-center md:px-0" : "justify-between"}`}
+          className={`px-5 py-5 border-b border-[#262626] flex items-center ${collapsed ? "md:justify-center md:px-0" : "justify-between"}`}
         >
           <div
             className={`flex items-center gap-3 min-w-0 ${collapsed ? "md:gap-0" : ""}`}
           >
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-[#1B2A6B] shrink-0">
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-[#F97316] shrink-0">
               <span className="font-display text-white text-lg font-bold leading-none">
                 P
               </span>
@@ -282,7 +282,7 @@ export default function Layout({ children }) {
               <p className="font-display text-[15px] leading-tight tracking-tight truncate">
                 Panel Sistem Parkir
               </p>
-              <p className="mt-0.5 text-[11px] leading-none text-[#64708A] font-mono tracking-wide uppercase">
+              <p className="mt-0.5 text-[11px] leading-none text-[#8A8A8A] font-mono tracking-wide uppercase">
                 Pelabuhan
               </p>
             </div>
@@ -290,7 +290,7 @@ export default function Layout({ children }) {
           {/* Tombol tutup, hanya tampil di mobile */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden text-[#64708A] hover:text-[#10131A] hover:bg-black/5 rounded-md p-1.5 transition-colors shrink-0"
+            className="md:hidden text-[#8A8A8A] hover:text-white hover:bg-[#1F1F1F] rounded-md p-1.5 transition-colors shrink-0"
             aria-label="Tutup menu"
           >
             <svg
@@ -313,7 +313,7 @@ export default function Layout({ children }) {
         {/* Menu */}
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto overflow-x-hidden">
           <p
-            className={`px-3 pb-2 text-[10px] font-semibold tracking-widest uppercase text-[#5C6472] ${collapsed ? "md:hidden" : ""}`}
+            className={`px-3 pb-2 text-[10px] font-semibold tracking-widest uppercase text-[#8A8A8A] ${collapsed ? "md:hidden" : ""}`}
           >
             Menu
           </p>
@@ -329,8 +329,8 @@ export default function Layout({ children }) {
                   collapsed ? "md:justify-center md:px-2" : ""
                 } ${
                   isActive
-                    ? "bg-[#1B2A6B] text-white font-medium shadow-sm shadow-[#1B2A6B]/20"
-                    : "text-[#38424F] hover:bg-black/[0.06] hover:text-[#10131A]"
+                    ? "bg-[#F97316] text-white font-medium shadow-sm shadow-[#F97316]/20"
+                    : "text-[#A0A0A0] hover:bg-[#1F1F1F] hover:text-white"
                 }`
               }
             >
@@ -341,7 +341,7 @@ export default function Layout({ children }) {
                     className={`h-[18px] w-[18px] shrink-0 ${
                       isActive
                         ? "text-white"
-                        : "text-[#64708A] group-hover:text-[#10131A]"
+                        : "text-[#8A8A8A] group-hover:text-white"
                     }`}
                   />
                   <span className={`truncate ${collapsed ? "md:hidden" : ""}`}>
@@ -354,7 +354,7 @@ export default function Layout({ children }) {
         </nav>
 
         {/* Profil & keluar */}
-        <div className="px-3 py-4 border-t border-black/[0.06] space-y-1">
+        <div className="px-3 py-4 border-t border-[#262626] space-y-1">
           <div
             className={`flex items-center gap-3 px-3 py-2 ${collapsed ? "md:justify-center md:px-0" : ""}`}
           >
@@ -363,7 +363,7 @@ export default function Layout({ children }) {
               <p className="text-sm font-medium truncate leading-tight">
                 {user?.nama_lengkap}
               </p>
-              <p className="text-xs text-[#64708A] truncate">
+              <p className="text-xs text-[#8A8A8A] truncate">
                 {ROLE_LABEL[user?.role]}
               </p>
             </div>
@@ -396,10 +396,10 @@ export default function Layout({ children }) {
       {/* Konten */}
       <main className="flex-1 overflow-y-auto min-w-0 md:pl-0">
         {/* Header mobile dengan tombol hamburger */}
-        <div className="md:hidden sticky top-0 z-20 flex items-center gap-3 px-4 py-3 border-b border-black/[0.06] bg-[#F1F4FA]/95 backdrop-blur">
+        <div className="md:hidden sticky top-0 z-20 flex items-center gap-3 px-4 py-3 border-b border-[#262626] bg-[#161616]/95 backdrop-blur">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="text-[#10131A] hover:bg-black/5 rounded-md p-1.5 -ml-1.5"
+            className="text-white hover:bg-[#1F1F1F] rounded-md p-1.5 -ml-1.5"
             aria-label="Buka menu"
           >
             <svg
@@ -418,7 +418,7 @@ export default function Layout({ children }) {
             </svg>
           </button>
           <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#1B2A6B]">
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#F97316]">
               <span className="font-display text-white text-[11px] font-bold leading-none">
                 P
               </span>
@@ -434,7 +434,7 @@ export default function Layout({ children }) {
           className="h-1.5 w-full"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(45deg, #1B2A6B 0 20px, #14181F 20px 40px)",
+              "repeating-linear-gradient(45deg, #F97316 0 20px, #14181F 20px 40px)",
           }}
         />
         <div className="p-4 md:p-8 max-w-6xl mx-auto">{children}</div>

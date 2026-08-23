@@ -37,18 +37,18 @@ export default function StrukCard({ struk, onClose }) {
                         className="h-2 w-full"
                         style={{
                             backgroundImage:
-                                'repeating-linear-gradient(45deg, #1B2A6B 0 10px, #14181F 10px 20px)',
+                                'repeating-linear-gradient(45deg, #F97316 0 10px, #14181F 10px 20px)',
                         }}
                     />
                     <div className="p-6 font-mono text-sm">
                         <p className="text-center font-display text-lg tracking-tight mb-1">
                             PARKIR PELABUHAN TANJUNG PERAK
                         </p>
-                        <p className="text-center text-xs text-[#6B7280] mb-4">
+                        <p className="text-center text-xs text-[#8A8A8A] mb-4">
                             STRUK PARKIR — {struk.no_struk}
                         </p>
 
-                        <div className="border-t border-dashed border-[#38424F] my-3" />
+                        <div className="border-t border-dashed border-[#A0A0A0] my-3" />
 
                         <Row label="Plat Nomor" value={struk.plat_nomor} strong />
                         <Row label="Jenis" value={struk.jenis_kendaraan} />
@@ -58,21 +58,21 @@ export default function StrukCard({ struk, onClose }) {
                         <Row label="Durasi" value={`${struk.durasi_jam} jam`} />
                         <Row label="Tarif/Jam" value={formatRupiah(struk.tarif_per_jam)} />
 
-                        <div className="border-t border-dashed border-[#38424F] my-3" />
+                        <div className="border-t border-dashed border-[#A0A0A0] my-3" />
 
                         <Row label="Biaya Parkir" value={formatRupiah(struk.biaya_parkir ?? struk.biaya_total)} />
                         {adaDenda && (
                             <Row label="Denda Keterlambatan" value={formatRupiah(struk.denda)} strong />
                         )}
 
-                        <div className="border-t border-dashed border-[#38424F] my-3" />
+                        <div className="border-t border-dashed border-[#A0A0A0] my-3" />
 
                         <div className="flex justify-between items-baseline">
-                            <span className="text-xs text-[#6B7280]">TOTAL BAYAR</span>
+                            <span className="text-xs text-[#8A8A8A]">TOTAL BAYAR</span>
                             <span className="font-display text-2xl">{formatRupiah(struk.biaya_total)}</span>
                         </div>
 
-                        <p className="text-center text-[10px] text-[#9AA1AC] mt-4">
+                        <p className="text-center text-[10px] text-[#8A8A8A] mt-4">
                             Dilayani oleh {struk.petugas} · Terima kasih
                         </p>
                     </div>
@@ -81,13 +81,13 @@ export default function StrukCard({ struk, onClose }) {
                 <div className="mt-4 flex gap-2 no-print">
                     <button
                         onClick={handleCetak}
-                        className="flex-1 rounded-md bg-[#1B2A6B] text-white py-2.5 text-sm font-semibold hover:bg-[#1B2A6B]/90 transition-colors"
+                        className="flex-1 rounded-md bg-[#F97316] text-white py-2.5 text-sm font-semibold hover:bg-[#F97316]/90 transition-colors"
                     >
                         Cetak Struk
                     </button>
                     <button
                         onClick={onClose}
-                        className="flex-1 rounded-md bg-[#F1F4FA] text-[#10131A] py-2.5 text-sm hover:bg-[#E3E8F0] transition-colors"
+                        className="flex-1 rounded-md bg-[#161616] text-white py-2.5 text-sm hover:bg-[#1F1F1F] transition-colors"
                     >
                         Tutup
                     </button>
@@ -100,7 +100,7 @@ export default function StrukCard({ struk, onClose }) {
 function Row({ label, value, strong }) {
     return (
         <div className="flex justify-between py-0.5">
-            <span className="text-[#6B7280]">{label}</span>
+            <span className="text-[#8A8A8A]">{label}</span>
             <span className={strong ? 'font-semibold' : ''}>{value}</span>
         </div>
     );
