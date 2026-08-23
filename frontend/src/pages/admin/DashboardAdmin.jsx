@@ -386,7 +386,7 @@ export default function DashboardAdmin() {
                                     }}
                                 />
                                 <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#F97316" strokeWidth={2} dot={{ r: 3 }} />
-                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#F97316" strokeWidth={2} dot={{ r: 3 }} />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#38BDF8" strokeWidth={2} strokeDasharray="5 3" dot={{ r: 3 }} />
                                 <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#35C48D" strokeWidth={2} dot={{ r: 3 }} />
                             </LineChart>
                         </ResponsiveContainer>
