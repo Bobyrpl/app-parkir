@@ -1095,7 +1095,7 @@ export default function Landing() {
                                     <Line
                                         type="monotone"
                                         dataKey="val"
-                                        stroke="#FFFFFF"
+                                        stroke="#C90000"
                                         strokeWidth={2}
                                         dot={{
                                             r: 3,
