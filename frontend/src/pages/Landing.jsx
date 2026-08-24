@@ -835,13 +835,6 @@ export default function Landing() {
                             </svg>
                         </button>
 
-                        <Link
-                            to="/"
-                            className="flex items-center gap-2 sm:gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C90000]"
-                        >
-                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#C90000] text-white font-display text-sm">
-                                P
-                            </span>
                             <div className="min-w-0 leading-tight">
                                 <p className="font-display text-base md:text-lg tracking-tight truncate">
                                     {BRAND_NAME}
@@ -850,7 +843,6 @@ export default function Landing() {
                                     {BRAND_LOCATION}
                                 </p>
                             </div>
-                        </Link>
                     </div>
 
                     {/* Desktop nav — muncul dari lg ke atas supaya tidak
@@ -1185,7 +1177,7 @@ export default function Landing() {
                                 Slot tersedia
                             </p>
                             <div className="flex items-end gap-2 mb-3">
-                                <p className="font-display text-3xl text-[#C90000]">
+                                <p className="font-display text-3xl text-[#ffffff]">
                                     <AnimatedCounter
                                         value={Math.max(
                                             0,
@@ -1200,7 +1192,7 @@ export default function Landing() {
                             </div>
                             <div className="h-1.5 rounded-full bg-[#444444] overflow-hidden">
                                 <div
-                                    className="h-full rounded-full bg-[#C90000]"
+                                    className="h-full rounded-full bg-[#f90808]"
                                     style={{
                                         width: `${
                                             statistik.kapasitas > 0
@@ -1223,7 +1215,7 @@ export default function Landing() {
                                 Kualitas layanan
                             </p>
                             <div className="flex items-center gap-2">
-                                <p className="font-display text-3xl text-[#C90000]">
+                                <p className="font-display text-3xl text-[#ffd503]">
                                     <AnimatedCounter
                                         value={Number(statistik.rating_rata)}
                                         format={(n) => n.toFixed(1)}
@@ -1709,12 +1701,6 @@ export default function Landing() {
                 <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-4 justify-between text-center sm:text-left">
                     <div className="flex flex-col items-center sm:items-start gap-4">
                         <div className="flex items-center gap-2.5">
-                            <span
-                                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#C90000] text-white font-display text-base"
-                                aria-hidden="true"
-                            >
-                                P
-                            </span>
                             <div className="leading-tight text-left">
                                 <p className="font-display text-base tracking-tight">
                                     {BRAND_NAME}
