@@ -2,7 +2,7 @@ export function PageHeader({ eyebrow, title, description }) {
     return (
         <div className="mb-8">
             {eyebrow && (
-                <p className="text-xs font-mono text-[#F97316] mb-1 tracking-wider">
+                <p className="text-xs font-mono text-[#DC2626] mb-1 tracking-wider">
                     {eyebrow}
                 </p>
             )}
@@ -14,7 +14,7 @@ export function PageHeader({ eyebrow, title, description }) {
     );
 }
 
-export function StatCard({ label, value, accent = '#F97316', icon: Icon, trend }) {
+export function StatCard({ label, value, accent = '#DC2626', icon: Icon, trend }) {
     const TrendIcon = trend?.icon;
     const trendColor = trend?.tone === 'up' ? '#35C48D' : trend?.tone === 'down' ? '#E5484D' : '#8A8A8A';
 
@@ -63,7 +63,7 @@ export function Badge({ children, tone = 'neutral' }) {
         neutral: 'bg-[#262626] text-[#A0A0A0]',
         success: 'bg-[#35C48D]/15 text-[#35C48D]',
         danger: 'bg-[#E5484D]/15 text-[#E5484D]',
-        warning: 'bg-[#F97316]/15 text-[#F97316]',
+        warning: 'bg-[#DC2626]/15 text-[#DC2626]',
     };
     return (
         <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-mono ${tones[tone]}`}>
@@ -96,7 +96,7 @@ export function Table({ columns, children }) {
 
 export function Button({ children, variant = 'primary', className = '', ...props }) {
     const variants = {
-        primary: 'bg-[#F97316] text-white hover:bg-[#EA580C]',
+        primary: 'bg-[#DC2626] text-white hover:bg-[#991B1B]',
         ghost: 'bg-transparent text-[#A0A0A0] hover:bg-[#1F1F1F] border border-[#262626]',
         danger: 'bg-[#E5484D]/15 text-[#E5484D] hover:bg-[#E5484D]/25',
     };
@@ -155,7 +155,7 @@ export function Input(props) {
     return (
         <input
             {...props}
-            className={`w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent ${props.className || ''}`}
+            className={`w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent ${props.className || ''}`}
         />
     );
 }

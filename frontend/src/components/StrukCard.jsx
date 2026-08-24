@@ -37,7 +37,7 @@ export default function StrukCard({ struk, onClose }) {
                         className="h-2 w-full"
                         style={{
                             backgroundImage:
-                                'repeating-linear-gradient(45deg, #F97316 0 10px, #14181F 10px 20px)',
+                                'repeating-linear-gradient(45deg, #DC2626 0 10px, #14181F 10px 20px)',
                         }}
                     />
                     <div className="p-6 font-mono text-sm">
@@ -81,7 +81,7 @@ export default function StrukCard({ struk, onClose }) {
                 <div className="mt-4 flex gap-2 no-print">
                     <button
                         onClick={handleCetak}
-                        className="flex-1 rounded-md bg-[#F97316] text-white py-2.5 text-sm font-semibold hover:bg-[#F97316]/90 transition-colors"
+                        className="flex-1 rounded-md bg-[#DC2626] text-white py-2.5 text-sm font-semibold hover:bg-[#DC2626]/90 transition-colors"
                     >
                         Cetak Struk
                     </button>

@@ -283,7 +283,7 @@ export default function KendaraanMasuk() {
                                             ? "border-[#262626] bg-[#161616] text-[#8A8A8A] cursor-not-allowed"
                                             : form.id_kendaraan ===
                                                 k.id_kendaraan
-                                              ? "border-[#F97316] bg-[#F97316]/10 text-[#F97316]"
+                                              ? "border-[#DC2626] bg-[#DC2626]/10 text-[#DC2626]"
                                               : "border-[#262626] text-[#A0A0A0] hover:bg-[#1F1F1F]"
                                     }`}
                                 >
@@ -291,7 +291,7 @@ export default function KendaraanMasuk() {
                                         {k.plat_nomor} — {k.jenis_kendaraan}
                                     </span>
                                     {k.sedang_parkir && (
-                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#F97316]/15 text-[#F97316] shrink-0">
+                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#DC2626]/15 text-[#DC2626] shrink-0">
                                             SUDAH PARKIR
                                         </span>
                                     )}
@@ -327,7 +327,7 @@ export default function KendaraanMasuk() {
                                     setTarifOtomatis(false);
                                 }}
                                 required
-                                className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316]"
+                                className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626]"
                             >
                                 <option value="">Pilih tarif</option>
                                 {tarifList.map((t) => (
@@ -381,7 +381,7 @@ export default function KendaraanMasuk() {
                                                 penuh
                                                     ? "border-[#262626] bg-[#161616] text-[#8A8A8A] cursor-not-allowed"
                                                     : dipilih
-                                                      ? "border-[#F97316] bg-[#F97316]/10 text-[#F97316]"
+                                                      ? "border-[#DC2626] bg-[#DC2626]/10 text-[#DC2626]"
                                                       : "border-[#262626] text-[#A0A0A0] hover:bg-[#1F1F1F]"
                                             }`}
                                         >
@@ -397,7 +397,7 @@ export default function KendaraanMasuk() {
                                                         PENUH
                                                     </span>
                                                 ) : hampirPenuh ? (
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#F97316]/15 text-[#F97316]">
+                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#DC2626]/15 text-[#DC2626]">
                                                         HAMPIR PENUH
                                                     </span>
                                                 ) : (

@@ -70,7 +70,7 @@ export default function PengaturanDenda() {
             <Card className="p-5 max-w-lg">
                 <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-2.5">
-                        <span className="w-8 h-8 rounded-lg bg-[#F97316]/10 text-[#F97316] flex items-center justify-center shrink-0">
+                        <span className="w-8 h-8 rounded-lg bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center shrink-0">
                             <AlertTriangle size={16} />
                         </span>
                         <h2 className="font-display text-base text-white">
@@ -147,7 +147,7 @@ export default function PengaturanDenda() {
                                 onChange={(e) =>
                                     setForm({ ...form, aktif: e.target.checked })
                                 }
-                                className="h-4 w-4 rounded border-[#262626] bg-[#1F1F1F] accent-[#F97316]"
+                                className="h-4 w-4 rounded border-[#262626] bg-[#1F1F1F] accent-[#DC2626]"
                             />
                             Aktifkan denda keterlambatan booking
                         </label>

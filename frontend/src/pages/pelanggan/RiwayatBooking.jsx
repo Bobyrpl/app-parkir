@@ -169,11 +169,11 @@ export default function RiwayatBooking() {
                                         type="checkbox"
                                         checked={selected.has(b.id_booking)}
                                         onChange={() => toggleSatu(b.id_booking)}
-                                        className="h-4 w-4 accent-[#F97316]"
+                                        className="h-4 w-4 accent-[#DC2626]"
                                     />
                                 )}
                             </td>
-                            <td className="px-4 py-3 font-mono text-[#F97316]">{b.kode_booking}</td>
+                            <td className="px-4 py-3 font-mono text-[#DC2626]">{b.kode_booking}</td>
                             <td className="px-4 py-3 font-mono uppercase">{b.kendaraan?.plat_nomor}</td>
                             <td className="px-4 py-3">{b.area?.nama_area}</td>
                             <td className="px-4 py-3 font-mono text-xs">

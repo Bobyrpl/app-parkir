@@ -54,7 +54,7 @@ export default function Register() {
         {/* Panel kiri - identitas sistem */}
         <div className="relative hidden md:flex flex-col items-center justify-center text-center bg-[#161616] border-r border-[#262626] p-10">
           <div className="relative">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#F97316] mb-5" />
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#DC2626] mb-5" />
             <h2 className="font-medium text-2xl text-white leading-snug mb-3">
               Sistem parkir
               <br />
@@ -66,19 +66,19 @@ export default function Register() {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-[#8A8A8A]">
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck size={13} className="text-[#F97316]" />
+                <ShieldCheck size={13} className="text-[#DC2626]" />
                 Admin
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <UserCog size={13} className="text-[#F97316]" />
+                <UserCog size={13} className="text-[#DC2626]" />
                 Petugas
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Crown size={13} className="text-[#F97316]" />
+                <Crown size={13} className="text-[#DC2626]" />
                 Owner
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <UsersIcon size={13} className="text-[#F97316]" />
+                <UsersIcon size={13} className="text-[#DC2626]" />
                 Pelanggan
               </span>
             </div>
@@ -115,7 +115,7 @@ export default function Register() {
                   onChange={(e) => setNamaLengkap(e.target.value)}
                   required
                   autoFocus
-                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent"
+                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent"
                   placeholder="mis. Budi Santoso"
                 />
               </div>
@@ -137,7 +137,7 @@ export default function Register() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent"
+                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent"
                   placeholder="mis. budi.santoso"
                 />
               </div>
@@ -160,7 +160,7 @@ export default function Register() {
                   onChange={(e) => setNoTelp(e.target.value)}
                   required
                   pattern="[0-9]{10,15}"
-                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent"
+                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent"
                   placeholder="mis. 081234567890"
                 />
               </div>
@@ -183,7 +183,7 @@ export default function Register() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
-                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-10 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent"
+                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-10 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent"
                   placeholder="minimal 6 karakter"
                 />
                 <button
@@ -219,15 +219,15 @@ export default function Register() {
                     konfirmasiCocok === false
                       ? "border-[#E5484D]/50 focus:ring-[#E5484D]"
                       : konfirmasiCocok === true
-                      ? "border-[#F97316]/50 focus:ring-[#F97316]"
-                      : "border-[#262626] focus:ring-[#F97316]"
+                      ? "border-[#DC2626]/50 focus:ring-[#DC2626]"
+                      : "border-[#262626] focus:ring-[#DC2626]"
                   }`}
                   placeholder="ulangi password"
                 />
                 {konfirmasiCocok !== null && (
                   <span
                     className={`absolute right-9 top-1/2 -translate-y-1/2 ${
-                      konfirmasiCocok ? "text-[#F97316]" : "text-[#E5484D]"
+                      konfirmasiCocok ? "text-[#DC2626]" : "text-[#E5484D]"
                     }`}
                   >
                     {konfirmasiCocok ? <Check size={16} /> : <X size={16} />}
@@ -259,7 +259,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-md bg-[#F97316] text-white font-medium py-2.5 text-sm hover:bg-[#EA580C] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+              className="w-full rounded-md bg-[#DC2626] text-white font-medium py-2.5 text-sm hover:bg-[#991B1B] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -276,7 +276,7 @@ export default function Register() {
 
             <p className="text-center text-sm text-[#8A8A8A]">
               Sudah punya akun?{" "}
-              <Link to="/login" className="text-[#F97316] hover:underline">
+              <Link to="/login" className="text-[#DC2626] hover:underline">
                 Masuk di sini
               </Link>
             </p>

@@ -136,7 +136,7 @@ function ProfileAvatar() {
       onClick={pilihFile}
       disabled={uploading}
       title="Ganti foto profil"
-      className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden bg-[#F97316]/15 text-[#F97316] text-xs font-semibold ring-1 ring-[#F97316]/25 disabled:cursor-wait"
+      className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden bg-[#DC2626]/15 text-[#DC2626] text-xs font-semibold ring-1 ring-[#DC2626]/25 disabled:cursor-wait"
     >
       {user?.foto_profil_url ? (
         <img
@@ -249,7 +249,7 @@ export default function Layout({ children }) {
         <button
           onClick={toggleCollapsed}
           title={collapsed ? "Lebarkan menu" : "Kecilkan menu"}
-          className="hidden md:flex absolute -right-3 top-8 z-10 h-6 w-6 items-center justify-center rounded-full bg-[#161616] border border-[#262626] text-[#8A8A8A] hover:text-[#F97316] hover:border-[#F97316]/40 transition-colors"
+          className="hidden md:flex absolute -right-3 top-8 z-10 h-6 w-6 items-center justify-center rounded-full bg-[#161616] border border-[#262626] text-[#8A8A8A] hover:text-[#DC2626] hover:border-[#DC2626]/40 transition-colors"
         >
           <svg
             viewBox="0 0 24 24"
@@ -273,7 +273,7 @@ export default function Layout({ children }) {
           <div
             className={`flex items-center gap-3 min-w-0 ${collapsed ? "md:gap-0" : ""}`}
           >
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-[#F97316] shrink-0">
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-[#DC2626] shrink-0">
               <span className="font-display text-white text-lg font-bold leading-none">
                 P
               </span>
@@ -329,7 +329,7 @@ export default function Layout({ children }) {
                   collapsed ? "md:justify-center md:px-2" : ""
                 } ${
                   isActive
-                    ? "bg-[#F97316] text-white font-medium shadow-sm shadow-[#F97316]/20"
+                    ? "bg-[#DC2626] text-white font-medium shadow-sm shadow-[#DC2626]/20"
                     : "text-[#A0A0A0] hover:bg-[#1F1F1F] hover:text-white"
                 }`
               }
@@ -418,7 +418,7 @@ export default function Layout({ children }) {
             </svg>
           </button>
           <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#F97316]">
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#DC2626]">
               <span className="font-display text-white text-[11px] font-bold leading-none">
                 P
               </span>
@@ -434,7 +434,7 @@ export default function Layout({ children }) {
           className="h-1.5 w-full"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(45deg, #F97316 0 20px, #14181F 20px 40px)",
+              "repeating-linear-gradient(45deg, #DC2626 0 20px, #14181F 20px 40px)",
           }}
         />
         <div className="p-4 md:p-8 max-w-6xl mx-auto">{children}</div>

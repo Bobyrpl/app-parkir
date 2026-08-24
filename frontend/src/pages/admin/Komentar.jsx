@@ -12,7 +12,7 @@ function Bintang({ jumlah }) {
                 <svg key={i} width="13" height="13" viewBox="0 0 20 20" aria-hidden="true">
                     <path
                         d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6L10 1z"
-                        fill={i <= jumlah ? '#F97316' : '#3A3F49'}
+                        fill={i <= jumlah ? '#DC2626' : '#3A3F49'}
                     />
                 </svg>
             ))}
@@ -79,7 +79,7 @@ function KomentarItem({ komentar, onSaved, onHapus }) {
                     rows={2}
                     maxLength={1000}
                     placeholder="Tulis balasan untuk komentar ini..."
-                    className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent resize-none"
+                    className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent resize-none"
                 />
                 <div className="flex items-center justify-end gap-2 mt-2">
                     {sudahDibalas && balasan.trim() === '' && (
@@ -110,7 +110,7 @@ function FilterButton({ active, onClick, children }) {
             onClick={onClick}
             className={`rounded-md px-3 py-1.5 text-xs font-mono transition-colors ${
                 active
-                    ? 'bg-[#F97316] text-white'
+                    ? 'bg-[#DC2626] text-white'
                     : 'bg-[#1F1F1F] text-[#8A8A8A] hover:bg-[#262626]'
             }`}
         >
@@ -155,7 +155,7 @@ function Pagination({ halaman, totalHalaman, onGanti }) {
                         onClick={() => onGanti(n)}
                         className={`min-w-[32px] rounded-md px-2.5 py-1.5 text-xs font-mono transition-colors ${
                             n === halaman
-                                ? 'bg-[#F97316] text-white'
+                                ? 'bg-[#DC2626] text-white'
                                 : 'bg-[#1F1F1F] text-[#8A8A8A] hover:bg-[#262626]'
                         }`}
                     >

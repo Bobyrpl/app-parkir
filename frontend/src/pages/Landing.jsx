@@ -67,7 +67,7 @@ const FEATURES = [
         icon: (
             <path
                 d="M4 12h16M4 12l4-4M4 12l4 4"
-                stroke="#F97316"
+                stroke="#DC2626"
                 strokeWidth="1.75"
                 fill="none"
                 strokeLinecap="round"
@@ -81,7 +81,7 @@ const FEATURES = [
         icon: (
             <path
                 d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20c0-4 3.5-6 8-6s8 2 8 6"
-                stroke="#F97316"
+                stroke="#DC2626"
                 strokeWidth="1.75"
                 fill="none"
                 strokeLinecap="round"
@@ -95,7 +95,7 @@ const FEATURES = [
         icon: (
             <path
                 d="M5 20V10M12 20V4M19 20v-7"
-                stroke="#F97316"
+                stroke="#DC2626"
                 strokeWidth="1.75"
                 fill="none"
                 strokeLinecap="round"
@@ -138,7 +138,7 @@ const TESTIMONI = [
     },
 ];
 
-const AVATAR_COLORS = ["#F97316", "#F97316", "#D4537E"];
+const AVATAR_COLORS = ["#DC2626", "#DC2626", "#D4537E"];
 
 // Ditampilkan sesaat sementara komentar asli sedang diambil dari API
 // (GET /api/komentar), supaya kolom komentar tidak kosong saat loading.
@@ -214,7 +214,7 @@ function Bintang({ jumlah }) {
                 >
                     <path
                         d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6L10 1z"
-                        fill={i <= jumlah ? "#F97316" : "#3A3F49"}
+                        fill={i <= jumlah ? "#DC2626" : "#3A3F49"}
                     />
                 </svg>
             ))}
@@ -243,7 +243,7 @@ function RatingInput({ value, onChange }) {
                         onClick={() => onChange(i)}
                         onMouseEnter={() => setHover(i)}
                         onMouseLeave={() => setHover(0)}
-                        className="p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] rounded-sm"
+                        className="p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626] rounded-sm"
                     >
                         <svg
                             width="22"
@@ -253,7 +253,7 @@ function RatingInput({ value, onChange }) {
                         >
                             <path
                                 d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6L10 1z"
-                                fill={i <= shown ? "#F97316" : "#3A3F49"}
+                                fill={i <= shown ? "#DC2626" : "#3A3F49"}
                             />
                         </svg>
                     </button>
@@ -389,7 +389,7 @@ function SectionCard({ children, className = "", hoverable = false }) {
 // menandai bagian halaman secara konsisten.
 function SectionEyebrow({ children }) {
     return (
-        <p className="text-xs font-mono tracking-[0.14em] text-[#FB923C] mb-3">
+        <p className="text-xs font-mono tracking-[0.14em] text-[#F87171] mb-3">
             {children}
         </p>
     );
@@ -749,7 +749,7 @@ export default function Landing() {
                     >
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center gap-2.5">
-                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F97316] text-white font-display text-sm">
+                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#DC2626] text-white font-display text-sm">
                                     P
                                 </span>
                                 <span className="font-display text-base">
@@ -760,7 +760,7 @@ export default function Landing() {
                                 ref={closeBtnRef}
                                 onClick={() => setSidebarOpen(false)}
                                 aria-label="Tutup menu"
-                                className="h-9 w-9 flex items-center justify-center rounded-lg text-[#8A8A8A] hover:text-white hover:bg-[#1F1F1F] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316]"
+                                className="h-9 w-9 flex items-center justify-center rounded-lg text-[#8A8A8A] hover:text-white hover:bg-[#1F1F1F] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626]"
                             >
                                 <svg
                                     width="18"
@@ -784,7 +784,7 @@ export default function Landing() {
                                     key={item.href}
                                     href={item.href}
                                     onClick={() => setSidebarOpen(false)}
-                                    className="text-sm text-[#A0A0A0] hover:text-white hover:bg-[#1F1F1F] px-3 py-3 rounded-lg border-b border-[#262626] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316]"
+                                    className="text-sm text-[#A0A0A0] hover:text-white hover:bg-[#1F1F1F] px-3 py-3 rounded-lg border-b border-[#262626] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626]"
                                 >
                                     {item.label}
                                 </a>
@@ -792,7 +792,7 @@ export default function Landing() {
                             <Link
                                 to="/bantuan"
                                 onClick={() => setSidebarOpen(false)}
-                                className="text-sm text-[#A0A0A0] hover:text-white hover:bg-[#1F1F1F] px-3 py-3 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316]"
+                                className="text-sm text-[#A0A0A0] hover:text-white hover:bg-[#1F1F1F] px-3 py-3 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626]"
                             >
                                 Bantuan
                             </Link>
@@ -800,7 +800,7 @@ export default function Landing() {
                         <Link
                             to={navPath}
                             onClick={() => setSidebarOpen(false)}
-                            className="mt-4 rounded-md bg-[#F97316] text-white font-medium px-4 py-2.5 text-sm text-center hover:bg-[#EA580C] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
+                            className="mt-4 rounded-md bg-[#DC2626] text-white font-medium px-4 py-2.5 text-sm text-center hover:bg-[#991B1B] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
                         >
                             {navLabel}
                         </Link>
@@ -817,7 +817,7 @@ export default function Landing() {
                             ref={hamburgerBtnRef}
                             onClick={() => setSidebarOpen(true)}
                             aria-label="Buka menu"
-                            className="lg:hidden shrink-0 -ml-1.5 h-9 w-9 flex items-center justify-center rounded-lg text-[#A0A0A0] hover:text-white hover:bg-[#1F1F1F] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316]"
+                            className="lg:hidden shrink-0 -ml-1.5 h-9 w-9 flex items-center justify-center rounded-lg text-[#A0A0A0] hover:text-white hover:bg-[#1F1F1F] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626]"
                         >
                             <svg
                                 width="20"
@@ -837,9 +837,9 @@ export default function Landing() {
 
                         <Link
                             to="/"
-                            className="flex items-center gap-2 sm:gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316]"
+                            className="flex items-center gap-2 sm:gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626]"
                         >
-                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F97316] text-white font-display text-sm">
+                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#DC2626] text-white font-display text-sm">
                                 P
                             </span>
                             <div className="min-w-0 leading-tight">
@@ -860,18 +860,18 @@ export default function Landing() {
                             <a
                                 key={item.href}
                                 href={item.href}
-                                className="group relative px-3 py-2 text-sm text-[#8A8A8A] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] rounded-md"
+                                className="group relative px-3 py-2 text-sm text-[#8A8A8A] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626] rounded-md"
                             >
                                 {item.label}
-                                <span className="pointer-events-none absolute left-3 right-3 -bottom-px h-px bg-[#F97316] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-200" />
+                                <span className="pointer-events-none absolute left-3 right-3 -bottom-px h-px bg-[#DC2626] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-200" />
                             </a>
                         ))}
                         <Link
                             to="/bantuan"
-                            className="group relative px-3 py-2 text-sm text-[#8A8A8A] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] rounded-md"
+                            className="group relative px-3 py-2 text-sm text-[#8A8A8A] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626] rounded-md"
                         >
                             Bantuan
-                            <span className="pointer-events-none absolute left-3 right-3 -bottom-px h-px bg-[#F97316] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-200" />
+                            <span className="pointer-events-none absolute left-3 right-3 -bottom-px h-px bg-[#DC2626] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-200" />
                         </Link>
                     </nav>
 
@@ -879,7 +879,7 @@ export default function Landing() {
                         pernah membungkus baris atau mendorong logo. */}
                     <Link
                         to={navPath}
-                        className="shrink-0 inline-flex items-center gap-1.5 rounded-md bg-[#F97316] text-white font-medium px-3 sm:px-4 py-2 text-sm hover:bg-[#EA580C] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
+                        className="shrink-0 inline-flex items-center gap-1.5 rounded-md bg-[#DC2626] text-white font-medium px-3 sm:px-4 py-2 text-sm hover:bg-[#991B1B] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
                     >
                         <span className="hidden sm:inline">{navLabel}</span>
                         <span className="sm:hidden">
@@ -955,7 +955,7 @@ export default function Landing() {
                     }}
                 >
                     <div className="inline-flex w-fit items-center gap-2 rounded-full bg-[#1F1F1F] border border-[#262626] pl-2 pr-3 py-1 mb-6">
-                        <span className="flex items-center gap-0.5 rounded-full bg-[#F97316]/15 px-1.5 py-0.5">
+                        <span className="flex items-center gap-0.5 rounded-full bg-[#DC2626]/15 px-1.5 py-0.5">
                             <Bintang jumlah={5} />
                         </span>
                         <span className="text-xs text-[#A0A0A0]">
@@ -964,7 +964,7 @@ export default function Landing() {
                     </div>
                     <h1 className="font-medium text-4xl sm:text-5xl md:text-6xl leading-[1.08] mb-5">
                         Kelola parkir Anda,{" "}
-                        <span className="text-[#F97316]">
+                        <span className="text-[#DC2626]">
                             dari pintu masuk hingga selesai
                         </span>
                     </h1>
@@ -976,7 +976,7 @@ export default function Landing() {
                     <div className="flex flex-col items-center gap-6">
                         <Link
                             to={navPath}
-                            className="rounded-md bg-[#F97316] text-white font-medium px-8 py-3.5 text-sm hover:bg-[#EA580C] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
+                            className="rounded-md bg-[#DC2626] text-white font-medium px-8 py-3.5 text-sm hover:bg-[#991B1B] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
                         >
                             {user ? "Ke Dashboard" : "Masuk ke Portal"}
                         </Link>
@@ -1001,7 +1001,7 @@ export default function Landing() {
                                 hoverable
                                 className="h-full shadow-xl shadow-black/30"
                             >
-                                <p className="font-display text-sm text-[#F97316] mb-1.5">
+                                <p className="font-display text-sm text-[#DC2626] mb-1.5">
                                     {r.name}
                                 </p>
                                 <p className="text-sm text-[#A0A0A0] leading-relaxed">
@@ -1110,11 +1110,11 @@ export default function Landing() {
                                     <Line
                                         type="monotone"
                                         dataKey="val"
-                                        stroke="#F97316"
+                                        stroke="#DC2626"
                                         strokeWidth={2}
                                         dot={{
                                             r: 3,
-                                            fill: "#F97316",
+                                            fill: "#DC2626",
                                             strokeWidth: 0,
                                         }}
                                         activeDot={{ r: 5 }}
@@ -1157,7 +1157,7 @@ export default function Landing() {
                             {ALUR.map((a, i) => (
                                 <div key={a.no} className="flex gap-4">
                                     <div className="flex flex-col items-center">
-                                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#F97316]/15 font-mono text-xs text-[#F97316]">
+                                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#DC2626]/15 font-mono text-xs text-[#DC2626]">
                                             {a.no}
                                         </span>
                                         {i < ALUR.length - 1 && (
@@ -1200,7 +1200,7 @@ export default function Landing() {
                                 Slot tersedia
                             </p>
                             <div className="flex items-end gap-2 mb-3">
-                                <p className="font-display text-3xl text-[#F97316]">
+                                <p className="font-display text-3xl text-[#DC2626]">
                                     <AnimatedCounter
                                         value={Math.max(
                                             0,
@@ -1215,7 +1215,7 @@ export default function Landing() {
                             </div>
                             <div className="h-1.5 rounded-full bg-[#1F1F1F] overflow-hidden">
                                 <div
-                                    className="h-full rounded-full bg-[#F97316]"
+                                    className="h-full rounded-full bg-[#DC2626]"
                                     style={{
                                         width: `${
                                             statistik.kapasitas > 0
@@ -1238,7 +1238,7 @@ export default function Landing() {
                                 Kualitas layanan
                             </p>
                             <div className="flex items-center gap-2">
-                                <p className="font-display text-3xl text-[#F97316]">
+                                <p className="font-display text-3xl text-[#DC2626]">
                                     <AnimatedCounter
                                         value={Number(statistik.rating_rata)}
                                         format={(n) => n.toFixed(1)}
@@ -1333,7 +1333,7 @@ export default function Landing() {
                         <p className="font-medium text-2xl md:text-3xl">
                             Komentar pengguna
                         </p>
-                        <span className="rounded-full bg-[#F97316]/15 text-[#F97316] text-xs font-mono px-2 py-0.5">
+                        <span className="rounded-full bg-[#DC2626]/15 text-[#DC2626] text-xs font-mono px-2 py-0.5">
                             {comments.length}
                         </span>
                     </div>
@@ -1380,7 +1380,7 @@ export default function Landing() {
                                             setCommentName(e.target.value)
                                         }
                                         placeholder="Nama Anda"
-                                        className="w-full rounded-md bg-[#161616] border border-[#262626] px-3 py-2.5 text-sm text-white placeholder:text-[#8A8A8A]/70 focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent transition-shadow"
+                                        className="w-full rounded-md bg-[#161616] border border-[#262626] px-3 py-2.5 text-sm text-white placeholder:text-[#8A8A8A]/70 focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent transition-shadow"
                                     />
                                 </div>
                                 <div>
@@ -1416,7 +1416,7 @@ export default function Landing() {
                                         }
                                         placeholder="Tulis komentar Anda..."
                                         rows={4}
-                                        className="w-full rounded-md bg-[#161616] border border-[#262626] px-3 py-2.5 text-sm text-white placeholder:text-[#8A8A8A]/70 focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent resize-none transition-shadow"
+                                        className="w-full rounded-md bg-[#161616] border border-[#262626] px-3 py-2.5 text-sm text-white placeholder:text-[#8A8A8A]/70 focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent resize-none transition-shadow"
                                     />
                                 </div>
                                 {commentError && (
@@ -1452,7 +1452,7 @@ export default function Landing() {
                                 <button
                                     type="submit"
                                     disabled={commentSubmitting}
-                                    className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-md bg-[#F97316] text-white font-medium px-4 py-2.5 text-sm hover:bg-[#EA580C] disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
+                                    className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-md bg-[#DC2626] text-white font-medium px-4 py-2.5 text-sm hover:bg-[#991B1B] disabled:opacity-60 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
                                 >
                                     {commentSubmitting ? (
                                         <>
@@ -1577,8 +1577,8 @@ export default function Landing() {
                                         </p>
 
                                         {c.balasan && (
-                                            <div className="mt-3 pl-3 border-l-2 border-[#F97316]/40 bg-[#F97316]/5 rounded-r-md py-2 pr-2">
-                                                <p className="flex items-center gap-1.5 text-xs font-mono text-[#F97316] mb-1">
+                                            <div className="mt-3 pl-3 border-l-2 border-[#DC2626]/40 bg-[#DC2626]/5 rounded-r-md py-2 pr-2">
+                                                <p className="flex items-center gap-1.5 text-xs font-mono text-[#DC2626] mb-1">
                                                     <svg
                                                         width="12"
                                                         height="12"
@@ -1627,7 +1627,7 @@ export default function Landing() {
                         </div>
                         <Link
                             to="/bantuan"
-                            className="shrink-0 rounded-md bg-[#F97316] text-white font-medium px-5 py-2.5 text-sm hover:bg-[#EA580C] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
+                            className="shrink-0 rounded-md bg-[#DC2626] text-white font-medium px-5 py-2.5 text-sm hover:bg-[#991B1B] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
                         >
                             Buka Halaman Bantuan
                         </Link>
@@ -1653,7 +1653,7 @@ export default function Landing() {
                                 href={WHATSAPP_URL}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="flex items-center justify-center gap-2 rounded-md bg-[#F97316] text-white font-medium px-3 py-2 text-xs hover:bg-[#EA580C] transition-colors"
+                                className="flex items-center justify-center gap-2 rounded-md bg-[#DC2626] text-white font-medium px-3 py-2 text-xs hover:bg-[#991B1B] transition-colors"
                             >
                                 <svg
                                     width="14"
@@ -1675,7 +1675,7 @@ export default function Landing() {
                             <Link
                                 to="/bantuan"
                                 onClick={() => setHelpOpen(false)}
-                                className="text-center text-xs text-[#F97316] hover:underline py-1"
+                                className="text-center text-xs text-[#DC2626] hover:underline py-1"
                             >
                                 Lihat halaman Bantuan →
                             </Link>
@@ -1692,7 +1692,7 @@ export default function Landing() {
                     }
                     aria-label="Bantuan cepat"
                     aria-expanded={helpOpen}
-                    className="h-12 w-12 rounded-full bg-[#F97316] text-white flex items-center justify-center shadow-lg hover:bg-[#EA580C] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
+                    className="h-12 w-12 rounded-full bg-[#DC2626] text-white flex items-center justify-center shadow-lg hover:bg-[#991B1B] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#DC2626] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D0D0D]"
                 >
                     <svg
                         width="20"
@@ -1725,7 +1725,7 @@ export default function Landing() {
                     <div className="flex flex-col items-center sm:items-start gap-4">
                         <div className="flex items-center gap-2.5">
                             <span
-                                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#F97316] text-white font-display text-base"
+                                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#DC2626] text-white font-display text-base"
                                 aria-hidden="true"
                             >
                                 P

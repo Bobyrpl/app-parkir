@@ -46,7 +46,7 @@ export default function ModalQrBooking({ booking, onClose }) {
                     <p className="text-sm text-[#8A8A8A] py-20">Menyiapkan QR...</p>
                 )}
 
-                <p className="mt-4 font-mono text-[#F97316] text-sm tracking-wider">
+                <p className="mt-4 font-mono text-[#DC2626] text-sm tracking-wider">
                     {booking.kode_booking}
                 </p>
                 <p className="text-xs text-[#8A8A8A] mt-1">

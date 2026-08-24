@@ -288,7 +288,7 @@ export default function DashboardAdmin() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <StatCard label="TOTAL PENGGUNA" value={stats.users} icon={Users} />
                 <StatCard label="JENIS TARIF" value={stats.tarif} accent="#35C48D" icon={Ticket} />
-                <StatCard label="AREA PARKIR" value={stats.area} accent="#F97316" icon={MapPin} />
+                <StatCard label="AREA PARKIR" value={stats.area} accent="#DC2626" icon={MapPin} />
                 <StatCard label="KENDARAAN TERDAFTAR" value={stats.kendaraan} accent="#E5484D" icon={Car} />
             </div>
 
@@ -296,8 +296,8 @@ export default function DashboardAdmin() {
                 totalTransaksi/totalPendapatan yang sudah dihitung di atas,
                 cuma ditonjolkan di sini seperti "highlight bar" ala CoreUI. */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 no-print">
-                <Card className="p-5 flex items-center gap-4 border-l-4" style={{ borderLeftColor: '#F97316' }}>
-                    <span className="w-11 h-11 rounded-xl bg-[#F97316]/10 text-[#F97316] flex items-center justify-center shrink-0">
+                <Card className="p-5 flex items-center gap-4 border-l-4" style={{ borderLeftColor: '#DC2626' }}>
+                    <span className="w-11 h-11 rounded-xl bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center shrink-0">
                         <Receipt size={20} />
                     </span>
                     <div className="min-w-0">
@@ -325,7 +325,7 @@ export default function DashboardAdmin() {
             <div className="mb-8 no-print">
                 <Card className="p-6">
                     <div className="flex items-center gap-2.5 mb-4">
-                        <span className="w-8 h-8 rounded-lg bg-[#F97316]/10 text-[#F97316] flex items-center justify-center shrink-0">
+                        <span className="w-8 h-8 rounded-lg bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center shrink-0">
                             <TrendingUp size={16} />
                         </span>
                         <div className="min-w-0">
@@ -385,7 +385,7 @@ export default function DashboardAdmin() {
                                         return <span style={{ color: '#A0A0A0', fontSize: 12 }}>{label}</span>;
                                     }}
                                 />
-                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#F97316" strokeWidth={2} dot={{ r: 3 }} />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#DC2626" strokeWidth={2} dot={{ r: 3 }} />
                                 <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#38BDF8" strokeWidth={2} strokeDasharray="5 3" dot={{ r: 3 }} />
                                 <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#35C48D" strokeWidth={2} dot={{ r: 3 }} />
                             </LineChart>
@@ -398,7 +398,7 @@ export default function DashboardAdmin() {
             <Card className="p-6 mb-8">
                 <div className="flex items-start justify-between mb-4 flex-wrap gap-3">
                     <div className="flex items-start gap-2.5">
-                        <span className="w-8 h-8 rounded-lg bg-[#F97316]/10 text-[#F97316] flex items-center justify-center shrink-0 print:hidden">
+                        <span className="w-8 h-8 rounded-lg bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center shrink-0 print:hidden">
                             <FileText size={16} />
                         </span>
                         <div>
@@ -441,7 +441,7 @@ export default function DashboardAdmin() {
                             value={dari}
                             max={sampai}
                             onChange={(e) => setDari(e.target.value)}
-                            className="bg-[#1F1F1F] border border-[#262626] rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316] transition-shadow"
+                            className="bg-[#1F1F1F] border border-[#262626] rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] transition-shadow"
                         />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -453,7 +453,7 @@ export default function DashboardAdmin() {
                             min={dari}
                             max={toDateInputValue(new Date())}
                             onChange={(e) => setSampai(e.target.value)}
-                            className="bg-[#1F1F1F] border border-[#262626] rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316] transition-shadow"
+                            className="bg-[#1F1F1F] border border-[#262626] rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] transition-shadow"
                         />
                     </div>
                     <Button type="submit" disabled={loadingRekap}>
@@ -468,7 +468,7 @@ export default function DashboardAdmin() {
                             onClick={() => handlePreset(7)}
                             className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors ${
                                 activePreset === 7
-                                    ? 'bg-[#F97316] text-white'
+                                    ? 'bg-[#DC2626] text-white'
                                     : 'text-[#8A8A8A] hover:text-white'
                             }`}
                         >
@@ -479,7 +479,7 @@ export default function DashboardAdmin() {
                             onClick={() => handlePreset(30)}
                             className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors ${
                                 activePreset === 30
-                                    ? 'bg-[#F97316] text-white'
+                                    ? 'bg-[#DC2626] text-white'
                                     : 'text-[#8A8A8A] hover:text-white'
                             }`}
                         >
@@ -554,7 +554,7 @@ export default function DashboardAdmin() {
 
             <Card className="p-6 no-print">
                 <div className="flex items-center gap-2.5 mb-4">
-                    <span className="w-8 h-8 rounded-lg bg-[#F97316]/10 text-[#F97316] flex items-center justify-center shrink-0">
+                    <span className="w-8 h-8 rounded-lg bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center shrink-0">
                         <Compass size={16} />
                     </span>
                     <h2 className="font-display text-lg text-white">
@@ -567,9 +567,9 @@ export default function DashboardAdmin() {
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {[
-                        { label: 'Pengguna', icon: Users, accent: '#F97316' },
+                        { label: 'Pengguna', icon: Users, accent: '#DC2626' },
                         { label: 'Tarif', icon: Ticket, accent: '#35C48D' },
-                        { label: 'Area Parkir', icon: MapPin, accent: '#F97316' },
+                        { label: 'Area Parkir', icon: MapPin, accent: '#DC2626' },
                         { label: 'Kendaraan', icon: Car, accent: '#E5484D' },
                     ].map(({ label, icon: Icon, accent }) => (
                         <div

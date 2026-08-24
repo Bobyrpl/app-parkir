@@ -38,10 +38,10 @@ const ROLE_BADGE_TONE = { admin: "warning", petugas: "info", owner: "success" };
 // Palet warna avatar inisial — dirotasi berdasarkan nama, biar daftar
 // panjang tidak terasa monoton semua warna kuning.
 const AVATAR_PALETTE = [
-  { bg: "bg-[#F97316]/10", text: "text-[#F97316]" },
-  { bg: "bg-[#F97316]/10", text: "text-[#F97316]" },
+  { bg: "bg-[#DC2626]/10", text: "text-[#DC2626]" },
+  { bg: "bg-[#DC2626]/10", text: "text-[#DC2626]" },
   { bg: "bg-[#35C48D]/10", text: "text-[#35C48D]" },
-  { bg: "bg-[#F97316]/10", text: "text-[#F97316]" },
+  { bg: "bg-[#DC2626]/10", text: "text-[#DC2626]" },
 ];
 
 function warnaAvatar(nama) {
@@ -274,17 +274,17 @@ export default function Users() {
             <StatCard
               label="ADMIN"
               value={ringkasan.admin}
-              accent="#F97316"
+              accent="#DC2626"
             />
             <StatCard
               label="PETUGAS"
               value={ringkasan.petugas}
-              accent="#F97316"
+              accent="#DC2626"
             />
             <StatCard
               label="PELANGGAN"
               value={ringkasan.pelanggan}
-              accent="#F97316"
+              accent="#DC2626"
             />
             <StatCard
               label="TOTAL USER"
@@ -329,7 +329,7 @@ export default function Users() {
         <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
-              <span className="w-8 h-8 rounded-lg bg-[#F97316]/10 text-[#F97316] flex items-center justify-center shrink-0">
+              <span className="w-8 h-8 rounded-lg bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center shrink-0">
                 {editId ? <Pencil size={15} /> : <UserPlus size={15} />}
               </span>
               <h2 className="font-display text-base text-white">
@@ -406,7 +406,7 @@ export default function Users() {
               <select
                 value={form.role}
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
-                className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316] transition-shadow"
+                className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] transition-shadow"
               >
                 <option value="petugas">Petugas</option>
                 <option value="owner">Owner</option>
@@ -421,7 +421,7 @@ export default function Users() {
                 onChange={(e) =>
                   setForm({ ...form, status_aktif: e.target.checked })
                 }
-                className="accent-[#F97316]"
+                className="accent-[#DC2626]"
               />
               Akun aktif
             </label>

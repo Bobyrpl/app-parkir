@@ -180,7 +180,7 @@ export default function Kendaraan() {
                                 <select
                                     value={form.jenis_kendaraan}
                                     onChange={(e) => setForm({ ...form, jenis_kendaraan: e.target.value })}
-                                    className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316]"
+                                    className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626]"
                                 >
                                     <option value="motor">Motor</option>
                                     <option value="mobil">Mobil</option>

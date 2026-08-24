@@ -89,7 +89,7 @@ export default function ModalQris({ transaksiId, onLunas, onBatal, demoMode = fa
                             {demoMode && (
                                 <button
                                     onClick={handleTandaiLunasManual}
-                                    className="text-xs text-[#F97316] border border-[#F97316]/40 rounded-md py-1.5 hover:bg-[#F97316]/10 transition-colors"
+                                    className="text-xs text-[#DC2626] border border-[#DC2626]/40 rounded-md py-1.5 hover:bg-[#DC2626]/10 transition-colors"
                                 >
                                     Tandai Lunas (Demo)
                                 </button>

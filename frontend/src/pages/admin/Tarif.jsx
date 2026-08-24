@@ -171,7 +171,7 @@ export default function Tarif() {
                     <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
                         <div className="flex items-center justify-between mb-5">
                             <div className="flex items-center gap-2">
-                                <span className="w-8 h-8 rounded-lg bg-[#F97316]/10 text-[#F97316] flex items-center justify-center shrink-0">
+                                <span className="w-8 h-8 rounded-lg bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center shrink-0">
                                     {editId ? <Pencil size={15} /> : <Ticket size={15} />}
                                 </span>
                                 <h2 className="font-display text-base text-white">
@@ -200,7 +200,7 @@ export default function Tarif() {
                                             jenis_kendaraan: e.target.value,
                                         })
                                     }
-                                    className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316] transition-shadow"
+                                    className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] transition-shadow"
                                 >
                                     <option value="motor">Motor</option>
                                     <option value="mobil">Mobil</option>

@@ -96,7 +96,7 @@ export default function PermintaanAktivasi() {
                         onClick={() => setFilter(value)}
                         className={`rounded-md px-3 py-1.5 text-xs font-mono border ${
                             filter === value
-                                ? 'border-[#F97316] bg-[#F97316]/10 text-[#F97316]'
+                                ? 'border-[#DC2626] bg-[#DC2626]/10 text-[#DC2626]'
                                 : 'border-[#262626] text-[#A0A0A0] hover:bg-[#1F1F1F]'
                         }`}
                     >
@@ -108,7 +108,7 @@ export default function PermintaanAktivasi() {
             <Table columns={['Username', 'Nama Akun', 'Catatan Pemohon', 'Diajukan', 'Status', 'Aksi']}>
                 {data.map((p) => (
                     <tr key={p.id_permintaan}>
-                        <td className="px-4 py-3 font-mono text-[#F97316]">{p.username}</td>
+                        <td className="px-4 py-3 font-mono text-[#DC2626]">{p.username}</td>
                         <td className="px-4 py-3">
                             {p.user ? (
                                 <>
@@ -184,7 +184,7 @@ export default function PermintaanAktivasi() {
                             rows={3}
                             maxLength={500}
                             placeholder="Alasan penolakan..."
-                            className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:border-transparent resize-none mb-4"
+                            className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent resize-none mb-4"
                         />
                         <div className="flex justify-end gap-2">
                             <Button variant="ghost" onClick={() => setTolakTarget(null)} disabled={processingId === tolakTarget}>

@@ -276,7 +276,7 @@ export default function KendaraanKeluar() {
                             }
                             className={`text-left rounded-lg border p-3 transition ${
                                 filterArea === String(a.id_area)
-                                    ? 'border-[#F97316] bg-[#F97316]/10'
+                                    ? 'border-[#DC2626] bg-[#DC2626]/10'
                                     : 'border-[#262626] bg-[#1F1F1F] hover:bg-[#262626]'
                             }`}
                         >
@@ -302,7 +302,7 @@ export default function KendaraanKeluar() {
                 <select
                     value={filterArea}
                     onChange={(e) => setFilterArea(e.target.value)}
-                    className="rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316] sm:max-w-xs"
+                    className="rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] sm:max-w-xs"
                 >
                     <option value="semua">Semua area</option>
                     {areaList.map((a) => (

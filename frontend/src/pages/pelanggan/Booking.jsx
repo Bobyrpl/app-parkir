@@ -222,11 +222,11 @@ export default function Booking() {
       />
 
       {kodeSukses && (
-        <Card className="p-5 mb-6 border-[#F97316]/40">
+        <Card className="p-5 mb-6 border-[#DC2626]/40">
           <p className="text-xs font-mono text-[#8A8A8A] mb-1">
             KODE BOOKING ANDA
           </p>
-          <p className="font-display text-3xl text-[#F97316] tracking-widest">
+          <p className="font-display text-3xl text-[#DC2626] tracking-widest">
             {kodeSukses}
           </p>
           <p className="text-sm text-[#8A8A8A] mt-2">
@@ -243,7 +243,7 @@ export default function Booking() {
             <button
               type="button"
               onClick={() => setTambahKendaraan((v) => !v)}
-              className="text-xs font-mono text-[#F97316] hover:underline"
+              className="text-xs font-mono text-[#DC2626] hover:underline"
             >
               {tambahKendaraan ? "Batal" : "+ Tambah Kendaraan"}
             </button>
@@ -275,7 +275,7 @@ export default function Booking() {
                   })
                 }
                 required
-                className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#F97316]"
+                className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626]"
               >
                 <option value="">Pilih jenis kendaraan</option>
                 {tarifList.map((t) => (
@@ -315,7 +315,7 @@ export default function Booking() {
                   k.sedang_parkir
                     ? "border-[#262626] bg-[#161616] text-[#8A8A8A] cursor-not-allowed"
                     : form.id_kendaraan === k.id_kendaraan
-                      ? "border-[#F97316] bg-[#F97316]/10 text-[#F97316]"
+                      ? "border-[#DC2626] bg-[#DC2626]/10 text-[#DC2626]"
                       : "border-[#262626] text-[#A0A0A0] hover:bg-[#1F1F1F]"
                 }`}
               >
@@ -323,7 +323,7 @@ export default function Booking() {
                   {k.plat_nomor} — {k.jenis_kendaraan}
                 </span>
                 {k.sedang_parkir && (
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#F97316]/15 text-[#F97316] shrink-0">
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#DC2626]/15 text-[#DC2626] shrink-0">
                     SEDANG PARKIR
                   </span>
                 )}

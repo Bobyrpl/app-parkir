@@ -77,7 +77,7 @@ export default function DashboardOwner() {
             {/* Grafik gabungan 7 hari terakhir */}
             <div className="mb-8">
                 <h2 className="font-display text-base text-white mb-3 flex items-center gap-2">
-                    <LineChart size={16} className="text-[#F97316]" />
+                    <LineChart size={16} className="text-[#DC2626]" />
                     Tren 7 Hari Terakhir
                 </h2>
 
@@ -104,11 +104,11 @@ export default function DashboardOwner() {
             {/* Menu utama */}
             <div>
                 <h2 className="font-display text-base text-white mb-3 flex items-center gap-2">
-                    <LayoutGrid size={16} className="text-[#F97316]" />
+                    <LayoutGrid size={16} className="text-[#DC2626]" />
                     Menu
                 </h2>
                 <Link to="/owner/rekap" className="group block max-w-md">
-                    <Card className="p-6 flex flex-col justify-between h-full transition-colors duration-200 hover:border-[#F97316]/30">
+                    <Card className="p-6 flex flex-col justify-between h-full transition-colors duration-200 hover:border-[#DC2626]/30">
                         <div>
                             <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-[#35C48D]/10 text-[#35C48D] mb-3">
                                 <FileBarChart size={18} />
@@ -119,7 +119,7 @@ export default function DashboardOwner() {
                                 total pendapatan pada periode tertentu, lalu ekspor atau cetak laporannya.
                             </p>
                         </div>
-                        <span className="inline-flex items-center gap-1.5 text-sm text-[#F97316] font-medium">
+                        <span className="inline-flex items-center gap-1.5 text-sm text-[#DC2626] font-medium">
                             Buka Rekap Transaksi
                             <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
                         </span>
