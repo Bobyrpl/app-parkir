@@ -954,11 +954,6 @@ export default function Landing() {
                         opacity: heroContentOpacity,
                     }}
                 >
-                    <div className="inline-flex w-fit items-center gap-2 rounded-full bg-[#444444] border border-[#444444] pl-2 pr-3 py-1 mb-6">
-                        <span className="flex items-center gap-0.5 rounded-full bg-[#C90000]/15 px-1.5 py-0.5">
-                            <Bintang jumlah={5} />
-                        </span>
-                    </div>
                     <h1 className="font-medium text-4xl sm:text-5xl md:text-6xl leading-[1.08] mb-5">
                          kelola parkir,{" "}
                         <span className="text-[#C90000]">
