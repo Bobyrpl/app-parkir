@@ -972,7 +972,13 @@ export default function Landing() {
                         >
                             {user ? "Ke Dashboard" : "Masuk ke Portal"}
                         </Link>
-                        
+                        <div className="flex items-center gap-2 text-xs font-mono text-white/70 tracking-wide">
+                            <span>Admin</span>
+                            <span className="text-[#444444]">/</span>
+                            <span>Petugas</span>
+                            <span className="text-[#444444]">/</span>
+                            <span>Owner</span>
+                        </div>
                     </div>
                 </div>
             </section>
