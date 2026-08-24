@@ -958,14 +958,11 @@ export default function Landing() {
                         <span className="flex items-center gap-0.5 rounded-full bg-[#C90000]/15 px-1.5 py-0.5">
                             <Bintang jumlah={5} />
                         </span>
-                        <span className="text-xs text-white/80">
-                            4.8 dari pengguna aktif
-                        </span>
                     </div>
                     <h1 className="font-medium text-4xl sm:text-5xl md:text-6xl leading-[1.08] mb-5">
-                        Kelola parkir Anda,{" "}
+                         kelola parkir,{" "}
                         <span className="text-[#C90000]">
-                            dari pintu masuk hingga selesai
+                            sekarang menjadi mudah 
                         </span>
                     </h1>
                     <p className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-md">
