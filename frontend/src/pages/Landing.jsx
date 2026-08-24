@@ -120,7 +120,7 @@ const ROLES = [
 const TESTIMONI = [
     {
         nama: "Rina",
-        peran: "Pengelola Mall",
+        peran: "Pengelola parkir",
         teks: "Antrean di pintu keluar jauh lebih cepat sejak pakai ParkirKu.",
         bintang: 5,
     },
@@ -728,7 +728,7 @@ export default function Landing() {
                                 : "opacity-0 translate-y-1"
                         }`}
                     >
-                        by Abdulloh Mahbuby
+                        by Abdulloh Mahbuby 
                     </p>
                 </div>
             )}
@@ -972,13 +972,6 @@ export default function Landing() {
                         >
                             {user ? "Ke Dashboard" : "Masuk ke Portal"}
                         </Link>
-                        <div className="flex items-center gap-2 text-xs font-mono text-white/70 tracking-wide">
-                            <span>Admin</span>
-                            <span className="text-[#444444]">/</span>
-                            <span>Petugas</span>
-                            <span className="text-[#444444]">/</span>
-                            <span>Owner</span>
-                        </div>
                     </div>
                 </div>
             </section>
