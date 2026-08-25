@@ -951,9 +951,9 @@ export default function Landing() {
                 >
                     
                     <h1 className="font-medium text-4xl sm:text-5xl md:text-6xl leading-[1.08] mb-5">
-                        Kelola parkir Anda,{" "}
+                        Kelola parkir sekarang ,{" "}
                         <span className="text-[#C90000]">
-                            dari pintu masuk hingga selesai
+                            lebih mudah 
                         </span>
                     </h1>
                     <p className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-md">
