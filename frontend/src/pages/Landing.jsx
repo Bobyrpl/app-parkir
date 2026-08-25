@@ -1200,7 +1200,7 @@ export default function Landing() {
                                 Slot tersedia
                             </p>
                             <div className="flex items-end gap-2 mb-3">
-                                <p className="font-display text-3xl text-[#C90000]">
+                                <p className="font-display text-3xl text-[#f7f7f7]">
                                     <AnimatedCounter
                                         value={Math.max(
                                             0,
@@ -1238,7 +1238,7 @@ export default function Landing() {
                                 Kualitas layanan
                             </p>
                             <div className="flex items-center gap-2">
-                                <p className="font-display text-3xl text-[#C90000]">
+                                <p className="font-display text-3xl text-[#ffc402]">
                                     <AnimatedCounter
                                         value={Number(statistik.rating_rata)}
                                         format={(n) => n.toFixed(1)}
@@ -1724,12 +1724,7 @@ export default function Landing() {
                 <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-4 justify-between text-center sm:text-left">
                     <div className="flex flex-col items-center sm:items-start gap-4">
                         <div className="flex items-center gap-2.5">
-                            <span
-                                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#C90000] text-white font-display text-base"
-                                aria-hidden="true"
-                            >
-                                P
-                            </span>
+                            
                             <div className="leading-tight text-left">
                                 <p className="font-display text-base tracking-tight">
                                     {BRAND_NAME}
