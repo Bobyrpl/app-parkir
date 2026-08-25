@@ -739,7 +739,7 @@ export default function Landing() {
 
                     {/* Indikator loading kecil */}
                     <svg
-                        className={`animate-spin h-5 w-5 text-[#C90000] transition-opacity duration-500 delay-150 ${
+                        className={`animate-spin h-5 w-5 text-[#0026ff] transition-opacity duration-500 delay-150 ${
                             logoIn ? "opacity-100" : "opacity-0"
                         }`}
                         viewBox="0 0 24 24"
