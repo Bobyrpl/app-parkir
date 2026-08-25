@@ -2,6 +2,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./bootstrap";
 import { createRoot } from "react-dom/client";
 import { Component } from "react";
+import { AlertTriangle, RotateCcw } from "lucide-react";
 import App from "./app";
 import "./app.css";
 
@@ -13,39 +14,40 @@ class ErrorBoundary extends Component {
     }
 
     componentDidCatch(error, info) {
-        // supaya errornya tetap kelihatan di console browser saat debugging
         console.error("Uncaught error:", error, info);
     }
 
     render() {
         if (this.state.error) {
             return (
-                <div
-                    style={{
-                        padding: 24,
-                        minHeight: "100vh",
-                        background: "#080A0D",
-                        color: "#FFFFFF",
-                        fontFamily: "monospace",
-                    }}
-                >
-                    <h2 style={{ marginBottom: 8 }}>Terjadi kesalahan</h2>
-                    <p style={{ color: "#B5B5B5", marginBottom: 16 }}>
-                        {this.state.error.message || "Aplikasi mengalami error yang tidak terduga."}
-                    </p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        style={{
-                            background: "#C90000",
-                            color: "#080A0D",
-                            border: "none",
-                            borderRadius: 6,
-                            padding: "8px 16px",
-                            cursor: "pointer",
-                        }}
-                    >
-                        Muat ulang halaman
-                    </button>
+                <div className="min-h-screen bg-[#080A0D] flex items-center justify-center px-6">
+                    <div className="w-full max-w-md rounded-xl bg-[#080A0D] border border-[#444444] p-8 text-center">
+                        <div className="mx-auto mb-5 w-14 h-14 rounded-full bg-[#C90000]/15 flex items-center justify-center">
+                            <AlertTriangle size={26} strokeWidth={2} className="text-[#C90000]" />
+                        </div>
+
+                        <p className="text-xs font-mono text-[#C90000] tracking-wider mb-2">
+                            ERROR
+                        </p>
+                        <h1 className="font-display text-xl text-white mb-2">
+                            Terjadi Kesalahan
+                        </h1>
+                        <p className="text-sm text-white/70 mb-6">
+                            {this.state.error.message || "Aplikasi mengalami error yang tidak terduga."}
+                        </p>
+
+                        <button
+                            onClick={() => window.location.reload()}
+                            className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-[#C90000] text-white text-sm font-medium px-4 py-2.5 hover:bg-[#5A0000] transition-colors"
+                        >
+                            <RotateCcw size={16} strokeWidth={2} />
+                            Muat Ulang Halaman
+                        </button>
+
+                        <p className="text-xs font-mono text-white/40 mt-5">
+                            SISTEM MANAJEMEN PARKIR
+                        </p>
+                    </div>
                 </div>
             );
         }
