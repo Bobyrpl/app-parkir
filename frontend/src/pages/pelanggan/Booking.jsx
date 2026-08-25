@@ -222,14 +222,14 @@ export default function Booking() {
       />
 
       {kodeSukses && (
-        <Card className="p-5 mb-6 border-[#DC2626]/40">
-          <p className="text-xs font-mono text-[#8A8A8A] mb-1">
+        <Card className="p-5 mb-6 border-[#C90000]/40">
+          <p className="text-xs font-mono text-white/70 mb-1">
             KODE BOOKING ANDA
           </p>
-          <p className="font-display text-3xl text-[#DC2626] tracking-widest">
+          <p className="font-display text-3xl text-[#C90000] tracking-widest">
             {kodeSukses}
           </p>
-          <p className="text-sm text-[#8A8A8A] mt-2">
+          <p className="text-sm text-white/70 mt-2">
             Simpan kode ini. Tunjukkan ke petugas saat tiba di area parkir,
             setelah booking dikonfirmasi.
           </p>
@@ -243,7 +243,7 @@ export default function Booking() {
             <button
               type="button"
               onClick={() => setTambahKendaraan((v) => !v)}
-              className="text-xs font-mono text-[#DC2626] hover:underline"
+              className="text-xs font-mono text-[#C90000] hover:underline"
             >
               {tambahKendaraan ? "Batal" : "+ Tambah Kendaraan"}
             </button>
@@ -252,7 +252,7 @@ export default function Booking() {
           {tambahKendaraan && (
             <form
               onSubmit={handleTambahKendaraan}
-              className="space-y-2 mb-4 border border-[#262626] rounded-md p-3"
+              className="space-y-2 mb-4 border border-[#444444] rounded-md p-3"
             >
               <Input
                 placeholder="Plat nomor, mis. AD 1234 XY"
@@ -275,7 +275,7 @@ export default function Booking() {
                   })
                 }
                 required
-                className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626]"
+                className="w-full rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000]"
               >
                 <option value="">Pilih jenis kendaraan</option>
                 {tarifList.map((t) => (
@@ -299,7 +299,7 @@ export default function Booking() {
           )}
 
           {kendaraanList.length === 0 && !tambahKendaraan && (
-            <p className="text-sm text-[#8A8A8A]">
+            <p className="text-sm text-white/70">
               Belum ada kendaraan terdaftar. Klik "+ Tambah Kendaraan" dulu.
             </p>
           )}
@@ -313,17 +313,17 @@ export default function Booking() {
                 onClick={() => handlePilihKendaraan(k)}
                 className={`w-full flex items-center justify-between gap-2 text-left rounded-md px-3 py-2 text-sm font-mono border transition ${
                   k.sedang_parkir
-                    ? "border-[#262626] bg-[#161616] text-[#8A8A8A] cursor-not-allowed"
+                    ? "border-[#444444] bg-[#080A0D] text-white/70 cursor-not-allowed"
                     : form.id_kendaraan === k.id_kendaraan
-                      ? "border-[#DC2626] bg-[#DC2626]/10 text-[#DC2626]"
-                      : "border-[#262626] text-[#A0A0A0] hover:bg-[#1F1F1F]"
+                      ? "border-[#C90000] bg-[#C90000]/10 text-[#C90000]"
+                      : "border-[#444444] text-white/80 hover:bg-[#444444]"
                 }`}
               >
                 <span className="truncate">
                   {k.plat_nomor} — {k.jenis_kendaraan}
                 </span>
                 {k.sedang_parkir && (
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#DC2626]/15 text-[#DC2626] shrink-0">
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000] shrink-0">
                     SEDANG PARKIR
                   </span>
                 )}
@@ -338,9 +338,9 @@ export default function Booking() {
           </h2>
           <form onSubmit={handleSubmit} className="space-y-3">
             {/* Tarif & area sekarang otomatis, bukan pilihan manual lagi */}
-            <div className="rounded-md border border-[#262626] bg-[#1F1F1F] p-3 space-y-2">
+            <div className="rounded-md border border-[#444444] bg-[#444444] p-3 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-[#8A8A8A]">
+                <span className="text-xs font-mono text-white/70">
                   TARIF (OTOMATIS)
                 </span>
                 <span className="text-sm text-white">
@@ -350,7 +350,7 @@ export default function Booking() {
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-[#8A8A8A]">
+                <span className="text-xs font-mono text-white/70">
                   AREA (OTOMATIS)
                 </span>
                 <span className="text-sm text-white">
@@ -362,7 +362,7 @@ export default function Booking() {
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+              <label className="block text-xs font-mono text-white/70 mb-1.5">
                 TANGGAL RENCANA
               </label>
               <Input
@@ -378,7 +378,7 @@ export default function Booking() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+                <label className="block text-xs font-mono text-white/70 mb-1.5">
                   JAM MASUK
                 </label>
                 <Input
@@ -391,7 +391,7 @@ export default function Booking() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+                <label className="block text-xs font-mono text-white/70 mb-1.5">
                   JAM KELUAR (OPSIONAL)
                 </label>
                 <Input
@@ -405,7 +405,7 @@ export default function Booking() {
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+              <label className="block text-xs font-mono text-white/70 mb-1.5">
                 CATATAN (OPSIONAL)
               </label>
               <Input
@@ -416,7 +416,7 @@ export default function Booking() {
             </div>
 
             {alasanTidakBisaSubmit && (
-              <p className="text-xs text-[#8A8A8A]">{alasanTidakBisaSubmit}</p>
+              <p className="text-xs text-white/70">{alasanTidakBisaSubmit}</p>
             )}
 
             <Button
@@ -428,8 +428,8 @@ export default function Booking() {
           </form>
         </Card>
       </div>
-      <footer className="border-t border-[#262626]">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8A8A8A] text-center sm:text-left">
+      <footer className="border-t border-[#444444]">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
           <span>
             © {new Date().getFullYear()} Parkir Pelabuhan Tanjung Perak
           </span>

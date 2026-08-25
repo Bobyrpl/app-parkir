@@ -258,7 +258,7 @@ export default function KendaraanKeluar() {
                         Scan QR
                     </Button>
                 </form>
-                <p className="mt-3 text-xs text-[#8A8A8A]">
+                <p className="mt-3 text-xs text-white/70">
                     Ketik atau scan kode booking pelanggan - tabel di bawah otomatis menampilkan
                     kendaraannya supaya tinggal diproses keluar.
                 </p>
@@ -276,14 +276,14 @@ export default function KendaraanKeluar() {
                             }
                             className={`text-left rounded-lg border p-3 transition ${
                                 filterArea === String(a.id_area)
-                                    ? 'border-[#DC2626] bg-[#DC2626]/10'
-                                    : 'border-[#262626] bg-[#1F1F1F] hover:bg-[#262626]'
+                                    ? 'border-[#C90000] bg-[#C90000]/10'
+                                    : 'border-[#444444] bg-[#444444] hover:bg-[#444444]'
                             }`}
                         >
-                            <p className="text-xs font-mono text-[#8A8A8A] truncate">{a.nama_area}</p>
+                            <p className="text-xs font-mono text-white/70 truncate">{a.nama_area}</p>
                             <p className="text-2xl font-display text-white mt-1">
                                 {a.jumlahDidalam}
-                                <span className="text-xs text-[#8A8A8A] font-mono ml-1">
+                                <span className="text-xs text-white/70 font-mono ml-1">
                                     / {a.kapasitas} terisi
                                 </span>
                             </p>
@@ -302,7 +302,7 @@ export default function KendaraanKeluar() {
                 <select
                     value={filterArea}
                     onChange={(e) => setFilterArea(e.target.value)}
-                    className="rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] sm:max-w-xs"
+                    className="rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000] sm:max-w-xs"
                 >
                     <option value="semua">Semua area</option>
                     {areaList.map((a) => (
@@ -319,8 +319,8 @@ export default function KendaraanKeluar() {
                     onClick={() => setHanyaTerlambat((prev) => !prev)}
                     className={`rounded-md px-3 py-2 text-sm font-mono border whitespace-nowrap ${
                         hanyaTerlambat
-                            ? 'border-[#E5484D] bg-[#E5484D]/15 text-[#E5484D]'
-                            : 'border-[#262626] text-[#A0A0A0] hover:bg-[#1F1F1F]'
+                            ? 'border-[#C90000] bg-[#C90000]/15 text-[#C90000]'
+                            : 'border-[#444444] text-white/80 hover:bg-[#444444]'
                     }`}
                 >
                     Booking Terlambat{jumlahTerlambat > 0 ? ` (${jumlahTerlambat})` : ''}
@@ -357,7 +357,7 @@ export default function KendaraanKeluar() {
                                     terlambat ? (
                                         <div>
                                             <Badge tone="danger">Terlambat</Badge>
-                                            <p className="text-xs text-[#E5484D] font-mono mt-1">
+                                            <p className="text-xs text-[#C90000] font-mono mt-1">
                                                 +{formatDurasiMenit(item.menitTerlambat)}
                                             </p>
                                         </div>
@@ -365,22 +365,22 @@ export default function KendaraanKeluar() {
                                         <Badge tone="neutral">{item.booking.kode_booking}</Badge>
                                     )
                                 ) : (
-                                    <span className="text-xs text-[#8A8A8A]">-</span>
+                                    <span className="text-xs text-white/70">-</span>
                                 )}
                             </td>
                             <td className="px-4 py-3">
                                 <div className="flex flex-col gap-2">
                                     {terlambat && (
-                                        <p className="text-xs text-[#8A8A8A] font-mono">
+                                        <p className="text-xs text-white/70 font-mono">
                                             Est. denda:{' '}
-                                            <span className="text-[#E5484D]">
+                                            <span className="text-[#C90000]">
                                                 Rp{' '}
                                                 {estimasiDenda(
                                                     item.menitTerlambat,
                                                     pengaturanDenda
                                                 ).toLocaleString('id-ID')}
                                             </span>
-                                            <span className="block text-[10px] text-[#8A8A8A]">
+                                            <span className="block text-[10px] text-white/70">
                                                 (dihitung otomatis saat kendaraan keluar)
                                             </span>
                                         </p>
@@ -407,7 +407,7 @@ export default function KendaraanKeluar() {
                 })}
                 {data.length === 0 && (
                     <tr>
-                        <td colSpan={6} className="px-4 py-6 text-center text-[#8A8A8A] text-sm">
+                        <td colSpan={6} className="px-4 py-6 text-center text-white/70 text-sm">
                             {cari || filterArea !== 'semua' || hanyaTerlambat
                                 ? 'Tidak ada kendaraan yang cocok dengan pencarian/filter ini.'
                                 : 'Tidak ada kendaraan di dalam area parkir.'}
@@ -419,7 +419,7 @@ export default function KendaraanKeluar() {
             {/* Kontrol pagination - hanya tampil kalau datanya lebih dari 1 halaman */}
             {data.length > 0 && totalHalaman > 1 && (
                 <div className="flex items-center justify-between mt-4 text-sm">
-                    <p className="text-[#8A8A8A] font-mono text-xs">
+                    <p className="text-white/70 font-mono text-xs">
                         Menampilkan {(halaman - 1) * ITEM_PER_HALAMAN + 1}
                         {'–'}
                         {Math.min(halaman * ITEM_PER_HALAMAN, data.length)} dari {data.length} kendaraan
@@ -433,7 +433,7 @@ export default function KendaraanKeluar() {
                         >
                             Sebelumnya
                         </Button>
-                        <span className="font-mono text-xs text-[#A0A0A0] whitespace-nowrap">
+                        <span className="font-mono text-xs text-white/80 whitespace-nowrap">
                             Hal. {halaman} / {totalHalaman}
                         </span>
                         <Button
@@ -463,8 +463,8 @@ export default function KendaraanKeluar() {
                 <ModalScanQr onDetected={handleScanDetected} onClose={() => setScanOpen(false)} />
             )}
 
-            <footer className="border-t border-[#262626]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8A8A8A] text-center sm:text-left">
+            <footer className="border-t border-[#444444]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

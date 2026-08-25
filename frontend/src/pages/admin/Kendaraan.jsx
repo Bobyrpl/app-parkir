@@ -167,7 +167,7 @@ export default function Kendaraan() {
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-3">
                             <div>
-                                <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">PLAT NOMOR</label>
+                                <label className="block text-xs font-mono text-white/70 mb-1.5">PLAT NOMOR</label>
                                 <Input
                                     value={form.plat_nomor}
                                     onChange={(e) => setForm({ ...form, plat_nomor: e.target.value.toUpperCase() })}
@@ -176,11 +176,11 @@ export default function Kendaraan() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">JENIS KENDARAAN</label>
+                                <label className="block text-xs font-mono text-white/70 mb-1.5">JENIS KENDARAAN</label>
                                 <select
                                     value={form.jenis_kendaraan}
                                     onChange={(e) => setForm({ ...form, jenis_kendaraan: e.target.value })}
-                                    className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626]"
+                                    className="w-full rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000]"
                                 >
                                     <option value="motor">Motor</option>
                                     <option value="mobil">Mobil</option>
@@ -190,15 +190,15 @@ export default function Kendaraan() {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">WARNA</label>
+                                <label className="block text-xs font-mono text-white/70 mb-1.5">WARNA</label>
                                 <Input value={form.warna} onChange={(e) => setForm({ ...form, warna: e.target.value })} maxLength={20} />
                             </div>
                             <div>
-                                <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">PEMILIK</label>
+                                <label className="block text-xs font-mono text-white/70 mb-1.5">PEMILIK</label>
                                 <Input value={form.pemilik} onChange={(e) => setForm({ ...form, pemilik: e.target.value })} maxLength={100} />
                             </div>
 
-                            {error && <p className="text-sm text-[#E5484D]">{error}</p>}
+                            {error && <p className="text-sm text-[#C90000]">{error}</p>}
 
                             <div className="flex flex-wrap gap-2 pt-2">
                                 <Button type="submit" className="flex-1 sm:flex-none">{editId ? 'Simpan' : 'Tambah'}</Button>
@@ -219,9 +219,9 @@ export default function Kendaraan() {
                                 onChange={(e) => setCariKata(e.target.value.toUpperCase())}
                             />
                         </div>
-                        {mencari && <span className="text-xs font-mono text-[#8A8A8A] whitespace-nowrap">Mencari...</span>}
+                        {mencari && <span className="text-xs font-mono text-white/70 whitespace-nowrap">Mencari...</span>}
                         {!mencari && modePencarian && (
-                            <span className="text-xs font-mono text-[#8A8A8A] whitespace-nowrap">{data.length} hasil</span>
+                            <span className="text-xs font-mono text-white/70 whitespace-nowrap">{data.length} hasil</span>
                         )}
                     </div>
                     <div className="min-w-[820px] sm:min-w-0 px-4 sm:px-0">
@@ -248,7 +248,7 @@ export default function Kendaraan() {
                             ))}
                             {data.length === 0 && (
                                 <tr>
-                                    <td colSpan={6} className="px-4 py-6 text-center text-[#8A8A8A] text-sm">
+                                    <td colSpan={6} className="px-4 py-6 text-center text-white/70 text-sm">
                                         {modePencarian ? 'Tidak ada kendaraan yang cocok dengan pencarian.' : 'Belum ada kendaraan.'}
                                     </td>
                                 </tr>
@@ -257,7 +257,7 @@ export default function Kendaraan() {
                     </div>
 
                     {!modePencarian && halamanTerakhir > 1 && (
-                        <div className="px-4 sm:px-0 mt-3 flex items-center justify-between text-xs font-mono text-[#8A8A8A]">
+                        <div className="px-4 sm:px-0 mt-3 flex items-center justify-between text-xs font-mono text-white/70">
                             <span>Total {total} kendaraan</span>
                             <div className="flex items-center gap-2">
                                 <Button
@@ -291,8 +291,8 @@ export default function Kendaraan() {
                 onCancel={() => setHapusId(null)}
             />
 
-            <footer className="border-t border-[#262626]">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8A8A8A] text-center sm:text-left">
+            <footer className="border-t border-[#444444]">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

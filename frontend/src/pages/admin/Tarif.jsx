@@ -171,7 +171,7 @@ export default function Tarif() {
                     <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
                         <div className="flex items-center justify-between mb-5">
                             <div className="flex items-center gap-2">
-                                <span className="w-8 h-8 rounded-lg bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center shrink-0">
+                                <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
                                     {editId ? <Pencil size={15} /> : <Ticket size={15} />}
                                 </span>
                                 <h2 className="font-display text-base text-white">
@@ -181,7 +181,7 @@ export default function Tarif() {
                             <button
                                 type="button"
                                 onClick={handleCancel}
-                                className="w-7 h-7 rounded-md flex items-center justify-center text-[#8A8A8A] hover:text-white hover:bg-[#1F1F1F] transition-colors shrink-0"
+                                className="w-7 h-7 rounded-md flex items-center justify-center text-white/70 hover:text-white hover:bg-[#444444] transition-colors shrink-0"
                                 aria-label="Tutup form"
                             >
                                 <X size={15} />
@@ -189,7 +189,7 @@ export default function Tarif() {
                         </div>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+                                <label className="block text-xs font-mono text-white/70 mb-1.5">
                                     JENIS KENDARAAN
                                 </label>
                                 <select
@@ -200,7 +200,7 @@ export default function Tarif() {
                                             jenis_kendaraan: e.target.value,
                                         })
                                     }
-                                    className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] transition-shadow"
+                                    className="w-full rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000] transition-shadow"
                                 >
                                     <option value="motor">Motor</option>
                                     <option value="mobil">Mobil</option>
@@ -210,7 +210,7 @@ export default function Tarif() {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+                                <label className="block text-xs font-mono text-white/70 mb-1.5">
                                     TARIF PER JAM (Rp)
                                 </label>
                                 <Input
@@ -229,7 +229,7 @@ export default function Tarif() {
                             </div>
 
                             {error && (
-                                <p className="text-sm text-[#E5484D] bg-[#E5484D]/10 border border-[#E5484D]/20 rounded-md px-3 py-2">
+                                <p className="text-sm text-[#C90000] bg-[#C90000]/10 border border-[#C90000]/20 rounded-md px-3 py-2">
                                     {error}
                                 </p>
                             )}
@@ -261,7 +261,7 @@ export default function Tarif() {
                             Array.from({ length: 4 }).map((_, i) => (
                                 <tr key={i}>
                                     <td className="px-4 py-3" colSpan={3}>
-                                        <div className="h-9 rounded-md bg-[#1F1F1F] animate-pulse" />
+                                        <div className="h-9 rounded-md bg-[#444444] animate-pulse" />
                                     </td>
                                 </tr>
                             ))}
@@ -272,7 +272,7 @@ export default function Tarif() {
                                 return (
                                     <tr
                                         key={item.id_tarif}
-                                        className="transition-colors hover:bg-[#1F1F1F]"
+                                        className="transition-colors hover:bg-[#444444]"
                                     >
                                         <td className="px-4 py-3 capitalize">
                                             <Badge
@@ -322,8 +322,8 @@ export default function Tarif() {
                         {!loadingData && data.length === 0 && (
                             <tr>
                                 <td colSpan={3} className="px-4 py-14 text-center">
-                                    <div className="flex flex-col items-center gap-2.5 text-[#8A8A8A]">
-                                        <span className="w-11 h-11 rounded-full bg-[#1F1F1F] flex items-center justify-center">
+                                    <div className="flex flex-col items-center gap-2.5 text-white/70">
+                                        <span className="w-11 h-11 rounded-full bg-[#444444] flex items-center justify-center">
                                             <Inbox size={18} />
                                         </span>
                                         <p className="text-sm">
@@ -347,8 +347,8 @@ export default function Tarif() {
                 onCancel={() => setHapusId(null)}
             />
 
-            <footer className="border-t border-[#262626]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8A8A8A] text-center sm:text-left">
+            <footer className="border-t border-[#444444]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

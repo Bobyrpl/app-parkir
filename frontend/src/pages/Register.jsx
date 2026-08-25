@@ -49,36 +49,36 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#050608] flex items-center justify-center p-6">
       <div className="w-full max-w-4xl grid md:grid-cols-2 rounded-2xl overflow-hidden shadow-2xl">
         {/* Panel kiri - identitas sistem */}
-        <div className="relative hidden md:flex flex-col items-center justify-center text-center bg-[#161616] border-r border-[#262626] p-10">
+        <div className="relative hidden md:flex flex-col items-center justify-center text-center bg-[#080A0D] border-r border-[#444444] p-10">
           <div className="relative">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#DC2626] mb-5" />
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#C90000] mb-5" />
             <h2 className="font-medium text-2xl text-white leading-snug mb-3">
               Sistem parkir
               <br />
               Pelabuhan Tanjung Perak
             </h2>
-            <p className="text-sm text-[#A0A0A0] leading-relaxed max-w-xs mx-auto mb-8">
+            <p className="text-sm text-white/80 leading-relaxed max-w-xs mx-auto mb-8">
               Daftar sebagai pelanggan untuk booking slot parkir online.
               Akun petugas hanya bisa dibuat oleh admin.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-[#8A8A8A]">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-white/70">
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck size={13} className="text-[#DC2626]" />
+                <ShieldCheck size={13} className="text-[#C90000]" />
                 Admin
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <UserCog size={13} className="text-[#DC2626]" />
+                <UserCog size={13} className="text-[#C90000]" />
                 Petugas
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Crown size={13} className="text-[#DC2626]" />
+                <Crown size={13} className="text-[#C90000]" />
                 Owner
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <UsersIcon size={13} className="text-[#DC2626]" />
+                <UsersIcon size={13} className="text-[#C90000]" />
                 Pelanggan
               </span>
             </div>
@@ -86,10 +86,10 @@ export default function Register() {
         </div>
 
         {/* Panel kanan - form register */}
-        <div className="bg-[#161616] p-10 flex flex-col justify-center">
+        <div className="bg-[#080A0D] p-10 flex flex-col justify-center">
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-xs font-mono text-[#8A8A8A] hover:text-white mb-6 w-fit"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-white/70 hover:text-white mb-6 w-fit"
           >
             <ArrowLeft size={14} />
             Kembali ke beranda
@@ -98,136 +98,136 @@ export default function Register() {
           <h1 className="font-medium text-2xl text-white mb-1">
             Buat akun baru
           </h1>
-          <p className="text-sm text-[#8A8A8A] mb-8">
+          <p className="text-sm text-white/70 mb-8">
             Daftar sebagai pelanggan untuk mulai booking slot parkir online.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+              <label className="block text-xs font-mono text-white/70 mb-1.5">
                 NAMA LENGKAP
               </label>
               <div className="relative">
-                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8A8A]" />
+                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/70" />
                 <input
                   type="text"
                   value={namaLengkap}
                   onChange={(e) => setNamaLengkap(e.target.value)}
                   required
                   autoFocus
-                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent"
+                  className="w-full rounded-md bg-[#080A0D] border border-[#444444] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#C90000] focus:border-transparent"
                   placeholder="mis. Budi Santoso"
                 />
               </div>
               {errors.nama_lengkap && (
-                <p className="mt-1 text-xs text-[#E5484D]">
+                <p className="mt-1 text-xs text-[#C90000]">
                   {errors.nama_lengkap[0]}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+              <label className="block text-xs font-mono text-white/70 mb-1.5">
                 USERNAME
               </label>
               <div className="relative">
-                <AtSign size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8A8A]" />
+                <AtSign size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/70" />
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
-                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent"
+                  className="w-full rounded-md bg-[#080A0D] border border-[#444444] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#C90000] focus:border-transparent"
                   placeholder="mis. budi.santoso"
                 />
               </div>
               {errors.username && (
-                <p className="mt-1 text-xs text-[#E5484D]">
+                <p className="mt-1 text-xs text-[#C90000]">
                   {errors.username[0]}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+              <label className="block text-xs font-mono text-white/70 mb-1.5">
                 NO. TELEPON
               </label>
               <div className="relative">
-                <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8A8A]" />
+                <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/70" />
                 <input
                   type="tel"
                   value={noTelp}
                   onChange={(e) => setNoTelp(e.target.value)}
                   required
                   pattern="[0-9]{10,15}"
-                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent"
+                  className="w-full rounded-md bg-[#080A0D] border border-[#444444] pl-9 pr-3 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#C90000] focus:border-transparent"
                   placeholder="mis. 081234567890"
                 />
               </div>
               {errors.no_telp && (
-                <p className="mt-1 text-xs text-[#E5484D]">
+                <p className="mt-1 text-xs text-[#C90000]">
                   {errors.no_telp[0]}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+              <label className="block text-xs font-mono text-white/70 mb-1.5">
                 PASSWORD
               </label>
               <div className="relative">
-                <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8A8A]" />
+                <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/70" />
                 <input
                   type={tampilkanPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
-                  className="w-full rounded-md bg-[#161616] border border-[#262626] pl-9 pr-10 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent"
+                  className="w-full rounded-md bg-[#080A0D] border border-[#444444] pl-9 pr-10 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#C90000] focus:border-transparent"
                   placeholder="minimal 6 karakter"
                 />
                 <button
                   type="button"
                   onClick={() => setTampilkanPassword((v) => !v)}
                   tabIndex={-1}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A8A8A] hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors"
                   aria-label={tampilkanPassword ? "Sembunyikan password" : "Tampilkan password"}
                 >
                   {tampilkanPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-xs text-[#E5484D]">
+                <p className="mt-1 text-xs text-[#C90000]">
                   {errors.password[0]}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">
+              <label className="block text-xs font-mono text-white/70 mb-1.5">
                 KONFIRMASI PASSWORD
               </label>
               <div className="relative">
-                <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8A8A]" />
+                <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/70" />
                 <input
                   type={tampilkanKonfirmasi ? "text" : "password"}
                   value={passwordConfirmation}
                   onChange={(e) => setPasswordConfirmation(e.target.value)}
                   required
                   minLength={6}
-                  className={`w-full rounded-md bg-[#161616] border pl-9 pr-16 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:border-transparent ${
+                  className={`w-full rounded-md bg-[#080A0D] border pl-9 pr-16 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:border-transparent ${
                     konfirmasiCocok === false
-                      ? "border-[#E5484D]/50 focus:ring-[#E5484D]"
+                      ? "border-[#C90000]/50 focus:ring-[#C90000]"
                       : konfirmasiCocok === true
-                      ? "border-[#DC2626]/50 focus:ring-[#DC2626]"
-                      : "border-[#262626] focus:ring-[#DC2626]"
+                      ? "border-[#C90000]/50 focus:ring-[#C90000]"
+                      : "border-[#444444] focus:ring-[#C90000]"
                   }`}
                   placeholder="ulangi password"
                 />
                 {konfirmasiCocok !== null && (
                   <span
                     className={`absolute right-9 top-1/2 -translate-y-1/2 ${
-                      konfirmasiCocok ? "text-[#DC2626]" : "text-[#E5484D]"
+                      konfirmasiCocok ? "text-[#C90000]" : "text-[#C90000]"
                     }`}
                   >
                     {konfirmasiCocok ? <Check size={16} /> : <X size={16} />}
@@ -237,21 +237,21 @@ export default function Register() {
                   type="button"
                   onClick={() => setTampilkanKonfirmasi((v) => !v)}
                   tabIndex={-1}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A8A8A] hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors"
                   aria-label={tampilkanKonfirmasi ? "Sembunyikan password" : "Tampilkan password"}
                 >
                   {tampilkanKonfirmasi ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
               {konfirmasiCocok === false && (
-                <p className="mt-1 text-xs text-[#E5484D]">
+                <p className="mt-1 text-xs text-[#C90000]">
                   Konfirmasi password belum sama.
                 </p>
               )}
             </div>
 
             {error && (
-              <p className="text-sm text-[#E5484D] bg-[#E5484D]/10 rounded-md px-3 py-2">
+              <p className="text-sm text-[#C90000] bg-[#C90000]/10 rounded-md px-3 py-2">
                 {error}
               </p>
             )}
@@ -259,7 +259,7 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-md bg-[#DC2626] text-white font-medium py-2.5 text-sm hover:bg-[#991B1B] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+              className="w-full rounded-md bg-[#C90000] text-white font-medium py-2.5 text-sm hover:bg-[#5A0000] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -274,9 +274,9 @@ export default function Register() {
               )}
             </button>
 
-            <p className="text-center text-sm text-[#8A8A8A]">
+            <p className="text-center text-sm text-white/70">
               Sudah punya akun?{" "}
-              <Link to="/login" className="text-[#DC2626] hover:underline">
+              <Link to="/login" className="text-[#C90000] hover:underline">
                 Masuk di sini
               </Link>
             </p>

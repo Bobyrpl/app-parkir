@@ -2,26 +2,26 @@ export function PageHeader({ eyebrow, title, description }) {
     return (
         <div className="mb-8">
             {eyebrow && (
-                <p className="text-xs font-mono text-[#DC2626] mb-1 tracking-wider">
+                <p className="text-xs font-mono text-[#C90000] mb-1 tracking-wider">
                     {eyebrow}
                 </p>
             )}
             <h1 className="font-display text-2xl text-white">{title}</h1>
             {description && (
-                <p className="text-sm text-[#8A8A8A] mt-1">{description}</p>
+                <p className="text-sm text-white/70 mt-1">{description}</p>
             )}
         </div>
     );
 }
 
-export function StatCard({ label, value, accent = '#DC2626', icon: Icon, trend }) {
+export function StatCard({ label, value, accent = '#C90000', icon: Icon, trend }) {
     const TrendIcon = trend?.icon;
-    const trendColor = trend?.tone === 'up' ? '#35C48D' : trend?.tone === 'down' ? '#E5484D' : '#8A8A8A';
+    const trendColor = trend?.tone === 'up' ? '#35C48D' : trend?.tone === 'down' ? '#C90000' : '#B5B5B5';
 
     return (
-        <div className="rounded-xl bg-[#161616] border border-[#262626] p-5">
+        <div className="rounded-xl bg-[#080A0D] border border-[#444444] p-5">
             <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-mono text-[#8A8A8A]">{label}</p>
+                <p className="text-xs font-mono text-white/70">{label}</p>
                 {Icon && (
                     <span
                         className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
@@ -52,7 +52,7 @@ export function StatCard({ label, value, accent = '#DC2626', icon: Icon, trend }
 
 export function Card({ children, className = '' }) {
     return (
-        <div className={`rounded-xl bg-[#161616] border border-[#262626] ${className}`}>
+        <div className={`rounded-xl bg-[#080A0D] border border-[#444444] ${className}`}>
             {children}
         </div>
     );
@@ -60,10 +60,10 @@ export function Card({ children, className = '' }) {
 
 export function Badge({ children, tone = 'neutral' }) {
     const tones = {
-        neutral: 'bg-[#262626] text-[#A0A0A0]',
+        neutral: 'bg-[#444444] text-white/80',
         success: 'bg-[#35C48D]/15 text-[#35C48D]',
-        danger: 'bg-[#E5484D]/15 text-[#E5484D]',
-        warning: 'bg-[#DC2626]/15 text-[#DC2626]',
+        danger: 'bg-[#C90000]/15 text-[#C90000]',
+        warning: 'bg-[#5A0000]/25 text-white',
     };
     return (
         <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-mono ${tones[tone]}`}>
@@ -74,21 +74,21 @@ export function Badge({ children, tone = 'neutral' }) {
 
 export function Table({ columns, children }) {
     return (
-        <div className="overflow-x-auto rounded-xl border border-[#262626]">
+        <div className="overflow-x-auto rounded-xl border border-[#444444]">
             <table className="w-full text-sm">
                 <thead>
-                    <tr className="bg-[#1F1F1F] text-left">
+                    <tr className="bg-[#444444] text-left">
                         {columns.map((col) => (
                             <th
                                 key={col}
-                                className="px-4 py-3 text-xs font-mono text-[#8A8A8A] tracking-wider"
+                                className="px-4 py-3 text-xs font-mono text-white/70 tracking-wider"
                             >
                                 {col}
                             </th>
                         ))}
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-[#262626]">{children}</tbody>
+                <tbody className="divide-y divide-[#444444]">{children}</tbody>
             </table>
         </div>
     );
@@ -96,9 +96,9 @@ export function Table({ columns, children }) {
 
 export function Button({ children, variant = 'primary', className = '', ...props }) {
     const variants = {
-        primary: 'bg-[#DC2626] text-white hover:bg-[#991B1B]',
-        ghost: 'bg-transparent text-[#A0A0A0] hover:bg-[#1F1F1F] border border-[#262626]',
-        danger: 'bg-[#E5484D]/15 text-[#E5484D] hover:bg-[#E5484D]/25',
+        primary: 'bg-[#C90000] text-white hover:bg-[#5A0000]',
+        ghost: 'bg-transparent text-white/80 hover:bg-[#444444] border border-[#444444]',
+        danger: 'bg-[#C90000]/15 text-[#C90000] hover:bg-[#C90000]/25',
     };
     return (
         <button
@@ -131,13 +131,13 @@ export function ConfirmDialog({
             onClick={onCancel}
         >
             <div
-                className="w-full max-w-sm rounded-xl bg-[#161616] border border-[#262626] p-6"
+                className="w-full max-w-sm rounded-xl bg-[#080A0D] border border-[#444444] p-6"
                 onClick={(e) => e.stopPropagation()}
                 role="alertdialog"
                 aria-modal="true"
             >
                 <h3 className="font-display text-base text-white mb-2">{title}</h3>
-                {message && <p className="text-sm text-[#8A8A8A] mb-6">{message}</p>}
+                {message && <p className="text-sm text-white/70 mb-6">{message}</p>}
                 <div className="flex justify-end gap-2">
                     <Button variant="ghost" onClick={onCancel} disabled={loading}>
                         {cancelLabel}
@@ -155,7 +155,7 @@ export function Input(props) {
     return (
         <input
             {...props}
-            className={`w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626] focus:border-transparent ${props.className || ''}`}
+            className={`w-full rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000] focus:border-transparent ${props.className || ''}`}
         />
     );
 }

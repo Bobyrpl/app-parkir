@@ -45,13 +45,13 @@ export function ToastProvider({ children }) {
                         role="alert"
                         className={`pointer-events-auto rounded-lg border px-4 py-3 shadow-lg flex items-start gap-3 text-sm animate-[toast-in_0.2s_ease-out] ${
                             t.tone === 'success'
-                                ? 'bg-[#161616] border-[#35C48D]/30 text-white'
-                                : 'bg-[#161616] border-[#E5484D]/30 text-white'
+                                ? 'bg-[#080A0D] border-[#35C48D]/30 text-white'
+                                : 'bg-[#080A0D] border-[#C90000]/30 text-white'
                         }`}
                     >
                         <span
                             className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                                t.tone === 'success' ? 'bg-[#35C48D]/15 text-[#35C48D]' : 'bg-[#E5484D]/15 text-[#E5484D]'
+                                t.tone === 'success' ? 'bg-[#35C48D]/15 text-[#35C48D]' : 'bg-[#C90000]/15 text-[#C90000]'
                             }`}
                             aria-hidden="true"
                         >
@@ -69,7 +69,7 @@ export function ToastProvider({ children }) {
                         <button
                             onClick={() => remove(t.id)}
                             aria-label="Tutup notifikasi"
-                            className="text-[#8A8A8A] hover:text-white"
+                            className="text-white/70 hover:text-white"
                         >
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M18 6L6 18M6 6l12 12" />

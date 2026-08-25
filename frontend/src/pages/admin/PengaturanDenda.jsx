@@ -70,7 +70,7 @@ export default function PengaturanDenda() {
             <Card className="p-5 max-w-lg">
                 <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-2.5">
-                        <span className="w-8 h-8 rounded-lg bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center shrink-0">
+                        <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
                             <AlertTriangle size={16} />
                         </span>
                         <h2 className="font-display text-base text-white">
@@ -82,7 +82,7 @@ export default function PengaturanDenda() {
                             className={`inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-full ${
                                 form.aktif
                                     ? "bg-[#35C48D]/10 text-[#35C48D]"
-                                    : "bg-[#1F1F1F] text-[#8A8A8A]"
+                                    : "bg-[#444444] text-white/70"
                             }`}
                         >
                             {form.aktif ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
@@ -93,14 +93,14 @@ export default function PengaturanDenda() {
 
                 {loading ? (
                     <div className="space-y-4">
-                        <div className="h-16 rounded-md bg-[#1F1F1F] animate-pulse" />
-                        <div className="h-16 rounded-md bg-[#1F1F1F] animate-pulse" />
-                        <div className="h-11 rounded-md bg-[#1F1F1F] animate-pulse w-2/3" />
+                        <div className="h-16 rounded-md bg-[#444444] animate-pulse" />
+                        <div className="h-16 rounded-md bg-[#444444] animate-pulse" />
+                        <div className="h-11 rounded-md bg-[#444444] animate-pulse w-2/3" />
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label className="flex items-center gap-1.5 text-xs font-mono text-[#8A8A8A] mb-1.5">
+                            <label className="flex items-center gap-1.5 text-xs font-mono text-white/70 mb-1.5">
                                 <Wallet size={12} />
                                 DENDA PER JAM KETERLAMBATAN (Rp)
                             </label>
@@ -114,14 +114,14 @@ export default function PengaturanDenda() {
                                 placeholder="cth. 5000"
                                 required
                             />
-                            <p className="text-xs text-[#8A8A8A] mt-1.5">
+                            <p className="text-xs text-white/70 mt-1.5">
                                 Dikenakan per jam (dibulatkan ke atas) setiap kendaraan booking
                                 keluar melewati jam rencana keluar.
                             </p>
                         </div>
 
                         <div>
-                            <label className="flex items-center gap-1.5 text-xs font-mono text-[#8A8A8A] mb-1.5">
+                            <label className="flex items-center gap-1.5 text-xs font-mono text-white/70 mb-1.5">
                                 <Timer size={12} />
                                 TOLERANSI KETERLAMBATAN (menit)
                             </label>
@@ -135,25 +135,25 @@ export default function PengaturanDenda() {
                                 placeholder="cth. 15"
                                 required
                             />
-                            <p className="text-xs text-[#8A8A8A] mt-1.5">
+                            <p className="text-xs text-white/70 mt-1.5">
                                 Keterlambatan di bawah batas ini tidak dikenakan denda.
                             </p>
                         </div>
 
-                        <label className="flex items-center gap-2.5 text-sm text-white rounded-md border border-[#262626] bg-[#1F1F1F] px-3 py-2.5 cursor-pointer">
+                        <label className="flex items-center gap-2.5 text-sm text-white rounded-md border border-[#444444] bg-[#444444] px-3 py-2.5 cursor-pointer">
                             <input
                                 type="checkbox"
                                 checked={form.aktif}
                                 onChange={(e) =>
                                     setForm({ ...form, aktif: e.target.checked })
                                 }
-                                className="h-4 w-4 rounded border-[#262626] bg-[#1F1F1F] accent-[#DC2626]"
+                                className="h-4 w-4 rounded border-[#444444] bg-[#444444] accent-[#C90000]"
                             />
                             Aktifkan denda keterlambatan booking
                         </label>
 
                         {error && (
-                            <p className="text-sm text-[#E5484D] bg-[#E5484D]/10 border border-[#E5484D]/20 rounded-md px-3 py-2">
+                            <p className="text-sm text-[#C90000] bg-[#C90000]/10 border border-[#C90000]/20 rounded-md px-3 py-2">
                                 {error}
                             </p>
                         )}
@@ -167,8 +167,8 @@ export default function PengaturanDenda() {
                 )}
             </Card>
 
-            <footer className="border-t border-[#262626] mt-8">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8A8A8A] text-center sm:text-left">
+            <footer className="border-t border-[#444444] mt-8">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

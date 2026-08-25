@@ -26,13 +26,13 @@ export default function ModalQrBooking({ booking, onClose }) {
             onClick={onClose}
         >
             <div
-                className="w-full max-w-xs rounded-xl bg-[#161616] border border-[#262626] p-6 text-center"
+                className="w-full max-w-xs rounded-xl bg-[#080A0D] border border-[#444444] p-6 text-center"
                 onClick={(e) => e.stopPropagation()}
                 role="dialog"
                 aria-modal="true"
             >
                 <p className="font-display text-lg text-white mb-1">QR Booking</p>
-                <p className="text-xs text-[#8A8A8A] mb-4">
+                <p className="text-xs text-white/70 mb-4">
                     Tunjukkan QR ini ke petugas saat tiba di lokasi
                 </p>
 
@@ -43,19 +43,19 @@ export default function ModalQrBooking({ booking, onClose }) {
                         className="w-56 h-56 mx-auto rounded-lg bg-white p-2"
                     />
                 ) : (
-                    <p className="text-sm text-[#8A8A8A] py-20">Menyiapkan QR...</p>
+                    <p className="text-sm text-white/70 py-20">Menyiapkan QR...</p>
                 )}
 
-                <p className="mt-4 font-mono text-[#DC2626] text-sm tracking-wider">
+                <p className="mt-4 font-mono text-[#C90000] text-sm tracking-wider">
                     {booking.kode_booking}
                 </p>
-                <p className="text-xs text-[#8A8A8A] mt-1">
+                <p className="text-xs text-white/70 mt-1">
                     {booking.kendaraan?.plat_nomor} — {booking.area?.nama_area}
                 </p>
 
                 <button
                     onClick={onClose}
-                    className="mt-5 w-full rounded-md bg-[#1F1F1F] text-white py-2 text-sm hover:bg-[#262626] transition-colors"
+                    className="mt-5 w-full rounded-md bg-[#444444] text-white py-2 text-sm hover:bg-[#444444] transition-colors"
                 >
                     Tutup
                 </button>

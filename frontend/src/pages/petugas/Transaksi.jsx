@@ -104,11 +104,11 @@ export default function Transaksi() {
 
             <form onSubmit={handleFilter} className="flex flex-wrap items-end gap-3 mb-4">
                 <div>
-                    <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">DARI TANGGAL</label>
+                    <label className="block text-xs font-mono text-white/70 mb-1.5">DARI TANGGAL</label>
                     <Input type="date" value={dari} onChange={(e) => setDari(e.target.value)} />
                 </div>
                 <div>
-                    <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">SAMPAI TANGGAL</label>
+                    <label className="block text-xs font-mono text-white/70 mb-1.5">SAMPAI TANGGAL</label>
                     <Input type="date" value={sampai} onChange={(e) => setSampai(e.target.value)} />
                 </div>
                 <div className="flex gap-2">
@@ -124,10 +124,10 @@ export default function Transaksi() {
             <Table columns={['Plat Nomor', 'Area', 'Masuk', 'Keluar', 'Biaya', 'Status', 'Aksi']}>
                 {grup.map(([dateKey, items]) => (
                     <Fragment key={dateKey}>
-                        <tr className="bg-[#1F1F1F]">
+                        <tr className="bg-[#444444]">
                             <td
                                 colSpan={7}
-                                className="px-4 py-2 text-xs font-mono text-[#8A8A8A] uppercase tracking-wide"
+                                className="px-4 py-2 text-xs font-mono text-white/70 uppercase tracking-wide"
                             >
                                 {labelGrup(dateKey)} · {items.length} transaksi
                             </td>
@@ -169,14 +169,14 @@ export default function Transaksi() {
                 ))}
                 {!loading && data.length === 0 && (
                     <tr>
-                        <td colSpan={7} className="px-4 py-6 text-center text-[#8A8A8A] text-sm">
+                        <td colSpan={7} className="px-4 py-6 text-center text-white/70 text-sm">
                             Belum ada transaksi{(dari || sampai) ? ' pada rentang tanggal ini' : ''}.
                         </td>
                     </tr>
                 )}
                 {loading && (
                     <tr>
-                        <td colSpan={7} className="px-4 py-6 text-center text-[#8A8A8A] text-sm">
+                        <td colSpan={7} className="px-4 py-6 text-center text-white/70 text-sm">
                             Memuat data...
                         </td>
                     </tr>
@@ -184,8 +184,8 @@ export default function Transaksi() {
             </Table>
 
             <StrukCard struk={struk} onClose={() => setStruk(null)} />
-            <footer className="border-t border-[#262626]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8A8A8A] text-center sm:text-left">
+            <footer className="border-t border-[#444444]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

@@ -59,7 +59,7 @@ export default function TambahKendaraan() {
                     <h2 className="font-display text-base text-white mb-4">Tambah Kendaraan</h2>
                     <form onSubmit={handleSubmit} className="space-y-3">
                         <div>
-                            <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">PLAT NOMOR</label>
+                            <label className="block text-xs font-mono text-white/70 mb-1.5">PLAT NOMOR</label>
                             <Input
                                 value={form.plat_nomor}
                                 onChange={(e) => setForm({ ...form, plat_nomor: e.target.value.toUpperCase() })}
@@ -68,11 +68,11 @@ export default function TambahKendaraan() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">JENIS KENDARAAN</label>
+                            <label className="block text-xs font-mono text-white/70 mb-1.5">JENIS KENDARAAN</label>
                             <select
                                 value={form.jenis_kendaraan}
                                 onChange={(e) => setForm({ ...form, jenis_kendaraan: e.target.value })}
-                                className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626]"
+                                className="w-full rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000]"
                             >
                                 <option value="motor">Motor</option>
                                 <option value="mobil">Mobil</option>
@@ -82,15 +82,15 @@ export default function TambahKendaraan() {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">WARNA</label>
+                            <label className="block text-xs font-mono text-white/70 mb-1.5">WARNA</label>
                             <Input value={form.warna} onChange={(e) => setForm({ ...form, warna: e.target.value })} maxLength={20} />
                         </div>
                         <div>
-                            <label className="block text-xs font-mono text-[#8A8A8A] mb-1.5">PEMILIK</label>
+                            <label className="block text-xs font-mono text-white/70 mb-1.5">PEMILIK</label>
                             <Input value={form.pemilik} onChange={(e) => setForm({ ...form, pemilik: e.target.value })} maxLength={100} />
                         </div>
 
-                        {error && <p className="text-sm text-[#E5484D]">{error}</p>}
+                        {error && <p className="text-sm text-[#C90000]">{error}</p>}
 
                         <Button type="submit" disabled={submitting} className="w-full">
                             {submitting ? 'Menyimpan...' : 'Tambah Kendaraan'}
@@ -111,7 +111,7 @@ export default function TambahKendaraan() {
                             ))}
                             {data.length === 0 && (
                                 <tr>
-                                    <td colSpan={4} className="px-4 py-6 text-center text-[#8A8A8A] text-sm">
+                                    <td colSpan={4} className="px-4 py-6 text-center text-white/70 text-sm">
                                         Belum ada kendaraan.
                                     </td>
                                 </tr>

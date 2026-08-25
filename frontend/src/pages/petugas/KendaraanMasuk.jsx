@@ -280,18 +280,18 @@ export default function KendaraanMasuk() {
                                     onClick={() => handlePilihKendaraan(k)}
                                     className={`w-full flex items-center justify-between gap-2 text-left rounded-md px-3 py-2 text-sm font-mono border transition ${
                                         k.sedang_parkir
-                                            ? "border-[#262626] bg-[#161616] text-[#8A8A8A] cursor-not-allowed"
+                                            ? "border-[#444444] bg-[#080A0D] text-white/70 cursor-not-allowed"
                                             : form.id_kendaraan ===
                                                 k.id_kendaraan
-                                              ? "border-[#DC2626] bg-[#DC2626]/10 text-[#DC2626]"
-                                              : "border-[#262626] text-[#A0A0A0] hover:bg-[#1F1F1F]"
+                                              ? "border-[#C90000] bg-[#C90000]/10 text-[#C90000]"
+                                              : "border-[#444444] text-white/80 hover:bg-[#444444]"
                                     }`}
                                 >
                                     <span className="truncate">
                                         {k.plat_nomor} — {k.jenis_kendaraan}
                                     </span>
                                     {k.sedang_parkir && (
-                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#DC2626]/15 text-[#DC2626] shrink-0">
+                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000] shrink-0">
                                             SUDAH PARKIR
                                         </span>
                                     )}
@@ -308,7 +308,7 @@ export default function KendaraanMasuk() {
                     <form onSubmit={handleSubmit} className="space-y-3">
                         <div>
                             <div className="flex items-center justify-between mb-1.5">
-                                <label className="block text-xs font-mono text-[#8A8A8A]">
+                                <label className="block text-xs font-mono text-white/70">
                                     TARIF
                                 </label>
                                 {tarifOtomatis && form.id_tarif && (
@@ -327,7 +327,7 @@ export default function KendaraanMasuk() {
                                     setTarifOtomatis(false);
                                 }}
                                 required
-                                className="w-full rounded-md bg-[#1F1F1F] border border-[#262626] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#DC2626]"
+                                className="w-full rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000]"
                             >
                                 <option value="">Pilih tarif</option>
                                 {tarifList.map((t) => (
@@ -343,7 +343,7 @@ export default function KendaraanMasuk() {
                         </div>
                         <div>
                             <div className="flex items-center justify-between mb-1.5">
-                                <label className="block text-xs font-mono text-[#8A8A8A]">
+                                <label className="block text-xs font-mono text-white/70">
                                     AREA PARKIR
                                 </label>
                                 {areaOtomatis && form.id_area && (
@@ -379,10 +379,10 @@ export default function KendaraanMasuk() {
                                             }}
                                             className={`w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm border transition ${
                                                 penuh
-                                                    ? "border-[#262626] bg-[#161616] text-[#8A8A8A] cursor-not-allowed"
+                                                    ? "border-[#444444] bg-[#080A0D] text-white/70 cursor-not-allowed"
                                                     : dipilih
-                                                      ? "border-[#DC2626] bg-[#DC2626]/10 text-[#DC2626]"
-                                                      : "border-[#262626] text-[#A0A0A0] hover:bg-[#1F1F1F]"
+                                                      ? "border-[#C90000] bg-[#C90000]/10 text-[#C90000]"
+                                                      : "border-[#444444] text-white/80 hover:bg-[#444444]"
                                             }`}
                                         >
                                             <span className="font-mono truncate">
@@ -393,11 +393,11 @@ export default function KendaraanMasuk() {
                                                     {a.terisi}/{a.kapasitas}
                                                 </span>
                                                 {penuh ? (
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#E5484D]/15 text-[#E5484D]">
+                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000]">
                                                         PENUH
                                                     </span>
                                                 ) : hampirPenuh ? (
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#DC2626]/15 text-[#DC2626]">
+                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000]">
                                                         HAMPIR PENUH
                                                     </span>
                                                 ) : (
@@ -410,7 +410,7 @@ export default function KendaraanMasuk() {
                                     );
                                 })}
                                 {areaList.length === 0 && (
-                                    <p className="text-xs text-[#8A8A8A]">
+                                    <p className="text-xs text-white/70">
                                         Belum ada data area parkir.
                                     </p>
                                 )}
@@ -418,7 +418,7 @@ export default function KendaraanMasuk() {
                         </div>
 
                         {!form.id_kendaraan && (
-                            <p className="text-xs text-[#8A8A8A]">
+                            <p className="text-xs text-white/70">
                                 Cari &amp; pilih kendaraan terlebih dahulu di
                                 atas.
                             </p>
@@ -447,8 +447,8 @@ export default function KendaraanMasuk() {
                 />
             )}
 
-            <footer className="border-t border-[#262626]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[#8A8A8A] text-center sm:text-left">
+            <footer className="border-t border-[#444444]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak
