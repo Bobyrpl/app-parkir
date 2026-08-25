@@ -6,11 +6,6 @@ import { useToast } from '../../context/ToastContext';
 import ModalQris from '../../components/ModalQris';
 import ModalScanQr from '../../components/ModalScanQr';
 
-// Tampilkan tombol "Tandai Lunas (Demo)" di modal QRIS untuk fallback
-// presentasi/sidang kalau internet atau DANA bermasalah.
-// Set VITE_DEMO_MODE=false di .env begitu sudah lepas dari sesi demo.
-const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
-
 // Jumlah baris kendaraan yang ditampilkan per halaman di tabel.
 const ITEM_PER_HALAMAN = 10;
 
@@ -455,7 +450,6 @@ export default function KendaraanKeluar() {
                     transaksiId={qrisId}
                     onLunas={handleQrisLunas}
                     onBatal={handleQrisBatal}
-                    demoMode={DEMO_MODE}
                 />
             )}
 

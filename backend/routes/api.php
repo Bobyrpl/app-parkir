@@ -13,7 +13,6 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\PembayaranController;
-use App\Http\Controllers\WebhookDanaController;
 use App\Http\Controllers\StatistikController;
 
 
@@ -115,6 +114,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/transaksi/kendaraan-didalam', [TransaksiController::class, 'kendaraanDidalam']);
     Route::get('/transaksi/sedang-parkir', [TransaksiController::class, 'sedangParkir']); // ⬅️ baris baru
     Route::get('/transaksi/cari-booking/{kode_booking}', [TransaksiController::class, 'cariBookingSedangParkir']);
+
+    // QRIS statis - petugas menekan ini setelah memastikan pembayaran
+    // masuk (tidak ada webhook/gateway, jadi konfirmasi manual).
+    Route::post('/transaksi/{id}/konfirmasi-qris', [PembayaranController::class, 'konfirmasiQris']);
 });
 
     /*
@@ -172,15 +175,6 @@ Route::post('/komentar', [KomentarController::class, 'store']);
 // PUBLIK - ajukan aktivasi ulang akun yang dinonaktifkan (tidak perlu login,
 // karena akun yang statusnya nonaktif memang tidak bisa login).
 Route::post('/permintaan-aktivasi', [PermintaanAktivasiController::class, 'store']);
-
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/transaksi/{id}/bayar-qris', [PembayaranController::class, 'generateQris']);
-    Route::get('/transaksi/{id}/status-bayar', [PembayaranController::class, 'cekStatus']);
-
-    // hanya aktif kalau APP_DEMO_MODE=true di .env -- lihat catatan di controller
-    Route::post('/transaksi/{id}/tandai-lunas-manual', [PembayaranController::class, 'tandaiLunasManual']);
-});
-Route::post('/webhook/dana', [WebhookDanaController::class, 'handle']);
 
 Route::get('/komentar', [KomentarController::class, 'index']);
 Route::post('/komentar', [KomentarController::class, 'store']);

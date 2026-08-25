@@ -1,115 +1,68 @@
-import { useEffect, useRef, useState } from 'react';
-import QRCode from 'qrcode';
+import { useState } from 'react';
 import api from '../api/axios'; // sesuaikan path relatif kalau lokasi axios.js berbeda
 
 /**
  * Modal QRIS untuk halaman Kendaraan Keluar (petugas).
  *
- * Berbeda dari Midtrans (yang mengembalikan URL gambar QR siap pakai),
- * DANA Bisnis mengembalikan string QRIS mentah (qr_content). String ini
- * dirender jadi gambar QR di sisi frontend memakai library `qrcode`.
+ * QRIS di sini adalah GAMBAR STATIS (mis. hasil download dari
+ * DANA/OVO/Gopay/QRIS bank), BUKAN QR dinamis hasil generate dari payment
+ * gateway. Taruh file gambarnya di folder `public/` frontend, lalu ganti
+ * nilai QRIS_IMAGE_SRC di bawah sesuai nama filenya, contoh:
+ *   public/qris-statis.jpg  ->  QRIS_IMAGE_SRC = '/qris-statis.jpg'
  *
- * PENTING: semua request pakai instance `api` (axios), bukan fetch() polos --
- * supaya token autentikasi (Authorization header) ikut terkirim otomatis
- * lewat interceptor axios. Tanpa ini, request dianggap belum login dan
- * middleware auth:sanctum di backend akan gagal ("Route [login] not defined").
+ * Karena gambarnya statis, sistem tidak bisa tahu otomatis kapan
+ * pembayaran masuk -- petugas WAJIB mengecek sendiri (mis. notifikasi
+ * di HP/aplikasi penerima) lalu menekan tombol "Sudah Dibayar" untuk
+ * menandai transaksi lunas.
  */
-export default function ModalQris({ transaksiId, onLunas, onBatal, demoMode = false }) {
-    const [qrImage, setQrImage] = useState(null);
-    const [status, setStatus] = useState('memuat'); // memuat | menunggu | lunas | gagal
+const QRIS_IMAGE_SRC = '/qris-statis.jpg';
+
+export default function ModalQris({ transaksiId, onLunas, onBatal }) {
+    const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-    const pollRef = useRef(null);
-    const lunasCalledRef = useRef(false);
 
-    useEffect(() => {
-        let cancelled = false;
-
-        api.post(`/transaksi/${transaksiId}/bayar-qris`)
-            .then(async (res) => {
-                if (cancelled) return;
-                const dataUrl = await QRCode.toDataURL(res.data.qr_content, { margin: 1, width: 320 });
-                if (cancelled) return;
-                setQrImage(dataUrl);
-                setStatus('menunggu');
-            })
-            .catch((err) => {
-                if (cancelled) return;
-                setErrorMsg(err.response?.data?.message || 'Gagal membuat QR pembayaran.');
-                setStatus('gagal');
-            });
-
-        return () => {
-            cancelled = true;
-        };
-    }, [transaksiId]);
-
-    useEffect(() => {
-        if (status !== 'menunggu') return;
-
-        pollRef.current = setInterval(async () => {
-            try {
-                const res = await api.get(`/transaksi/${transaksiId}/status-bayar`);
-                if (res.data.status_pembayaran === 'lunas' && !lunasCalledRef.current) {
-                    lunasCalledRef.current = true;
-                    clearInterval(pollRef.current);
-                    setStatus('lunas');
-                    onLunas();
-                }
-            } catch {
-                // koneksi sempat gagal -- diamkan, coba lagi di interval berikutnya
-            }
-        }, 3000);
-
-        return () => clearInterval(pollRef.current);
-    }, [status, transaksiId, onLunas]);
-
-    async function handleTandaiLunasManual() {
+    async function handleSudahDibayar() {
+        setLoading(true);
+        setErrorMsg('');
         try {
-            await api.post(`/transaksi/${transaksiId}/tandai-lunas-manual`);
-        } catch {
-            setErrorMsg('Gagal menandai lunas secara manual.');
+            await api.post(`/transaksi/${transaksiId}/konfirmasi-qris`);
+            onLunas();
+        } catch (err) {
+            setErrorMsg(err.response?.data?.message || 'Gagal menandai pembayaran lunas.');
+        } finally {
+            setLoading(false);
         }
     }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
             <div className="w-80 rounded-xl bg-[#080A0D] border border-[#444444] p-6 text-center">
-                <p className="font-display text-lg mb-4">Pembayaran QRIS (DANA)</p>
+                <p className="font-display text-lg mb-4">Pembayaran QRIS</p>
 
-                {status === 'memuat' && <p className="text-sm text-white/70">Menyiapkan QR code...</p>}
+                <img
+                    src={QRIS_IMAGE_SRC}
+                    alt="QRIS Pembayaran"
+                    className="w-56 h-56 mx-auto rounded-lg bg-white p-2 object-contain"
+                />
+                <p className="text-sm text-white/70 mt-3">
+                    Minta pelanggan memindai QRIS di atas, lalu tekan tombol di bawah
+                    setelah pembayaran dipastikan masuk.
+                </p>
 
-                {status === 'menunggu' && (
-                    <>
-                        <img src={qrImage} alt="QRIS Pembayaran" className="w-56 h-56 mx-auto rounded-lg bg-white p-2" />
-                        <p className="text-sm text-white/70 mt-3 animate-pulse">Menunggu pembayaran...</p>
-                        <div className="flex flex-col gap-2 mt-4">
-                            <button onClick={onBatal} className="text-xs text-[#C90000] hover:underline">
-                                Batalkan
-                            </button>
-                            {demoMode && (
-                                <button
-                                    onClick={handleTandaiLunasManual}
-                                    className="text-xs text-[#C90000] border border-[#C90000]/40 rounded-md py-1.5 hover:bg-[#C90000]/10 transition-colors"
-                                >
-                                    Tandai Lunas (Demo)
-                                </button>
-                            )}
-                        </div>
-                    </>
-                )}
+                {errorMsg && <p className="text-xs text-[#C90000] mt-2">{errorMsg}</p>}
 
-                {status === 'lunas' && (
-                    <p className="text-sm text-[#5DCAA5]">Pembayaran diterima. Mencetak struk...</p>
-                )}
-
-                {status === 'gagal' && (
-                    <>
-                        <p className="text-sm text-[#C90000]">{errorMsg}</p>
-                        <button onClick={onBatal} className="text-xs text-white/70 mt-3 hover:underline">
-                            Tutup
-                        </button>
-                    </>
-                )}
+                <div className="flex flex-col gap-2 mt-4">
+                    <button
+                        onClick={handleSudahDibayar}
+                        disabled={loading}
+                        className="text-sm rounded-md bg-[#5DCAA5] text-black font-medium py-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+                    >
+                        {loading ? 'Memproses...' : 'Sudah Dibayar'}
+                    </button>
+                    <button onClick={onBatal} disabled={loading} className="text-xs text-[#C90000] hover:underline">
+                        Batalkan
+                    </button>
+                </div>
             </div>
         </div>
     );
