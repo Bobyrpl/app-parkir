@@ -749,9 +749,7 @@ export default function Landing() {
                     >
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center gap-2.5">
-                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#C90000] text-white font-display text-sm">
-                                    P
-                                </span>
+                                
                                 <span className="font-display text-base">
                                     {BRAND_NAME}
                                 </span>
@@ -835,22 +833,7 @@ export default function Landing() {
                             </svg>
                         </button>
 
-                        <Link
-                            to="/"
-                            className="flex items-center gap-2 sm:gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C90000]"
-                        >
-                            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#C90000] text-white font-display text-sm">
-                                P
-                            </span>
-                            <div className="min-w-0 leading-tight">
-                                <p className="font-display text-base md:text-lg tracking-tight truncate">
-                                    {BRAND_NAME}
-                                </p>
-                                <p className="hidden sm:block text-[11px] font-mono text-white/70 tracking-wide truncate">
-                                    {BRAND_LOCATION}
-                                </p>
-                            </div>
-                        </Link>
+                        
                     </div>
 
                     {/* Desktop nav — muncul dari lg ke atas supaya tidak
@@ -954,14 +937,6 @@ export default function Landing() {
                         opacity: heroContentOpacity,
                     }}
                 >
-                    <div className="inline-flex w-fit items-center gap-2 rounded-full bg-[#444444] border border-[#444444] pl-2 pr-3 py-1 mb-6">
-                        <span className="flex items-center gap-0.5 rounded-full bg-[#C90000]/15 px-1.5 py-0.5">
-                            <Bintang jumlah={5} />
-                        </span>
-                        <span className="text-xs text-white/80">
-                            4.8 dari pengguna aktif
-                        </span>
-                    </div>
                     <h1 className="font-medium text-4xl sm:text-5xl md:text-6xl leading-[1.08] mb-5">
                         Kelola parkir Anda,{" "}
                         <span className="text-[#C90000]">
