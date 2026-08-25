@@ -15,7 +15,7 @@ import api from '../api/axios'; // sesuaikan path relatif kalau lokasi axios.js 
  * di HP/aplikasi penerima) lalu menekan tombol "Sudah Dibayar" untuk
  * menandai transaksi lunas.
  */
-const QRIS_IMAGE_SRC = '/qris-statis.jpg';
+const QRIS_IMAGE_SRC = '/qris-statis.jpeg';
 
 export default function ModalQris({ transaksiId, onLunas, onBatal }) {
     const [loading, setLoading] = useState(false);
