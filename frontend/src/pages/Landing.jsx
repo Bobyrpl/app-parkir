@@ -1042,7 +1042,7 @@ export default function Landing() {
                     <div className="text-center mb-10">
                         <SectionEyebrow>Keunggulan</SectionEyebrow>
                         <p className="font-medium text-2xl md:text-3xl">
-                            Kenapa pakai {BRAND_NAME}
+                            Kenapa pakai parkir ini ?
                         </p>
                     </div>
                 </Reveal>
@@ -1151,7 +1151,7 @@ export default function Landing() {
                 <Reveal>
                     <SectionCard className="h-full">
                         <p className="font-display text-lg mb-2">
-                            Cara kerja {BRAND_NAME}
+                            Cara kerja parkir ini 
                         </p>
                         <p className="text-sm text-white/70 mb-4">
                             Video singkat alur transaksi masuk sampai cetak
