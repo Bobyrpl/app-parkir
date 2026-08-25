@@ -12,8 +12,11 @@ import {
 } from "recharts";
 
 const WHATSAPP_URL = "https://wa.me/6285728035284";
-const BRAND_NAME = "Parkir ";
+const BRAND_NAME = "By Abdulloh Mahbuby XII RPL I ";
 const BRAND_LOCATION = "Pelabuhan Tanjung Perak";
+// TODO: ganti dengan alamat lengkap yang sebenarnya.
+const BRAND_ADDRESS =
+    "Jl. Perak Timur, Pelabuhan Tanjung Perak, Surabaya, Jawa Timur";
 
 // Nav items dipakai bareng oleh navbar desktop dan sidebar mobile, biar
 // keduanya selalu sinkron kalau link berubah.
@@ -463,7 +466,8 @@ export default function Landing() {
     const scrollY = useScrollY();
     const prefersReducedMotion = usePrefersReducedMotion();
 
-    // Intro splash: tampilkan logo dulu, baru landing page terlihat.
+    // Intro splash: tampilkan logo + nama brand + indikator loading dulu,
+    // baru landing page terlihat.
     const [showIntro, setShowIntro] = useState(!prefersReducedMotion);
     const [introExiting, setIntroExiting] = useState(false);
     const [logoIn, setLogoIn] = useState(false);
@@ -699,13 +703,13 @@ export default function Landing() {
     return (
         <div className="min-h-screen bg-[#050608] text-white relative">
             {/* ================= Intro splash ================= */}
-            {/* Logo tampil dan sedikit membesar (pop-in), lalu seluruh
+            {/* Logo + nama brand + indikator loading pop-in, lalu seluruh
                 overlay fade-out untuk menyingkap landing page yang sudah
-                dirender di baliknya. Total durasi ~1.65s, dilewati kalau
-                pengguna memilih prefers-reduced-motion. */}
+                dirender di baliknya. Total durasi ~1.65s (tidak diperpanjang),
+                dilewati kalau pengguna memilih prefers-reduced-motion. */}
             {showIntro && (
                 <div
-                    className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-white transition-opacity duration-500 ease-in ${
+                    className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-3 bg-white transition-opacity duration-500 ease-in ${
                         introExiting
                             ? "opacity-0 pointer-events-none"
                             : "opacity-100"
@@ -721,15 +725,42 @@ export default function Landing() {
                                 : "opacity-0 scale-75"
                         }`}
                     />
+
+                    {/* Nama brand */}
                     <p
-                        className={`text-xs sm:text-sm font-mono tracking-[0.14em] text-white/70 transition-all duration-700 ease-out delay-150 ${
+                        className={`font-display text-lg sm:text-xl text-[#050608] transition-all duration-700 ease-out delay-100 ${
                             logoIn
                                 ? "opacity-100 translate-y-0"
                                 : "opacity-0 translate-y-1"
                         }`}
                     >
-                        by Abdulloh Mahbuby
+                        {BRAND_NAME}
                     </p>
+
+                    {/* Indikator loading kecil */}
+                    <svg
+                        className={`animate-spin h-5 w-5 text-[#C90000] transition-opacity duration-500 delay-150 ${
+                            logoIn ? "opacity-100" : "opacity-0"
+                        }`}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="9"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            opacity="0.25"
+                        />
+                        <path
+                            d="M21 12a9 9 0 00-9-9"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                        />
+                    </svg>
                 </div>
             )}
 
@@ -748,12 +779,6 @@ export default function Landing() {
                         className="relative w-72 max-w-[85vw] bg-[#080A0D] h-full p-6 flex flex-col gap-1 z-50 shadow-2xl shadow-black/50"
                     >
                         <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center gap-2.5">
-                                
-                                <span className="font-display text-base">
-                                    {BRAND_NAME}
-                                </span>
-                            </div>
                             <button
                                 ref={closeBtnRef}
                                 onClick={() => setSidebarOpen(false)}
@@ -807,7 +832,16 @@ export default function Landing() {
             )}
 
             {/* ================= Header ================= */}
-            <header className="sticky top-0 z-30 bg-[#050608]/95 backdrop-blur-md border-b border-[#444444]">
+            {/* Fixed (bukan sticky) supaya melayang transparan di atas hero.
+                Baru dapat background solid + border setelah pengguna scroll
+                melewati sedikit jarak dari atas. */}
+            <header
+                className={`fixed top-0 inset-x-0 z-30 transition-colors duration-300 ${
+                    scrollY > 8
+                        ? "bg-[#050608]/95 backdrop-blur-md border-b border-[#444444]"
+                        : "bg-transparent border-b border-transparent"
+                }`}
+            >
                 <div className="flex items-center justify-between gap-4 px-4 sm:px-6 md:px-12 h-16 md:h-[72px] max-w-7xl mx-auto">
                     {/* Logo + mobile trigger */}
                     <div className="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -838,9 +872,6 @@ export default function Landing() {
                             className="flex items-center gap-2 sm:gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C90000]"
                         >
                             <div className="min-w-0 leading-tight">
-                                <p className="font-display text-base md:text-lg tracking-tight truncate">
-                                    {BRAND_NAME}
-                                </p>
                                 <p className="hidden sm:block text-[11px] font-mono text-white/70 tracking-wide truncate">
                                     {BRAND_LOCATION}
                                 </p>
@@ -927,10 +958,11 @@ export default function Landing() {
                         aria-hidden="true"
                     />
                 )}
-                {/* Scrim navy gelap di tengah supaya teks putih tetap kontras
-                    di atas foto, memudar ke tepi supaya fotonya tetap terlihat. */}
+                {/* Scrim gelap netral (bukan biru) di tengah supaya teks putih
+                    tetap kontras di atas foto, memudar ke tepi supaya fotonya
+                    tetap terlihat. */}
                 <div
-                    className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_50%,rgba(8,15,40,0.92)_25%,rgba(8,15,40,0.75)_55%,rgba(8,15,40,0.3)_100%)]"
+                    className="absolute inset-0 bg-[radial-gradient(ellipse_60%_80%_at_50%_50%,rgba(5,6,8,0.92)_25%,rgba(5,6,8,0.75)_55%,rgba(5,6,8,0.3)_100%)]"
                     aria-hidden="true"
                 />
                 <div
@@ -1714,13 +1746,39 @@ export default function Landing() {
                         <div className="flex items-center gap-2.5">
                             
                             <div className="leading-tight text-left">
-                                <p className="font-display text-base tracking-tight">
-                                    {BRAND_NAME}
-                                </p>
                                 <p className="text-[11px] font-mono text-white/70 tracking-wide">
                                     {BRAND_LOCATION}
                                 </p>
                             </div>
+                        </div>
+
+                        <div className="flex items-start gap-2 max-w-xs">
+                            <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                className="shrink-0 mt-0.5 text-[#C90000]"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M12 21s-7-6.1-7-11a7 7 0 1114 0c0 4.9-7 11-7 11z"
+                                    stroke="currentColor"
+                                    strokeWidth="1.75"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <circle
+                                    cx="12"
+                                    cy="10"
+                                    r="2.5"
+                                    stroke="currentColor"
+                                    strokeWidth="1.75"
+                                />
+                            </svg>
+                            <p className="text-xs text-white/70 leading-relaxed text-left">
+                                {BRAND_ADDRESS}
+                            </p>
                         </div>
 
                         <div className="flex items-center gap-3 pl-0.5">
