@@ -429,12 +429,12 @@ export default function Layout({ children }) {
           </div>
         </div>
 
-        {/* garis palang khas parkir di bagian atas */}
+        {/* garis aksen merah tipis di bagian atas */}
         <div
-          className="h-1.5 w-full"
+          className="h-1 w-full"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(45deg, #C90000 0 20px, #080A0D 20px 40px)",
+              "linear-gradient(90deg, #5A0000 0%, #C90000 50%, #5A0000 100%)",
           }}
         />
         <div className="p-4 md:p-8 max-w-6xl mx-auto">{children}</div>
