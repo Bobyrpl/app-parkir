@@ -1358,7 +1358,7 @@ export default function Landing() {
                         </span>
                     </div>
                     <p className="text-sm text-white/70 mb-10">
-                        Pengalaman langsung dari pengguna {BRAND_NAME}.
+                        Pengalaman langsung dari pengguna
                     </p>
 
                     <div className="space-y-5">
@@ -1368,7 +1368,7 @@ export default function Landing() {
                                 Tinggalkan komentar Anda
                             </p>
                             <p className="text-xs text-white/70 mb-5">
-                                Bagikan pengalaman Anda memakai {BRAND_NAME}{" "}
+                                Bagikan pengalaman Anda memakai {" "}
                                 di sini.
                             </p>
                             <form
@@ -1642,7 +1642,7 @@ export default function Landing() {
                             </p>
                             <p className="text-sm text-white/70">
                                 Lihat pertanyaan umum seputar akun dan cara
-                                pakai {BRAND_NAME} di halaman Bantuan.
+                                pakai ada di halaman Bantuan.
                             </p>
                         </div>
                         <Link
@@ -1799,7 +1799,7 @@ export default function Landing() {
                         </div>
 
                         <p className="text-xs text-white/70">
-                            © {new Date().getFullYear()} {BRAND_NAME}. Seluruh
+                            © {new Date().getFullYear()} . Seluruh
                             hak cipta dilindungi.
                         </p>
                     </div>
