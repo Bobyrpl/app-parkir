@@ -989,7 +989,7 @@ export default function Landing() {
                         </span>
                     </h1>
                     <p className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-md">
-                        {BRAND_NAME} menyatukan transaksi, tarif, area, dan
+                        Sistem ini menyatukan transaksi, tarif, area, dan
                         laporan parkir dalam satu portal — dengan akses
                         berbeda untuk Admin, Petugas, dan Owner.
                     </p>
