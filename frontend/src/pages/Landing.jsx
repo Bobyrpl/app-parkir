@@ -833,7 +833,19 @@ export default function Landing() {
                             </svg>
                         </button>
 
-                        
+                        <Link
+                            to="/"
+                            className="flex items-center gap-2 sm:gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C90000]"
+                        >
+                            <div className="min-w-0 leading-tight">
+                                <p className="font-display text-base md:text-lg tracking-tight truncate">
+                                    {BRAND_NAME}
+                                </p>
+                                <p className="hidden sm:block text-[11px] font-mono text-white/70 tracking-wide truncate">
+                                    {BRAND_LOCATION}
+                                </p>
+                            </div>
+                        </Link>
                     </div>
 
                     {/* Desktop nav — muncul dari lg ke atas supaya tidak
@@ -937,6 +949,7 @@ export default function Landing() {
                         opacity: heroContentOpacity,
                     }}
                 >
+                    
                     <h1 className="font-medium text-4xl sm:text-5xl md:text-6xl leading-[1.08] mb-5">
                         Kelola parkir Anda,{" "}
                         <span className="text-[#C90000]">
