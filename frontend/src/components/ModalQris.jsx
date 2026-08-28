@@ -1,20 +1,8 @@
 import { useState } from 'react';
-import api from '../api/axios'; // sesuaikan path relatif kalau lokasi axios.js berbeda
+import api from '../api/axios';
+import { QrCode, CheckCircle2, X, AlertCircle } from 'lucide-react';
+import { Button } from './ui';
 
-/**
- * Modal QRIS untuk halaman Kendaraan Keluar (petugas).
- *
- * QRIS di sini adalah GAMBAR STATIS (mis. hasil download dari
- * DANA/OVO/Gopay/QRIS bank), BUKAN QR dinamis hasil generate dari payment
- * gateway. Taruh file gambarnya di folder `public/` frontend, lalu ganti
- * nilai QRIS_IMAGE_SRC di bawah sesuai nama filenya, contoh:
- *   public/qris-statis.jpg  ->  QRIS_IMAGE_SRC = '/qris-statis.jpg'
- *
- * Karena gambarnya statis, sistem tidak bisa tahu otomatis kapan
- * pembayaran masuk -- petugas WAJIB mengecek sendiri (mis. notifikasi
- * di HP/aplikasi penerima) lalu menekan tombol "Sudah Dibayar" untuk
- * menandai transaksi lunas.
- */
 const QRIS_IMAGE_SRC = '/qris-statis.jpeg';
 
 export default function ModalQris({ transaksiId, onLunas, onBatal }) {
@@ -35,33 +23,60 @@ export default function ModalQris({ transaksiId, onLunas, onBatal }) {
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-            <div className="w-80 rounded-xl bg-[#080A0D] border border-[#444444] p-6 text-center">
-                <p className="font-display text-lg mb-4">Pembayaran QRIS</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 animate-in fade-in duration-200">
+            <div className="w-full max-w-sm rounded-3xl bg-zinc-900 border border-zinc-800 p-6 text-center shadow-2xl animate-in zoom-in-95 duration-150">
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-zinc-800">
+                    <div className="flex items-center gap-2 text-zinc-200">
+                        <QrCode size={18} className="text-zinc-400" />
+                        <p className="font-display font-bold text-base">Pembayaran QRIS</p>
+                    </div>
+                    <button
+                        onClick={onBatal}
+                        disabled={loading}
+                        className="text-zinc-400 hover:text-zinc-100 p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+                    >
+                        <X size={16} />
+                    </button>
+                </div>
 
-                <img
-                    src={QRIS_IMAGE_SRC}
-                    alt="QRIS Pembayaran"
-                    className="w-56 h-56 mx-auto rounded-lg bg-white p-2 object-contain"
-                />
-                <p className="text-sm text-white/70 mt-3">
-                    Minta pelanggan memindai QRIS di atas, lalu tekan tombol di bawah
-                    setelah pembayaran dipastikan masuk.
+                <div className="bg-white p-3 rounded-2xl mx-auto w-fit shadow-lg mb-3">
+                    <img
+                        src={QRIS_IMAGE_SRC}
+                        alt="QRIS Pembayaran"
+                        className="w-52 h-52 object-contain"
+                    />
+                </div>
+
+                <p className="text-xs text-zinc-400 leading-relaxed max-w-xs mx-auto">
+                    Minta pengendara memindai kode QRIS di atas. Pastikan dana telah masuk sebelum mengonfirmasi.
                 </p>
 
-                {errorMsg && <p className="text-xs text-[#C90000] mt-2">{errorMsg}</p>}
+                {errorMsg && (
+                    <div className="mt-3 p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs flex items-center gap-2 text-left">
+                        <AlertCircle size={14} className="shrink-0" />
+                        <span>{errorMsg}</span>
+                    </div>
+                )}
 
-                <div className="flex flex-col gap-2 mt-4">
-                    <button
+                <div className="flex flex-col gap-2 mt-5">
+                    <Button
+                        variant="primary"
                         onClick={handleSudahDibayar}
-                        disabled={loading}
-                        className="text-sm rounded-md bg-[#5DCAA5] text-black font-medium py-2 hover:opacity-90 transition-opacity disabled:opacity-50"
+                        loading={loading}
+                        className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold border-emerald-400/30"
                     >
-                        {loading ? 'Memproses...' : 'Sudah Dibayar'}
-                    </button>
-                    <button onClick={onBatal} disabled={loading} className="text-xs text-[#C90000] hover:underline">
-                        Batalkan
-                    </button>
+                        <CheckCircle2 size={16} className="mr-1.5" />
+                        Sudah Dibayar (Lunas)
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={onBatal}
+                        disabled={loading}
+                        className="text-zinc-400 hover:text-rose-400 text-xs"
+                    >
+                        Batalkan Transaksi
+                    </Button>
                 </div>
             </div>
         </div>

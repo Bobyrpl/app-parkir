@@ -1,3 +1,6 @@
+import { Printer, X } from 'lucide-react';
+import { Button } from './ui';
+
 export default function StrukCard({ struk, onClose }) {
     if (!struk) return null;
 
@@ -10,7 +13,7 @@ export default function StrukCard({ struk, onClose }) {
     }
 
     return (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-6 z-50 print:bg-white print:p-0">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 z-50 print:bg-white print:p-0 animate-in fade-in duration-200">
             {/* Saat print: sembunyikan semua elemen lain di halaman, tampilkan hanya #struk-print-area */}
             <style>{`
                 @media print {
@@ -27,70 +30,71 @@ export default function StrukCard({ struk, onClose }) {
                 }
             `}</style>
 
-            <div className="relative w-full max-w-sm">
-                {/* notch kiri-kanan meniru sobekan tiket */}
-                <div className="absolute -left-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-white no-print" />
-                <div className="absolute -right-3 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-white no-print" />
-
-                <div id="struk-print-area" className="bg-white text-[#080A0D] rounded-lg overflow-hidden">
+            <div className="relative w-full max-w-sm animate-in zoom-in-95 duration-150">
+                <div id="struk-print-area" className="bg-white text-zinc-900 rounded-3xl overflow-hidden shadow-2xl border border-zinc-200">
                     <div
-                        className="h-2 w-full"
-                        style={{
-                            backgroundImage:
-                                'repeating-linear-gradient(45deg, #C90000 0 10px, #080A0D 10px 20px)',
-                        }}
+                        className="h-2.5 w-full bg-zinc-950"
                     />
-                    <div className="p-6 font-mono text-sm">
-                        <p className="text-center font-display text-lg tracking-tight mb-1">
-                            PARKIR PELABUHAN TANJUNG PERAK
-                        </p>
-                        <p className="text-center text-xs text-[#444444] mb-4">
-                            STRUK PARKIR — {struk.no_struk}
-                        </p>
+                    <div className="p-6 font-mono text-xs sm:text-sm">
+                        <div className="text-center mb-4">
+                            <p className="font-display font-bold text-base text-zinc-900 tracking-tight">
+                                SISTEM PARKIR PELABUHAN
+                            </p>
+                            <p className="text-xs font-semibold text-zinc-600 uppercase">
+                                TANJUNG PERAK SURABAYA
+                            </p>
+                            <p className="text-[11px] text-zinc-500 mt-1">
+                                No. Struk: <span className="font-bold text-zinc-800">{struk.no_struk}</span>
+                            </p>
+                        </div>
 
-                        <div className="border-t border-dashed border-[#B5B5B5] my-3" />
+                        <div className="border-t border-dashed border-zinc-300 my-3" />
 
                         <Row label="Plat Nomor" value={struk.plat_nomor} strong />
-                        <Row label="Jenis" value={struk.jenis_kendaraan} />
-                        <Row label="Area" value={struk.area} />
-                        <Row label="Masuk" value={formatWaktu(struk.waktu_masuk)} />
-                        <Row label="Keluar" value={formatWaktu(struk.waktu_keluar)} />
-                        <Row label="Durasi" value={`${struk.durasi_jam} jam`} />
-                        <Row label="Tarif/Jam" value={formatRupiah(struk.tarif_per_jam)} />
+                        <Row label="Jenis Kendaraan" value={struk.jenis_kendaraan} />
+                        <Row label="Area Parkir" value={struk.area} />
+                        <Row label="Waktu Masuk" value={formatWaktu(struk.waktu_masuk)} />
+                        <Row label="Waktu Keluar" value={formatWaktu(struk.waktu_keluar)} />
+                        <Row label="Durasi Parkir" value={`${struk.durasi_jam} jam`} />
+                        <Row label="Tarif / Jam" value={formatRupiah(struk.tarif_per_jam)} />
 
-                        <div className="border-t border-dashed border-[#B5B5B5] my-3" />
+                        <div className="border-t border-dashed border-zinc-300 my-3" />
 
                         <Row label="Biaya Parkir" value={formatRupiah(struk.biaya_parkir ?? struk.biaya_total)} />
                         {adaDenda && (
                             <Row label="Denda Keterlambatan" value={formatRupiah(struk.denda)} strong />
                         )}
 
-                        <div className="border-t border-dashed border-[#B5B5B5] my-3" />
+                        <div className="border-t border-dashed border-zinc-300 my-3" />
 
-                        <div className="flex justify-between items-baseline">
-                            <span className="text-xs text-[#444444]">TOTAL BAYAR</span>
-                            <span className="font-display text-2xl">{formatRupiah(struk.biaya_total)}</span>
+                        <div className="flex justify-between items-baseline pt-1">
+                            <span className="text-xs font-bold text-zinc-600 uppercase tracking-wider">TOTAL BAYAR</span>
+                            <span className="font-display font-bold text-xl sm:text-2xl text-zinc-950">{formatRupiah(struk.biaya_total)}</span>
                         </div>
 
-                        <p className="text-center text-[10px] text-[#444444] mt-4">
-                            Dilayani oleh {struk.petugas} · Terima kasih
+                        <p className="text-center text-[10px] text-zinc-500 mt-5 pt-3 border-t border-zinc-200">
+                            Petugas: <span className="font-medium text-zinc-700">{struk.petugas}</span> • Simpan struk ini sebagai bukti pembayaran sah.
                         </p>
                     </div>
                 </div>
 
-                <div className="mt-4 flex gap-2 no-print">
-                    <button
+                <div className="mt-4 flex gap-2.5 no-print">
+                    <Button
+                        variant="primary"
                         onClick={handleCetak}
-                        className="flex-1 rounded-md bg-[#C90000] text-white py-2.5 text-sm font-semibold hover:bg-[#C90000]/90 transition-colors"
+                        icon={Printer}
+                        className="flex-1 shadow-lg"
                     >
                         Cetak Struk
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        variant="secondary"
                         onClick={onClose}
-                        className="flex-1 rounded-md bg-[#080A0D] text-white py-2.5 text-sm hover:bg-[#444444] transition-colors"
+                        icon={X}
+                        className="flex-1"
                     >
                         Tutup
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>
@@ -99,9 +103,9 @@ export default function StrukCard({ struk, onClose }) {
 
 function Row({ label, value, strong }) {
     return (
-        <div className="flex justify-between py-0.5">
-            <span className="text-[#444444]">{label}</span>
-            <span className={strong ? 'font-semibold' : ''}>{value}</span>
+        <div className="flex justify-between py-1">
+            <span className="text-zinc-600">{label}</span>
+            <span className={strong ? 'font-bold text-zinc-950' : 'text-zinc-800'}>{value}</span>
         </div>
     );
 }

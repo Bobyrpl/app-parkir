@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
 import { playSuccessSound, playErrorSound } from '../utils/sound';
+import { CheckCircle2, AlertCircle, X } from 'lucide-react';
 
 const ToastContext = createContext(null);
 
@@ -38,53 +39,42 @@ export function ToastProvider({ children }) {
             {children}
 
             {/* Stack notifikasi, pojok kanan atas */}
-            <div className="fixed top-4 right-4 z-[100] flex flex-col gap-2 w-full max-w-xs pointer-events-none">
+            <div className="fixed top-5 right-5 z-[100] flex flex-col gap-2.5 w-full max-w-sm pointer-events-none px-4 sm:px-0">
                 {toasts.map((t) => (
                     <div
                         key={t.id}
                         role="alert"
-                        className={`pointer-events-auto rounded-lg border px-4 py-3 shadow-lg flex items-start gap-3 text-sm animate-[toast-in_0.2s_ease-out] ${
+                        className={`pointer-events-auto rounded-2xl border p-4 shadow-2xl backdrop-blur-xl flex items-start gap-3 text-sm animate-in slide-in-from-top-3 fade-in duration-200 ${
                             t.tone === 'success'
-                                ? 'bg-[#080A0D] border-[#35C48D]/30 text-white'
-                                : 'bg-[#080A0D] border-[#C90000]/30 text-white'
+                                ? 'bg-zinc-950/90 border-emerald-500/30 text-zinc-100 shadow-emerald-950/20'
+                                : 'bg-zinc-950/90 border-rose-500/30 text-zinc-100 shadow-rose-950/20'
                         }`}
                     >
                         <span
-                            className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                                t.tone === 'success' ? 'bg-[#35C48D]/15 text-[#35C48D]' : 'bg-[#C90000]/15 text-[#C90000]'
+                            className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-xl ${
+                                t.tone === 'success'
+                                    ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/25'
+                                    : 'bg-rose-500/15 text-rose-400 border border-rose-500/25'
                             }`}
                             aria-hidden="true"
                         >
                             {t.tone === 'success' ? (
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg>
+                                <CheckCircle2 size={15} strokeWidth={2.5} />
                             ) : (
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M18 6L6 18M6 6l12 12" />
-                                </svg>
+                                <AlertCircle size={15} strokeWidth={2.5} />
                             )}
                         </span>
-                        <p className="flex-1 leading-snug">{t.message}</p>
+                        <p className="flex-1 text-xs sm:text-sm leading-snug text-zinc-200 mt-0.5 font-medium">{t.message}</p>
                         <button
                             onClick={() => remove(t.id)}
                             aria-label="Tutup notifikasi"
-                            className="text-white/70 hover:text-white"
+                            className="text-zinc-500 hover:text-zinc-200 transition-colors p-0.5 rounded-lg"
                         >
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M18 6L6 18M6 6l12 12" />
-                            </svg>
+                            <X size={15} />
                         </button>
                     </div>
                 ))}
             </div>
-
-            <style>{`
-                @keyframes toast-in {
-                    from { opacity: 0; transform: translateY(-8px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-            `}</style>
         </ToastContext.Provider>
     );
 }

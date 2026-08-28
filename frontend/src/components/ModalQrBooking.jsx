@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
+import { QrCode, X } from 'lucide-react';
+import { Button } from './ui';
 
-/**
- * Modal QR kode booking, dipakai di halaman Riwayat Booking (pelanggan).
- * QR-nya cuma berisi teks kode_booking mentah (mis. "BKG-7F3K9A") - sama
- * persis dengan yang dicari petugas lewat GET /api/booking/cari/{kode_booking}
- * (lihat BookingController::cariByKode & ModalScanQr.jsx di sisi petugas).
- */
 export default function ModalQrBooking({ booking, onClose }) {
     const [qrImage, setQrImage] = useState(null);
 
@@ -22,43 +18,62 @@ export default function ModalQrBooking({ booking, onClose }) {
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 animate-in fade-in duration-200"
             onClick={onClose}
         >
             <div
-                className="w-full max-w-xs rounded-xl bg-[#080A0D] border border-[#444444] p-6 text-center"
+                className="w-full max-w-sm rounded-3xl bg-zinc-900 border border-zinc-800 p-6 text-center shadow-2xl animate-in zoom-in-95 duration-150"
                 onClick={(e) => e.stopPropagation()}
                 role="dialog"
                 aria-modal="true"
             >
-                <p className="font-display text-lg text-white mb-1">QR Booking</p>
-                <p className="text-xs text-white/70 mb-4">
-                    Tunjukkan QR ini ke petugas saat tiba di lokasi
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-zinc-800">
+                    <div className="flex items-center gap-2 text-zinc-200">
+                        <QrCode size={18} className="text-zinc-400" />
+                        <p className="font-display font-bold text-base">QR Tiket Booking</p>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="text-zinc-400 hover:text-zinc-100 p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+                    >
+                        <X size={16} />
+                    </button>
+                </div>
+
+                <p className="text-xs text-zinc-400 mb-4">
+                    Tunjukkan QR ini kepada petugas saat tiba di gerbang masuk pelabuhan.
                 </p>
 
                 {qrImage ? (
-                    <img
-                        src={qrImage}
-                        alt={`QR booking ${booking.kode_booking}`}
-                        className="w-56 h-56 mx-auto rounded-lg bg-white p-2"
-                    />
+                    <div className="bg-white p-3 rounded-2xl mx-auto w-fit shadow-lg">
+                        <img
+                            src={qrImage}
+                            alt={`QR booking ${booking.kode_booking}`}
+                            className="w-52 h-52 object-contain"
+                        />
+                    </div>
                 ) : (
-                    <p className="text-sm text-white/70 py-20">Menyiapkan QR...</p>
+                    <div className="w-52 h-52 mx-auto rounded-2xl bg-zinc-800 animate-pulse flex items-center justify-center text-zinc-500 text-xs font-mono">
+                        Menyiapkan QR...
+                    </div>
                 )}
 
-                <p className="mt-4 font-mono text-[#C90000] text-sm tracking-wider">
-                    {booking.kode_booking}
-                </p>
-                <p className="text-xs text-white/70 mt-1">
-                    {booking.kendaraan?.plat_nomor} — {booking.area?.nama_area}
-                </p>
+                <div className="mt-4 p-3 rounded-xl bg-zinc-950/60 border border-zinc-800/80">
+                    <p className="font-mono text-base font-bold text-zinc-100 tracking-widest">
+                        {booking.kode_booking}
+                    </p>
+                    <p className="text-xs text-zinc-400 mt-1 font-medium">
+                        {booking.kendaraan?.plat_nomor || '-'} • {booking.area?.nama_area || '-'}
+                    </p>
+                </div>
 
-                <button
+                <Button
+                    variant="secondary"
                     onClick={onClose}
-                    className="mt-5 w-full rounded-md bg-[#444444] text-white py-2 text-sm hover:bg-[#444444] transition-colors"
+                    className="mt-5 w-full"
                 >
                     Tutup
-                </button>
+                </Button>
             </div>
         </div>
     );

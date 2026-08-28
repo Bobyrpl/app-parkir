@@ -278,98 +278,92 @@ export default function DashboardAdmin() {
             `}</style>
 
             <PageHeader
-                eyebrow="PANEL ADMIN"
+                eyebrow="PANEL ADMINISTRATOR"
                 title="Ringkasan Sistem"
-                description="Pantau data master aplikasi parkir dari sini."
+                description="Pantau statistik master data, transaksi realtime, dan unduh laporan berkala."
             />
 
-            {/* Baris kartu ringkasan gaya CoreUI: badge ikon berwarna,
-                angka besar di atas, label kecil huruf kapital di bawah. */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            {/* Baris kartu ringkasan */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <StatCard label="TOTAL PENGGUNA" value={stats.users} icon={Users} />
-                <StatCard label="JENIS TARIF" value={stats.tarif} accent="#35C48D" icon={Ticket} />
-                <StatCard label="AREA PARKIR" value={stats.area} accent="#C90000" icon={MapPin} />
-                <StatCard label="KENDARAAN TERDAFTAR" value={stats.kendaraan} accent="#C90000" icon={Car} />
+                <StatCard label="JENIS TARIF" value={stats.tarif} icon={Ticket} />
+                <StatCard label="AREA PARKIR" value={stats.area} icon={MapPin} />
+                <StatCard label="KENDARAAN TERDAFTAR" value={stats.kendaraan} icon={Car} />
             </div>
 
-            {/* Strip ringkasan periode berjalan — angka yang sama dengan
-                totalTransaksi/totalPendapatan yang sudah dihitung di atas,
-                cuma ditonjolkan di sini seperti "highlight bar" ala CoreUI. */}
+            {/* Highlight bar periode */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 no-print">
-                <Card className="p-5 flex items-center gap-4 border-l-4" style={{ borderLeftColor: '#C90000' }}>
-                    <span className="w-11 h-11 rounded-xl bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
-                        <Receipt size={20} />
+                <Card className="p-5 flex items-center gap-4 border border-zinc-800/80 bg-zinc-900/60">
+                    <span className="w-12 h-12 rounded-2xl bg-zinc-800 border border-zinc-700/60 text-zinc-200 flex items-center justify-center shrink-0 shadow-inner">
+                        <Receipt size={22} />
                     </span>
                     <div className="min-w-0">
-                        <p className="font-mono text-[11px] tracking-widest text-white/70">TRANSAKSI PERIODE INI</p>
-                        <p className="font-display text-2xl text-white leading-tight truncate">
+                        <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">TRANSAKSI PERIODE INI</p>
+                        <p className="font-display font-bold text-2xl sm:text-3xl text-zinc-100 leading-tight truncate">
                             {loadingRekap ? '—' : totalTransaksi.toLocaleString('id-ID')}
                         </p>
-                        <p className="text-xs text-white/70 mt-0.5 truncate">{periodeLabel}</p>
+                        <p className="text-xs text-zinc-500 font-mono mt-0.5 truncate">{periodeLabel}</p>
                     </div>
                 </Card>
-                <Card className="p-5 flex items-center gap-4 border-l-4" style={{ borderLeftColor: '#35C48D' }}>
-                    <span className="w-11 h-11 rounded-xl bg-[#35C48D]/10 text-[#35C48D] flex items-center justify-center shrink-0">
-                        <Wallet size={20} />
+                <Card className="p-5 flex items-center gap-4 border border-zinc-800/80 bg-zinc-900/60">
+                    <span className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 flex items-center justify-center shrink-0 shadow-inner">
+                        <Wallet size={22} />
                     </span>
                     <div className="min-w-0">
-                        <p className="font-mono text-[11px] tracking-widest text-white/70">PENDAPATAN PERIODE INI</p>
-                        <p className="font-display text-2xl text-white leading-tight truncate">
+                        <p className="font-mono text-[10px] uppercase tracking-widest text-emerald-400/90 font-semibold">PENDAPATAN PERIODE INI</p>
+                        <p className="font-display font-bold text-2xl sm:text-3xl text-zinc-100 leading-tight truncate">
                             {loadingRekap ? '—' : `Rp ${totalPendapatan.toLocaleString('id-ID')}`}
                         </p>
-                        <p className="text-xs text-white/70 mt-0.5 truncate">{periodeLabel}</p>
+                        <p className="text-xs text-zinc-500 font-mono mt-0.5 truncate">{periodeLabel}</p>
                     </div>
                 </Card>
             </div>
 
+            {/* Grafik Trend */}
             <div className="mb-8 no-print">
                 <Card className="p-6">
-                    <div className="flex items-center gap-2.5 mb-4">
-                        <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
-                            <TrendingUp size={16} />
+                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-zinc-800/80">
+                        <span className="w-9 h-9 rounded-xl bg-zinc-800 border border-zinc-700/60 text-zinc-200 flex items-center justify-center shrink-0">
+                            <TrendingUp size={18} />
                         </span>
                         <div className="min-w-0">
-                            <h2 className="font-display text-base text-white truncate">
-                                 Transaksi &amp; daftar user
+                            <h2 className="font-display font-bold text-base text-zinc-100 truncate">
+                                Tren Transaksi &amp; Pelanggan Baru
                             </h2>
-                            <p className="text-xs text-white/70 truncate">{periodeLabel}</p>
+                            <p className="text-xs text-zinc-400 font-mono truncate">{periodeLabel}</p>
                         </div>
                     </div>
                     {loadingRekap ? (
-                        <p className="text-sm text-white/70">Memuat data...</p>
+                        <div className="h-72 flex items-center justify-center text-sm text-zinc-500 font-mono">Memuat grafik...</div>
                     ) : rekap.length === 0 ? (
-                        <p className="text-sm text-white/70">Belum ada data transaksi.</p>
+                        <div className="h-72 flex items-center justify-center text-sm text-zinc-500">Belum ada data transaksi pada rentang ini.</div>
                     ) : (
                         <ResponsiveContainer width="100%" height={340}>
                             <LineChart data={rekap}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
-                                <XAxis dataKey="label" stroke="#B5B5B5" fontSize={11} />
-                                {/* Sumbu kiri: jumlah transaksi & registrasi pelanggan (skala kecil, satuan orang/transaksi) */}
+                                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
+                                <XAxis dataKey="label" stroke="#71717a" fontSize={11} />
                                 <YAxis
                                     yAxisId="jumlah"
-                                    stroke="#B5B5B5"
-                                    fontSize={12}
+                                    stroke="#71717a"
+                                    fontSize={11}
                                     allowDecimals={false}
                                 />
-                                {/* Sumbu kanan: pendapatan (skala rupiah, jauh lebih besar) -
-                                    dipisah supaya garis jumlah transaksi/registrasi tidak
-                                    kelihatan datar/gepeng tertindih skala rupiah. */}
                                 <YAxis
                                     yAxisId="rupiah"
                                     orientation="right"
-                                    stroke="#B5B5B5"
-                                    fontSize={12}
+                                    stroke="#71717a"
+                                    fontSize={11}
                                     tickFormatter={(value) => `Rp${(value / 1000).toLocaleString('id-ID')}rb`}
                                 />
                                 <Tooltip
-                                    contentStyle={{ background: '#444444', border: '1px solid #444444', borderRadius: 8 }}
-                                    labelStyle={{ color: '#FFFFFF' }}
+                                    contentStyle={{ background: '#18181b', border: '1px solid #3f3f46', borderRadius: 12, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)' }}
+                                    labelStyle={{ color: '#fafafa', fontWeight: 600 }}
                                     formatter={(value, name) => {
                                         if (name === 'pendapatan') {
                                             return [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Pendapatan'];
                                         }
                                         if (name === 'jumlah_user') {
-                                            return [value, ' Pelanggan'];
+                                            return [value, 'Pelanggan Baru'];
                                         }
                                         return [value, 'Jumlah Transaksi'];
                                     }}
@@ -380,72 +374,64 @@ export default function DashboardAdmin() {
                                             value === 'pendapatan'
                                                 ? 'Pendapatan'
                                                 : value === 'jumlah_user'
-                                                ? 'Registrasi Pelanggan'
+                                                ? 'Pelanggan Baru'
                                                 : 'Jumlah Transaksi';
-                                        return <span style={{ color: '#B5B5B5', fontSize: 12 }}>{label}</span>;
+                                        return <span style={{ color: '#a1a1aa', fontSize: 12, marginRight: 14 }}>{label}</span>;
                                     }}
                                 />
-                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#C90000" strokeWidth={2} dot={{ r: 3 }} />
-                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#38BDF8" strokeWidth={2} strokeDasharray="5 3" dot={{ r: 3 }} />
-                                <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#35C48D" strokeWidth={2} dot={{ r: 3 }} />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#fafafa" strokeWidth={2.5} dot={{ r: 3.5, fill: '#fafafa' }} activeDot={{ r: 6 }} />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#38bdf8" strokeWidth={2} strokeDasharray="4 3" dot={{ r: 3, fill: '#38bdf8' }} />
+                                <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#10b981" strokeWidth={2.5} dot={{ r: 3.5, fill: '#10b981' }} activeDot={{ r: 6 }} />
                             </LineChart>
                         </ResponsiveContainer>
                     )}
                 </Card>
             </div>
 
+            {/* Tabel Laporan */}
             <div id="laporan-print-area">
             <Card className="p-6 mb-8">
-                <div className="flex items-start justify-between mb-4 flex-wrap gap-3">
-                    <div className="flex items-start gap-2.5">
-                        <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0 print:hidden">
-                            <FileText size={16} />
+                <div className="flex items-start justify-between mb-6 flex-wrap gap-4">
+                    <div className="flex items-start gap-3">
+                        <span className="w-9 h-9 rounded-xl bg-zinc-800 border border-zinc-700/60 text-zinc-200 flex items-center justify-center shrink-0 print:hidden">
+                            <FileText size={18} />
                         </span>
                         <div>
-                            <h2 className="font-display text-lg text-white print:text-[#080A0D]">
-                                Tabel Laporan Transaksi
+                            <h2 className="font-display font-bold text-lg text-zinc-100 print:text-black">
+                                Tabel Laporan Harian
                             </h2>
-                            <p className="text-xs text-white/70 print:text-white/70 mt-1">
+                            <p className="text-xs text-zinc-400 font-mono print:text-zinc-600 mt-0.5">
                                 Periode: {periodeLabel}
-                            </p>
-                            <p className="hidden print:block text-xs text-white/70 mt-1">
-                                Dicetak pada {new Date().toLocaleString('id-ID')}
                             </p>
                         </div>
                     </div>
-                    <div className="flex gap-2 no-print">
-                        <Button variant="ghost" onClick={handleDownloadWord} disabled={downloadingWord || rekap.length === 0}>
-                            <span className="flex items-center gap-1.5">
-                                <FileDown size={15} />
-                                {downloadingWord ? 'Membuat file...' : 'Download Word'}
-                            </span>
+                    <div className="flex items-center gap-2.5 no-print">
+                        <Button variant="secondary" size="sm" onClick={handleDownloadWord} disabled={downloadingWord || rekap.length === 0} icon={FileDown}>
+                            {downloadingWord ? 'Membuat file...' : 'Export Word'}
                         </Button>
-                        <Button variant="ghost" onClick={handleCetak} disabled={rekap.length === 0}>
-                            <span className="flex items-center gap-1.5">
-                                <Printer size={15} />
-                                Cetak
-                            </span>
+                        <Button variant="secondary" size="sm" onClick={handleCetak} disabled={rekap.length === 0} icon={Printer}>
+                            Cetak Laporan
                         </Button>
                     </div>
                 </div>
 
                 <form
                     onSubmit={handleFilterSubmit}
-                    className="no-print flex flex-wrap items-end gap-3 mb-5 pb-5 border-b border-[#444444]"
+                    className="no-print flex flex-wrap items-end gap-3 mb-6 pb-6 border-b border-zinc-800/80"
                 >
-                    <div className="flex flex-col gap-1">
-                        <label className="text-xs text-white/70" htmlFor="dari-date">Dari tanggal</label>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-mono uppercase tracking-wider text-zinc-400" htmlFor="dari-date">Dari Tanggal</label>
                         <input
                             id="dari-date"
                             type="date"
                             value={dari}
                             max={sampai}
                             onChange={(e) => setDari(e.target.value)}
-                            className="bg-[#444444] border border-[#444444] rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000] transition-shadow"
+                            className="bg-zinc-950/70 border border-zinc-800 rounded-xl px-3.5 py-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-400/30 transition-all"
                         />
                     </div>
-                    <div className="flex flex-col gap-1">
-                        <label className="text-xs text-white/70" htmlFor="sampai-date">Sampai tanggal</label>
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-mono uppercase tracking-wider text-zinc-400" htmlFor="sampai-date">Sampai Tanggal</label>
                         <input
                             id="sampai-date"
                             type="date"
@@ -453,23 +439,20 @@ export default function DashboardAdmin() {
                             min={dari}
                             max={toDateInputValue(new Date())}
                             onChange={(e) => setSampai(e.target.value)}
-                            className="bg-[#444444] border border-[#444444] rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000] transition-shadow"
+                            className="bg-zinc-950/70 border border-zinc-800 rounded-xl px-3.5 py-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-400/30 transition-all"
                         />
                     </div>
-                    <Button type="submit" disabled={loadingRekap}>
-                        <span className="flex items-center gap-1.5">
-                            <CalendarRange size={15} />
-                            {loadingRekap ? 'Memuat...' : 'Terapkan'}
-                        </span>
+                    <Button type="submit" size="md" disabled={loadingRekap} icon={CalendarRange}>
+                        {loadingRekap ? 'Memuat...' : 'Terapkan Filter'}
                     </Button>
-                    <div className="flex gap-1 ml-auto bg-[#444444] border border-[#444444] rounded-full p-1">
+                    <div className="flex gap-1 sm:ml-auto bg-zinc-950/80 border border-zinc-800 rounded-full p-1">
                         <button
                             type="button"
                             onClick={() => handlePreset(7)}
-                            className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                            className={`px-3.5 py-1 rounded-full text-xs font-mono transition-all ${
                                 activePreset === 7
-                                    ? 'bg-[#C90000] text-white'
-                                    : 'text-white/70 hover:text-white'
+                                    ? 'bg-zinc-100 text-zinc-950 font-bold shadow'
+                                    : 'text-zinc-400 hover:text-zinc-100'
                             }`}
                         >
                             7 Hari
@@ -477,10 +460,10 @@ export default function DashboardAdmin() {
                         <button
                             type="button"
                             onClick={() => handlePreset(30)}
-                            className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                            className={`px-3.5 py-1 rounded-full text-xs font-mono transition-all ${
                                 activePreset === 30
-                                    ? 'bg-[#C90000] text-white'
-                                    : 'text-white/70 hover:text-white'
+                                    ? 'bg-zinc-100 text-zinc-950 font-bold shadow'
+                                    : 'text-zinc-400 hover:text-zinc-100'
                             }`}
                         >
                             30 Hari
@@ -489,20 +472,20 @@ export default function DashboardAdmin() {
                 </form>
 
                 {loadingRekap ? (
-                    <p className="text-sm text-white/70">Memuat data...</p>
+                    <div className="py-10 text-center text-sm text-zinc-500 font-mono">Memuat data laporan...</div>
                 ) : rekapError ? (
-                    <div className="text-sm text-[#C90000] flex items-center gap-3">
+                    <div className="text-sm text-rose-400 flex items-center gap-3 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
                         <span>{rekapError}</span>
-                        <Button variant="ghost" onClick={() => loadRekap()}>Coba Lagi</Button>
+                        <Button variant="secondary" size="sm" onClick={() => loadRekap()}>Coba Lagi</Button>
                     </div>
                 ) : (
                     <Table columns={['Tanggal', 'Jumlah Transaksi', 'Pendapatan']}>
-                        {rekap.map((d, idx) => (
+                        {rekap.map((d) => (
                             <tr
                                 key={d.tanggal}
-                                className={idx % 2 === 1 ? 'bg-[#080A0D]' : undefined}
+                                className="hover:bg-zinc-800/40 transition-colors"
                             >
-                                <td className="px-4 py-3 font-mono text-xs">
+                                <td className="px-5 py-3.5 font-mono text-xs text-zinc-300">
                                     {new Date(d.tanggal).toLocaleDateString('id-ID', {
                                         weekday: 'long',
                                         day: 'numeric',
@@ -510,18 +493,15 @@ export default function DashboardAdmin() {
                                         year: 'numeric',
                                     })}
                                 </td>
-                                <td className="px-4 py-3 font-mono">{d.jumlah_transaksi}</td>
-                                <td className="px-4 py-3 font-mono">
-                                    <div className="flex items-center gap-2.5">
-                                        <span className="whitespace-nowrap">
+                                <td className="px-5 py-3.5 font-mono text-xs font-medium text-zinc-200">{d.jumlah_transaksi}</td>
+                                <td className="px-5 py-3.5 font-mono text-xs text-zinc-200">
+                                    <div className="flex items-center gap-3">
+                                        <span className="whitespace-nowrap font-medium text-emerald-400">
                                             Rp {Number(d.pendapatan).toLocaleString('id-ID')}
                                         </span>
-                                        {/* Bar visual proporsional terhadap pendapatan tertinggi
-                                            pada rentang yang sama — murni dekoratif, dihitung dari
-                                            data yang sudah ada, tidak mengubah data itu sendiri. */}
-                                        <span className="hidden sm:block flex-1 h-1.5 rounded-full bg-[#444444] overflow-hidden min-w-[60px] max-w-[120px] print:hidden">
+                                        <span className="hidden sm:block flex-1 h-1.5 rounded-full bg-zinc-800 overflow-hidden min-w-[60px] max-w-[120px] print:hidden">
                                             <span
-                                                className="block h-full rounded-full bg-[#35C48D]"
+                                                className="block h-full rounded-full bg-emerald-400"
                                                 style={{
                                                     width: `${Math.max(6, Math.round((d.pendapatan / maxPendapatanHarian) * 100))}%`,
                                                 }}
@@ -533,16 +513,16 @@ export default function DashboardAdmin() {
                         ))}
                         {rekap.length === 0 && (
                             <tr>
-                                <td colSpan={3} className="px-4 py-6 text-center text-white/70 text-sm">
+                                <td colSpan={3} className="px-5 py-10 text-center text-zinc-500 text-xs font-mono">
                                     Belum ada data transaksi pada periode ini.
                                 </td>
                             </tr>
                         )}
                         {rekap.length > 0 && (
-                            <tr className="bg-[#444444] font-semibold">
-                                <td className="px-4 py-3 font-mono text-xs">TOTAL</td>
-                                <td className="px-4 py-3 font-mono">{totalTransaksi}</td>
-                                <td className="px-4 py-3 font-mono">
+                            <tr className="bg-zinc-950/80 font-bold border-t border-zinc-800">
+                                <td className="px-5 py-3.5 font-mono text-xs text-zinc-200">TOTAL</td>
+                                <td className="px-5 py-3.5 font-mono text-xs text-zinc-100">{totalTransaksi}</td>
+                                <td className="px-5 py-3.5 font-mono text-xs text-emerald-400">
                                     Rp {Number(totalPendapatan).toLocaleString('id-ID')}
                                 </td>
                             </tr>

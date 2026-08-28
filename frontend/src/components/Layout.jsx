@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { ConfirmDialog } from "./ui";
 
 /* Ikon garis tipis (24x24, stroke) — satu per menu, biar tiap item mudah dikenali sekilas */
 const ICONS = {
@@ -107,7 +108,7 @@ function ProfileAvatar() {
 
   async function handleFileChange(e) {
     const file = e.target.files?.[0];
-    e.target.value = ""; // biar bisa pilih file yang sama lagi kalau perlu
+    e.target.value = "";
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
@@ -136,7 +137,7 @@ function ProfileAvatar() {
       onClick={pilihFile}
       disabled={uploading}
       title="Ganti foto profil"
-      className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden bg-[#C90000]/15 text-[#C90000] text-xs font-semibold ring-1 ring-[#C90000]/25 disabled:cursor-wait"
+      className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden bg-zinc-800 text-zinc-100 text-xs font-semibold border border-zinc-700 hover:border-zinc-500 transition-colors disabled:cursor-wait shadow-sm"
     >
       {user?.foto_profil_url ? (
         <img
@@ -150,7 +151,7 @@ function ProfileAvatar() {
 
       {/* Overlay ikon kamera, muncul saat hover / lagi upload */}
       <span
-        className={`absolute inset-0 flex items-center justify-center bg-black/50 transition-opacity ${
+        className={`absolute inset-0 flex items-center justify-center bg-black/60 transition-opacity ${
           uploading ? "opacity-100" : "opacity-0 group-hover:opacity-100"
         }`}
       >
@@ -208,6 +209,7 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const menu = MENU[user?.role] || [];
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [collapsed, setCollapsed] = useState(
     () => localStorage.getItem("sidebarCollapsed") === "1",
   );
@@ -226,37 +228,36 @@ export default function Layout({ children }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#050608] text-white flex">
+    <div className="min-h-screen bg-black text-zinc-100 flex flex-col md:flex-row antialiased">
       {/* Overlay gelap di belakang sidebar saat dibuka di mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-[2px] md:hidden"
+          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm md:hidden animate-in fade-in duration-200"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar: off-canvas di mobile, statis + bisa dikecilkan di layar md ke atas */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 shrink-0 bg-[#080A0D] border-r border-[#444444] flex flex-col
-                shadow-2xl shadow-black/40
-                transition-[transform,width] duration-200 ease-in-out
+        className={`fixed inset-y-0 left-0 z-50 shrink-0 bg-zinc-950/95 backdrop-blur-md border-r border-zinc-800/80 flex flex-col
+                shadow-2xl shadow-black/50
+                transition-[transform,width] duration-300 ease-in-out
                 md:static md:translate-x-0 md:shadow-none
                 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
                 ${collapsed ? "md:w-20 w-72" : "w-72"}`}
       >
-        {/* Tombol kecilkan/lebarkan, cuma tampil di layar md ke atas.
-                    Ditempel di tepi kanan sidebar biar gampang dijangkau. */}
+        {/* Tombol kecilkan/lebarkan, tampil di layar md ke atas */}
         <button
           onClick={toggleCollapsed}
           title={collapsed ? "Lebarkan menu" : "Kecilkan menu"}
-          className="hidden md:flex absolute -right-3 top-8 z-10 h-6 w-6 items-center justify-center rounded-full bg-[#080A0D] border border-[#444444] text-white/70 hover:text-[#C90000] hover:border-[#C90000]/40 transition-colors"
+          className="hidden md:flex absolute -right-3.5 top-7 z-10 h-7 w-7 items-center justify-center rounded-full bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all shadow-md"
         >
           <svg
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            className={`h-3.5 w-3.5 transition-transform ${collapsed ? "rotate-180" : ""}`}
+            className={`h-3.5 w-3.5 transition-transform duration-200 ${collapsed ? "rotate-180" : ""}`}
           >
             <path
               strokeLinecap="round"
@@ -268,29 +269,31 @@ export default function Layout({ children }) {
 
         {/* Brand */}
         <div
-          className={`px-5 py-5 border-b border-[#444444] flex items-center ${collapsed ? "md:justify-center md:px-0" : "justify-between"}`}
+          className={`px-5 py-5 border-b border-zinc-800/80 flex items-center ${
+            collapsed ? "md:justify-center md:px-0" : "justify-between"
+          }`}
         >
           <div
             className={`flex items-center gap-3 min-w-0 ${collapsed ? "md:gap-0" : ""}`}
           >
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-[#C90000] shrink-0">
-              <span className="font-display text-white text-lg font-bold leading-none">
-                P
-              </span>
-            </div>
+            <img
+              src="/images/logo.png"
+              alt="Logo ParkirKu"
+              className="h-8 w-8 object-contain rounded-lg shrink-0 drop-shadow"
+            />
             <div className={`min-w-0 ${collapsed ? "md:hidden" : ""}`}>
-              <p className="font-display text-[15px] leading-tight tracking-tight truncate">
-                Panel Sistem Parkir
+              <p className="font-display font-bold text-sm text-zinc-100 leading-tight truncate">
+                ParkirKu
               </p>
-              <p className="mt-0.5 text-[11px] leading-none text-white/70 font-mono tracking-wide uppercase">
-                Pelabuhan
+              <p className="text-[10px] leading-none text-zinc-400 font-mono tracking-wider uppercase mt-0.5 truncate">
+                Pelabuhan Tanjung Perak
               </p>
             </div>
           </div>
           {/* Tombol tutup, hanya tampil di mobile */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden text-white/70 hover:text-white hover:bg-[#444444] rounded-md p-1.5 transition-colors shrink-0"
+            className="md:hidden text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg p-1.5 transition-colors shrink-0"
             aria-label="Tutup menu"
           >
             <svg
@@ -311,11 +314,13 @@ export default function Layout({ children }) {
         </div>
 
         {/* Menu */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto overflow-x-hidden">
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto overflow-x-hidden">
           <p
-            className={`px-3 pb-2 text-[10px] font-semibold tracking-widest uppercase text-white/70 ${collapsed ? "md:hidden" : ""}`}
+            className={`px-3 pb-2 text-[10px] font-mono font-semibold tracking-widest uppercase text-zinc-500 ${
+              collapsed ? "md:hidden" : ""
+            }`}
           >
-            Menu
+            Navigasi
           </p>
           {menu.map((item) => (
             <NavLink
@@ -325,12 +330,12 @@ export default function Layout({ children }) {
               onClick={() => setSidebarOpen(false)}
               title={collapsed ? item.label : undefined}
               className={({ isActive }) =>
-                `group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                `group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm transition-all duration-200 ${
                   collapsed ? "md:justify-center md:px-2" : ""
                 } ${
                   isActive
-                    ? "bg-[#C90000] text-white font-medium shadow-sm shadow-[#C90000]/20"
-                    : "text-white/80 hover:bg-[#444444] hover:text-white"
+                    ? "bg-zinc-100 text-zinc-950 font-semibold shadow-md shadow-black/20"
+                    : "text-zinc-400 hover:bg-zinc-900/80 hover:text-zinc-100"
                 }`
               }
             >
@@ -338,10 +343,8 @@ export default function Layout({ children }) {
                 <>
                   <Icon
                     name={item.icon}
-                    className={`h-[18px] w-[18px] shrink-0 ${
-                      isActive
-                        ? "text-white"
-                        : "text-white/70 group-hover:text-white"
+                    className={`h-[18px] w-[18px] shrink-0 transition-transform group-hover:scale-105 ${
+                      isActive ? "text-zinc-950" : "text-zinc-400 group-hover:text-zinc-200"
                     }`}
                   />
                   <span className={`truncate ${collapsed ? "md:hidden" : ""}`}>
@@ -354,24 +357,27 @@ export default function Layout({ children }) {
         </nav>
 
         {/* Profil & keluar */}
-        <div className="px-3 py-4 border-t border-[#444444] space-y-1">
+        <div className="p-3 border-t border-zinc-800/80 space-y-2 bg-zinc-950/50">
           <div
-            className={`flex items-center gap-3 px-3 py-2 ${collapsed ? "md:justify-center md:px-0" : ""}`}
+            className={`flex items-center gap-3 p-2 rounded-xl bg-zinc-900/50 border border-zinc-800/60 ${
+              collapsed ? "md:justify-center md:p-1.5" : ""
+            }`}
           >
             <ProfileAvatar />
             <div className={`min-w-0 ${collapsed ? "md:hidden" : ""}`}>
-              <p className="text-sm font-medium truncate leading-tight">
+              <p className="text-xs font-semibold text-zinc-100 truncate leading-tight">
                 {user?.nama_lengkap}
               </p>
-              <p className="text-xs text-white/70 truncate">
+              <p className="text-[11px] text-zinc-400 font-mono truncate mt-0.5">
                 {ROLE_LABEL[user?.role]}
               </p>
             </div>
           </div>
+
           <button
-            onClick={handleLogout}
+            onClick={() => setShowLogoutConfirm(true)}
             title={collapsed ? "Keluar" : undefined}
-            className={`w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-[#C90000] hover:bg-[#C90000]/10 transition-colors ${
+            className={`w-full flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-medium text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all ${
               collapsed ? "md:justify-center md:px-2" : ""
             }`}
           >
@@ -380,7 +386,7 @@ export default function Layout({ children }) {
               fill="none"
               stroke="currentColor"
               strokeWidth="1.75"
-              className="h-[18px] w-[18px] shrink-0"
+              className="h-4 w-4 shrink-0"
             >
               <path
                 strokeLinecap="round"
@@ -388,57 +394,81 @@ export default function Layout({ children }) {
                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
               />
             </svg>
-            <span className={collapsed ? "md:hidden" : ""}>Keluar</span>
+            <span className={collapsed ? "md:hidden" : ""}>Keluar Akun</span>
           </button>
         </div>
       </aside>
 
-      {/* Konten */}
-      <main className="flex-1 overflow-y-auto min-w-0 md:pl-0">
+      {/* Konten Utama */}
+      <main className="flex-1 overflow-y-auto min-w-0 bg-black flex flex-col">
         {/* Header mobile dengan tombol hamburger */}
-        <div className="md:hidden sticky top-0 z-20 flex items-center gap-3 px-4 py-3 border-b border-[#444444] bg-[#080A0D]/95 backdrop-blur">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="text-white hover:bg-[#444444] rounded-md p-1.5 -ml-1.5"
-            aria-label="Buka menu"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
+        <div className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 py-3 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur-md">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg p-2 transition-colors"
+              aria-label="Buka menu"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+            <div className="flex items-center gap-2">
+              <img
+                src="/images/logo.png"
+                alt="Logo ParkirKu"
+                className="h-6 w-6 object-contain rounded"
               />
-            </svg>
-          </button>
-          <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#C90000]">
-              <span className="font-display text-white text-[11px] font-bold leading-none">
-                P
+              <span className="font-display font-bold text-sm text-zinc-100">
+                ParkirKu
               </span>
             </div>
-            <span className="font-display text-base tracking-tight">
-              Parkir
-            </span>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-400 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-full">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Online</span>
           </div>
         </div>
 
-        {/* garis aksen merah tipis di bagian atas */}
-        <div
-          className="h-1 w-full"
-          style={{
-            backgroundImage:
-              "linear-gradient(90deg, #5A0000 0%, #C90000 50%, #5A0000 100%)",
-          }}
-        />
-        <div className="p-4 md:p-8 max-w-6xl mx-auto">{children}</div>
+        {/* Top subtle highlight banner */}
+        <div className="hidden md:flex items-center justify-between px-8 py-3 border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-sm text-xs font-mono text-zinc-500">
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            <span>SISTEM PARKIR PELABUHAN TANJUNG PERAK</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-zinc-400">Portal {ROLE_LABEL[user?.role]}</span>
+          </div>
+        </div>
+
+        {/* Content Container */}
+        <div className="p-4 sm:p-6 md:p-8 max-w-7xl w-full mx-auto flex-1">
+          {children}
+        </div>
       </main>
+
+      {/* Logout Confirmation Dialog */}
+      <ConfirmDialog
+        open={showLogoutConfirm}
+        title="Keluar dari Sistem?"
+        message="Anda akan diarahkan kembali ke halaman login. Sesi Anda akan diakhiri."
+        confirmLabel="Ya, Keluar"
+        cancelLabel="Batal"
+        tone="danger"
+        onConfirm={handleLogout}
+        onCancel={() => setShowLogoutConfirm(false)}
+      />
     </div>
   );
 }
