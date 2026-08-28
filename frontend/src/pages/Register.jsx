@@ -2,9 +2,21 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
-  ArrowLeft, User, AtSign, Phone, Lock, Eye, EyeOff,
-  UserPlus, Loader2, ShieldCheck, UserCog, Crown, Users as UsersIcon,
-  Check, X,
+  ArrowLeft,
+  User,
+  AtSign,
+  Phone,
+  Lock,
+  Eye,
+  EyeOff,
+  UserPlus,
+  Loader2,
+  ShieldCheck,
+  UserCog,
+  Crown,
+  Users as UsersIcon,
+  Check,
+  X,
 } from "lucide-react";
 
 export default function Register() {
@@ -34,7 +46,13 @@ export default function Register() {
 
     try {
       // role tidak dikirim dari sini — backend memaksa role jadi "pelanggan"
-      await register(namaLengkap, username, noTelp, password, passwordConfirmation);
+      await register(
+        namaLengkap,
+        username,
+        noTelp,
+        password,
+        passwordConfirmation,
+      );
       navigate("/pelanggan");
     } catch (err) {
       if (err.response?.status === 422) {
@@ -55,8 +73,9 @@ export default function Register() {
         className="absolute inset-0 pointer-events-none opacity-30"
         style={{
           backgroundImage: `radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)`,
-          backgroundSize: '24px 24px',
-          maskImage: 'radial-gradient(ellipse 60% 50% at 50% 50%, black 40%, transparent 100%)',
+          backgroundSize: "24px 24px",
+          maskImage:
+            "radial-gradient(ellipse 60% 50% at 50% 50%, black 40%, transparent 100%)",
         }}
       />
 
@@ -79,7 +98,8 @@ export default function Register() {
               <span className="text-zinc-400">Booking Parkir Online</span>
             </h2>
             <p className="text-xs text-zinc-400 leading-relaxed max-w-xs mx-auto mb-8">
-              Daftar sebagai pelanggan untuk pesan slot parkir lebih awal, bayar non-tunai via QRIS, dan akses tiket barcode instan.
+              Daftar sebagai pelanggan untuk pesan slot parkir lebih awal, bayar
+              non-tunai via QRIS, dan akses tiket barcode instan.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-mono">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300">
@@ -100,7 +120,10 @@ export default function Register() {
             to="/"
             className="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-400 hover:text-zinc-100 mb-6 w-fit transition-colors group"
           >
-            <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+            <ArrowLeft
+              size={14}
+              className="group-hover:-translate-x-0.5 transition-transform"
+            />
             Kembali ke beranda
           </Link>
 
@@ -117,7 +140,10 @@ export default function Register() {
                 NAMA LENGKAP
               </label>
               <div className="relative">
-                <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+                <User
+                  size={16}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"
+                />
                 <input
                   type="text"
                   value={namaLengkap}
@@ -140,7 +166,10 @@ export default function Register() {
                 USERNAME
               </label>
               <div className="relative">
-                <AtSign size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+                <AtSign
+                  size={16}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"
+                />
                 <input
                   type="text"
                   value={username}
@@ -162,7 +191,10 @@ export default function Register() {
                 NO. TELEPON
               </label>
               <div className="relative">
-                <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+                <Phone
+                  size={16}
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"
+                />
                 <input
                   type="tel"
                   value={noTelp}
@@ -186,7 +218,10 @@ export default function Register() {
                   PASSWORD
                 </label>
                 <div className="relative">
-                  <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+                  <Lock
+                    size={16}
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"
+                  />
                   <input
                     type={tampilkanPassword ? "text" : "password"}
                     value={password}
@@ -203,7 +238,11 @@ export default function Register() {
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1"
                     aria-label={tampilkanPassword ? "Sembunyikan" : "Tampilkan"}
                   >
-                    {tampilkanPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                    {tampilkanPassword ? (
+                      <EyeOff size={15} />
+                    ) : (
+                      <Eye size={15} />
+                    )}
                   </button>
                 </div>
               </div>
@@ -213,7 +252,10 @@ export default function Register() {
                   KONFIRMASI
                 </label>
                 <div className="relative">
-                  <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+                  <Lock
+                    size={16}
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"
+                  />
                   <input
                     type={tampilkanKonfirmasi ? "text" : "password"}
                     value={passwordConfirmation}
@@ -224,8 +266,8 @@ export default function Register() {
                       konfirmasiCocok === false
                         ? "border-rose-500/60 focus:ring-rose-500/30"
                         : konfirmasiCocok === true
-                        ? "border-emerald-500/60 focus:ring-emerald-500/30"
-                        : "border-zinc-800 focus:ring-zinc-400/30"
+                          ? "border-emerald-500/60 focus:ring-emerald-500/30"
+                          : "border-zinc-800 focus:ring-zinc-400/30"
                     }`}
                     placeholder="ulangi"
                   />
@@ -243,9 +285,15 @@ export default function Register() {
                     onClick={() => setTampilkanKonfirmasi((v) => !v)}
                     tabIndex={-1}
                     className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors p-1"
-                    aria-label={tampilkanKonfirmasi ? "Sembunyikan" : "Tampilkan"}
+                    aria-label={
+                      tampilkanKonfirmasi ? "Sembunyikan" : "Tampilkan"
+                    }
                   >
-                    {tampilkanKonfirmasi ? <EyeOff size={15} /> : <Eye size={15} />}
+                    {tampilkanKonfirmasi ? (
+                      <EyeOff size={15} />
+                    ) : (
+                      <Eye size={15} />
+                    )}
                   </button>
                 </div>
               </div>
@@ -283,7 +331,10 @@ export default function Register() {
 
             <p className="text-center text-xs text-zinc-400 pt-3 border-t border-zinc-900">
               Sudah punya akun?{" "}
-              <Link to="/login" className="text-zinc-200 hover:text-white font-medium hover:underline">
+              <Link
+                to="/login"
+                className="text-zinc-200 hover:text-white font-medium hover:underline"
+              >
                 Masuk di sini
               </Link>
             </p>
