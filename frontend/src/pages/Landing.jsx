@@ -798,15 +798,16 @@ export default function Landing() {
       className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] relative transition-colors duration-300"
     >
       {/* ================= Intro splash ================= */}
-      {/* Logo + nama brand + indikator loading pop-in, lalu seluruh
-                overlay fade-out untuk menyingkap landing page yang sudah
-                dirender di baliknya. Total durasi ~1.65s (tidak diperpanjang),
-                dilewati kalau pengguna memilih prefers-reduced-motion.
-                Splash ini sengaja tetap putih di kedua tema — ini layar
-                pembuka bermerek, bukan bagian dari konten yang ikut tema. */}
+      {/* Logo + nama brand + progress bar tipis pop-in dengan easing overshoot
+                halus, lalu seluruh overlay fade-out untuk menyingkap landing page
+                yang sudah dirender di baliknya. Total durasi ~1.65s (tidak
+                diperpanjang), dilewati kalau pengguna memilih
+                prefers-reduced-motion. Splash ini sengaja tetap putih di kedua
+                tema — ini layar pembuka bermerek, bukan bagian dari konten yang
+                ikut tema. */}
       {showIntro && (
         <div
-          className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-3 bg-white transition-opacity duration-500 ease-in ${
+          className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-white transition-opacity duration-500 ease-in ${
             introExiting ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
           aria-hidden="true"
@@ -814,44 +815,39 @@ export default function Landing() {
           <img
             src="/images/logo.png"
             alt=""
-            className={`w-24 sm:w-32 md:w-36 transition-all duration-700 ease-out ${
-              logoIn ? "opacity-100 scale-100" : "opacity-0 scale-75"
+            className={`w-24 sm:w-32 md:w-36 drop-shadow-[0_0_25px_rgba(0,0,0,0.12)] transition-all duration-700 ease-out ${
+              logoIn
+                ? "opacity-100 scale-100 translate-y-0"
+                : "opacity-0 scale-75 translate-y-2"
             }`}
+            style={{
+              transitionTimingFunction: logoIn
+                ? "cubic-bezier(0.34, 1.56, 0.64, 1)"
+                : undefined,
+            }}
           />
 
           {/* Nama brand */}
           <p
-            className={`font-display text-lg sm:text-xl text-[#050608] transition-all duration-700 ease-out delay-100 ${
-              logoIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1"
+            className={`font-display text-lg sm:text-xl text-[#050608] transition-all duration-700 ease-out delay-150 ${
+              logoIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
             }`}
           >
             {BRAND_NAME}
           </p>
 
-          {/* Indikator loading kecil */}
-          <svg
-            className={`animate-spin h-5 w-5 text-[#0026ff] transition-opacity duration-500 delay-150 ${
+          {/* Progress bar tipis, terisi seiring durasi splash */}
+          <div
+            className={`h-0.5 w-32 rounded-full bg-neutral-200 overflow-hidden transition-opacity duration-500 delay-200 ${
               logoIn ? "opacity-100" : "opacity-0"
             }`}
-            viewBox="0 0 24 24"
-            fill="none"
-            aria-hidden="true"
           >
-            <circle
-              cx="12"
-              cy="12"
-              r="9"
-              stroke="currentColor"
-              strokeWidth="3"
-              opacity="0.25"
+            <div
+              className={`h-full bg-[#0026ff] transition-all ease-linear ${
+                logoIn ? "w-full duration-[1200ms]" : "w-0 duration-0"
+              }`}
             />
-            <path
-              d="M21 12a9 9 0 00-9-9"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-          </svg>
+          </div>
         </div>
       )}
 
@@ -1039,7 +1035,7 @@ export default function Landing() {
 
       {/* ================= Hero ================= */}
       <section className="relative w-full pt-36 pb-20 md:pt-48 md:pb-32 overflow-hidden min-h-[580px] flex items-center justify-center">
-        {/* Background Image Pelabuhan Tanjung Perak dengan parallax & dark scrim */}
+        {/* Background Image Pelabuhan Tanjung Perak dengan parallax, overlay rata (tanpa efek gelap-terang belang) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {!heroTextBgError && (
             <img
@@ -1047,8 +1043,8 @@ export default function Landing() {
               alt="Area Parkir Pelabuhan Tanjung Perak"
               className={`w-full h-full object-cover object-center scale-105 transition-all duration-300 ease-out ${
                 theme === "dark"
-                  ? "brightness-[0.4] contrast-[1.1]"
-                  : "brightness-[0.9] contrast-[1.05]"
+                  ? "brightness-[0.65] contrast-[1.05]"
+                  : "brightness-[0.98] contrast-[1.02]"
               }`}
               style={{
                 transform: `translateY(${heroImgOffset}px)`,
@@ -1056,14 +1052,15 @@ export default function Landing() {
               onError={() => setHeroTextBgError(true)}
             />
           )}
-          {/* Gradient scrim overlay agar dot-grid & typography tampil tajam */}
+          {/* Overlay warna rata (bukan radial gradient) supaya kontras teks tetap
+              terjaga tanpa membuat sebagian gambar gelap dan sebagian terang */}
           <div
             className="absolute inset-0 transition-colors duration-300"
             style={{
-              background:
+              backgroundColor:
                 theme === "dark"
-                  ? "radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.95) 100%)"
-                  : "radial-gradient(ellipse at center, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.85) 100%)",
+                  ? "rgba(0, 0, 0, 0.45)"
+                  : "rgba(255, 255, 255, 0.35)",
             }}
           />
           {/* Bottom fade transisi lembut ke section berikutnya */}
@@ -1073,16 +1070,12 @@ export default function Landing() {
               background: `linear-gradient(to bottom, transparent, var(--color-bg))`,
             }}
           />
-          {/* Pola dot-grid transparan khas Bag\Ui */}
+          {/* Pola dot-grid transparan merata, tanpa mask (tidak ada lagi efek belang) */}
           <div
-            className="absolute inset-0 opacity-40"
+            className="absolute inset-0 opacity-15"
             style={{
               backgroundImage: `radial-gradient(var(--color-border) 1.25px, transparent 1.25px)`,
               backgroundSize: "24px 24px",
-              maskImage:
-                "radial-gradient(ellipse 70% 65% at 50% 35%, black 40%, transparent 100%)",
-              WebkitMaskImage:
-                "radial-gradient(ellipse 70% 65% at 50% 35%, black 40%, transparent 100%)",
             }}
           />
         </div>
