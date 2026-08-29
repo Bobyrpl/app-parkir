@@ -178,7 +178,7 @@ export default function Login() {
                                     Daftar di sini
                                 </Link>
                             </p>
-                            <p className="text-zinc-500">
+                 a           <p className="text-zinc-500">
                                 Akun dinonaktifkan?{' '}
                                 <Link to="/bantuan#aktivasi-akun" className="text-zinc-400 hover:text-zinc-200 hover:underline">
                                     Ajukan aktivasi ulang

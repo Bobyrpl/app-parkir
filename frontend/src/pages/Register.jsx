@@ -17,6 +17,7 @@ import {
   Users as UsersIcon,
   Check,
   X,
+  Sparkles,   
 } from "lucide-react";
 
 export default function Register() {
