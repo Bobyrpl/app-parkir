@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme, BRAND_ACCENT } from "../context/ThemeContext";
+import { THEME_LABELS } from "../config/theme.config";
 import {
   ArrowLeft,
   User,
@@ -91,8 +92,8 @@ export default function Register() {
       <button
         type="button"
         onClick={toggleTheme}
-        title={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
-        aria-label={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
+        title={isDark ? THEME_LABELS.dark.title : THEME_LABELS.light.title}
+        aria-label={isDark ? THEME_LABELS.dark.ariaLabel : THEME_LABELS.light.ariaLabel}
         className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 h-9 w-9 flex items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-card)]/80 backdrop-blur-md text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors focus-visible:outline-none focus-visible:ring-2"
         style={{ "--tw-ring-color": BRAND_ACCENT }}
       >

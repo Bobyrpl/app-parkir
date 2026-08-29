@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
 import { useTheme, BRAND_ACCENT } from "../context/ThemeContext";
+import { THEME_LABELS } from "../config/theme.config";
 import { Sun, Moon } from "lucide-react";
 import { ConfirmDialog } from "./ui";
 
@@ -445,8 +446,8 @@ export default function Layout({ children }) {
             <button
               type="button"
               onClick={toggleTheme}
-              title={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
-              aria-label={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
+              title={isDark ? THEME_LABELS.dark.title : THEME_LABELS.light.title}
+              aria-label={isDark ? THEME_LABELS.dark.ariaLabel : THEME_LABELS.light.ariaLabel}
               className="h-8 w-8 flex items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors"
               style={{ "--tw-ring-color": BRAND_ACCENT }}
             >
@@ -469,8 +470,8 @@ export default function Layout({ children }) {
             <button
               type="button"
               onClick={toggleTheme}
-              title={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
-              aria-label={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
+              title={isDark ? THEME_LABELS.dark.title : THEME_LABELS.light.title}
+              aria-label={isDark ? THEME_LABELS.dark.ariaLabel : THEME_LABELS.light.ariaLabel}
               className="h-7 w-7 flex items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors"
             >
               {isDark ? <Sun size={13} /> : <Moon size={13} />}
