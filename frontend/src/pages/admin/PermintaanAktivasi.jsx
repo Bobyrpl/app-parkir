@@ -97,7 +97,7 @@ export default function PermintaanAktivasi() {
                         className={`rounded-md px-3 py-1.5 text-xs font-mono border ${
                             filter === value
                                 ? 'border-[#C90000] bg-[#C90000]/10 text-[#C90000]'
-                                : 'border-[#444444] text-white/80 hover:bg-[#444444]'
+                                : 'border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-card)]'
                         }`}
                     >
                         {label}
@@ -113,14 +113,14 @@ export default function PermintaanAktivasi() {
                             {p.user ? (
                                 <>
                                     <p>{p.user.nama_lengkap}</p>
-                                    <p className="text-xs text-white/70 capitalize">{p.user.role}</p>
+                                    <p className="text-xs text-[var(--color-text-secondary)] capitalize">{p.user.role}</p>
                                 </>
                             ) : (
-                                <span className="text-xs text-white/70">Akun tidak ditemukan</span>
+                                <span className="text-xs text-[var(--color-text-secondary)]">Akun tidak ditemukan</span>
                             )}
                         </td>
-                        <td className="px-4 py-3 text-sm text-white/80 max-w-xs">
-                            {p.catatan || <span className="text-white/70">—</span>}
+                        <td className="px-4 py-3 text-sm text-[var(--color-text)] max-w-xs">
+                            {p.catatan || <span className="text-[var(--color-text-secondary)]">—</span>}
                         </td>
                         <td className="px-4 py-3 font-mono text-xs">
                             {new Date(p.created_at).toLocaleString('id-ID')}
@@ -144,14 +144,14 @@ export default function PermintaanAktivasi() {
                 ))}
                 {!loading && data.length === 0 && (
                     <tr>
-                        <td colSpan={6} className="px-4 py-6 text-center text-white/70 text-sm">
+                        <td colSpan={6} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
                             Tidak ada permintaan aktivasi pada status ini.
                         </td>
                     </tr>
                 )}
                 {loading && (
                     <tr>
-                        <td colSpan={6} className="px-4 py-6 text-center text-white/70 text-sm">
+                        <td colSpan={6} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
                             Memuat data...
                         </td>
                     </tr>
@@ -166,16 +166,16 @@ export default function PermintaanAktivasi() {
                     onClick={() => setTolakTarget(null)}
                 >
                     <div
-                        className="w-full max-w-sm rounded-xl bg-[#080A0D] border border-[#444444] p-6"
+                        className="w-full max-w-sm rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] p-6"
                         onClick={(e) => e.stopPropagation()}
                         role="alertdialog"
                         aria-modal="true"
                     >
-                        <h3 className="font-display text-base text-white mb-2">Tolak Permintaan Aktivasi</h3>
-                        <p className="text-sm text-white/70 mb-4">
+                        <h3 className="font-display text-base text-[var(--color-text)] mb-2">Tolak Permintaan Aktivasi</h3>
+                        <p className="text-sm text-[var(--color-text-secondary)] mb-4">
                             Yakin ingin menolak permintaan ini? Akun akan tetap nonaktif.
                         </p>
-                        <label className="block text-xs font-mono text-white/70 mb-1.5">
+                        <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
                             CATATAN UNTUK PEMOHON <span className="normal-case">(opsional)</span>
                         </label>
                         <textarea
@@ -184,7 +184,7 @@ export default function PermintaanAktivasi() {
                             rows={3}
                             maxLength={500}
                             placeholder="Alasan penolakan..."
-                            className="w-full rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000] focus:border-transparent resize-none mb-4"
+                            className="w-full rounded-md bg-[var(--color-bg)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#C90000] focus:border-transparent resize-none mb-4"
                         />
                         <div className="flex justify-end gap-2">
                             <Button variant="ghost" onClick={() => setTolakTarget(null)} disabled={processingId === tolakTarget}>
@@ -198,8 +198,8 @@ export default function PermintaanAktivasi() {
                 </div>
             )}
 
-            <footer className="border-t border-[#444444]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+            <footer className="border-t border-[var(--color-border)]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
                     <span>© {new Date().getFullYear()} Parkir Pelabuhan Tanjung Perak</span>
                     <span className="font-mono">SISTEM MANAJEMEN PARKIR</span>
                 </div>

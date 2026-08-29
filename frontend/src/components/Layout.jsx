@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { useTheme, BRAND_ACCENT } from "../context/ThemeContext";
+import { Sun, Moon } from "lucide-react";
 import { ConfirmDialog } from "./ui";
 
 /* Ikon garis tipis (24x24, stroke) — satu per menu, biar tiap item mudah dikenali sekilas */
@@ -137,7 +139,7 @@ function ProfileAvatar() {
       onClick={pilihFile}
       disabled={uploading}
       title="Ganti foto profil"
-      className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden bg-zinc-800 text-zinc-100 text-xs font-semibold border border-zinc-700 hover:border-zinc-500 transition-colors disabled:cursor-wait shadow-sm"
+      className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden bg-[var(--color-card)] text-[var(--color-text)] text-xs font-semibold border border-[var(--color-border)] hover:border-[var(--color-text-secondary)] transition-colors disabled:cursor-wait shadow-sm"
     >
       {user?.foto_profil_url ? (
         <img
@@ -213,6 +215,7 @@ export default function Layout({ children }) {
   const [collapsed, setCollapsed] = useState(
     () => localStorage.getItem("sidebarCollapsed") === "1",
   );
+  const { themeVars, isDark, toggleTheme } = useTheme();
 
   function toggleCollapsed() {
     setCollapsed((prev) => {
@@ -228,7 +231,10 @@ export default function Layout({ children }) {
   }
 
   return (
-    <div className="min-h-screen bg-black text-zinc-100 flex flex-col md:flex-row antialiased">
+    <div
+      style={themeVars}
+      className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] flex flex-col md:flex-row antialiased transition-colors duration-300"
+    >
       {/* Overlay gelap di belakang sidebar saat dibuka di mobile */}
       {sidebarOpen && (
         <div
@@ -239,7 +245,7 @@ export default function Layout({ children }) {
 
       {/* Sidebar: off-canvas di mobile, statis + bisa dikecilkan di layar md ke atas */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 shrink-0 bg-zinc-950/95 backdrop-blur-md border-r border-zinc-800/80 flex flex-col
+        className={`fixed inset-y-0 left-0 z-50 shrink-0 bg-[var(--color-card)]/95 backdrop-blur-md border-r border-[var(--color-border)] flex flex-col
                 shadow-2xl shadow-black/50
                 transition-[transform,width] duration-300 ease-in-out
                 md:static md:translate-x-0 md:shadow-none
@@ -250,7 +256,7 @@ export default function Layout({ children }) {
         <button
           onClick={toggleCollapsed}
           title={collapsed ? "Lebarkan menu" : "Kecilkan menu"}
-          className="hidden md:flex absolute -right-3.5 top-7 z-10 h-7 w-7 items-center justify-center rounded-full bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all shadow-md"
+          className="hidden md:flex absolute -right-3.5 top-7 z-10 h-7 w-7 items-center justify-center rounded-full bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-card)] transition-all shadow-md"
         >
           <svg
             viewBox="0 0 24 24"
@@ -269,7 +275,7 @@ export default function Layout({ children }) {
 
         {/* Brand */}
         <div
-          className={`px-5 py-5 border-b border-zinc-800/80 flex items-center ${
+          className={`px-5 py-5 border-b border-[var(--color-border)] flex items-center ${
             collapsed ? "md:justify-center md:px-0" : "justify-between"
           }`}
         >
@@ -282,10 +288,10 @@ export default function Layout({ children }) {
               className="h-8 w-8 object-contain rounded-lg shrink-0 drop-shadow"
             />
             <div className={`min-w-0 ${collapsed ? "md:hidden" : ""}`}>
-              <p className="font-display font-bold text-sm text-zinc-100 leading-tight truncate">
+              <p className="font-display font-bold text-sm text-[var(--color-text)] leading-tight truncate">
                 ParkirKu
               </p>
-              <p className="text-[10px] leading-none text-zinc-400 font-mono tracking-wider uppercase mt-0.5 truncate">
+              <p className="text-[10px] leading-none text-[var(--color-text-secondary)] font-mono tracking-wider uppercase mt-0.5 truncate">
                 Pelabuhan Tanjung Perak
               </p>
             </div>
@@ -293,7 +299,7 @@ export default function Layout({ children }) {
           {/* Tombol tutup, hanya tampil di mobile */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg p-1.5 transition-colors shrink-0"
+            className="md:hidden text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-card)] rounded-lg p-1.5 transition-colors shrink-0"
             aria-label="Tutup menu"
           >
             <svg
@@ -316,7 +322,7 @@ export default function Layout({ children }) {
         {/* Menu */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto overflow-x-hidden">
           <p
-            className={`px-3 pb-2 text-[10px] font-mono font-semibold tracking-widest uppercase text-zinc-500 ${
+            className={`px-3 pb-2 text-[10px] font-mono font-semibold tracking-widest uppercase text-[var(--color-text-muted)] ${
               collapsed ? "md:hidden" : ""
             }`}
           >
@@ -334,8 +340,8 @@ export default function Layout({ children }) {
                   collapsed ? "md:justify-center md:px-2" : ""
                 } ${
                   isActive
-                    ? "bg-zinc-100 text-zinc-950 font-semibold shadow-md shadow-black/20"
-                    : "text-zinc-400 hover:bg-zinc-900/80 hover:text-zinc-100"
+                    ? "bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-semibold shadow-md shadow-black/20"
+                    : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg)]/80 hover:text-[var(--color-text)]"
                 }`
               }
             >
@@ -344,7 +350,7 @@ export default function Layout({ children }) {
                   <Icon
                     name={item.icon}
                     className={`h-[18px] w-[18px] shrink-0 transition-transform group-hover:scale-105 ${
-                      isActive ? "text-zinc-950" : "text-zinc-400 group-hover:text-zinc-200"
+                      isActive ? "text-[var(--color-button-text)]" : "text-[var(--color-text-secondary)] group-hover:text-[var(--color-text)]"
                     }`}
                   />
                   <span className={`truncate ${collapsed ? "md:hidden" : ""}`}>
@@ -357,18 +363,18 @@ export default function Layout({ children }) {
         </nav>
 
         {/* Profil & keluar */}
-        <div className="p-3 border-t border-zinc-800/80 space-y-2 bg-zinc-950/50">
+        <div className="p-3 border-t border-[var(--color-border)] space-y-2 bg-[var(--color-card)]/50">
           <div
-            className={`flex items-center gap-3 p-2 rounded-xl bg-zinc-900/50 border border-zinc-800/60 ${
+            className={`flex items-center gap-3 p-2 rounded-xl bg-[var(--color-bg)]/50 border border-[var(--color-border)] ${
               collapsed ? "md:justify-center md:p-1.5" : ""
             }`}
           >
             <ProfileAvatar />
             <div className={`min-w-0 ${collapsed ? "md:hidden" : ""}`}>
-              <p className="text-xs font-semibold text-zinc-100 truncate leading-tight">
+              <p className="text-xs font-semibold text-[var(--color-text)] truncate leading-tight">
                 {user?.nama_lengkap}
               </p>
-              <p className="text-[11px] text-zinc-400 font-mono truncate mt-0.5">
+              <p className="text-[11px] text-[var(--color-text-secondary)] font-mono truncate mt-0.5">
                 {ROLE_LABEL[user?.role]}
               </p>
             </div>
@@ -400,13 +406,13 @@ export default function Layout({ children }) {
       </aside>
 
       {/* Konten Utama */}
-      <main className="flex-1 overflow-y-auto min-w-0 bg-black flex flex-col">
+      <main className="flex-1 overflow-y-auto min-w-0 bg-[var(--color-bg)] flex flex-col">
         {/* Header mobile dengan tombol hamburger */}
-        <div className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 py-3 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur-md">
+        <div className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)] bg-[var(--color-card)]/90 backdrop-blur-md">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg p-2 transition-colors"
+              className="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-card)] rounded-lg p-2 transition-colors"
               aria-label="Buka menu"
             >
               <svg
@@ -430,25 +436,46 @@ export default function Layout({ children }) {
                 alt="Logo ParkirKu"
                 className="h-6 w-6 object-contain rounded"
               />
-              <span className="font-display font-bold text-sm text-zinc-100">
+              <span className="font-display font-bold text-sm text-[var(--color-text)]">
                 ParkirKu
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-400 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-full">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Online</span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              title={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
+              aria-label={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
+              className="h-8 w-8 flex items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors"
+              style={{ "--tw-ring-color": BRAND_ACCENT }}
+            >
+              {isDark ? <Sun size={15} /> : <Moon size={15} />}
+            </button>
+            <div className="flex items-center gap-1.5 text-xs font-mono text-[var(--color-text-secondary)] bg-[var(--color-bg)] border border-[var(--color-border)] px-2.5 py-1 rounded-full">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Online</span>
+            </div>
           </div>
         </div>
 
         {/* Top subtle highlight banner */}
-        <div className="hidden md:flex items-center justify-between px-8 py-3 border-b border-zinc-900 bg-zinc-950/50 backdrop-blur-sm text-xs font-mono text-zinc-500">
+        <div className="hidden md:flex items-center justify-between px-8 py-3 border-b border-[var(--color-border)] bg-[var(--color-card)]/50 backdrop-blur-sm text-xs font-mono text-[var(--color-text-muted)]">
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
             <span>SISTEM PARKIR PELABUHAN TANJUNG PERAK</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-zinc-400">Portal {ROLE_LABEL[user?.role]}</span>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              title={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
+              aria-label={isDark ? "Ganti ke mode terang" : "Ganti ke mode gelap"}
+              className="h-7 w-7 flex items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors"
+            >
+              {isDark ? <Sun size={13} /> : <Moon size={13} />}
+            </button>
+            <span className="text-[var(--color-text-secondary)]">Portal {ROLE_LABEL[user?.role]}</span>
           </div>
         </div>
 

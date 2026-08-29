@@ -5,16 +5,16 @@ export function PageHeader({ eyebrow, title, description, actions, children }) {
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 {eyebrow && (
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono uppercase tracking-wider bg-zinc-800/80 text-zinc-300 border border-zinc-700/60 mb-2">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono uppercase tracking-wider bg-[var(--color-card)] text-[var(--color-text-secondary)] border border-[var(--color-border)] mb-2">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                         {eyebrow}
                     </div>
                 )}
-                <h1 className="font-display font-bold text-2xl sm:text-3xl text-zinc-100 tracking-tight">
+                <h1 className="font-display font-bold text-2xl sm:text-3xl text-[var(--color-text)] tracking-tight">
                     {title}
                 </h1>
                 {description && (
-                    <p className="text-sm text-zinc-400 mt-1 max-w-2xl leading-relaxed">
+                    <p className="text-sm text-[var(--color-text-secondary)] mt-1 max-w-2xl leading-relaxed">
                         {description}
                     </p>
                 )}
@@ -45,31 +45,31 @@ export function StatCard({
         ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
         : isDown
         ? 'text-rose-400 bg-rose-500/10 border-rose-500/20'
-        : 'text-zinc-400 bg-zinc-800/60 border-zinc-700/40';
+        : 'text-[var(--color-text-secondary)] bg-[var(--color-card)] border-[var(--color-border)]';
 
     return (
         <div
-            className={`group relative overflow-hidden rounded-2xl bg-zinc-900/70 border border-zinc-800/80 p-5 md:p-6 transition-all duration-300 hover:border-zinc-700 hover:shadow-xl hover:shadow-black/30 ${className}`}
+            className={`group relative overflow-hidden rounded-2xl bg-[var(--color-card)]/90 border border-[var(--color-border)] p-5 md:p-6 transition-all duration-300 hover:border-[var(--color-border)] hover:shadow-xl hover:shadow-black/30 ${className}`}
         >
             <div className="flex items-center justify-between gap-3 mb-3">
-                <p className="text-xs font-mono tracking-wider uppercase text-zinc-400 font-medium truncate">
+                <p className="text-xs font-mono tracking-wider uppercase text-[var(--color-text-secondary)] font-medium truncate">
                     {label}
                 </p>
                 {Icon && (
-                    <span className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0 bg-zinc-800/80 border border-zinc-700/60 text-zinc-200 group-hover:scale-105 group-hover:border-zinc-500 transition-all duration-300 shadow-inner">
+                    <span className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0 bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] group-hover:scale-105 group-hover:border-[var(--color-text-secondary)] transition-all duration-300 shadow-inner">
                         <Icon size={18} strokeWidth={2} />
                     </span>
                 )}
             </div>
 
             <div className="flex items-baseline gap-2">
-                <p className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-100">
+                <p className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--color-text)]">
                     {value}
                 </p>
             </div>
 
             {(trend || subtitle) && (
-                <div className="mt-3.5 pt-3 border-t border-zinc-800/60 flex items-center justify-between text-xs">
+                <div className="mt-3.5 pt-3 border-t border-[var(--color-border)] flex items-center justify-between text-xs">
                     {trend && (
                         <div
                             className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-mono text-[11px] border ${trendColor}`}
@@ -79,7 +79,7 @@ export function StatCard({
                         </div>
                     )}
                     {subtitle && (
-                        <span className="text-zinc-500 text-[11px] truncate font-mono ml-auto">
+                        <span className="text-[var(--color-text-muted)] text-[11px] truncate font-mono ml-auto">
                             {subtitle}
                         </span>
                     )}
@@ -92,9 +92,9 @@ export function StatCard({
 export function Card({ children, className = '', hoverable = false, noPadding = false }) {
     return (
         <div
-            className={`rounded-2xl bg-zinc-900/60 border border-zinc-800/80 backdrop-blur-sm transition-all duration-300 ${
+            className={`rounded-2xl bg-[var(--color-card)]/80 border border-[var(--color-border)] backdrop-blur-sm transition-all duration-300 ${
                 noPadding ? '' : 'p-5 md:p-6'
-            } ${hoverable ? 'hover:border-zinc-700 hover:shadow-xl hover:shadow-black/20' : ''} ${className}`}
+            } ${hoverable ? 'hover:border-[var(--color-border)] hover:shadow-xl hover:shadow-black/20' : ''} ${className}`}
         >
             {children}
         </div>
@@ -103,8 +103,8 @@ export function Card({ children, className = '', hoverable = false, noPadding = 
 
 export function Badge({ children, tone = 'neutral', className = '', dot = false, size = 'md' }) {
     const tones = {
-        neutral: 'bg-zinc-800/80 text-zinc-300 border-zinc-700/60',
-        zinc: 'bg-zinc-800/80 text-zinc-300 border-zinc-700/60',
+        neutral: 'bg-[var(--color-card)] text-[var(--color-text-secondary)] border-[var(--color-border)]',
+        zinc: 'bg-[var(--color-card)] text-[var(--color-text-secondary)] border-[var(--color-border)]',
         success: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25',
         danger: 'bg-rose-500/10 text-rose-400 border-rose-500/25',
         warning: 'bg-amber-500/10 text-amber-300 border-amber-500/25',
@@ -113,8 +113,8 @@ export function Badge({ children, tone = 'neutral', className = '', dot = false,
     };
 
     const dotTones = {
-        neutral: 'bg-zinc-400',
-        zinc: 'bg-zinc-400',
+        neutral: 'bg-[var(--color-text-muted)]',
+        zinc: 'bg-[var(--color-text-muted)]',
         success: 'bg-emerald-400 animate-pulse',
         danger: 'bg-rose-400',
         warning: 'bg-amber-400',
@@ -146,22 +146,22 @@ export function Badge({ children, tone = 'neutral', className = '', dot = false,
 
 export function Table({ columns = [], children, className = '' }) {
     return (
-        <div className={`overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-900/40 ${className}`}>
+        <div className={`overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)]/60 ${className}`}>
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left border-collapse">
                     <thead>
-                        <tr className="border-b border-zinc-800 bg-zinc-950/60">
+                        <tr className="border-b border-[var(--color-border)] bg-[var(--color-section)]/70">
                             {columns.map((col) => (
                                 <th
                                     key={col}
-                                    className="px-5 py-3.5 text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400 whitespace-nowrap"
+                                    className="px-5 py-3.5 text-xs font-mono font-semibold uppercase tracking-wider text-[var(--color-text-secondary)] whitespace-nowrap"
                                 >
                                     {col}
                                 </th>
                             ))}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-800/70 text-zinc-300">
+                    <tbody className="divide-y divide-[var(--color-border)] text-[var(--color-text-secondary)]">
                         {children}
                     </tbody>
                 </table>
@@ -182,17 +182,17 @@ export function Button({
 }) {
     const variants = {
         primary:
-            'bg-zinc-100 text-zinc-950 hover:bg-white active:bg-zinc-200 font-semibold shadow-sm border border-white/20',
+            'bg-[var(--color-button-bg)] text-[var(--color-button-text)] hover:opacity-90 active:opacity-80 font-semibold shadow-sm border border-[var(--color-border)]',
         secondary:
-            'bg-zinc-900 border border-zinc-700/80 text-zinc-200 hover:bg-zinc-800 hover:text-white active:bg-zinc-700/70 font-medium shadow-sm',
+            'bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-card)] hover:text-[var(--color-text)] active:bg-[var(--color-border)] font-medium shadow-sm',
         ghost:
-            'bg-transparent text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/60 active:bg-zinc-800 border border-transparent font-medium',
+            'bg-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-card)] active:bg-[var(--color-card)] border border-transparent font-medium',
         danger:
             'bg-rose-500/15 text-rose-300 hover:bg-rose-500/25 active:bg-rose-500/30 border border-rose-500/30 font-medium',
         success:
             'bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 active:bg-emerald-500/30 border border-emerald-500/30 font-medium',
         outline:
-            'bg-transparent border border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white font-medium',
+            'bg-transparent border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-text-secondary)] hover:text-[var(--color-text)] font-medium',
     };
 
     const sizes = {
@@ -206,7 +206,7 @@ export function Button({
     return (
         <button
             disabled={isDisabled}
-            className={`inline-flex items-center justify-center transition-all duration-150 select-none active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/50 ${
+            className={`inline-flex items-center justify-center transition-all duration-150 select-none active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in_srgb,var(--color-text)_50%,transparent)] ${
                 sizes[size] || sizes.md
             } ${variants[variant] || variants.primary} ${className}`}
             {...props}
@@ -228,12 +228,12 @@ export function Input({ icon: Icon, error, className = '', ...props }) {
                 {Icon && (
                     <Icon
                         size={16}
-                        className="absolute left-3.5 text-zinc-500 pointer-events-none"
+                        className="absolute left-3.5 text-[var(--color-text-muted)] pointer-events-none"
                     />
                 )}
                 <input
                     {...props}
-                    className={`w-full rounded-xl bg-zinc-950/70 border border-zinc-800/80 text-zinc-100 placeholder:text-zinc-500 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-zinc-400/30 focus:border-zinc-500 disabled:opacity-50 disabled:bg-zinc-900 ${
+                    className={`w-full rounded-xl bg-[var(--color-section)]/80 border border-[var(--color-border)] text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--color-text)_30%,transparent)] focus:border-[var(--color-text-secondary)] disabled:opacity-50 disabled:bg-[var(--color-card)] ${
                         Icon ? 'pl-10 pr-3.5 py-2.5' : 'px-3.5 py-2.5'
                     } ${error ? 'border-rose-500 focus:ring-rose-500/30' : ''} ${className}`}
                 />
@@ -251,19 +251,19 @@ export function Input({ icon: Icon, error, className = '', ...props }) {
 export function SearchInput({ value, onChange, placeholder = 'Cari...', onClear, className = '' }) {
     return (
         <div className={`relative flex items-center ${className}`}>
-            <Search size={15} className="absolute left-3.5 text-zinc-500 pointer-events-none" />
+            <Search size={15} className="absolute left-3.5 text-[var(--color-text-muted)] pointer-events-none" />
             <input
                 type="text"
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                className="w-full rounded-xl bg-zinc-950/70 border border-zinc-800/80 pl-10 pr-8 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400/30 focus:border-zinc-500 transition-all"
+                className="w-full rounded-xl bg-[var(--color-section)]/80 border border-[var(--color-border)] pl-10 pr-8 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--color-text)_30%,transparent)] focus:border-[var(--color-text-secondary)] transition-all"
             />
             {value && onClear && (
                 <button
                     type="button"
                     onClick={onClear}
-                    className="absolute right-2.5 text-zinc-500 hover:text-zinc-300 p-0.5 rounded-md transition-colors"
+                    className="absolute right-2.5 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] p-0.5 rounded-md transition-colors"
                 >
                     <X size={14} />
                 </button>
@@ -291,7 +291,7 @@ export function ConfirmDialog({
             onClick={onCancel}
         >
             <div
-                className="w-full max-w-sm rounded-2xl bg-zinc-900 border border-zinc-800 p-6 shadow-2xl animate-in zoom-in-95 duration-150"
+                className="w-full max-w-sm rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] p-6 shadow-2xl animate-in zoom-in-95 duration-150"
                 onClick={(e) => e.stopPropagation()}
                 role="alertdialog"
                 aria-modal="true"
@@ -301,18 +301,18 @@ export function ConfirmDialog({
                         className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${
                             tone === 'danger'
                                 ? 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
-                                : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                                : 'bg-[var(--color-card)] text-[var(--color-text-secondary)] border border-[var(--color-border)]'
                         }`}
                     >
                         <AlertCircle size={20} />
                     </div>
                     <div>
-                        <h3 className="font-display font-bold text-base text-zinc-100">{title}</h3>
-                        <p className="text-xs text-zinc-400 font-mono">Tindakan ini memerlukan persetujuan.</p>
+                        <h3 className="font-display font-bold text-base text-[var(--color-text)]">{title}</h3>
+                        <p className="text-xs text-[var(--color-text-secondary)] font-mono">Tindakan ini memerlukan persetujuan.</p>
                     </div>
                 </div>
 
-                {message && <p className="text-sm text-zinc-300 leading-relaxed mb-6">{message}</p>}
+                {message && <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-6">{message}</p>}
 
                 <div className="flex justify-end gap-2.5">
                     <Button variant="secondary" size="sm" onClick={onCancel} disabled={loading}>
@@ -329,15 +329,15 @@ export function ConfirmDialog({
 
 export function EmptyState({ icon: Icon, title = 'Tidak ada data', description, action, actionLabel, onAction }) {
     return (
-        <div className="flex flex-col items-center justify-center text-center py-12 px-4 rounded-2xl border border-dashed border-zinc-800 bg-zinc-950/40">
+        <div className="flex flex-col items-center justify-center text-center py-12 px-4 rounded-2xl border border-dashed border-[var(--color-border)] bg-[var(--color-section)]/60">
             {Icon && (
-                <div className="h-12 w-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 mb-3 shadow-inner">
+                <div className="h-12 w-12 rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-text-secondary)] mb-3 shadow-inner">
                     <Icon size={22} strokeWidth={1.5} />
                 </div>
             )}
-            <p className="font-display font-semibold text-base text-zinc-200">{title}</p>
+            <p className="font-display font-semibold text-base text-[var(--color-text)]">{title}</p>
             {description && (
-                <p className="text-xs text-zinc-500 max-w-sm mt-1 mb-4 leading-relaxed">{description}</p>
+                <p className="text-xs text-[var(--color-text-muted)] max-w-sm mt-1 mb-4 leading-relaxed">{description}</p>
             )}
             {action || (actionLabel && onAction && (
                 <Button size="sm" onClick={onAction}>
@@ -350,6 +350,6 @@ export function EmptyState({ icon: Icon, title = 'Tidak ada data', description, 
 
 export function Skeleton({ className = '' }) {
     return (
-        <div className={`animate-pulse rounded-xl bg-zinc-800/60 ${className}`} />
+        <div className={`animate-pulse rounded-xl bg-[var(--color-card)] ${className}`} />
     );
 }

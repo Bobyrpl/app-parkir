@@ -293,28 +293,28 @@ export default function DashboardAdmin() {
 
             {/* Highlight bar periode */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 no-print">
-                <Card className="p-5 flex items-center gap-4 border border-zinc-800/80 bg-zinc-900/60">
-                    <span className="w-12 h-12 rounded-2xl bg-zinc-800 border border-zinc-700/60 text-zinc-200 flex items-center justify-center shrink-0 shadow-inner">
+                <Card className="p-5 flex items-center gap-4 border border-[var(--color-border)] bg-[var(--color-card)]/80">
+                    <span className="w-12 h-12 rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] flex items-center justify-center shrink-0 shadow-inner">
                         <Receipt size={22} />
                     </span>
                     <div className="min-w-0">
-                        <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">TRANSAKSI PERIODE INI</p>
-                        <p className="font-display font-bold text-2xl sm:text-3xl text-zinc-100 leading-tight truncate">
+                        <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-text-secondary)] font-semibold">TRANSAKSI PERIODE INI</p>
+                        <p className="font-display font-bold text-2xl sm:text-3xl text-[var(--color-text)] leading-tight truncate">
                             {loadingRekap ? '—' : totalTransaksi.toLocaleString('id-ID')}
                         </p>
-                        <p className="text-xs text-zinc-500 font-mono mt-0.5 truncate">{periodeLabel}</p>
+                        <p className="text-xs text-[var(--color-text-muted)] font-mono mt-0.5 truncate">{periodeLabel}</p>
                     </div>
                 </Card>
-                <Card className="p-5 flex items-center gap-4 border border-zinc-800/80 bg-zinc-900/60">
+                <Card className="p-5 flex items-center gap-4 border border-[var(--color-border)] bg-[var(--color-card)]/80">
                     <span className="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 flex items-center justify-center shrink-0 shadow-inner">
                         <Wallet size={22} />
                     </span>
                     <div className="min-w-0">
                         <p className="font-mono text-[10px] uppercase tracking-widest text-emerald-400/90 font-semibold">PENDAPATAN PERIODE INI</p>
-                        <p className="font-display font-bold text-2xl sm:text-3xl text-zinc-100 leading-tight truncate">
+                        <p className="font-display font-bold text-2xl sm:text-3xl text-[var(--color-text)] leading-tight truncate">
                             {loadingRekap ? '—' : `Rp ${totalPendapatan.toLocaleString('id-ID')}`}
                         </p>
-                        <p className="text-xs text-zinc-500 font-mono mt-0.5 truncate">{periodeLabel}</p>
+                        <p className="text-xs text-[var(--color-text-muted)] font-mono mt-0.5 truncate">{periodeLabel}</p>
                     </div>
                 </Card>
             </div>
@@ -322,21 +322,21 @@ export default function DashboardAdmin() {
             {/* Grafik Trend */}
             <div className="mb-8 no-print">
                 <Card className="p-6">
-                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-zinc-800/80">
-                        <span className="w-9 h-9 rounded-xl bg-zinc-800 border border-zinc-700/60 text-zinc-200 flex items-center justify-center shrink-0">
+                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[var(--color-border)]">
+                        <span className="w-9 h-9 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] flex items-center justify-center shrink-0">
                             <TrendingUp size={18} />
                         </span>
                         <div className="min-w-0">
-                            <h2 className="font-display font-bold text-base text-zinc-100 truncate">
+                            <h2 className="font-display font-bold text-base text-[var(--color-text)] truncate">
                                 Tren Transaksi &amp; Pelanggan Baru
                             </h2>
-                            <p className="text-xs text-zinc-400 font-mono truncate">{periodeLabel}</p>
+                            <p className="text-xs text-[var(--color-text-secondary)] font-mono truncate">{periodeLabel}</p>
                         </div>
                     </div>
                     {loadingRekap ? (
-                        <div className="h-72 flex items-center justify-center text-sm text-zinc-500 font-mono">Memuat grafik...</div>
+                        <div className="h-72 flex items-center justify-center text-sm text-[var(--color-text-muted)] font-mono">Memuat grafik...</div>
                     ) : rekap.length === 0 ? (
-                        <div className="h-72 flex items-center justify-center text-sm text-zinc-500">Belum ada data transaksi pada rentang ini.</div>
+                        <div className="h-72 flex items-center justify-center text-sm text-[var(--color-text-muted)]">Belum ada data transaksi pada rentang ini.</div>
                     ) : (
                         <ResponsiveContainer width="100%" height={340}>
                             <LineChart data={rekap}>
@@ -393,14 +393,14 @@ export default function DashboardAdmin() {
             <Card className="p-6 mb-8">
                 <div className="flex items-start justify-between mb-6 flex-wrap gap-4">
                     <div className="flex items-start gap-3">
-                        <span className="w-9 h-9 rounded-xl bg-zinc-800 border border-zinc-700/60 text-zinc-200 flex items-center justify-center shrink-0 print:hidden">
+                        <span className="w-9 h-9 rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text)] flex items-center justify-center shrink-0 print:hidden">
                             <FileText size={18} />
                         </span>
                         <div>
-                            <h2 className="font-display font-bold text-lg text-zinc-100 print:text-black">
+                            <h2 className="font-display font-bold text-lg text-[var(--color-text)] print:text-black">
                                 Tabel Laporan Harian
                             </h2>
-                            <p className="text-xs text-zinc-400 font-mono print:text-zinc-600 mt-0.5">
+                            <p className="text-xs text-[var(--color-text-secondary)] font-mono print:text-[var(--color-text-muted)] mt-0.5">
                                 Periode: {periodeLabel}
                             </p>
                         </div>
@@ -417,21 +417,21 @@ export default function DashboardAdmin() {
 
                 <form
                     onSubmit={handleFilterSubmit}
-                    className="no-print flex flex-wrap items-end gap-3 mb-6 pb-6 border-b border-zinc-800/80"
+                    className="no-print flex flex-wrap items-end gap-3 mb-6 pb-6 border-b border-[var(--color-border)]"
                 >
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-mono uppercase tracking-wider text-zinc-400" htmlFor="dari-date">Dari Tanggal</label>
+                        <label className="text-xs font-mono uppercase tracking-wider text-[var(--color-text-secondary)]" htmlFor="dari-date">Dari Tanggal</label>
                         <input
                             id="dari-date"
                             type="date"
                             value={dari}
                             max={sampai}
                             onChange={(e) => setDari(e.target.value)}
-                            className="bg-zinc-950/70 border border-zinc-800 rounded-xl px-3.5 py-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-400/30 transition-all"
+                            className="bg-[var(--color-section)]/70 border border-[var(--color-border)] rounded-xl px-3.5 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--color-text)_30%,transparent)] transition-all"
                         />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-mono uppercase tracking-wider text-zinc-400" htmlFor="sampai-date">Sampai Tanggal</label>
+                        <label className="text-xs font-mono uppercase tracking-wider text-[var(--color-text-secondary)]" htmlFor="sampai-date">Sampai Tanggal</label>
                         <input
                             id="sampai-date"
                             type="date"
@@ -439,20 +439,20 @@ export default function DashboardAdmin() {
                             min={dari}
                             max={toDateInputValue(new Date())}
                             onChange={(e) => setSampai(e.target.value)}
-                            className="bg-zinc-950/70 border border-zinc-800 rounded-xl px-3.5 py-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-400/30 transition-all"
+                            className="bg-[var(--color-section)]/70 border border-[var(--color-border)] rounded-xl px-3.5 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--color-text)_30%,transparent)] transition-all"
                         />
                     </div>
                     <Button type="submit" size="md" disabled={loadingRekap} icon={CalendarRange}>
                         {loadingRekap ? 'Memuat...' : 'Terapkan Filter'}
                     </Button>
-                    <div className="flex gap-1 sm:ml-auto bg-zinc-950/80 border border-zinc-800 rounded-full p-1">
+                    <div className="flex gap-1 sm:ml-auto bg-[var(--color-section)]/80 border border-[var(--color-border)] rounded-full p-1">
                         <button
                             type="button"
                             onClick={() => handlePreset(7)}
                             className={`px-3.5 py-1 rounded-full text-xs font-mono transition-all ${
                                 activePreset === 7
-                                    ? 'bg-zinc-100 text-zinc-950 font-bold shadow'
-                                    : 'text-zinc-400 hover:text-zinc-100'
+                                    ? 'bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-bold shadow'
+                                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
                             }`}
                         >
                             7 Hari
@@ -462,8 +462,8 @@ export default function DashboardAdmin() {
                             onClick={() => handlePreset(30)}
                             className={`px-3.5 py-1 rounded-full text-xs font-mono transition-all ${
                                 activePreset === 30
-                                    ? 'bg-zinc-100 text-zinc-950 font-bold shadow'
-                                    : 'text-zinc-400 hover:text-zinc-100'
+                                    ? 'bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-bold shadow'
+                                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
                             }`}
                         >
                             30 Hari
@@ -472,7 +472,7 @@ export default function DashboardAdmin() {
                 </form>
 
                 {loadingRekap ? (
-                    <div className="py-10 text-center text-sm text-zinc-500 font-mono">Memuat data laporan...</div>
+                    <div className="py-10 text-center text-sm text-[var(--color-text-muted)] font-mono">Memuat data laporan...</div>
                 ) : rekapError ? (
                     <div className="text-sm text-rose-400 flex items-center gap-3 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
                         <span>{rekapError}</span>
@@ -483,9 +483,9 @@ export default function DashboardAdmin() {
                         {rekap.map((d) => (
                             <tr
                                 key={d.tanggal}
-                                className="hover:bg-zinc-800/40 transition-colors"
+                                className="hover:bg-[var(--color-card)]/60 transition-colors"
                             >
-                                <td className="px-5 py-3.5 font-mono text-xs text-zinc-300">
+                                <td className="px-5 py-3.5 font-mono text-xs text-[var(--color-text-secondary)]">
                                     {new Date(d.tanggal).toLocaleDateString('id-ID', {
                                         weekday: 'long',
                                         day: 'numeric',
@@ -493,13 +493,13 @@ export default function DashboardAdmin() {
                                         year: 'numeric',
                                     })}
                                 </td>
-                                <td className="px-5 py-3.5 font-mono text-xs font-medium text-zinc-200">{d.jumlah_transaksi}</td>
-                                <td className="px-5 py-3.5 font-mono text-xs text-zinc-200">
+                                <td className="px-5 py-3.5 font-mono text-xs font-medium text-[var(--color-text)]">{d.jumlah_transaksi}</td>
+                                <td className="px-5 py-3.5 font-mono text-xs text-[var(--color-text)]">
                                     <div className="flex items-center gap-3">
                                         <span className="whitespace-nowrap font-medium text-emerald-400">
                                             Rp {Number(d.pendapatan).toLocaleString('id-ID')}
                                         </span>
-                                        <span className="hidden sm:block flex-1 h-1.5 rounded-full bg-zinc-800 overflow-hidden min-w-[60px] max-w-[120px] print:hidden">
+                                        <span className="hidden sm:block flex-1 h-1.5 rounded-full bg-[var(--color-card)] overflow-hidden min-w-[60px] max-w-[120px] print:hidden">
                                             <span
                                                 className="block h-full rounded-full bg-emerald-400"
                                                 style={{
@@ -513,15 +513,15 @@ export default function DashboardAdmin() {
                         ))}
                         {rekap.length === 0 && (
                             <tr>
-                                <td colSpan={3} className="px-5 py-10 text-center text-zinc-500 text-xs font-mono">
+                                <td colSpan={3} className="px-5 py-10 text-center text-[var(--color-text-muted)] text-xs font-mono">
                                     Belum ada data transaksi pada periode ini.
                                 </td>
                             </tr>
                         )}
                         {rekap.length > 0 && (
-                            <tr className="bg-zinc-950/80 font-bold border-t border-zinc-800">
-                                <td className="px-5 py-3.5 font-mono text-xs text-zinc-200">TOTAL</td>
-                                <td className="px-5 py-3.5 font-mono text-xs text-zinc-100">{totalTransaksi}</td>
+                            <tr className="bg-[var(--color-section)]/80 font-bold border-t border-[var(--color-border)]">
+                                <td className="px-5 py-3.5 font-mono text-xs text-[var(--color-text)]">TOTAL</td>
+                                <td className="px-5 py-3.5 font-mono text-xs text-[var(--color-text)]">{totalTransaksi}</td>
                                 <td className="px-5 py-3.5 font-mono text-xs text-emerald-400">
                                     Rp {Number(totalPendapatan).toLocaleString('id-ID')}
                                 </td>

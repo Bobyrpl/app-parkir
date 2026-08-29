@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 
@@ -39,6 +40,7 @@ function Beranda() {
 export default function App() {
   return (
     <BrowserRouter>
+      <ThemeProvider>
       <ToastProvider>
         <AuthProvider>
           <Routes>
@@ -249,6 +251,7 @@ export default function App() {
           </Routes>
         </AuthProvider>
       </ToastProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }
