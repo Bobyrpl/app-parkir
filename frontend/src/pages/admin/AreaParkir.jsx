@@ -108,12 +108,12 @@ export default function AreaParkir() {
             <div className={showForm ? 'grid md:grid-cols-3 gap-6' : ''}>
                 {showForm && (
                     <Card className="p-5 md:col-span-1 h-fit">
-                        <h2 className="font-display text-base text-white mb-4">
+                        <h2 className="font-display text-base text-[var(--color-text)] mb-4">
                             {editId ? 'Edit Area' : 'Tambah Area'}
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-3">
                             <div>
-                                <label className="block text-xs font-mono text-white/70 mb-1.5">
+                                <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
                                     NAMA AREA
                                 </label>
                                 <Input
@@ -124,7 +124,7 @@ export default function AreaParkir() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-mono text-white/70 mb-1.5">
+                                <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
                                     KAPASITAS
                                 </label>
                                 <Input
@@ -136,7 +136,7 @@ export default function AreaParkir() {
                                 />
                             </div>
 
-                            {error && <p className="text-sm text-[#C90000]">{error}</p>}
+                            {error && <p className="text-sm text-[#2563eb]">{error}</p>}
 
                             <div className="flex gap-2 pt-2">
                                 <Button type="submit">{editId ? 'Simpan' : 'Tambah'}</Button>
@@ -172,7 +172,7 @@ export default function AreaParkir() {
                         ))}
                         {data.length === 0 && (
                             <tr>
-                                <td colSpan={5} className="px-4 py-6 text-center text-white/70 text-sm">
+                                <td colSpan={5} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
                                     Belum ada area parkir.
                                 </td>
                             </tr>
@@ -191,8 +191,8 @@ export default function AreaParkir() {
                 onCancel={() => setHapusId(null)}
             />
 
-            <footer className="border-t border-[#444444]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+            <footer className="border-t border-[var(--color-border)]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

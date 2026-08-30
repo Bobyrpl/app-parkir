@@ -38,10 +38,10 @@ const ROLE_BADGE_TONE = { admin: "warning", petugas: "info", owner: "success" };
 // Palet warna avatar inisial — dirotasi berdasarkan nama, biar daftar
 // panjang tidak terasa monoton semua warna kuning.
 const AVATAR_PALETTE = [
-  { bg: "bg-[#C90000]/10", text: "text-[#C90000]" },
-  { bg: "bg-[#C90000]/10", text: "text-[#C90000]" },
+  { bg: "bg-[#2563eb]/10", text: "text-[#2563eb]" },
+  { bg: "bg-[#2563eb]/10", text: "text-[#2563eb]" },
   { bg: "bg-[#35C48D]/10", text: "text-[#35C48D]" },
-  { bg: "bg-[#C90000]/10", text: "text-[#C90000]" },
+  { bg: "bg-[#2563eb]/10", text: "text-[#2563eb]" },
 ];
 
 function warnaAvatar(nama) {
@@ -260,7 +260,7 @@ export default function Users() {
 
       {/* Ringkasan */}
       <div className="mb-8">
-        <h2 className="font-mono text-[11px] tracking-widest text-white/70 mb-3">
+        <h2 className="font-mono text-[11px] tracking-widest text-[var(--color-text-secondary)] mb-3">
           RINGKASAN PENGGUNA
         </h2>
         {ringkasanLoading ? (
@@ -274,22 +274,22 @@ export default function Users() {
             <StatCard
               label="ADMIN"
               value={ringkasan.admin}
-              accent="#C90000"
+              accent="#2563eb"
             />
             <StatCard
               label="PETUGAS"
               value={ringkasan.petugas}
-              accent="#C90000"
+              accent="#2563eb"
             />
             <StatCard
               label="PELANGGAN"
               value={ringkasan.pelanggan}
-              accent="#C90000"
+              accent="#2563eb"
             />
             <StatCard
               label="TOTAL USER"
               value={ringkasan.total}
-              accent="#FFFFFF"
+              accent="#2563eb"
             />
             <StatCard
               label="AKTIF"
@@ -299,14 +299,14 @@ export default function Users() {
             <StatCard
               label="TIDAK AKTIF"
               value={ringkasan.nonaktif}
-              accent="#C90000"
+              accent="#2563eb"
             />
           </div>
         )}
       </div>
 
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-display text-base text-white">
+        <h2 className="font-display text-base text-[var(--color-text)]">
           Daftar Pengguna
         </h2>
         {!showForm && (
@@ -329,17 +329,17 @@ export default function Users() {
         <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
-              <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
+              <span className="w-8 h-8 rounded-lg bg-[#2563eb]/10 text-[#2563eb] flex items-center justify-center shrink-0">
                 {editId ? <Pencil size={15} /> : <UserPlus size={15} />}
               </span>
-              <h2 className="font-display text-base text-white">
+              <h2 className="font-display text-base text-[var(--color-text)]">
                 {editId ? "Edit Pengguna" : "Tambah Pengguna"}
               </h2>
             </div>
             <button
               type="button"
               onClick={handleTutupForm}
-              className="w-7 h-7 rounded-md flex items-center justify-center text-white/70 hover:text-white hover:bg-[#444444] transition-colors shrink-0"
+              className="w-7 h-7 rounded-md flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-section)] transition-colors shrink-0"
               aria-label="Tutup form"
             >
               <X size={15} />
@@ -348,7 +348,7 @@ export default function Users() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-mono text-white/70 mb-1.5">
+              <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
                 NAMA LENGKAP
               </label>
               <Input
@@ -361,7 +361,7 @@ export default function Users() {
               />
             </div>
             <div>
-              <label className="block text-xs font-mono text-white/70 mb-1.5">
+              <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
                 USERNAME
               </label>
               <Input
@@ -372,7 +372,7 @@ export default function Users() {
               />
             </div>
             <div>
-              <label className="block text-xs font-mono text-white/70 mb-1.5">
+              <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
                 NO. TELEPON
               </label>
               <Input
@@ -382,10 +382,10 @@ export default function Users() {
               />
             </div>
             <div>
-              <label className="block text-xs font-mono text-white/70 mb-1.5">
+              <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
                 PASSWORD
                 {editId && (
-                  <span className="normal-case text-white/70">
+                  <span className="normal-case text-[var(--color-text-secondary)]">
                     {" "}
                     · kosongkan jika tidak diubah
                   </span>
@@ -400,13 +400,13 @@ export default function Users() {
               />
             </div>
             <div>
-              <label className="block text-xs font-mono text-white/70 mb-1.5">
+              <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
                 ROLE
               </label>
               <select
                 value={form.role}
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
-                className="w-full rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000] transition-shadow"
+                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-shadow"
               >
                 <option value="petugas">Petugas</option>
                 <option value="owner">Owner</option>
@@ -414,20 +414,20 @@ export default function Users() {
               </select>
             </div>
 
-            <label className="flex items-center gap-2.5 text-sm text-white/80 rounded-md border border-[#444444] bg-[#444444] px-3 py-2.5 cursor-pointer">
+            <label className="flex items-center gap-2.5 text-sm text-[var(--color-text-secondary)] rounded-md border border-[var(--color-border)] bg-[var(--color-section)] px-3 py-2.5 cursor-pointer">
               <input
                 type="checkbox"
                 checked={form.status_aktif}
                 onChange={(e) =>
                   setForm({ ...form, status_aktif: e.target.checked })
                 }
-                className="accent-[#C90000]"
+                className="accent-[#2563eb]"
               />
               Akun aktif
             </label>
 
             {error && (
-              <p className="text-sm text-[#C90000] bg-[#C90000]/10 border border-[#C90000]/20 rounded-md px-3 py-2">
+              <p className="text-sm text-[#2563eb] bg-[#2563eb]/10 border border-[#2563eb]/20 rounded-md px-3 py-2">
                 {error}
               </p>
             )}
@@ -458,7 +458,7 @@ export default function Users() {
             <div className="flex-1 relative">
               <Search
                 size={15}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-white/70 pointer-events-none"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-secondary)] pointer-events-none"
               />
               <Input
                 className="pl-9"
@@ -467,7 +467,7 @@ export default function Users() {
                 onChange={(e) => setCariKata(e.target.value)}
               />
             </div>
-            <span className="text-xs font-mono text-white/70 whitespace-nowrap shrink-0">
+            <span className="text-xs font-mono text-[var(--color-text-secondary)] whitespace-nowrap shrink-0">
               {loading
                 ? "Memuat..."
                 : sedangMencari
@@ -491,7 +491,7 @@ export default function Users() {
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
                     <td className="px-3 sm:px-4 py-3" colSpan={6}>
-                      <div className="h-9 rounded-md bg-[#444444] animate-pulse" />
+                      <div className="h-9 rounded-md bg-[var(--color-section)] animate-pulse" />
                     </td>
                   </tr>
                 ))}
@@ -502,7 +502,7 @@ export default function Users() {
                   return (
                     <tr
                       key={item.id_user}
-                      className="transition-colors hover:bg-[#444444]"
+                      className="transition-colors hover:bg-[var(--color-section)]"
                     >
                       <td className="px-3 sm:px-4 py-2.5 sm:py-3 whitespace-nowrap">
                         <div className="flex items-center gap-2.5">
@@ -511,22 +511,22 @@ export default function Users() {
                           >
                             {inisial(item.nama_lengkap)}
                           </span>
-                          <span className="text-white">
+                          <span className="text-[var(--color-text)]">
                             {item.nama_lengkap}
                           </span>
                         </div>
                       </td>
-                      <td className="px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-white/80 whitespace-nowrap">
+                      <td className="px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-[var(--color-text-secondary)] whitespace-nowrap">
                         {item.username}
                       </td>
-                      <td className="px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-white/80 whitespace-nowrap">
+                      <td className="px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-[var(--color-text-secondary)] whitespace-nowrap">
                         {item.no_telp ? (
                           <span className="inline-flex items-center gap-1.5">
-                            <Phone size={12} className="text-white/70" />
+                            <Phone size={12} className="text-[var(--color-text-secondary)]" />
                             {item.no_telp}
                           </span>
                         ) : (
-                          <span className="text-white/70">—</span>
+                          <span className="text-[var(--color-text-secondary)]">—</span>
                         )}
                       </td>
                       <td className="px-3 sm:px-4 py-2.5 sm:py-3 whitespace-nowrap">
@@ -568,8 +568,8 @@ export default function Users() {
               {!loading && dataTersaring.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-4 py-14 text-center">
-                    <div className="flex flex-col items-center gap-2.5 text-white/70">
-                      <span className="w-11 h-11 rounded-full bg-[#444444] flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-2.5 text-[var(--color-text-secondary)]">
+                      <span className="w-11 h-11 rounded-full bg-[var(--color-section)] flex items-center justify-center">
                         <Inbox size={18} />
                       </span>
                       <p className="text-sm">
@@ -585,7 +585,7 @@ export default function Users() {
           </div>
 
           {!loading && !sedangMencari && halamanTerakhir > 1 && (
-            <div className="px-4 sm:px-0 mt-4 flex items-center justify-between text-xs font-mono text-white/70">
+            <div className="px-4 sm:px-0 mt-4 flex items-center justify-between text-xs font-mono text-[var(--color-text-secondary)]">
               <span>Total {total} pengguna</span>
               <div className="flex items-center gap-1.5">
                 <Button
@@ -597,7 +597,7 @@ export default function Users() {
                   <ChevronLeft size={14} />
                   Sebelumnya
                 </Button>
-                <span className="px-2 text-white/80">
+                <span className="px-2 text-[var(--color-text-secondary)]">
                   Hal {halaman} / {halamanTerakhir}
                 </span>
                 <Button
@@ -625,8 +625,8 @@ export default function Users() {
         onCancel={() => setHapusId(null)}
       />
 
-      <footer className="border-t border-[#444444] mt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+      <footer className="border-t border-[var(--color-border)] mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
           <span>
             © {new Date().getFullYear()} Parkir Pelabuhan Tanjung Perak
           </span>

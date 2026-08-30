@@ -56,10 +56,10 @@ export default function TambahKendaraan() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 <Card className="p-4 sm:p-5 md:col-span-1 h-fit">
-                    <h2 className="font-display text-base text-white mb-4">Tambah Kendaraan</h2>
+                    <h2 className="font-display text-base text-[var(--color-text)] mb-4">Tambah Kendaraan</h2>
                     <form onSubmit={handleSubmit} className="space-y-3">
                         <div>
-                            <label className="block text-xs font-mono text-white/70 mb-1.5">PLAT NOMOR</label>
+                            <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">PLAT NOMOR</label>
                             <Input
                                 value={form.plat_nomor}
                                 onChange={(e) => setForm({ ...form, plat_nomor: e.target.value.toUpperCase() })}
@@ -68,11 +68,11 @@ export default function TambahKendaraan() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-mono text-white/70 mb-1.5">JENIS KENDARAAN</label>
+                            <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">JENIS KENDARAAN</label>
                             <select
                                 value={form.jenis_kendaraan}
                                 onChange={(e) => setForm({ ...form, jenis_kendaraan: e.target.value })}
-                                className="w-full rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000]"
+                                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
                             >
                                 <option value="motor">Motor</option>
                                 <option value="mobil">Mobil</option>
@@ -82,15 +82,15 @@ export default function TambahKendaraan() {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-xs font-mono text-white/70 mb-1.5">WARNA</label>
+                            <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">WARNA</label>
                             <Input value={form.warna} onChange={(e) => setForm({ ...form, warna: e.target.value })} maxLength={20} />
                         </div>
                         <div>
-                            <label className="block text-xs font-mono text-white/70 mb-1.5">PEMILIK</label>
+                            <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">PEMILIK</label>
                             <Input value={form.pemilik} onChange={(e) => setForm({ ...form, pemilik: e.target.value })} maxLength={100} />
                         </div>
 
-                        {error && <p className="text-sm text-[#C90000]">{error}</p>}
+                        {error && <p className="text-sm text-[#2563eb]">{error}</p>}
 
                         <Button type="submit" disabled={submitting} className="w-full">
                             {submitting ? 'Menyimpan...' : 'Tambah Kendaraan'}
@@ -111,7 +111,7 @@ export default function TambahKendaraan() {
                             ))}
                             {data.length === 0 && (
                                 <tr>
-                                    <td colSpan={4} className="px-4 py-6 text-center text-white/70 text-sm">
+                                    <td colSpan={4} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
                                         Belum ada kendaraan.
                                     </td>
                                 </tr>

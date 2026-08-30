@@ -61,10 +61,10 @@ export default function DashboardOwner() {
 
             <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
                 <div>
-                    <p className="text-sm text-white">
+                    <p className="text-sm text-[var(--color-text)]">
                         {sapaanWaktu()}{namaDepan ? `, ${namaDepan}` : ''}.
                     </p>
-                    <p className="text-xs text-white/70 font-mono mt-0.5">{tanggalHariIni}</p>
+                    <p className="text-xs text-[var(--color-text-secondary)] font-mono mt-0.5">{tanggalHariIni}</p>
                 </div>
                 <Button variant="ghost" onClick={ambilDataGrafik} disabled={loadingGrafik}>
                     <span className="flex items-center gap-1.5">
@@ -76,21 +76,21 @@ export default function DashboardOwner() {
 
             {/* Grafik gabungan 7 hari terakhir */}
             <div className="mb-8">
-                <h2 className="font-display text-base text-white mb-3 flex items-center gap-2">
-                    <LineChart size={16} className="text-[#C90000]" />
+                <h2 className="font-display text-base text-[var(--color-text)] mb-3 flex items-center gap-2">
+                    <LineChart size={16} className="text-[#2563eb]" />
                     Tren 7 Hari Terakhir
                 </h2>
 
                 <Card className="p-5">
                     {loadingGrafik && (
-                        <div className="h-80 flex items-center justify-center text-sm text-white/70">
+                        <div className="h-80 flex items-center justify-center text-sm text-[var(--color-text-secondary)]">
                             Memuat grafik...
                         </div>
                     )}
 
                     {!loadingGrafik && errorGrafik && (
                         <div className="h-80 flex flex-col items-center justify-center gap-3">
-                            <p className="text-sm text-[#C90000]">{errorGrafik}</p>
+                            <p className="text-sm text-[#2563eb]">{errorGrafik}</p>
                             <Button variant="ghost" onClick={ambilDataGrafik}>Coba Lagi</Button>
                         </div>
                     )}
@@ -103,23 +103,23 @@ export default function DashboardOwner() {
 
             {/* Menu utama */}
             <div>
-                <h2 className="font-display text-base text-white mb-3 flex items-center gap-2">
-                    <LayoutGrid size={16} className="text-[#C90000]" />
+                <h2 className="font-display text-base text-[var(--color-text)] mb-3 flex items-center gap-2">
+                    <LayoutGrid size={16} className="text-[#2563eb]" />
                     Menu
                 </h2>
                 <Link to="/owner/rekap" className="group block max-w-md">
-                    <Card className="p-6 flex flex-col justify-between h-full transition-colors duration-200 hover:border-[#C90000]/30">
+                    <Card className="p-6 flex flex-col justify-between h-full transition-colors duration-200 hover:border-[#2563eb]/30">
                         <div>
                             <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-[#35C48D]/10 text-[#35C48D] mb-3">
                                 <FileBarChart size={18} />
                             </span>
-                            <h3 className="font-display text-lg text-white mb-2">Rekap Transaksi</h3>
-                            <p className="text-sm text-white/70 mb-4">
+                            <h3 className="font-display text-lg text-[var(--color-text)] mb-2">Rekap Transaksi</h3>
+                            <p className="text-sm text-[var(--color-text-secondary)] mb-4">
                                 Pilih rentang tanggal untuk melihat jumlah transaksi dan
                                 total pendapatan pada periode tertentu, lalu ekspor atau cetak laporannya.
                             </p>
                         </div>
-                        <span className="inline-flex items-center gap-1.5 text-sm text-[#C90000] font-medium">
+                        <span className="inline-flex items-center gap-1.5 text-sm text-[#2563eb] font-medium">
                             Buka Rekap Transaksi
                             <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
                         </span>
@@ -127,8 +127,8 @@ export default function DashboardOwner() {
                 </Link>
             </div>
 
-            <footer className="border-t border-[#444444] mt-10">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+            <footer className="border-t border-[var(--color-border)] mt-10">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

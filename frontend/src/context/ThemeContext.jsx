@@ -6,32 +6,32 @@ import { createContext, useContext, useEffect, useState } from "react";
 // TIDAK berubah antar tema — dia tetap merah di light maupun dark.
 export const THEME_VARS = {
   dark: {
-    "--color-bg": "#000000",
-    "--color-bg-rgb": "0, 0, 0",
-    "--color-section": "#09090b",
-    "--color-card": "#09090b",
-    "--color-border": "#27272a",
-    "--color-text": "#fafafa",
-    "--color-text-secondary": "#a1a1aa",
-    "--color-text-muted": "#71717a",
-    "--color-button-bg": "#ffffff",
-    "--color-button-text": "#000000",
+    "--color-bg": "#0b1220",
+    "--color-bg-rgb": "11, 18, 32",
+    "--color-section": "#111a2e",
+    "--color-card": "#131d33",
+    "--color-border": "#22304c",
+    "--color-text": "#f1f5f9",
+    "--color-text-secondary": "#94a3b8",
+    "--color-text-muted": "#64748b",
+    "--color-button-bg": "#2563eb",
+    "--color-button-text": "#ffffff",
   },
   light: {
-    "--color-bg": "#ffffff",
-    "--color-bg-rgb": "255, 255, 255",
-    "--color-section": "#fafafa",
-    "--color-card": "#f4f4f5",
-    "--color-border": "#e4e4e7",
-    "--color-text": "#09090b",
-    "--color-text-secondary": "#71717a",
-    "--color-text-muted": "#a1a1aa",
-    "--color-button-bg": "#09090b",
+    "--color-bg": "#eff4fb",
+    "--color-bg-rgb": "239, 244, 251",
+    "--color-section": "#f5f8fd",
+    "--color-card": "#ffffff",
+    "--color-border": "#dbe6f5",
+    "--color-text": "#0f172a",
+    "--color-text-secondary": "#5b6b85",
+    "--color-text-muted": "#8896ac",
+    "--color-button-bg": "#2563eb",
     "--color-button-text": "#ffffff",
   },
 };
 
-export const BRAND_ACCENT = "#C90000";
+export const BRAND_ACCENT = "#2563eb";
 
 const STORAGE_KEY = "parkirku-theme";
 

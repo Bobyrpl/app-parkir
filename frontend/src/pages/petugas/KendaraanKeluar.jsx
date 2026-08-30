@@ -236,7 +236,7 @@ export default function KendaraanKeluar() {
 
             {/* Cari kendaraan booking yang mau keluar - ketik kode manual atau scan QR pelanggan */}
             <Card className="p-5 mb-6">
-                <h2 className="font-display text-base text-white mb-3">
+                <h2 className="font-display text-base text-[var(--color-text)] mb-3">
                     Kendaraan Booking Mau Keluar?
                 </h2>
                 <form onSubmit={handleCariBookingSubmit} className="flex gap-2">
@@ -253,7 +253,7 @@ export default function KendaraanKeluar() {
                         Scan QR
                     </Button>
                 </form>
-                <p className="mt-3 text-xs text-white/70">
+                <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
                     Ketik atau scan kode booking pelanggan - tabel di bawah otomatis menampilkan
                     kendaraannya supaya tinggal diproses keluar.
                 </p>
@@ -271,14 +271,14 @@ export default function KendaraanKeluar() {
                             }
                             className={`text-left rounded-lg border p-3 transition ${
                                 filterArea === String(a.id_area)
-                                    ? 'border-[#C90000] bg-[#C90000]/10'
-                                    : 'border-[#444444] bg-[#444444] hover:bg-[#444444]'
+                                    ? 'border-[#2563eb] bg-[#2563eb]/10'
+                                    : 'border-[var(--color-border)] bg-[var(--color-section)] hover:bg-[var(--color-section)]'
                             }`}
                         >
-                            <p className="text-xs font-mono text-white/70 truncate">{a.nama_area}</p>
-                            <p className="text-2xl font-display text-white mt-1">
+                            <p className="text-xs font-mono text-[var(--color-text-secondary)] truncate">{a.nama_area}</p>
+                            <p className="text-2xl font-display text-[var(--color-text)] mt-1">
                                 {a.jumlahDidalam}
-                                <span className="text-xs text-white/70 font-mono ml-1">
+                                <span className="text-xs text-[var(--color-text-secondary)] font-mono ml-1">
                                     / {a.kapasitas} terisi
                                 </span>
                             </p>
@@ -297,7 +297,7 @@ export default function KendaraanKeluar() {
                 <select
                     value={filterArea}
                     onChange={(e) => setFilterArea(e.target.value)}
-                    className="rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000] sm:max-w-xs"
+                    className="rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#2563eb] sm:max-w-xs"
                 >
                     <option value="semua">Semua area</option>
                     {areaList.map((a) => (
@@ -314,8 +314,8 @@ export default function KendaraanKeluar() {
                     onClick={() => setHanyaTerlambat((prev) => !prev)}
                     className={`rounded-md px-3 py-2 text-sm font-mono border whitespace-nowrap ${
                         hanyaTerlambat
-                            ? 'border-[#C90000] bg-[#C90000]/15 text-[#C90000]'
-                            : 'border-[#444444] text-white/80 hover:bg-[#444444]'
+                            ? 'border-[#2563eb] bg-[#2563eb]/15 text-[#2563eb]'
+                            : 'border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]'
                     }`}
                 >
                     Booking Terlambat{jumlahTerlambat > 0 ? ` (${jumlahTerlambat})` : ''}
@@ -352,7 +352,7 @@ export default function KendaraanKeluar() {
                                     terlambat ? (
                                         <div>
                                             <Badge tone="danger">Terlambat</Badge>
-                                            <p className="text-xs text-[#C90000] font-mono mt-1">
+                                            <p className="text-xs text-[#2563eb] font-mono mt-1">
                                                 +{formatDurasiMenit(item.menitTerlambat)}
                                             </p>
                                         </div>
@@ -360,22 +360,22 @@ export default function KendaraanKeluar() {
                                         <Badge tone="neutral">{item.booking.kode_booking}</Badge>
                                     )
                                 ) : (
-                                    <span className="text-xs text-white/70">-</span>
+                                    <span className="text-xs text-[var(--color-text-secondary)]">-</span>
                                 )}
                             </td>
                             <td className="px-4 py-3">
                                 <div className="flex flex-col gap-2">
                                     {terlambat && (
-                                        <p className="text-xs text-white/70 font-mono">
+                                        <p className="text-xs text-[var(--color-text-secondary)] font-mono">
                                             Est. denda:{' '}
-                                            <span className="text-[#C90000]">
+                                            <span className="text-[#2563eb]">
                                                 Rp{' '}
                                                 {estimasiDenda(
                                                     item.menitTerlambat,
                                                     pengaturanDenda
                                                 ).toLocaleString('id-ID')}
                                             </span>
-                                            <span className="block text-[10px] text-white/70">
+                                            <span className="block text-[10px] text-[var(--color-text-secondary)]">
                                                 (dihitung otomatis saat kendaraan keluar)
                                             </span>
                                         </p>
@@ -402,7 +402,7 @@ export default function KendaraanKeluar() {
                 })}
                 {data.length === 0 && (
                     <tr>
-                        <td colSpan={6} className="px-4 py-6 text-center text-white/70 text-sm">
+                        <td colSpan={6} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
                             {cari || filterArea !== 'semua' || hanyaTerlambat
                                 ? 'Tidak ada kendaraan yang cocok dengan pencarian/filter ini.'
                                 : 'Tidak ada kendaraan di dalam area parkir.'}
@@ -414,7 +414,7 @@ export default function KendaraanKeluar() {
             {/* Kontrol pagination - hanya tampil kalau datanya lebih dari 1 halaman */}
             {data.length > 0 && totalHalaman > 1 && (
                 <div className="flex items-center justify-between mt-4 text-sm">
-                    <p className="text-white/70 font-mono text-xs">
+                    <p className="text-[var(--color-text-secondary)] font-mono text-xs">
                         Menampilkan {(halaman - 1) * ITEM_PER_HALAMAN + 1}
                         {'–'}
                         {Math.min(halaman * ITEM_PER_HALAMAN, data.length)} dari {data.length} kendaraan
@@ -428,7 +428,7 @@ export default function KendaraanKeluar() {
                         >
                             Sebelumnya
                         </Button>
-                        <span className="font-mono text-xs text-white/80 whitespace-nowrap">
+                        <span className="font-mono text-xs text-[var(--color-text-secondary)] whitespace-nowrap">
                             Hal. {halaman} / {totalHalaman}
                         </span>
                         <Button
@@ -457,8 +457,8 @@ export default function KendaraanKeluar() {
                 <ModalScanQr onDetected={handleScanDetected} onClose={() => setScanOpen(false)} />
             )}
 
-            <footer className="border-t border-[#444444]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+            <footer className="border-t border-[var(--color-border)]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

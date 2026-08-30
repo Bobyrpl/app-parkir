@@ -340,24 +340,24 @@ export default function DashboardAdmin() {
                     ) : (
                         <ResponsiveContainer width="100%" height={340}>
                             <LineChart data={rekap}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-                                <XAxis dataKey="label" stroke="#71717a" fontSize={11} />
+                                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+                                <XAxis dataKey="label" stroke="var(--color-text-muted)" fontSize={11} />
                                 <YAxis
                                     yAxisId="jumlah"
-                                    stroke="#71717a"
+                                    stroke="var(--color-text-muted)"
                                     fontSize={11}
                                     allowDecimals={false}
                                 />
                                 <YAxis
                                     yAxisId="rupiah"
                                     orientation="right"
-                                    stroke="#71717a"
+                                    stroke="var(--color-text-muted)"
                                     fontSize={11}
                                     tickFormatter={(value) => `Rp${(value / 1000).toLocaleString('id-ID')}rb`}
                                 />
                                 <Tooltip
-                                    contentStyle={{ background: '#18181b', border: '1px solid #3f3f46', borderRadius: 12, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)' }}
-                                    labelStyle={{ color: '#fafafa', fontWeight: 600 }}
+                                    contentStyle={{ background: 'var(--color-card)', border: '1px solid var(--color-border)', borderRadius: 12, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.25)' }}
+                                    labelStyle={{ color: 'var(--color-text)', fontWeight: 600 }}
                                     formatter={(value, name) => {
                                         if (name === 'pendapatan') {
                                             return [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Pendapatan'];
@@ -376,10 +376,10 @@ export default function DashboardAdmin() {
                                                 : value === 'jumlah_user'
                                                 ? 'Pelanggan Baru'
                                                 : 'Jumlah Transaksi';
-                                        return <span style={{ color: '#a1a1aa', fontSize: 12, marginRight: 14 }}>{label}</span>;
+                                        return <span style={{ color: 'var(--color-text-secondary)', fontSize: 12, marginRight: 14 }}>{label}</span>;
                                     }}
                                 />
-                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#fafafa" strokeWidth={2.5} dot={{ r: 3.5, fill: '#fafafa' }} activeDot={{ r: 6 }} />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#2563eb" strokeWidth={2.5} dot={{ r: 3.5, fill: '#2563eb' }} activeDot={{ r: 6 }} />
                                 <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#38bdf8" strokeWidth={2} strokeDasharray="4 3" dot={{ r: 3, fill: '#38bdf8' }} />
                                 <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#10b981" strokeWidth={2.5} dot={{ r: 3.5, fill: '#10b981' }} activeDot={{ r: 6 }} />
                             </LineChart>
@@ -397,7 +397,7 @@ export default function DashboardAdmin() {
                             <FileText size={18} />
                         </span>
                         <div>
-                            <h2 className="font-display font-bold text-lg text-[var(--color-text)] print:text-black">
+                            <h2 className="font-display font-bold text-lg text-[var(--color-text)] print:text-[var(--color-text)]">
                                 Tabel Laporan Harian
                             </h2>
                             <p className="text-xs text-[var(--color-text-secondary)] font-mono print:text-[var(--color-text-muted)] mt-0.5">
@@ -534,27 +534,27 @@ export default function DashboardAdmin() {
 
             <Card className="p-6 no-print">
                 <div className="flex items-center gap-2.5 mb-4">
-                    <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
+                    <span className="w-8 h-8 rounded-lg bg-[#2563eb]/10 text-[#2563eb] flex items-center justify-center shrink-0">
                         <Compass size={16} />
                     </span>
-                    <h2 className="font-display text-lg text-white">
+                    <h2 className="font-display text-lg text-[var(--color-text)]">
                         Akses cepat
                     </h2>
                 </div>
-                <p className="text-sm text-white/70 mb-4">
+                <p className="text-sm text-[var(--color-text-secondary)] mb-4">
                     Gunakan menu di sidebar untuk mengelola data master dan
                     melihat log aktivitas seluruh pengguna sistem.
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {[
-                        { label: 'Pengguna', icon: Users, accent: '#C90000' },
+                        { label: 'Pengguna', icon: Users, accent: '#2563eb' },
                         { label: 'Tarif', icon: Ticket, accent: '#35C48D' },
-                        { label: 'Area Parkir', icon: MapPin, accent: '#C90000' },
-                        { label: 'Kendaraan', icon: Car, accent: '#C90000' },
+                        { label: 'Area Parkir', icon: MapPin, accent: '#2563eb' },
+                        { label: 'Kendaraan', icon: Car, accent: '#2563eb' },
                     ].map(({ label, icon: Icon, accent }) => (
                         <div
                             key={label}
-                            className="flex flex-col items-center text-center gap-2 rounded-xl border border-[#444444] bg-[#080A0D] px-3 py-4"
+                            className="flex flex-col items-center text-center gap-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-section)] px-3 py-4"
                         >
                             <span
                                 className="w-9 h-9 rounded-lg flex items-center justify-center"
@@ -562,13 +562,13 @@ export default function DashboardAdmin() {
                             >
                                 <Icon size={17} />
                             </span>
-                            <span className="text-xs text-white/80">{label}</span>
+                            <span className="text-xs text-[var(--color-text-secondary)]">{label}</span>
                         </div>
                     ))}
                 </div>
             </Card>
-            <footer className="border-t border-[#444444]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+            <footer className="border-t border-[var(--color-border)]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

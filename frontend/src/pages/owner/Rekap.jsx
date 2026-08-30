@@ -117,11 +117,11 @@ export default function Rekap() {
             <Card className="p-5 mb-6 max-w-2xl no-print">
                 <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-3">
                     <div>
-                        <label className="block text-xs font-mono text-white/70 mb-1.5">DARI TANGGAL</label>
+                        <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">DARI TANGGAL</label>
                         <Input type="date" value={dari} onChange={(e) => setDari(e.target.value)} required />
                     </div>
                     <div>
-                        <label className="block text-xs font-mono text-white/70 mb-1.5">SAMPAI TANGGAL</label>
+                        <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">SAMPAI TANGGAL</label>
                         <Input type="date" value={sampai} onChange={(e) => setSampai(e.target.value)} required />
                     </div>
                     <Button type="submit" disabled={loading}>
@@ -131,7 +131,7 @@ export default function Rekap() {
                         Reset
                     </Button>
                 </form>
-                {error && <p className="text-sm text-[#C90000] mt-3">{error}</p>}
+                {error && <p className="text-sm text-[#2563eb] mt-3">{error}</p>}
             </Card>
 
             {hasil && (
@@ -139,8 +139,8 @@ export default function Rekap() {
                     {/* Kop laporan, hanya tampil saat dicetak */}
                     <div className="hidden print:block mb-6 pb-4 border-b-2 border-[#080A0D]">
                         <p className="font-display text-xl text-[#080A0D]">Parkir Pelabuhan Tanjung Perak</p>
-                        <p className="text-sm text-white/70">Laporan Rekap Transaksi Parkir</p>
-                        <div className="flex justify-between text-xs text-white/70 font-mono mt-2">
+                        <p className="text-sm text-[var(--color-text-secondary)]">Laporan Rekap Transaksi Parkir</p>
+                        <div className="flex justify-between text-xs text-[var(--color-text-secondary)] font-mono mt-2">
                             <span>Periode: {hasil.periode}</span>
                             <span>Dicetak: {waktuCetak}</span>
                         </div>
@@ -176,7 +176,7 @@ export default function Rekap() {
                     <Table columns={['No', 'Plat Nomor', 'Area', 'Masuk', 'Keluar', 'Durasi', 'Biaya']}>
                         {hasil.data.map((item, idx) => (
                             <tr key={item.id_parkir}>
-                                <td className="px-4 py-3 font-mono text-xs text-white/70">{idx + 1}</td>
+                                <td className="px-4 py-3 font-mono text-xs text-[var(--color-text-secondary)]">{idx + 1}</td>
                                 <td className="px-4 py-3 font-mono uppercase">{item.kendaraan?.plat_nomor}</td>
                                 <td className="px-4 py-3">{item.area?.nama_area}</td>
                                 <td className="px-4 py-3 font-mono text-xs">
@@ -193,7 +193,7 @@ export default function Rekap() {
                         ))}
                         {hasil.data.length === 0 && (
                             <tr>
-                                <td colSpan={7} className="px-4 py-6 text-center text-white/70 text-sm">
+                                <td colSpan={7} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
                                     Tidak ada transaksi pada periode ini.
                                 </td>
                             </tr>
@@ -211,8 +211,8 @@ export default function Rekap() {
                     </div>
                 </div>
             )}
-            <footer className="border-t border-[#444444]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+            <footer className="border-t border-[var(--color-border)]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

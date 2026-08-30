@@ -95,19 +95,19 @@ export default function LogAktivitas() {
                         <td className="px-4 py-3">
                             <Badge tone="neutral">{item.user?.role ?? '-'}</Badge>
                         </td>
-                        <td className="px-4 py-3 text-white/80">{item.aktivitas}</td>
+                        <td className="px-4 py-3 text-[var(--color-text-secondary)]">{item.aktivitas}</td>
                     </tr>
                 ))}
                 {data.length === 0 && (
                     <tr>
-                        <td colSpan={4} className="px-4 py-6 text-center text-white/70 text-sm">
+                        <td colSpan={4} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
                             Belum ada aktivitas tercatat.
                         </td>
                     </tr>
                 )}
             </Table>
-            <footer className="border-t border-[#444444]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+            <footer className="border-t border-[var(--color-border)]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

@@ -226,7 +226,7 @@ export default function KendaraanMasuk() {
 
             <div className="max-w-xl space-y-6">
                 <Card className="p-5">
-                    <h2 className="font-display text-base text-white mb-3">
+                    <h2 className="font-display text-base text-[var(--color-text)] mb-3">
                         Punya Kode Booking?
                     </h2>
                     <form onSubmit={handleCariBooking} className="flex gap-2">
@@ -257,7 +257,7 @@ export default function KendaraanMasuk() {
                 </Card>
 
                 <Card className="p-5">
-                    <h2 className="font-display text-base text-white mb-3">
+                    <h2 className="font-display text-base text-[var(--color-text)] mb-3">
                         atau Cari Kendaraan (plat nomor)
                     </h2>
                     <form onSubmit={handleCari} className="flex gap-2">
@@ -280,18 +280,18 @@ export default function KendaraanMasuk() {
                                     onClick={() => handlePilihKendaraan(k)}
                                     className={`w-full flex items-center justify-between gap-2 text-left rounded-md px-3 py-2 text-sm font-mono border transition ${
                                         k.sedang_parkir
-                                            ? "border-[#444444] bg-[#080A0D] text-white/70 cursor-not-allowed"
+                                            ? "border-[var(--color-border)] bg-[var(--color-section)] text-[var(--color-text-secondary)] cursor-not-allowed"
                                             : form.id_kendaraan ===
                                                 k.id_kendaraan
-                                              ? "border-[#C90000] bg-[#C90000]/10 text-[#C90000]"
-                                              : "border-[#444444] text-white/80 hover:bg-[#444444]"
+                                              ? "border-[#2563eb] bg-[#2563eb]/10 text-[#2563eb]"
+                                              : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]"
                                     }`}
                                 >
                                     <span className="truncate">
                                         {k.plat_nomor} — {k.jenis_kendaraan}
                                     </span>
                                     {k.sedang_parkir && (
-                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000] shrink-0">
+                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#2563eb]/15 text-[#2563eb] shrink-0">
                                             SUDAH PARKIR
                                         </span>
                                     )}
@@ -302,13 +302,13 @@ export default function KendaraanMasuk() {
                 </Card>
 
                 <Card className="p-5">
-                    <h2 className="font-display text-base text-white mb-3">
+                    <h2 className="font-display text-base text-[var(--color-text)] mb-3">
                         Detail Parkir
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-3">
                         <div>
                             <div className="flex items-center justify-between mb-1.5">
-                                <label className="block text-xs font-mono text-white/70">
+                                <label className="block text-xs font-mono text-[var(--color-text-secondary)]">
                                     TARIF
                                 </label>
                                 {tarifOtomatis && form.id_tarif && (
@@ -327,7 +327,7 @@ export default function KendaraanMasuk() {
                                     setTarifOtomatis(false);
                                 }}
                                 required
-                                className="w-full rounded-md bg-[#444444] border border-[#444444] px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#C90000]"
+                                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
                             >
                                 <option value="">Pilih tarif</option>
                                 {tarifList.map((t) => (
@@ -343,7 +343,7 @@ export default function KendaraanMasuk() {
                         </div>
                         <div>
                             <div className="flex items-center justify-between mb-1.5">
-                                <label className="block text-xs font-mono text-white/70">
+                                <label className="block text-xs font-mono text-[var(--color-text-secondary)]">
                                     AREA PARKIR
                                 </label>
                                 {areaOtomatis && form.id_area && (
@@ -379,10 +379,10 @@ export default function KendaraanMasuk() {
                                             }}
                                             className={`w-full flex items-center justify-between gap-2 rounded-md px-3 py-2 text-sm border transition ${
                                                 penuh
-                                                    ? "border-[#444444] bg-[#080A0D] text-white/70 cursor-not-allowed"
+                                                    ? "border-[var(--color-border)] bg-[var(--color-section)] text-[var(--color-text-secondary)] cursor-not-allowed"
                                                     : dipilih
-                                                      ? "border-[#C90000] bg-[#C90000]/10 text-[#C90000]"
-                                                      : "border-[#444444] text-white/80 hover:bg-[#444444]"
+                                                      ? "border-[#2563eb] bg-[#2563eb]/10 text-[#2563eb]"
+                                                      : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]"
                                             }`}
                                         >
                                             <span className="font-mono truncate">
@@ -393,11 +393,11 @@ export default function KendaraanMasuk() {
                                                     {a.terisi}/{a.kapasitas}
                                                 </span>
                                                 {penuh ? (
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000]">
+                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#2563eb]/15 text-[#2563eb]">
                                                         PENUH
                                                     </span>
                                                 ) : hampirPenuh ? (
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000]">
+                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#2563eb]/15 text-[#2563eb]">
                                                         HAMPIR PENUH
                                                     </span>
                                                 ) : (
@@ -410,7 +410,7 @@ export default function KendaraanMasuk() {
                                     );
                                 })}
                                 {areaList.length === 0 && (
-                                    <p className="text-xs text-white/70">
+                                    <p className="text-xs text-[var(--color-text-secondary)]">
                                         Belum ada data area parkir.
                                     </p>
                                 )}
@@ -418,7 +418,7 @@ export default function KendaraanMasuk() {
                         </div>
 
                         {!form.id_kendaraan && (
-                            <p className="text-xs text-white/70">
+                            <p className="text-xs text-[var(--color-text-secondary)]">
                                 Cari &amp; pilih kendaraan terlebih dahulu di
                                 atas.
                             </p>
@@ -447,8 +447,8 @@ export default function KendaraanMasuk() {
                 />
             )}
 
-            <footer className="border-t border-[#444444]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+            <footer className="border-t border-[var(--color-border)]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

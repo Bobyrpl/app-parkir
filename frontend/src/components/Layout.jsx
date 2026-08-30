@@ -160,7 +160,7 @@ function ProfileAvatar() {
       >
         {uploading ? (
           <svg
-            className="h-4 w-4 animate-spin text-white"
+            className="h-4 w-4 animate-spin text-[var(--color-text)]"
             viewBox="0 0 24 24"
             fill="none"
           >

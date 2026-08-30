@@ -77,21 +77,21 @@ export default function DashboardPetugas() {
                 <StatCard
                     label="KENDARAAN DI DALAM"
                     value={kendaraanDidalam}
-                    accent="#C90000"
+                    accent="#2563eb"
                 />
                 <StatCard
                     label="BOOKING MENUNGGU"
                     value={bookingMenunggu}
-                    accent="#C90000"
+                    accent="#2563eb"
                 />
             </div>
 
             <div className="grid md:grid-cols-4 gap-4 mb-8">
                 <Card className="p-6 flex flex-col">
-                    <h2 className="font-display text-base text-white mb-1">
+                    <h2 className="font-display text-base text-[var(--color-text)] mb-1">
                         Kendaraan Masuk
                     </h2>
-                    <p className="text-sm text-white/70 mb-4 flex-1">
+                    <p className="text-sm text-[var(--color-text-secondary)] mb-4 flex-1">
                         Catat kendaraan baru yang masuk area parkir.
                     </p>
                     <Link to="/petugas/masuk">
@@ -100,10 +100,10 @@ export default function DashboardPetugas() {
                 </Card>
 
                 <Card className="p-6 flex flex-col">
-                    <h2 className="font-display text-base text-white mb-1">
+                    <h2 className="font-display text-base text-[var(--color-text)] mb-1">
                         Kendaraan Keluar
                     </h2>
-                    <p className="text-sm text-white/70 mb-4 flex-1">
+                    <p className="text-sm text-[var(--color-text-secondary)] mb-4 flex-1">
                         Proses kendaraan keluar & hitung biaya parkir.
                     </p>
                     <Link to="/petugas/keluar">
@@ -112,10 +112,10 @@ export default function DashboardPetugas() {
                 </Card>
 
                 <Card className="p-6 flex flex-col">
-                    <h2 className="font-display text-base text-white mb-1">
+                    <h2 className="font-display text-base text-[var(--color-text)] mb-1">
                         Riwayat Transaksi
                     </h2>
-                    <p className="text-sm text-white/70 mb-4 flex-1">
+                    <p className="text-sm text-[var(--color-text-secondary)] mb-4 flex-1">
                         Lihat & cetak ulang struk transaksi sebelumnya.
                     </p>
                     <Link to="/petugas/transaksi">
@@ -126,10 +126,10 @@ export default function DashboardPetugas() {
                 </Card>
 
                 <Card className="p-6 flex flex-col">
-                    <h2 className="font-display text-base text-white mb-1">
+                    <h2 className="font-display text-base text-[var(--color-text)] mb-1">
                         Booking Masuk
                     </h2>
-                    <p className="text-sm text-white/70 mb-4 flex-1">
+                    <p className="text-sm text-[var(--color-text-secondary)] mb-4 flex-1">
                         Konfirmasi atau tolak booking parkir online dari pelanggan.
                     </p>
                     <Link to="/petugas/booking">
@@ -141,17 +141,17 @@ export default function DashboardPetugas() {
             </div>
 
             <Card className="p-6">
-                <h2 className="font-display text-lg text-white mb-2">
+                <h2 className="font-display text-lg text-[var(--color-text)] mb-2">
                     Akses cepat
                 </h2>
-                <p className="text-sm text-white/70">
+                <p className="text-sm text-[var(--color-text-secondary)]">
                     Gunakan menu di sidebar untuk mencatat kendaraan masuk,
                     memproses kendaraan keluar, dan melihat riwayat transaksi
                     yang sudah kamu buat.
                 </p>
             </Card>
-            <footer className="border-t border-[#444444]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+            <footer className="border-t border-[var(--color-border)]">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak

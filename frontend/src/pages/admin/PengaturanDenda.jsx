@@ -70,10 +70,10 @@ export default function PengaturanDenda() {
             <Card className="p-5 max-w-lg">
                 <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-2.5">
-                        <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
+                        <span className="w-8 h-8 rounded-lg bg-[#2563eb]/10 text-[#2563eb] flex items-center justify-center shrink-0">
                             <AlertTriangle size={16} />
                         </span>
-                        <h2 className="font-display text-base text-white">
+                        <h2 className="font-display text-base text-[var(--color-text)]">
                             Aturan Denda Keterlambatan
                         </h2>
                     </div>
@@ -82,7 +82,7 @@ export default function PengaturanDenda() {
                             className={`inline-flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-full ${
                                 form.aktif
                                     ? "bg-[#35C48D]/10 text-[#35C48D]"
-                                    : "bg-[#444444] text-white/70"
+                                    : "bg-[var(--color-section)] text-[var(--color-text-secondary)]"
                             }`}
                         >
                             {form.aktif ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
@@ -93,14 +93,14 @@ export default function PengaturanDenda() {
 
                 {loading ? (
                     <div className="space-y-4">
-                        <div className="h-16 rounded-md bg-[#444444] animate-pulse" />
-                        <div className="h-16 rounded-md bg-[#444444] animate-pulse" />
-                        <div className="h-11 rounded-md bg-[#444444] animate-pulse w-2/3" />
+                        <div className="h-16 rounded-md bg-[var(--color-section)] animate-pulse" />
+                        <div className="h-16 rounded-md bg-[var(--color-section)] animate-pulse" />
+                        <div className="h-11 rounded-md bg-[var(--color-section)] animate-pulse w-2/3" />
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label className="flex items-center gap-1.5 text-xs font-mono text-white/70 mb-1.5">
+                            <label className="flex items-center gap-1.5 text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
                                 <Wallet size={12} />
                                 DENDA PER JAM KETERLAMBATAN (Rp)
                             </label>
@@ -114,14 +114,14 @@ export default function PengaturanDenda() {
                                 placeholder="cth. 5000"
                                 required
                             />
-                            <p className="text-xs text-white/70 mt-1.5">
+                            <p className="text-xs text-[var(--color-text-secondary)] mt-1.5">
                                 Dikenakan per jam (dibulatkan ke atas) setiap kendaraan booking
                                 keluar melewati jam rencana keluar.
                             </p>
                         </div>
 
                         <div>
-                            <label className="flex items-center gap-1.5 text-xs font-mono text-white/70 mb-1.5">
+                            <label className="flex items-center gap-1.5 text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
                                 <Timer size={12} />
                                 TOLERANSI KETERLAMBATAN (menit)
                             </label>
@@ -135,25 +135,25 @@ export default function PengaturanDenda() {
                                 placeholder="cth. 15"
                                 required
                             />
-                            <p className="text-xs text-white/70 mt-1.5">
+                            <p className="text-xs text-[var(--color-text-secondary)] mt-1.5">
                                 Keterlambatan di bawah batas ini tidak dikenakan denda.
                             </p>
                         </div>
 
-                        <label className="flex items-center gap-2.5 text-sm text-white rounded-md border border-[#444444] bg-[#444444] px-3 py-2.5 cursor-pointer">
+                        <label className="flex items-center gap-2.5 text-sm text-[var(--color-text)] rounded-md border border-[var(--color-border)] bg-[var(--color-section)] px-3 py-2.5 cursor-pointer">
                             <input
                                 type="checkbox"
                                 checked={form.aktif}
                                 onChange={(e) =>
                                     setForm({ ...form, aktif: e.target.checked })
                                 }
-                                className="h-4 w-4 rounded border-[#444444] bg-[#444444] accent-[#C90000]"
+                                className="h-4 w-4 rounded border-[var(--color-border)] bg-[var(--color-section)] accent-[#2563eb]"
                             />
                             Aktifkan denda keterlambatan booking
                         </label>
 
                         {error && (
-                            <p className="text-sm text-[#C90000] bg-[#C90000]/10 border border-[#C90000]/20 rounded-md px-3 py-2">
+                            <p className="text-sm text-[#2563eb] bg-[#2563eb]/10 border border-[#2563eb]/20 rounded-md px-3 py-2">
                                 {error}
                             </p>
                         )}
@@ -167,8 +167,8 @@ export default function PengaturanDenda() {
                 )}
             </Card>
 
-            <footer className="border-t border-[#444444] mt-8">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-white/70 text-center sm:text-left">
+            <footer className="border-t border-[var(--color-border)] mt-8">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak
