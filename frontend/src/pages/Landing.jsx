@@ -153,7 +153,7 @@ const ROLES = [
 const TESTIMONI = [
   {
     nama: "Rina",
-    peran: "Pengelola Mall",
+    peran: "Pengelola parkir",
     teks: "Antrean di pintu keluar jauh lebih cepat sejak pakai ParkirKu.",
     bintang: 5,
   },
@@ -168,6 +168,18 @@ const TESTIMONI = [
     peran: "Owner Area Parkir",
     teks: "Rekap transaksi bisa saya cek dari mana saja.",
     bintang: 4,
+  },
+  {
+    nama: "susi",
+    peran: "Pelangan",
+    teks: "Cetak struknya praktis dan mudah lagi.",
+    bintang: 5,
+  },
+  {
+    nama: "wawan",
+    peran: "petugas",
+    teks: "cepat anti ribet.",
+    bintang: 5,
   },
 ];
 
@@ -399,12 +411,14 @@ function AnimatedCounter({
 // hoverable adds a quiet, consistent hover state (border + lift) used on
 // cards the user can meaningfully interact with or that benefit from a
 // touch of affordance. Off by default so it stays a deliberate choice.
-function SectionCard({ children, className = "", hoverable = false }) {
+// `glass`: opsional, menambahkan permukaan "liquid glass" (dari referensi
+// glass.html) di atas kartu — murni visual, tidak mengubah perilaku kartu.
+function SectionCard({ children, className = "", hoverable = false, glass = true }) {
   return (
     <div
       className={`rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] p-6 transition-all duration-300 ${
-        hoverable ? "hover:border-neutral-700 hover:shadow-xl" : ""
-      } ${className}`}
+        glass ? "liquid-glass" : ""
+      } ${hoverable ? "hover:border-neutral-700 hover:shadow-xl" : ""} ${className}`}
     >
       {children}
     </div>
@@ -480,6 +494,148 @@ function KomentarSkeleton() {
 // Ikon matahari/bulan untuk tombol ganti tema. `dark` menunjukkan tema
 // yang SEDANG aktif — ikon matahari muncul saat gelap (ajakan pindah ke
 // terang), dan sebaliknya.
+// Testimoni ala glass.html: section di-"pin" (sticky) setinggi 320vh, kartu-
+// kartu bergeser horizontal mengikuti scroll, dengan efek skew halus yang
+// mengikuti kecepatan scroll (velocity) — port langsung dari algoritma JS
+// vanilla di glass.html, ditulis ulang sebagai efek React (useRef + rAF).
+// Kalau prefers-reduced-motion aktif, kartu tetap geser tapi tanpa skew.
+// Ini KOMPONEN BARU murni untuk tampilan; data TESTIMONI dan komponen
+// Bintang/Avatar yang sudah ada dipakai persis seperti sebelumnya.
+function PinnedTestimoni({ items }) {
+  const sectionRef = useRef(null);
+  const trackRef = useRef(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track) return;
+
+    let sectionTop = 0;
+    let sectionHeight = 0;
+    let currentX = 0;
+    let skew = 0;
+    let lastX = 0;
+    let running = false;
+    let rafId = null;
+
+    function measure() {
+      const rect = section.getBoundingClientRect();
+      sectionTop = rect.top + window.scrollY;
+      sectionHeight = section.offsetHeight;
+    }
+
+    function frame() {
+      const vh = window.innerHeight;
+      const total = Math.max(1, sectionHeight - vh);
+      const progress = Math.min(
+        1,
+        Math.max(0, (window.scrollY - sectionTop) / total),
+      );
+      const maxShift = Math.max(
+        0,
+        track.scrollWidth - document.documentElement.clientWidth,
+      );
+      const targetX = -progress * maxShift;
+
+      if (prefersReducedMotion) {
+        track.style.transform = `translateX(${targetX}px)`;
+      } else {
+        currentX += (targetX - currentX) * 0.1;
+        if (Math.abs(targetX - currentX) < 0.1) currentX = targetX;
+        const velocity = currentX - lastX;
+        lastX = currentX;
+        const targetSkew = Math.max(-5, Math.min(5, velocity * 0.15));
+        skew += (targetSkew - skew) * 0.12;
+        if (Math.abs(skew) < 0.02) skew = 0;
+        track.style.transform = `translateX(${currentX.toFixed(2)}px) skewX(${skew.toFixed(2)}deg)`;
+      }
+
+      const inView =
+        window.scrollY + vh > sectionTop &&
+        window.scrollY < sectionTop + sectionHeight;
+      if (inView || Math.abs(skew) > 0.02) {
+        rafId = window.requestAnimationFrame(frame);
+      } else {
+        running = false;
+      }
+    }
+
+    function start() {
+      if (!running) {
+        running = true;
+        rafId = window.requestAnimationFrame(frame);
+      }
+    }
+
+    function onResize() {
+      measure();
+      start();
+    }
+
+    window.addEventListener("scroll", start, { passive: true });
+    window.addEventListener("resize", onResize);
+    measure();
+    start();
+
+    return () => {
+      window.removeEventListener("scroll", start);
+      window.removeEventListener("resize", onResize);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
+  }, [prefersReducedMotion]);
+
+  return (
+    <section
+      id="testimoni"
+      ref={sectionRef}
+      className="relative border-t border-[var(--color-border)]"
+      style={{ height: "320vh" }}
+    >
+      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+        <div className="mx-auto max-w-6xl px-6 md:px-12 w-full mb-10">
+          <SectionEyebrow>TESTIMONI</SectionEyebrow>
+          <p className="font-display font-bold text-3xl md:text-5xl tracking-tight text-[var(--color-text)]">
+            Kata{" "}
+            <span className="font-serif-accent text-[var(--color-text-muted)]">
+              mereka
+            </span>{" "}
+            tentang ParkirKu.
+          </p>
+        </div>
+
+        <div
+          ref={trackRef}
+          className="flex gap-6 will-change-transform pl-[6vw] pr-[6vw]"
+        >
+          {items.map((t, i) => (
+            <figure
+              key={t.nama}
+              className="liquid-glass shrink-0 w-[20rem] md:w-[26rem] rounded-3xl p-8 bg-[var(--color-card)]/60 flex flex-col justify-between gap-8"
+            >
+              <Bintang jumlah={t.bintang} />
+              <blockquote className="text-lg md:text-xl leading-relaxed text-[var(--color-text)]">
+                “{t.teks}”
+              </blockquote>
+              <figcaption className="flex items-center gap-4">
+                <Avatar nama={t.nama} index={i} size="h-12 w-12 text-base" />
+                <div>
+                  <p className="font-display font-semibold text-[var(--color-text)]">
+                    {t.nama}
+                  </p>
+                  <p className="text-sm text-[var(--color-text-secondary)]">
+                    {t.peran}
+                  </p>
+                </div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ThemeIcon({ dark }) {
   if (dark) {
     return (
@@ -863,7 +1019,7 @@ export default function Landing() {
             role="dialog"
             aria-modal="true"
             aria-label="Menu navigasi"
-            className="relative w-72 max-w-[85vw] bg-[var(--color-card)] h-full p-6 flex flex-col gap-1 z-50 shadow-2xl shadow-black/50 transition-colors duration-300"
+            className="liquid-glass relative w-72 max-w-[85vw] bg-[var(--color-card)] h-full p-6 flex flex-col gap-1 z-50 shadow-2xl shadow-black/50 transition-colors duration-300"
           >
             <div className="flex items-center justify-between mb-6">
               <button
@@ -930,105 +1086,108 @@ export default function Landing() {
       )}
 
       {/* ================= Header ================= */}
-      <header
-        className={`fixed top-0 inset-x-0 z-30 transition-colors duration-300 ${
-          scrollY > 8
-            ? "backdrop-blur-md border-b border-[var(--color-border)]"
-            : "border-b border-transparent"
-        }`}
-        style={{
-          backgroundColor:
-            scrollY > 8
-              ? `rgba(${themeVars["--color-bg-rgb"]}, 0.95)`
-              : "transparent",
-        }}
-      >
-        <div className="flex items-center justify-between gap-4 px-4 sm:px-6 md:px-12 h-16 md:h-[72px] max-w-7xl mx-auto">
-          {/* Logo + mobile trigger */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <button
-              ref={hamburgerBtnRef}
-              onClick={() => setSidebarOpen(true)}
-              aria-label="Buka menu"
-              className="lg:hidden shrink-0 -ml-1.5 h-9 w-9 flex items-center justify-center rounded-lg text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
+      {/* Navbar sekarang mengambang seperti pill kaca ala glass.html:
+          fixed top-4, liquid-glass, rounded-full, dibatasi max-w agar
+          tetap terasa seperti "kapsul" saat layar lebar. Logic scroll,
+          link, dan tombol di dalamnya tidak berubah sama sekali. */}
+      <header className="fixed top-3 sm:top-4 inset-x-0 z-30 px-3 sm:px-4">
+        <div
+          className={`liquid-glass max-w-6xl mx-auto rounded-full transition-colors duration-300 ${
+            scrollY > 8 ? "shadow-lg shadow-black/20" : ""
+          }`}
+          style={{
+            backgroundColor: `rgba(${themeVars["--color-bg-rgb"]}, ${
+              scrollY > 8 ? 0.85 : 0.55
+            })`,
+          }}
+        >
+          <div className="flex items-center justify-between gap-4 px-4 sm:px-6 h-14 md:h-16 max-w-7xl mx-auto">
+            {/* Logo + mobile trigger */}
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <button
+                ref={hamburgerBtnRef}
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Buka menu"
+                className="lg:hidden shrink-0 -ml-1.5 h-9 w-9 flex items-center justify-center rounded-lg text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
-                <path
-                  d="M3 6h18M3 12h18M3 18h18"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M3 6h18M3 12h18M3 18h18"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+
+              <Link
+                to="/"
+                className="flex items-center gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                <img
+                  src="/images/logo.png"
+                  alt="Logo ParkirKu"
+                  className="h-7 w-7 sm:h-8 sm:w-8 object-contain rounded-md shrink-0"
                 />
-              </svg>
-            </button>
+                <div className="min-w-0 leading-tight">
+                  <p className="font-display text-sm font-bold text-[var(--color-text)] truncate flex items-center gap-1.5">
+                    Parkir<span className="gradient-text">Ku</span>
+                    <span className="text-[10px] font-normal text-[var(--color-text-muted)] hidden sm:inline">
+                      by AM
+                    </span>
+                  </p>
+                  <p className="hidden sm:block text-[11px] font-mono text-[var(--color-text-secondary)] tracking-wide truncate">
+                    {BRAND_LOCATION}
+                  </p>
+                </div>
+              </Link>
+            </div>
 
-            <Link
-              to="/"
-              className="flex items-center gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              <img
-                src="/images/logo.png"
-                alt="Logo ParkirKu"
-                className="h-7 w-7 sm:h-8 sm:w-8 object-contain rounded-md shrink-0"
-              />
-              <div className="min-w-0 leading-tight">
-                <p className="font-display text-sm font-bold text-[var(--color-text)] truncate flex items-center gap-1.5">
-                  ParkirKu
-                  <span className="text-[10px] font-normal text-[var(--color-text-muted)] hidden sm:inline">
-                    by AM
-                  </span>
-                </p>
-                <p className="hidden sm:block text-[11px] font-mono text-[var(--color-text-secondary)] tracking-wide truncate">
-                  {BRAND_LOCATION}
-                </p>
-              </div>
-            </Link>
-          </div>
-
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-1 shrink-0">
-            {NAV_LINKS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
+            {/* Desktop nav */}
+            <nav className="hidden lg:flex items-center gap-1 shrink-0">
+              {NAV_LINKS.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="px-3.5 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-md"
+                >
+                  {item.label}
+                </a>
+              ))}
+              <Link
+                to="/bantuan"
                 className="px-3.5 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-md"
               >
-                {item.label}
-              </a>
-            ))}
-            <Link
-              to="/bantuan"
-              className="px-3.5 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-md"
-            >
-              Bantuan
-            </Link>
-          </nav>
+                Bantuan
+              </Link>
+            </nav>
 
-          {/* Toggle tema + CTA */}
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={toggleTheme}
-              aria-label={
-                theme === "dark"
-                  ? "Aktifkan mode terang"
-                  : "Aktifkan mode gelap"
-              }
-              className="h-9 w-9 flex items-center justify-center rounded-full text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              <ThemeIcon dark={theme === "dark"} />
-            </button>
-            <Link
-              to={navPath}
-              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-semibold px-5 py-2 text-sm hover:opacity-90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              <span>{navLabel}</span>
-            </Link>
+            {/* Toggle tema + CTA */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={toggleTheme}
+                aria-label={
+                  theme === "dark"
+                    ? "Aktifkan mode terang"
+                    : "Aktifkan mode gelap"
+                }
+                className="h-9 w-9 flex items-center justify-center rounded-full text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                <ThemeIcon dark={theme === "dark"} />
+              </button>
+              <Link
+                to={navPath}
+                className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-semibold px-5 py-2 text-sm hover:opacity-90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                <span>{navLabel}</span>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
@@ -1078,6 +1237,9 @@ export default function Landing() {
               backgroundSize: "24px 24px",
             }}
           />
+          {/* Hero grid texture ala glass.html, di-mask jadi vignette lembut
+              di tengah atas — murni dekoratif, ditumpuk di atas dot-grid. */}
+          <div className="absolute inset-0 hero-grid opacity-40" />
         </div>
 
         <div
@@ -1087,9 +1249,10 @@ export default function Landing() {
             opacity: heroContentOpacity,
           }}
         >
-          {/* Capsule pill badge like Bag\Ui */}
+          {/* Capsule pill badge like Bag\Ui, sekarang dengan border iridescent
+              ala glass.html */}
           <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-card)]/80 backdrop-blur-md px-4 py-1.5 text-xs text-[var(--color-text-secondary)] mb-8 shadow-sm hover:border-neutral-600 transition-colors">
+            <div className="iridescent-border inline-flex items-center gap-2 rounded-full liquid-glass bg-[var(--color-card)]/80 px-4 py-1.5 text-xs text-[var(--color-text-secondary)] mb-8 shadow-sm hover:border-neutral-600 transition-colors">
               <span className="text-[var(--color-text)] font-semibold">
                 Introducing ParkirKu v1
               </span>
@@ -1100,14 +1263,16 @@ export default function Landing() {
             </div>
           </Reveal>
 
-          {/* High-contrast two-tone headline exactly like Bag\Ui */}
+          {/* High-contrast two-tone headline exactly like Bag\Ui, dengan
+              kata "modern" memakai gradient-text + font serif miring ala
+              glass.html sebagai aksen. */}
           <Reveal delay={60}>
             <h1 className="font-display text-4xl sm:text-6xl md:text-[4.25rem] font-bold tracking-tight leading-[1.08] mb-6">
               <span className="text-[var(--color-text)]">
                 Kelola sistem parkir
               </span>
               <br />
-              <span className="text-[var(--color-text-muted)]">
+              <span className="font-serif-accent gradient-text">
                 modern
               </span>{" "}
               <span className="text-[var(--color-text)]">
@@ -1153,7 +1318,7 @@ export default function Landing() {
               </Link>
               <a
                 href="#fitur"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-card)]/80 backdrop-blur-sm text-[var(--color-text)] font-medium px-6 py-3.5 text-sm hover:bg-[var(--color-border)] transition-all"
+                className="liquid-glass inline-flex items-center gap-2 rounded-full text-[var(--color-text)] font-medium px-6 py-3.5 text-sm hover:bg-[var(--color-border)] transition-all"
               >
                 Explore fitur ↗
               </a>
@@ -1193,7 +1358,7 @@ export default function Landing() {
         <div className="grid md:grid-cols-2 gap-6">
           {/* Card 1: Area Parkir & Fasilitas */}
           <Reveal delay={80}>
-            <div className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-6 md:p-8 h-full flex flex-col justify-between hover:border-neutral-700 transition-all shadow-xl">
+            <div className="liquid-glass group rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-6 md:p-8 h-full flex flex-col justify-between hover:border-neutral-700 transition-all shadow-xl">
               <div className="flex items-center gap-1.5 mb-6">
                 <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-border)]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-border)]" />
@@ -1230,7 +1395,7 @@ export default function Landing() {
 
           {/* Card 2: Logo Identitas & Terintegrasi */}
           <Reveal delay={160}>
-            <div className="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-6 md:p-8 h-full flex flex-col justify-between hover:border-neutral-700 transition-all shadow-xl">
+            <div className="liquid-glass group rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-6 md:p-8 h-full flex flex-col justify-between hover:border-neutral-700 transition-all shadow-xl">
               <div className="flex items-center justify-between mb-6">
                 <span className="h-2.5 w-24 rounded-full bg-[var(--color-border)]" />
                 <span className="h-2.5 w-12 rounded-full bg-[var(--color-border)]" />
@@ -1535,41 +1700,8 @@ export default function Landing() {
         )}
       </section>
 
-      {/* ================= Testimoni ================= */}
-      <section
-        id="testimoni"
-        className="scroll-mt-24 max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24"
-      >
-        <Reveal>
-          <SectionEyebrow>TESTIMONI</SectionEyebrow>
-          <p className="font-display font-bold text-2xl md:text-3xl mb-10 max-w-lg text-[var(--color-text)]">
-            Apa kata pengguna
-          </p>
-        </Reveal>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
-          {TESTIMONI.map((t, i) => (
-            <Reveal key={t.nama} delay={i * 80}>
-              <SectionCard hoverable className="h-full">
-                <Bintang jumlah={t.bintang} />
-                <p className="text-sm text-[var(--color-text-secondary)] mt-3 mb-5 leading-relaxed">
-                  {t.teks}
-                </p>
-                <div className="flex items-center gap-3">
-                  <Avatar nama={t.nama} index={i} />
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-[var(--color-text)] truncate">
-                      {t.nama}
-                    </p>
-                    <p className="text-xs font-mono text-[var(--color-text-secondary)] truncate">
-                      {t.peran}
-                    </p>
-                  </div>
-                </div>
-              </SectionCard>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      {/* ================= Testimoni (pinned horizontal scroll ala glass.html) ================= */}
+      <PinnedTestimoni items={TESTIMONI} />
 
       {/* ================= Komentar ================= */}
       <section
@@ -1860,7 +1992,7 @@ export default function Landing() {
       {/* ================= Floating quick-help button ================= */}
       <div className="fixed bottom-6 right-6 z-50">
         {helpOpen && (
-          <div className="mb-3 w-64 rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] p-4 shadow-2xl transition-colors duration-300">
+          <div className="liquid-glass mb-3 w-64 rounded-2xl bg-[var(--color-card)] p-4 shadow-2xl transition-colors duration-300">
             <p className="text-sm font-semibold text-[var(--color-text)] mb-1">
               Bantuan cepat
             </p>
