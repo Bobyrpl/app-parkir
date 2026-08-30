@@ -6,14 +6,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 // TIDAK berubah antar tema — dia tetap merah di light maupun dark.
 export const THEME_VARS = {
   dark: {
-    "--color-bg": "#0b1220",
-    "--color-bg-rgb": "11, 18, 32",
-    "--color-section": "#111a2e",
-    "--color-card": "#131d33",
-    "--color-border": "#22304c",
-    "--color-text": "#f1f5f9",
-    "--color-text-secondary": "#94a3b8",
-    "--color-text-muted": "#64748b",
+    "--color-bg": "#000000",
+    "--color-bg-rgb": "0, 0, 0",
+    "--color-section": "#09090b",
+    "--color-card": "#09090b",
+    "--color-border": "#27272a",
+    "--color-text": "#fafafa",
+    "--color-text-secondary": "#a1a1aa",
+    "--color-text-muted": "#71717a",
     "--color-button-bg": "#2563eb",
     "--color-button-text": "#ffffff",
   },
