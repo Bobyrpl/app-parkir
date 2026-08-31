@@ -17,7 +17,6 @@ import {
     Check,
     CheckCircle2,
     SearchX,
-    ShieldCheck,
 } from "lucide-react";
 import api from "../api/axios";
 import { useToast } from "../context/ToastContext";
@@ -85,7 +84,7 @@ function highlight(text, query) {
     return (
         <>
             {text.slice(0, idx)}
-            <mark className="bg-[#C90000]/25 text-[#C90000] rounded-sm px-0.5">
+            <mark className="bg-[#C90000]/10 text-[#C90000] rounded-sm px-0.5">
                 {text.slice(idx, idx + query.length)}
             </mark>
             {text.slice(idx + query.length)}
@@ -149,28 +148,25 @@ export default function Bantuan() {
     }
 
     return (
-        <div className="min-h-screen bg-black text-zinc-100 flex flex-col antialiased relative">
+        <div className="min-h-screen bg-white text-neutral-900 flex flex-col antialiased">
             {/* Header navbar */}
-            <header className="sticky top-0 z-20 border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-md">
+            <header className="sticky top-0 z-20 border-b border-neutral-200 bg-white/95 backdrop-blur">
                 <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 md:px-8 py-4 flex items-center justify-between gap-4">
                     <Link
                         to="/"
-                        className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-zinc-100 transition-colors group"
+                        className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 transition-colors group"
                     >
-                        <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+                        <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
                         <span>Kembali ke Beranda</span>
                     </Link>
 
-                    <Link
-                        to="/"
-                        className="flex items-center gap-2.5 shrink-0"
-                    >
+                    <Link to="/" className="flex items-center gap-2.5 shrink-0">
                         <img
                             src="/images/logo.png"
                             alt="Logo ParkirKu"
                             className="h-7 w-7 object-contain rounded"
                         />
-                        <span className="font-display font-bold text-sm tracking-tight text-zinc-100">
+                        <span className="font-semibold text-sm tracking-tight text-neutral-900">
                             {BRAND_NAME}
                         </span>
                     </Link>
@@ -178,35 +174,24 @@ export default function Bantuan() {
             </header>
 
             {/* Hero Section */}
-            <section className="relative border-b border-zinc-800/80 py-14 sm:py-16 px-4 sm:px-6 md:px-8 text-center overflow-hidden">
-                <div
-                    className="absolute inset-0 pointer-events-none opacity-25"
-                    style={{
-                        backgroundImage: `radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px)`,
-                        backgroundSize: '24px 24px',
-                        maskImage: 'radial-gradient(ellipse 60% 50% at 50% 50%, black 40%, transparent 100%)',
-                    }}
-                />
-                <div className="relative max-w-2xl mx-auto">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-zinc-900 border border-zinc-800 text-zinc-400 mb-4">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                        <span>PUSAT BANTUAN & PANDUAN</span>
-                    </div>
-                    <h1 className="font-display font-bold text-3xl sm:text-4xl text-zinc-100 tracking-tight mb-3">
-                        Bantuan &amp; Dukungan Pengguna
+            <section className="border-b border-neutral-200 py-16 sm:py-20 px-4 sm:px-6 md:px-8 text-center">
+                <div className="max-w-2xl mx-auto">
+                    <h1 className="text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight mb-4">
+                        Bantuan &amp; dukungan pengguna
                     </h1>
-                    <p className="text-sm text-zinc-400 leading-relaxed max-w-xl mx-auto">
-                        Temukan petunjuk seputar booking parkir, tarif, cetak struk, dan aktivasi akun {BRAND_NAME}.
+                    <p className="text-neutral-500 leading-relaxed max-w-xl mx-auto">
+                        Temukan petunjuk seputar transaksi parkir, tarif, cetak struk, dan
+                        aktivasi akun {BRAND_NAME}.
                     </p>
                 </div>
             </section>
 
             {/* Main Content */}
-            <section className="max-w-5xl mx-auto w-full px-4 sm:px-6 md:px-8 pt-8 pb-16 flex-1">
-                <div className="relative mb-8 max-w-md mx-auto md:mx-0">
+            <section className="max-w-5xl mx-auto w-full px-4 sm:px-6 md:px-8 pt-12 pb-20 flex-1">
+                <div className="relative mb-10 max-w-md mx-auto md:mx-0">
                     <Search
                         size={16}
-                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 pointer-events-none"
                     />
                     <input
                         type="text"
@@ -216,17 +201,17 @@ export default function Bantuan() {
                             setOpenIndex(null);
                         }}
                         placeholder="Cari pertanyaan, mis. 'lupa password'..."
-                        className="w-full rounded-2xl bg-zinc-900/80 border border-zinc-800 pl-10 pr-4 py-2.5 text-zinc-100 text-sm placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-400/30 focus:border-zinc-500 transition-all shadow-inner"
+                        className="w-full rounded-full bg-white border border-neutral-200 pl-11 pr-4 py-3 text-neutral-900 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 transition-shadow"
                     />
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-3 gap-10">
                     <div className="md:col-span-2">
-                        <div className="flex items-center justify-between mb-4">
-                            <p className="font-display font-bold text-lg text-zinc-100 tracking-tight">
-                                Pertanyaan Umum (FAQ)
+                        <div className="flex items-center justify-between mb-6">
+                            <p className="text-lg font-semibold text-neutral-900 tracking-tight">
+                                Pertanyaan umum (FAQ)
                             </p>
-                            <span className="text-xs font-mono text-zinc-500 bg-zinc-900 border border-zinc-800 px-2.5 py-0.5 rounded-full">
+                            <span className="text-xs text-neutral-500 bg-neutral-100 px-2.5 py-1 rounded-full">
                                 {filteredFaq.length} dari {FAQ.length}
                             </span>
                         </div>
@@ -239,37 +224,33 @@ export default function Bantuan() {
                                 return (
                                     <div
                                         key={f.q}
-                                        className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+                                        className={`rounded-2xl border transition-colors duration-200 overflow-hidden ${
                                             isOpen
-                                                ? "bg-zinc-900/80 border-zinc-700 shadow-xl shadow-black/40"
-                                                : "bg-zinc-950/60 border-zinc-800/80 hover:border-zinc-700"
+                                                ? "border-neutral-900 bg-white"
+                                                : "border-neutral-200 bg-white hover:border-neutral-300"
                                         }`}
                                     >
                                         <button
-                                            onClick={() =>
-                                                setOpenIndex(
-                                                    isOpen ? null : idx,
-                                                )
-                                            }
+                                            onClick={() => setOpenIndex(isOpen ? null : idx)}
                                             aria-expanded={isOpen}
-                                            className="w-full flex items-center gap-3.5 text-left px-5 py-4 focus-visible:outline-none"
+                                            className="w-full flex items-center gap-4 text-left px-5 py-4 focus-visible:outline-none"
                                         >
                                             <span
-                                                className={`flex-none w-8 h-8 rounded-xl flex items-center justify-center transition-colors ${
+                                                className={`flex-none w-9 h-9 rounded-full flex items-center justify-center transition-colors ${
                                                     isOpen
-                                                        ? "bg-zinc-100 text-zinc-950 font-bold"
-                                                        : "bg-zinc-900 text-zinc-400 border border-zinc-800"
+                                                        ? "bg-neutral-900 text-white"
+                                                        : "bg-neutral-100 text-neutral-500"
                                                 }`}
                                             >
                                                 <Icon size={16} />
                                             </span>
-                                            <span className="flex-1 text-sm font-semibold text-zinc-200 leading-snug">
+                                            <span className="flex-1 text-sm font-medium text-neutral-900 leading-snug">
                                                 {highlight(f.q, query)}
                                             </span>
                                             <ChevronDown
                                                 size={16}
-                                                className={`flex-none text-zinc-400 transition-transform duration-200 ${
-                                                    isOpen ? "rotate-180 text-zinc-100" : ""
+                                                className={`flex-none text-neutral-400 transition-transform duration-200 ${
+                                                    isOpen ? "rotate-180 text-neutral-900" : ""
                                                 }`}
                                             />
                                         </button>
@@ -281,7 +262,7 @@ export default function Bantuan() {
                                             }`}
                                         >
                                             <div className="overflow-hidden">
-                                                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed px-5 pb-5 pl-16">
+                                                <p className="text-sm text-neutral-500 leading-relaxed px-5 pb-5 pl-[4.25rem]">
                                                     {highlight(f.a, query)}
                                                 </p>
                                             </div>
@@ -290,16 +271,12 @@ export default function Bantuan() {
                                 );
                             })}
                             {filteredFaq.length === 0 && (
-                                <div className="rounded-2xl border border-dashed border-zinc-800 bg-zinc-950/40 px-5 py-12 flex flex-col items-center text-center gap-2">
-                                    <SearchX
-                                        size={24}
-                                        className="text-zinc-500"
-                                    />
-                                    <p className="text-sm font-medium text-zinc-300">
-                                        Tidak ada pertanyaan yang cocok dengan
-                                        &ldquo;{query}&rdquo;.
+                                <div className="rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 px-5 py-12 flex flex-col items-center text-center gap-2">
+                                    <SearchX size={24} className="text-neutral-400" />
+                                    <p className="text-sm font-medium text-neutral-700">
+                                        Tidak ada pertanyaan yang cocok dengan &ldquo;{query}&rdquo;.
                                     </p>
-                                    <p className="text-xs text-zinc-500">
+                                    <p className="text-xs text-neutral-500">
                                         Coba gunakan kata kunci lain, atau hubungi kontak dukungan kami di samping.
                                     </p>
                                 </div>
@@ -308,76 +285,60 @@ export default function Bantuan() {
                     </div>
 
                     <div>
-                        <p className="font-display font-bold text-lg text-zinc-100 mb-4 tracking-tight">
-                            Kontak Bantuan
+                        <p className="text-lg font-semibold text-neutral-900 mb-6 tracking-tight">
+                            Kontak bantuan
                         </p>
 
-                        <div className="rounded-3xl bg-zinc-900/60 border border-zinc-800/80 p-5 shadow-xl space-y-4">
-                            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
-                                <span className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
-                                    LAYANAN RESPONS
+                        <div className="rounded-3xl bg-neutral-50 border border-neutral-200 p-5 space-y-4">
+                            <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
+                                <span className="text-xs text-neutral-500 uppercase tracking-wide">
+                                    Layanan respons
                                 </span>
-                                <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                                    ONLINE
+                                <span className="inline-flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                                    Online
                                 </span>
                             </div>
 
-                            <div className="space-y-3.5">
+                            <div className="space-y-3">
                                 {KONTAK.map((k) => {
                                     const Icon = k.icon;
                                     return (
                                         <div
                                             key={k.label}
-                                            className="flex items-start gap-3 p-3 rounded-2xl bg-zinc-950/60 border border-zinc-800/60"
+                                            className="flex items-start gap-3 p-3 rounded-2xl bg-white border border-neutral-200"
                                         >
-                                            <span className="flex-none w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 flex items-center justify-center">
+                                            <span className="flex-none w-9 h-9 rounded-full bg-neutral-100 text-neutral-600 flex items-center justify-center">
                                                 <Icon size={15} />
                                             </span>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider mb-0.5">
+                                                <p className="text-[11px] text-neutral-400 uppercase tracking-wide mb-0.5">
                                                     {k.label}
                                                 </p>
-                                                <p className="text-xs font-semibold text-zinc-200 truncate">
+                                                <p className="text-xs font-semibold text-neutral-900 truncate">
                                                     {k.value}
                                                 </p>
                                                 {k.meta && (
-                                                    <p className="text-[11px] text-zinc-500 mt-0.5 font-mono">
-                                                        {k.meta}
-                                                    </p>
+                                                    <p className="text-[11px] text-neutral-400 mt-0.5">{k.meta}</p>
                                                 )}
                                             </div>
                                             {k.href ? (
                                                 <a
                                                     href={k.href}
-                                                    target={
-                                                        k.href.startsWith(
-                                                            "http",
-                                                        )
-                                                            ? "_blank"
-                                                            : undefined
-                                                    }
+                                                    target={k.href.startsWith("http") ? "_blank" : undefined}
                                                     rel="noreferrer"
-                                                    className="flex-none text-xs font-semibold text-zinc-100 bg-zinc-800 hover:bg-zinc-700 px-2.5 py-1 rounded-lg self-center transition-colors"
+                                                    className="flex-none text-xs font-medium text-white bg-neutral-900 hover:bg-neutral-800 px-3 py-1.5 rounded-full self-center transition-colors"
                                                 >
                                                     {k.action}
                                                 </a>
                                             ) : (
                                                 <button
-                                                    onClick={() =>
-                                                        handleCopy(
-                                                            k.value,
-                                                            k.label,
-                                                        )
-                                                    }
-                                                    className="flex-none self-center text-zinc-400 hover:text-zinc-100 p-1 rounded-lg transition-colors"
+                                                    onClick={() => handleCopy(k.value, k.label)}
+                                                    className="flex-none self-center text-neutral-400 hover:text-neutral-900 p-1 rounded-full transition-colors"
                                                     aria-label={`Salin ${k.label}`}
                                                 >
                                                     {copied === k.label ? (
-                                                        <Check
-                                                            size={14}
-                                                            className="text-emerald-400"
-                                                        />
+                                                        <Check size={14} className="text-emerald-600" />
                                                     ) : (
                                                         <Copy size={14} />
                                                     )}
@@ -388,20 +349,18 @@ export default function Bantuan() {
                                 })}
                             </div>
 
-                            <div className="pt-3 border-t border-zinc-800 space-y-2">
-                                <p className="text-xs font-medium text-zinc-300">
-                                    Butuh akses akun?
-                                </p>
+                            <div className="pt-3 border-t border-neutral-200 space-y-2">
+                                <p className="text-xs font-medium text-neutral-700">Butuh akses akun?</p>
                                 <div className="grid grid-cols-2 gap-2">
                                     <Link
                                         to="/register"
-                                        className="text-center rounded-xl bg-zinc-100 text-zinc-950 font-semibold py-2 text-xs hover:bg-white transition-colors"
+                                        className="text-center rounded-full bg-neutral-900 text-white font-medium py-2 text-xs hover:bg-neutral-800 transition-colors"
                                     >
                                         Daftar
                                     </Link>
                                     <Link
                                         to="/login"
-                                        className="text-center rounded-xl border border-zinc-700 text-zinc-200 font-semibold py-2 text-xs hover:bg-zinc-800 transition-colors"
+                                        className="text-center rounded-full border border-neutral-300 text-neutral-700 font-medium py-2 text-xs hover:bg-neutral-100 transition-colors"
                                     >
                                         Masuk
                                     </Link>
@@ -412,26 +371,29 @@ export default function Bantuan() {
                 </div>
 
                 {/* Form Ajukan Aktivasi Akun */}
-                <div id="aktivasi-akun" className="mt-14 scroll-mt-24">
+                <div id="aktivasi-akun" className="mt-20 scroll-mt-24">
                     <div className="max-w-xl">
-                        <h2 className="font-display font-bold text-xl text-zinc-100 mb-1 tracking-tight">Ajukan Aktivasi Akun</h2>
-                        <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-6">
-                            Jika akun Anda dinonaktifkan oleh admin dan tidak bisa login, kirimkan permohonan dengan memasukkan username Anda di bawah.
+                        <h2 className="text-xl font-semibold text-neutral-900 mb-1 tracking-tight">
+                            Ajukan aktivasi akun
+                        </h2>
+                        <p className="text-sm text-neutral-500 leading-relaxed mb-6">
+                            Jika akun Anda dinonaktifkan oleh admin dan tidak bisa login, kirimkan
+                            permohonan dengan memasukkan username Anda di bawah.
                         </p>
                     </div>
 
-                    <div className="max-w-lg rounded-3xl bg-zinc-900/60 border border-zinc-800/80 shadow-2xl p-6 sm:p-7">
+                    <div className="max-w-lg rounded-3xl bg-white border border-neutral-200 p-6 sm:p-8">
                         {akTerkirim ? (
-                            <div className="flex flex-col items-center text-center gap-3 py-4 animate-in fade-in">
-                                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/25">
+                            <div className="flex flex-col items-center text-center gap-3 py-4">
+                                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">
                                     <CheckCircle2 size={28} />
                                 </span>
-                                <h3 className="font-display font-bold text-lg text-zinc-100">
-                                    Permintaan Terkirim
+                                <h3 className="text-lg font-semibold text-neutral-900">
+                                    Permintaan terkirim
                                 </h3>
-                                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-sm">
+                                <p className="text-sm text-neutral-500 leading-relaxed max-w-sm">
                                     Permintaan aktivasi untuk username{" "}
-                                    <span className="text-zinc-100 font-mono font-bold">{akUsername}</span>{" "}
+                                    <span className="text-neutral-900 font-semibold">{akUsername}</span>{" "}
                                     telah masuk ke dashboard admin.
                                 </p>
                                 <button
@@ -441,18 +403,18 @@ export default function Bantuan() {
                                         setAkUsername("");
                                         setAkCatatan("");
                                     }}
-                                    className="mt-2 text-xs font-mono text-zinc-300 hover:text-white underline"
+                                    className="mt-2 text-sm text-neutral-600 hover:text-neutral-900 underline underline-offset-2"
                                 >
                                     Ajukan untuk akun lainnya
                                 </button>
                             </div>
                         ) : (
-                            <form onSubmit={handleAjukanAktivasi} className="space-y-4">
-                                <div className="flex items-center gap-3 pb-3 border-b border-zinc-800">
-                                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-800 text-zinc-300">
+                            <form onSubmit={handleAjukanAktivasi} className="space-y-5">
+                                <div className="flex items-center gap-3 pb-4 border-b border-neutral-200">
+                                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-600">
                                         <UserCheck size={16} />
                                     </span>
-                                    <p className="text-xs text-zinc-400 font-medium">
+                                    <p className="text-xs text-neutral-500">
                                         Admin akan meninjau data permohonan Anda.
                                     </p>
                                 </div>
@@ -460,9 +422,9 @@ export default function Bantuan() {
                                 <div>
                                     <label
                                         htmlFor="ak-username"
-                                        className="block text-xs font-mono text-zinc-400 uppercase tracking-wider mb-1.5"
+                                        className="block text-xs text-neutral-500 mb-1.5"
                                     >
-                                        USERNAME TERDAFTAR
+                                        Username terdaftar
                                     </label>
                                     <input
                                         id="ak-username"
@@ -471,7 +433,7 @@ export default function Bantuan() {
                                         onChange={(e) => setAkUsername(e.target.value)}
                                         required
                                         placeholder="mis. petugas_01"
-                                        className="w-full rounded-xl bg-zinc-950/70 border border-zinc-800 px-3.5 py-2.5 text-zinc-100 text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-400/30 focus:border-zinc-500 transition-all"
+                                        className="w-full rounded-xl bg-white border border-neutral-200 px-3.5 py-2.5 text-neutral-900 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 transition-shadow"
                                     />
                                 </div>
 
@@ -479,14 +441,12 @@ export default function Bantuan() {
                                     <div className="flex items-baseline justify-between mb-1.5">
                                         <label
                                             htmlFor="ak-catatan"
-                                            className="block text-xs font-mono text-zinc-400 uppercase tracking-wider"
+                                            className="block text-xs text-neutral-500"
                                         >
-                                            ALASAN / CATATAN{" "}
-                                            <span className="text-zinc-600 lowercase font-normal">
-                                                (opsional)
-                                            </span>
+                                            Alasan / catatan{" "}
+                                            <span className="text-neutral-400 font-normal">(opsional)</span>
                                         </label>
-                                        <span className="text-[10px] font-mono text-zinc-500 tabular-nums">
+                                        <span className="text-[10px] text-neutral-400">
                                             {akCatatan.length}/500
                                         </span>
                                     </div>
@@ -497,12 +457,12 @@ export default function Bantuan() {
                                         rows={3}
                                         maxLength={500}
                                         placeholder="Tuliskan keterangan permohonan aktivasi..."
-                                        className="w-full rounded-xl bg-zinc-950/70 border border-zinc-800 px-3.5 py-2.5 text-zinc-100 text-sm placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-zinc-400/30 focus:border-zinc-500 resize-none transition-all"
+                                        className="w-full rounded-xl bg-white border border-neutral-200 px-3.5 py-2.5 text-neutral-900 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 resize-none transition-shadow"
                                     />
                                 </div>
 
                                 {akError && (
-                                    <p className="text-xs font-mono text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-xl px-3.5 py-2.5">
+                                    <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-xl px-3.5 py-2.5">
                                         {akError}
                                     </p>
                                 )}
@@ -510,9 +470,9 @@ export default function Bantuan() {
                                 <button
                                     type="submit"
                                     disabled={akLoading}
-                                    className="w-full rounded-full bg-zinc-100 text-zinc-950 font-semibold py-3 text-sm hover:bg-white active:scale-[0.99] transition-all disabled:opacity-50"
+                                    className="w-full rounded-full bg-neutral-900 text-white font-medium py-3 text-sm hover:bg-neutral-800 active:scale-[0.99] transition-all disabled:opacity-50"
                                 >
-                                    {akLoading ? "Mengirim Permintaan..." : "Kirim Permintaan Aktivasi"}
+                                    {akLoading ? "Mengirim permintaan..." : "Kirim permintaan aktivasi"}
                                 </button>
                             </form>
                         )}
@@ -520,10 +480,12 @@ export default function Bantuan() {
                 </div>
             </section>
 
-            <footer className="border-t border-zinc-800/80 mt-auto bg-zinc-950/50">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
-                    <p>© {new Date().getFullYear()} {BRAND_NAME} • {BRAND_LOCATION}</p>
-                    <p className="text-zinc-600">SISTEM PARKIR ELEKTRONIK TERPADU</p>
+            <footer className="border-t border-neutral-200 mt-auto">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-neutral-500">
+                    <p>
+                        © {new Date().getFullYear()} {BRAND_NAME} • {BRAND_LOCATION}
+                    </p>
+                    <p className="text-neutral-400">Sistem parkir elektronik terpadu</p>
                 </div>
             </footer>
         </div>

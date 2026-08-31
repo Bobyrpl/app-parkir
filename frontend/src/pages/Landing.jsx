@@ -985,7 +985,7 @@ export default function Landing() {
             </h2>
             <p className="text-neutral-500 leading-relaxed">
               Pengalaman langsung dari admin, petugas, dan owner yang memakai
-              ParkirKu setiap hari.
+              Parkir ini  setiap hari.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
