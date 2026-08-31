@@ -131,7 +131,7 @@ export default function Rekap() {
                         Reset
                     </Button>
                 </form>
-                {error && <p className="text-sm text-[#2563eb] mt-3">{error}</p>}
+                {error && <p className="text-sm text-[#C90000] mt-3">{error}</p>}
             </Card>
 
             {hasil && (

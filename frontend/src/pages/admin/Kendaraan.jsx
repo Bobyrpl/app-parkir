@@ -180,7 +180,7 @@ export default function Kendaraan() {
                                 <select
                                     value={form.jenis_kendaraan}
                                     onChange={(e) => setForm({ ...form, jenis_kendaraan: e.target.value })}
-                                    className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
+                                    className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#C90000]"
                                 >
                                     <option value="motor">Motor</option>
                                     <option value="mobil">Mobil</option>
@@ -198,7 +198,7 @@ export default function Kendaraan() {
                                 <Input value={form.pemilik} onChange={(e) => setForm({ ...form, pemilik: e.target.value })} maxLength={100} />
                             </div>
 
-                            {error && <p className="text-sm text-[#2563eb]">{error}</p>}
+                            {error && <p className="text-sm text-[#C90000]">{error}</p>}
 
                             <div className="flex flex-wrap gap-2 pt-2">
                                 <Button type="submit" className="flex-1 sm:flex-none">{editId ? 'Simpan' : 'Tambah'}</Button>

@@ -92,7 +92,7 @@ export default function GrafikRingkasan({ data }) {
                         yAxisId="right"
                         type="monotone"
                         dataKey="kendaraan"
-                        stroke="#2563eb"
+                        stroke="#C90000"
                         strokeWidth={2}
                         dot={false}
                         name="Kendaraan"

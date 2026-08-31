@@ -38,10 +38,10 @@ const ROLE_BADGE_TONE = { admin: "warning", petugas: "info", owner: "success" };
 // Palet warna avatar inisial — dirotasi berdasarkan nama, biar daftar
 // panjang tidak terasa monoton semua warna kuning.
 const AVATAR_PALETTE = [
-  { bg: "bg-[#2563eb]/10", text: "text-[#2563eb]" },
-  { bg: "bg-[#2563eb]/10", text: "text-[#2563eb]" },
+  { bg: "bg-[#C90000]/10", text: "text-[#C90000]" },
+  { bg: "bg-[#C90000]/10", text: "text-[#C90000]" },
   { bg: "bg-[#35C48D]/10", text: "text-[#35C48D]" },
-  { bg: "bg-[#2563eb]/10", text: "text-[#2563eb]" },
+  { bg: "bg-[#C90000]/10", text: "text-[#C90000]" },
 ];
 
 function warnaAvatar(nama) {
@@ -274,22 +274,22 @@ export default function Users() {
             <StatCard
               label="ADMIN"
               value={ringkasan.admin}
-              accent="#2563eb"
+              accent="#C90000"
             />
             <StatCard
               label="PETUGAS"
               value={ringkasan.petugas}
-              accent="#2563eb"
+              accent="#C90000"
             />
             <StatCard
               label="PELANGGAN"
               value={ringkasan.pelanggan}
-              accent="#2563eb"
+              accent="#C90000"
             />
             <StatCard
               label="TOTAL USER"
               value={ringkasan.total}
-              accent="#2563eb"
+              accent="#C90000"
             />
             <StatCard
               label="AKTIF"
@@ -299,7 +299,7 @@ export default function Users() {
             <StatCard
               label="TIDAK AKTIF"
               value={ringkasan.nonaktif}
-              accent="#2563eb"
+              accent="#C90000"
             />
           </div>
         )}
@@ -329,7 +329,7 @@ export default function Users() {
         <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
-              <span className="w-8 h-8 rounded-lg bg-[#2563eb]/10 text-[#2563eb] flex items-center justify-center shrink-0">
+              <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
                 {editId ? <Pencil size={15} /> : <UserPlus size={15} />}
               </span>
               <h2 className="font-display text-base text-[var(--color-text)]">
@@ -406,7 +406,7 @@ export default function Users() {
               <select
                 value={form.role}
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
-                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#2563eb] transition-shadow"
+                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#C90000] transition-shadow"
               >
                 <option value="petugas">Petugas</option>
                 <option value="owner">Owner</option>
@@ -421,13 +421,13 @@ export default function Users() {
                 onChange={(e) =>
                   setForm({ ...form, status_aktif: e.target.checked })
                 }
-                className="accent-[#2563eb]"
+                className="accent-[#C90000]"
               />
               Akun aktif
             </label>
 
             {error && (
-              <p className="text-sm text-[#2563eb] bg-[#2563eb]/10 border border-[#2563eb]/20 rounded-md px-3 py-2">
+              <p className="text-sm text-[#C90000] bg-[#C90000]/10 border border-[#C90000]/20 rounded-md px-3 py-2">
                 {error}
               </p>
             )}

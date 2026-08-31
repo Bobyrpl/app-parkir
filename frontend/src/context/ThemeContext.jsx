@@ -14,7 +14,7 @@ export const THEME_VARS = {
     "--color-text": "#fafafa",
     "--color-text-secondary": "#a1a1aa",
     "--color-text-muted": "#71717a",
-    "--color-button-bg": "#2563eb",
+    "--color-button-bg": "#C90000",
     "--color-button-text": "#ffffff",
   },
   light: {
@@ -26,12 +26,12 @@ export const THEME_VARS = {
     "--color-text": "#0f172a",
     "--color-text-secondary": "#5b6b85",
     "--color-text-muted": "#8896ac",
-    "--color-button-bg": "#2563eb",
+    "--color-button-bg": "#C90000",
     "--color-button-text": "#ffffff",
   },
 };
 
-export const BRAND_ACCENT = "#2563eb";
+export const BRAND_ACCENT = "#C90000";
 
 const STORAGE_KEY = "parkirku-theme";
 

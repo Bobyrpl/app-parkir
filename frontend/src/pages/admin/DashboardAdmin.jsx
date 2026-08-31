@@ -379,7 +379,7 @@ export default function DashboardAdmin() {
                                         return <span style={{ color: 'var(--color-text-secondary)', fontSize: 12, marginRight: 14 }}>{label}</span>;
                                     }}
                                 />
-                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#2563eb" strokeWidth={2.5} dot={{ r: 3.5, fill: '#2563eb' }} activeDot={{ r: 6 }} />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#C90000" strokeWidth={2.5} dot={{ r: 3.5, fill: '#C90000' }} activeDot={{ r: 6 }} />
                                 <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#38bdf8" strokeWidth={2} strokeDasharray="4 3" dot={{ r: 3, fill: '#38bdf8' }} />
                                 <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#10b981" strokeWidth={2.5} dot={{ r: 3.5, fill: '#10b981' }} activeDot={{ r: 6 }} />
                             </LineChart>
@@ -534,7 +534,7 @@ export default function DashboardAdmin() {
 
             <Card className="p-6 no-print">
                 <div className="flex items-center gap-2.5 mb-4">
-                    <span className="w-8 h-8 rounded-lg bg-[#2563eb]/10 text-[#2563eb] flex items-center justify-center shrink-0">
+                    <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
                         <Compass size={16} />
                     </span>
                     <h2 className="font-display text-lg text-[var(--color-text)]">
@@ -547,10 +547,10 @@ export default function DashboardAdmin() {
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {[
-                        { label: 'Pengguna', icon: Users, accent: '#2563eb' },
+                        { label: 'Pengguna', icon: Users, accent: '#C90000' },
                         { label: 'Tarif', icon: Ticket, accent: '#35C48D' },
-                        { label: 'Area Parkir', icon: MapPin, accent: '#2563eb' },
-                        { label: 'Kendaraan', icon: Car, accent: '#2563eb' },
+                        { label: 'Area Parkir', icon: MapPin, accent: '#C90000' },
+                        { label: 'Kendaraan', icon: Car, accent: '#C90000' },
                     ].map(({ label, icon: Icon, accent }) => (
                         <div
                             key={label}

@@ -271,7 +271,7 @@ export default function KendaraanKeluar() {
                             }
                             className={`text-left rounded-lg border p-3 transition ${
                                 filterArea === String(a.id_area)
-                                    ? 'border-[#2563eb] bg-[#2563eb]/10'
+                                    ? 'border-[#C90000] bg-[#C90000]/10'
                                     : 'border-[var(--color-border)] bg-[var(--color-section)] hover:bg-[var(--color-section)]'
                             }`}
                         >
@@ -297,7 +297,7 @@ export default function KendaraanKeluar() {
                 <select
                     value={filterArea}
                     onChange={(e) => setFilterArea(e.target.value)}
-                    className="rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#2563eb] sm:max-w-xs"
+                    className="rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#C90000] sm:max-w-xs"
                 >
                     <option value="semua">Semua area</option>
                     {areaList.map((a) => (
@@ -314,7 +314,7 @@ export default function KendaraanKeluar() {
                     onClick={() => setHanyaTerlambat((prev) => !prev)}
                     className={`rounded-md px-3 py-2 text-sm font-mono border whitespace-nowrap ${
                         hanyaTerlambat
-                            ? 'border-[#2563eb] bg-[#2563eb]/15 text-[#2563eb]'
+                            ? 'border-[#C90000] bg-[#C90000]/15 text-[#C90000]'
                             : 'border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]'
                     }`}
                 >
@@ -352,7 +352,7 @@ export default function KendaraanKeluar() {
                                     terlambat ? (
                                         <div>
                                             <Badge tone="danger">Terlambat</Badge>
-                                            <p className="text-xs text-[#2563eb] font-mono mt-1">
+                                            <p className="text-xs text-[#C90000] font-mono mt-1">
                                                 +{formatDurasiMenit(item.menitTerlambat)}
                                             </p>
                                         </div>
@@ -368,7 +368,7 @@ export default function KendaraanKeluar() {
                                     {terlambat && (
                                         <p className="text-xs text-[var(--color-text-secondary)] font-mono">
                                             Est. denda:{' '}
-                                            <span className="text-[#2563eb]">
+                                            <span className="text-[#C90000]">
                                                 Rp{' '}
                                                 {estimasiDenda(
                                                     item.menitTerlambat,

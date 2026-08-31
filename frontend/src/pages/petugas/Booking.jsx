@@ -149,7 +149,7 @@ export default function Booking() {
                             onClick={() => setFilter(value)}
                             className={`rounded-md px-3 py-1.5 text-xs font-mono border ${
                                 filter === value
-                                    ? 'border-[#2563eb] bg-[#2563eb]/10 text-[#2563eb]'
+                                    ? 'border-[#C90000] bg-[#C90000]/10 text-[#C90000]'
                                     : 'border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]'
                             }`}
                         >
@@ -188,11 +188,11 @@ export default function Booking() {
                                         type="checkbox"
                                         checked={selected.has(b.id_booking)}
                                         onChange={() => toggleSatu(b.id_booking)}
-                                        className="h-4 w-4 accent-[#2563eb]"
+                                        className="h-4 w-4 accent-[#C90000]"
                                     />
                                 )}
                             </td>
-                            <td className="px-4 py-3 font-mono text-[#2563eb]">{b.kode_booking}</td>
+                            <td className="px-4 py-3 font-mono text-[#C90000]">{b.kode_booking}</td>
                             <td className="px-4 py-3">
                                 <p>{b.user?.nama_lengkap}</p>
                                 <p className="text-xs text-[var(--color-text-secondary)]">{b.user?.no_telp}</p>

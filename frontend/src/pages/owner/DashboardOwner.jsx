@@ -77,7 +77,7 @@ export default function DashboardOwner() {
             {/* Grafik gabungan 7 hari terakhir */}
             <div className="mb-8">
                 <h2 className="font-display text-base text-[var(--color-text)] mb-3 flex items-center gap-2">
-                    <LineChart size={16} className="text-[#2563eb]" />
+                    <LineChart size={16} className="text-[#C90000]" />
                     Tren 7 Hari Terakhir
                 </h2>
 
@@ -90,7 +90,7 @@ export default function DashboardOwner() {
 
                     {!loadingGrafik && errorGrafik && (
                         <div className="h-80 flex flex-col items-center justify-center gap-3">
-                            <p className="text-sm text-[#2563eb]">{errorGrafik}</p>
+                            <p className="text-sm text-[#C90000]">{errorGrafik}</p>
                             <Button variant="ghost" onClick={ambilDataGrafik}>Coba Lagi</Button>
                         </div>
                     )}
@@ -104,11 +104,11 @@ export default function DashboardOwner() {
             {/* Menu utama */}
             <div>
                 <h2 className="font-display text-base text-[var(--color-text)] mb-3 flex items-center gap-2">
-                    <LayoutGrid size={16} className="text-[#2563eb]" />
+                    <LayoutGrid size={16} className="text-[#C90000]" />
                     Menu
                 </h2>
                 <Link to="/owner/rekap" className="group block max-w-md">
-                    <Card className="p-6 flex flex-col justify-between h-full transition-colors duration-200 hover:border-[#2563eb]/30">
+                    <Card className="p-6 flex flex-col justify-between h-full transition-colors duration-200 hover:border-[#C90000]/30">
                         <div>
                             <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-[#35C48D]/10 text-[#35C48D] mb-3">
                                 <FileBarChart size={18} />
@@ -119,7 +119,7 @@ export default function DashboardOwner() {
                                 total pendapatan pada periode tertentu, lalu ekspor atau cetak laporannya.
                             </p>
                         </div>
-                        <span className="inline-flex items-center gap-1.5 text-sm text-[#2563eb] font-medium">
+                        <span className="inline-flex items-center gap-1.5 text-sm text-[#C90000] font-medium">
                             Buka Rekap Transaksi
                             <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
                         </span>

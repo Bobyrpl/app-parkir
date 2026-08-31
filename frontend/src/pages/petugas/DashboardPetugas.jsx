@@ -77,12 +77,12 @@ export default function DashboardPetugas() {
                 <StatCard
                     label="KENDARAAN DI DALAM"
                     value={kendaraanDidalam}
-                    accent="#2563eb"
+                    accent="#C90000"
                 />
                 <StatCard
                     label="BOOKING MENUNGGU"
                     value={bookingMenunggu}
-                    accent="#2563eb"
+                    accent="#C90000"
                 />
             </div>
 

@@ -283,7 +283,7 @@ export default function KendaraanMasuk() {
                                             ? "border-[var(--color-border)] bg-[var(--color-section)] text-[var(--color-text-secondary)] cursor-not-allowed"
                                             : form.id_kendaraan ===
                                                 k.id_kendaraan
-                                              ? "border-[#2563eb] bg-[#2563eb]/10 text-[#2563eb]"
+                                              ? "border-[#C90000] bg-[#C90000]/10 text-[#C90000]"
                                               : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]"
                                     }`}
                                 >
@@ -291,7 +291,7 @@ export default function KendaraanMasuk() {
                                         {k.plat_nomor} — {k.jenis_kendaraan}
                                     </span>
                                     {k.sedang_parkir && (
-                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#2563eb]/15 text-[#2563eb] shrink-0">
+                                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000] shrink-0">
                                             SUDAH PARKIR
                                         </span>
                                     )}
@@ -327,7 +327,7 @@ export default function KendaraanMasuk() {
                                     setTarifOtomatis(false);
                                 }}
                                 required
-                                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#2563eb]"
+                                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#C90000]"
                             >
                                 <option value="">Pilih tarif</option>
                                 {tarifList.map((t) => (
@@ -381,7 +381,7 @@ export default function KendaraanMasuk() {
                                                 penuh
                                                     ? "border-[var(--color-border)] bg-[var(--color-section)] text-[var(--color-text-secondary)] cursor-not-allowed"
                                                     : dipilih
-                                                      ? "border-[#2563eb] bg-[#2563eb]/10 text-[#2563eb]"
+                                                      ? "border-[#C90000] bg-[#C90000]/10 text-[#C90000]"
                                                       : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]"
                                             }`}
                                         >
@@ -393,11 +393,11 @@ export default function KendaraanMasuk() {
                                                     {a.terisi}/{a.kapasitas}
                                                 </span>
                                                 {penuh ? (
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#2563eb]/15 text-[#2563eb]">
+                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000]">
                                                         PENUH
                                                     </span>
                                                 ) : hampirPenuh ? (
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#2563eb]/15 text-[#2563eb]">
+                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000]">
                                                         HAMPIR PENUH
                                                     </span>
                                                 ) : (
