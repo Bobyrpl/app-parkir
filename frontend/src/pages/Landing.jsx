@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 const WHATSAPP_URL = "https://wa.me/6285728035284";
-const BRAND_NAME = "By Abdulloh Mahbuby XII RPL I ";
+const BRAND_NAME = "Abdulloh Mahbuby, XII RPL I";
 const BRAND_LOCATION = "Pelabuhan Tanjung Perak";
 // TODO: ganti dengan alamat lengkap yang sebenarnya.
 const BRAND_ADDRESS =
@@ -27,38 +27,10 @@ const NAV_LINKS = [
   { href: "#komentar", label: "Komentar" },
 ];
 
-// Token warna netral untuk tiap mode tema. Warna aksen brand (#C90000)
-// sengaja TIDAK ikut berubah antar tema — dia tetap merah di light maupun
-// dark, karena itu identitas brand untuk tombol utama & highlight.
-// "--color-bg-rgb" dipakai di tempat yang butuh rgba() (scrim hero, header
-// blur) karena CSS var biasa tidak bisa langsung diberi opacity lewat
-// Tailwind (mis. bg-[var(--x)]/50 tidak reliable untuk custom property).
-const THEME_VARS = {
-  dark: {
-    "--color-bg": "#000000",
-    "--color-bg-rgb": "0, 0, 0",
-    "--color-section": "#09090b",
-    "--color-card": "#09090b",
-    "--color-border": "#27272a",
-    "--color-text": "#fafafa",
-    "--color-text-secondary": "#a1a1aa",
-    "--color-text-muted": "#71717a",
-    "--color-button-bg": "#ffffff",
-    "--color-button-text": "#000000",
-  },
-  light: {
-    "--color-bg": "#ffffff",
-    "--color-bg-rgb": "255, 255, 255",
-    "--color-section": "#fafafa",
-    "--color-card": "#f4f4f5",
-    "--color-border": "#e4e4e7",
-    "--color-text": "#09090b",
-    "--color-text-secondary": "#71717a",
-    "--color-text-muted": "#a1a1aa",
-    "--color-button-bg": "#09090b",
-    "--color-button-text": "#ffffff",
-  },
-};
+// Bentuk bintang tunggal dipakai ulang di beberapa tempat (rating tampilan,
+// input rating, testimoni) supaya konsisten satu sama lain.
+const STAR_PATH =
+  "M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z";
 
 // Memutar nada notifikasi pendek lewat Web Audio API, tanpa perlu file
 // audio eksternal. AudioContext baru dibuat saat dipanggil, jadi selalu
@@ -169,21 +141,9 @@ const TESTIMONI = [
     teks: "Rekap transaksi bisa saya cek dari mana saja.",
     bintang: 4,
   },
-  {
-    nama: "susi",
-    peran: "Pelangan",
-    teks: "Cetak struknya praktis dan mudah lagi.",
-    bintang: 5,
-  },
-  {
-    nama: "wawan",
-    peran: "petugas",
-    teks: "cepat anti ribet.",
-    bintang: 5,
-  },
 ];
 
-const AVATAR_COLORS = ["#C90000", "#5A0000", "#444444"];
+const AVATAR_COLORS = ["#C90000", "#525252", "#171717"];
 
 // Ditampilkan sesaat sementara komentar asli sedang diambil dari API
 // (GET /api/komentar), supaya kolom komentar tidak kosong saat loading.
@@ -216,7 +176,7 @@ const GRAFIK_FALLBACK = [
 
 // Fallback saat GET /api/statistik/ringkasan gagal diakses publik
 // (mis. server sedang down atau endpoint belum tersedia) — supaya
-// section Informasi tidak kosong sebelum data asli berhasil dimuat.
+// section stat tidak kosong sebelum data asli berhasil dimuat.
 const STATISTIK_FALLBACK = {
   kapasitas: 80,
   terisi: 42,
@@ -248,19 +208,20 @@ const ALUR = [
 
 function Bintang({ jumlah }) {
   return (
-    <div className="flex gap-0.5" aria-label={`${jumlah} dari 5 bintang`}>
+    <div className="flex gap-1" aria-label={`${jumlah} dari 5 bintang`}>
       {[1, 2, 3, 4, 5].map((i) => (
         <svg
           key={i}
-          width="14"
-          height="14"
-          viewBox="0 0 20 20"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill={i <= jumlah ? "currentColor" : "none"}
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className={i <= jumlah ? "text-neutral-900" : "text-neutral-300"}
           aria-hidden="true"
         >
-          <path
-            d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6L10 1z"
-            fill={i <= jumlah ? "#FACC15" : "var(--color-border)"}
-          />
+          <path d={STAR_PATH} />
         </svg>
       ))}
     </div>
@@ -272,7 +233,7 @@ function RatingInput({ value, onChange }) {
   const [hover, setHover] = useState(0);
   const shown = hover || value;
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3">
       <div className="flex gap-1" role="radiogroup" aria-label="Rating bintang">
         {[1, 2, 3, 4, 5].map((i) => (
           <button
@@ -284,34 +245,37 @@ function RatingInput({ value, onChange }) {
             onClick={() => onChange(i)}
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover(0)}
-            className="p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C90000] rounded-sm"
+            className="p-0.5 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
           >
-            <svg width="22" height="22" viewBox="0 0 20 20" aria-hidden="true">
-              <path
-                d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6L10 1z"
-                fill={i <= shown ? "#FACC15" : "var(--color-border)"}
-              />
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill={i <= shown ? "currentColor" : "none"}
+              stroke="currentColor"
+              strokeWidth="1.5"
+              className={i <= shown ? "text-neutral-900" : "text-neutral-300"}
+              aria-hidden="true"
+            >
+              <path d={STAR_PATH} />
             </svg>
           </button>
         ))}
       </div>
-      <span className="text-xs text-[var(--color-text-secondary)]">
+      <span className="text-xs text-neutral-500">
         {value > 0 ? `${value}/5` : "Pilih rating"}
       </span>
     </div>
   );
 }
 
-function Avatar({ nama, index, size = "h-9 w-9 text-sm" }) {
+function Avatar({ nama, index, size = "h-11 w-11 text-sm" }) {
   const initial = nama.trim().charAt(0).toUpperCase();
   const color = AVATAR_COLORS[index % AVATAR_COLORS.length];
   return (
     <span
-      className={`shrink-0 rounded-full flex items-center justify-center font-display ${size}`}
-      style={{
-        backgroundColor: `${color}1f`,
-        color,
-      }}
+      className={`shrink-0 rounded-full flex items-center justify-center font-semibold ${size}`}
+      style={{ backgroundColor: `${color}14`, color }}
       aria-hidden="true"
     >
       {initial}
@@ -319,150 +283,13 @@ function Avatar({ nama, index, size = "h-9 w-9 text-sm" }) {
   );
 }
 
-// Melacak posisi scroll halaman dengan throttling via requestAnimationFrame
-// (bukan setState di tiap event scroll mentah) supaya tetap ringan dan
-// tidak menyebabkan re-render berlebihan. Dipakai untuk efek parallax
-// yang merespons langsung ke gerakan scroll pengguna.
-function useScrollY() {
-  const [scrollY, setScrollY] = useState(0);
-  useEffect(() => {
-    let ticking = false;
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(() => {
-        setScrollY(window.scrollY);
-        ticking = false;
-      });
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return scrollY;
-}
-
-// Mendeteksi preferensi prefers-reduced-motion sekali di awal dan tetap
-// sinkron kalau pengguna mengubahnya lewat pengaturan OS saat halaman
-// masih terbuka.
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const handler = (e) => setReduced(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-  return reduced;
-}
-
-// Angka yang menghitung naik dari 0 ke nilai aslinya begitu elemen masuk
-// area layar (IntersectionObserver), memberi kesan section "hidup" saat
-// discroll alih-alih statis. format() mengatur bagaimana angka tampil
-// di tiap frame (mis. pembulatan, pemisah ribuan, satu desimal).
-function AnimatedCounter({
-  value,
-  duration = 1200,
-  format = (n) => Math.round(n),
-}) {
-  const ref = useRef(null);
-  const [display, setDisplay] = useState(0);
-  const [started, setStarted] = useState(false);
-  const prefersReducedMotion = usePrefersReducedMotion();
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setStarted(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.4 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!started) return;
-    if (prefersReducedMotion) {
-      setDisplay(value);
-      return;
-    }
-    let rafId;
-    let startTime = null;
-    function step(ts) {
-      if (startTime === null) startTime = ts;
-      const progress = Math.min((ts - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(value * eased);
-      if (progress < 1) rafId = window.requestAnimationFrame(step);
-    }
-    rafId = window.requestAnimationFrame(step);
-    return () => window.cancelAnimationFrame(rafId);
-  }, [started, value, duration, prefersReducedMotion]);
-
-  return <span ref={ref}>{format(display)}</span>;
-}
-
-// hoverable adds a quiet, consistent hover state (border + lift) used on
-// cards the user can meaningfully interact with or that benefit from a
-// touch of affordance. Off by default so it stays a deliberate choice.
-// `glass`: opsional, menambahkan permukaan "liquid glass" (dari referensi
-// glass.html) di atas kartu — murni visual, tidak mengubah perilaku kartu.
-function SectionCard({ children, className = "", hoverable = false, glass = true }) {
+// Kartu netral standar dipakai di banyak section: border tipis, sudut besar,
+// tanpa bayangan berat — konsisten dengan gaya referensi.
+function Card({ children, className = "", hoverable = false }) {
   return (
     <div
-      className={`rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] p-6 transition-all duration-300 ${
-        glass ? "liquid-glass" : ""
-      } ${hoverable ? "hover:border-neutral-700 hover:shadow-xl" : ""} ${className}`}
-    >
-      {children}
-    </div>
-  );
-}
-
-// Label kecil bergaya "eyebrow" di atas judul section — dipakai untuk
-// menandai bagian halaman secara konsisten.
-function SectionEyebrow({ children }) {
-  return (
-    <p className="text-xs font-mono tracking-[0.2em] text-neutral-500 uppercase mb-3">
-      {children}
-    </p>
-  );
-}
-
-// Fades + slides content in once it scrolls into view. Respects
-// prefers-reduced-motion by skipping the transform/opacity animation.
-function Reveal({ children, delay = 0, className = "" }) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.15 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-500 ease-out motion-reduce:transition-none motion-reduce:!opacity-100 motion-reduce:!translate-y-0 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+      className={`rounded-3xl border border-neutral-200 bg-white p-6 md:p-8 transition-colors duration-300 ${
+        hoverable ? "hover:border-neutral-900" : ""
       } ${className}`}
     >
       {children}
@@ -475,208 +302,19 @@ function Reveal({ children, delay = 0, className = "" }) {
 // teks "Memuat...".
 function KomentarSkeleton() {
   return (
-    <div className="rounded-xl bg-[var(--color-card)] border border-[var(--color-border)] p-4 animate-pulse">
+    <div className="rounded-2xl border border-neutral-200 bg-white p-5 animate-pulse">
       <div className="flex items-center gap-3 mb-3">
-        <div className="h-9 w-9 rounded-full bg-[var(--color-border)]" />
+        <div className="h-9 w-9 rounded-full bg-neutral-100" />
         <div className="space-y-1.5">
-          <div className="h-2.5 w-24 rounded bg-[var(--color-border)]" />
-          <div className="h-2 w-16 rounded bg-[var(--color-border)]" />
+          <div className="h-2.5 w-24 rounded bg-neutral-100" />
+          <div className="h-2 w-16 rounded bg-neutral-100" />
         </div>
       </div>
       <div className="space-y-1.5">
-        <div className="h-2.5 w-full rounded bg-[var(--color-border)]" />
-        <div className="h-2.5 w-4/5 rounded bg-[var(--color-border)]" />
+        <div className="h-2.5 w-full rounded bg-neutral-100" />
+        <div className="h-2.5 w-4/5 rounded bg-neutral-100" />
       </div>
     </div>
-  );
-}
-
-// Ikon matahari/bulan untuk tombol ganti tema. `dark` menunjukkan tema
-// yang SEDANG aktif — ikon matahari muncul saat gelap (ajakan pindah ke
-// terang), dan sebaliknya.
-// Testimoni ala glass.html: section di-"pin" (sticky) setinggi 320vh, kartu-
-// kartu bergeser horizontal mengikuti scroll, dengan efek skew halus yang
-// mengikuti kecepatan scroll (velocity) — port langsung dari algoritma JS
-// vanilla di glass.html, ditulis ulang sebagai efek React (useRef + rAF).
-// Kalau prefers-reduced-motion aktif, kartu tetap geser tapi tanpa skew.
-// Ini KOMPONEN BARU murni untuk tampilan; data TESTIMONI dan komponen
-// Bintang/Avatar yang sudah ada dipakai persis seperti sebelumnya.
-function PinnedTestimoni({ items }) {
-  const sectionRef = useRef(null);
-  const trackRef = useRef(null);
-  const prefersReducedMotion = usePrefersReducedMotion();
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const track = trackRef.current;
-    if (!section || !track) return;
-
-    let sectionTop = 0;
-    let sectionHeight = 0;
-    let currentX = 0;
-    let skew = 0;
-    let lastX = 0;
-    let running = false;
-    let rafId = null;
-
-    function measure() {
-      const rect = section.getBoundingClientRect();
-      sectionTop = rect.top + window.scrollY;
-      sectionHeight = section.offsetHeight;
-    }
-
-    function frame() {
-      const vh = window.innerHeight;
-      const total = Math.max(1, sectionHeight - vh);
-      const progress = Math.min(
-        1,
-        Math.max(0, (window.scrollY - sectionTop) / total),
-      );
-      const maxShift = Math.max(
-        0,
-        track.scrollWidth - document.documentElement.clientWidth,
-      );
-      const targetX = -progress * maxShift;
-
-      if (prefersReducedMotion) {
-        track.style.transform = `translateX(${targetX}px)`;
-      } else {
-        currentX += (targetX - currentX) * 0.1;
-        if (Math.abs(targetX - currentX) < 0.1) currentX = targetX;
-        const velocity = currentX - lastX;
-        lastX = currentX;
-        const targetSkew = Math.max(-5, Math.min(5, velocity * 0.15));
-        skew += (targetSkew - skew) * 0.12;
-        if (Math.abs(skew) < 0.02) skew = 0;
-        track.style.transform = `translateX(${currentX.toFixed(2)}px) skewX(${skew.toFixed(2)}deg)`;
-      }
-
-      const inView =
-        window.scrollY + vh > sectionTop &&
-        window.scrollY < sectionTop + sectionHeight;
-      if (inView || Math.abs(skew) > 0.02) {
-        rafId = window.requestAnimationFrame(frame);
-      } else {
-        running = false;
-      }
-    }
-
-    function start() {
-      if (!running) {
-        running = true;
-        rafId = window.requestAnimationFrame(frame);
-      }
-    }
-
-    function onResize() {
-      measure();
-      start();
-    }
-
-    window.addEventListener("scroll", start, { passive: true });
-    window.addEventListener("resize", onResize);
-    measure();
-    start();
-
-    return () => {
-      window.removeEventListener("scroll", start);
-      window.removeEventListener("resize", onResize);
-      if (rafId) window.cancelAnimationFrame(rafId);
-    };
-  }, [prefersReducedMotion]);
-
-  return (
-    <section
-      id="testimoni"
-      ref={sectionRef}
-      className="relative border-t border-[var(--color-border)]"
-      style={{ height: "320vh" }}
-    >
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-        <div className="mx-auto max-w-6xl px-6 md:px-12 w-full mb-10">
-          <SectionEyebrow>TESTIMONI</SectionEyebrow>
-          <p className="font-display font-bold text-3xl md:text-5xl tracking-tight text-[var(--color-text)]">
-            Kata{" "}
-            <span className="font-serif-accent text-[var(--color-text-muted)]">
-              mereka
-            </span>{" "}
-            tentang ParkirKu.
-          </p>
-        </div>
-
-        <div
-          ref={trackRef}
-          className="flex gap-6 will-change-transform pl-[6vw] pr-[6vw]"
-        >
-          {items.map((t, i) => (
-            <figure
-              key={t.nama}
-              className="liquid-glass shrink-0 w-[20rem] md:w-[26rem] rounded-3xl p-8 bg-[var(--color-card)]/60 flex flex-col justify-between gap-8"
-            >
-              <Bintang jumlah={t.bintang} />
-              <blockquote className="text-lg md:text-xl leading-relaxed text-[var(--color-text)]">
-                “{t.teks}”
-              </blockquote>
-              <figcaption className="flex items-center gap-4">
-                <Avatar nama={t.nama} index={i} size="h-12 w-12 text-base" />
-                <div>
-                  <p className="font-display font-semibold text-[var(--color-text)]">
-                    {t.nama}
-                  </p>
-                  <p className="text-sm text-[var(--color-text-secondary)]">
-                    {t.peran}
-                  </p>
-                </div>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ThemeIcon({ dark }) {
-  if (dark) {
-    return (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        aria-hidden="true"
-      >
-        <circle
-          cx="12"
-          cy="12"
-          r="4.5"
-          stroke="currentColor"
-          strokeWidth="1.75"
-        />
-        <path
-          d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-        />
-      </svg>
-    );
-  }
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M20 14.5A8.5 8.5 0 119.5 4a6.5 6.5 0 0010.5 10.5z"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }
 
@@ -686,73 +324,21 @@ export default function Landing() {
   const navLabel = user ? "Ke Dashboard" : "Masuk";
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-  const [heroTextBgError, setHeroTextBgError] = useState(false);
-  const scrollY = useScrollY();
-  const prefersReducedMotion = usePrefersReducedMotion();
+  const [heroImgError, setHeroImgError] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Tema terang/gelap. Disimpan di localStorage supaya pilihan pengguna
-  // diingat di kunjungan berikutnya; kalau belum pernah memilih, ikuti
-  // preferensi sistem operasi. Default aman ke "dark" saat SSR/pre-render
-  // (window belum ada).
-  const [theme, setTheme] = useState(() => {
-    if (typeof window === "undefined") return "dark";
-    const saved = window.localStorage.getItem("parkirku-theme");
-    if (saved === "light" || saved === "dark") return saved;
-    return window.matchMedia("(prefers-color-scheme: light)").matches
-      ? "light"
-      : "dark";
-  });
-
+  // Nav transparan di atas hero, berubah jadi putih solid begitu pengguna
+  // scroll melewati hero — pola yang sama dipakai referensi (nav putih di
+  // atas foto gelap, lalu tetap terbaca begitu masuk ke konten putih).
   useEffect(() => {
-    window.localStorage.setItem("parkirku-theme", theme);
-  }, [theme]);
-
-  function toggleTheme() {
-    setTheme((t) => (t === "dark" ? "light" : "dark"));
-  }
-
-  const themeVars = THEME_VARS[theme];
-
-  // Intro splash: tampilkan logo + nama brand + indikator loading dulu,
-  // baru landing page terlihat.
-  const [showIntro, setShowIntro] = useState(!prefersReducedMotion);
-  const [introExiting, setIntroExiting] = useState(false);
-  const [logoIn, setLogoIn] = useState(false);
-
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      setShowIntro(false);
-      return;
+    function onScroll() {
+      setScrolled(window.scrollY > 48);
     }
-    const popTimer = requestAnimationFrame(() => setLogoIn(true));
-    const exitTimer = setTimeout(() => setIntroExiting(true), 1100);
-    const hideTimer = setTimeout(() => setShowIntro(false), 1650);
-    return () => {
-      cancelAnimationFrame(popTimer);
-      clearTimeout(exitTimer);
-      clearTimeout(hideTimer);
-    };
-  }, [prefersReducedMotion]);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  useEffect(() => {
-    if (showIntro) {
-      const prevOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = prevOverflow;
-      };
-    }
-  }, [showIntro]);
-
-  // Efek parallax hero: foto latar bergerak lebih lambat dari scroll
-  // (kesan kedalaman), sementara teks di atasnya bergerak sedikit lebih
-  // cepat dan memudar seiring pengguna scroll melewati hero. Dimatikan
-  // total kalau pengguna memilih prefers-reduced-motion.
-  const heroImgOffset = prefersReducedMotion ? 0 : scrollY * 0.28;
-  const heroContentOffset = prefersReducedMotion ? 0 : scrollY * 0.12;
-  const heroContentOpacity = prefersReducedMotion
-    ? 1
-    : Math.max(1 - scrollY / 420, 0);
   const [comments, setComments] = useState(KOMENTAR_SEED);
   const [commentsLoading, setCommentsLoading] = useState(true);
   const [commentName, setCommentName] = useState("");
@@ -814,8 +400,7 @@ export default function Landing() {
   // transaksi selesai) dari GET /api/statistik/ringkasan — endpoint
   // publik, tidak butuh login. Kalau gagal diakses (server down,
   // endpoint belum di-deploy, dsb), diam-diam fallback ke
-  // STATISTIK_FALLBACK supaya section Informasi tidak pernah
-  // kosong/error.
+  // STATISTIK_FALLBACK supaya section statistik tidak pernah kosong/error.
   useEffect(() => {
     let cancelled = false;
     fetch(
@@ -947,71 +532,33 @@ export default function Landing() {
     };
   }, [sidebarOpen]);
 
+  const slotTersedia = Math.max(0, statistik.kapasitas - statistik.terisi);
+  const STATS = [
+    {
+      value: `${slotTersedia}`,
+      label: `Slot parkir tersedia dari ${statistik.kapasitas} slot`,
+    },
+    {
+      value: Number(statistik.rating_rata).toFixed(1),
+      label: `Rating rata-rata dari ${statistik.jumlah_ulasan}+ ulasan pengguna`,
+    },
+    {
+      value: `${Math.round(statistik.transaksi_selesai).toLocaleString("id-ID")}+`,
+      label: "Total transaksi yang sudah diproses sistem",
+    },
+    {
+      value: "3",
+      label: "Level akses: Admin, Petugas, dan Owner",
+    },
+  ];
+
   return (
-    <div
-      data-theme={theme}
-      style={themeVars}
-      className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] relative transition-colors duration-300"
-    >
-      {/* ================= Intro splash ================= */}
-      {/* Logo + nama brand + progress bar tipis pop-in dengan easing overshoot
-                halus, lalu seluruh overlay fade-out untuk menyingkap landing page
-                yang sudah dirender di baliknya. Total durasi ~1.65s (tidak
-                diperpanjang), dilewati kalau pengguna memilih
-                prefers-reduced-motion. Splash ini sengaja tetap putih di kedua
-                tema — ini layar pembuka bermerek, bukan bagian dari konten yang
-                ikut tema. */}
-      {showIntro && (
-        <div
-          className={`fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-white transition-opacity duration-500 ease-in ${
-            introExiting ? "opacity-0 pointer-events-none" : "opacity-100"
-          }`}
-          aria-hidden="true"
-        >
-          <img
-            src="/images/logo.png"
-            alt=""
-            className={`w-24 sm:w-32 md:w-36 drop-shadow-[0_0_25px_rgba(0,0,0,0.12)] transition-all duration-700 ease-out ${
-              logoIn
-                ? "opacity-100 scale-100 translate-y-0"
-                : "opacity-0 scale-75 translate-y-2"
-            }`}
-            style={{
-              transitionTimingFunction: logoIn
-                ? "cubic-bezier(0.34, 1.56, 0.64, 1)"
-                : undefined,
-            }}
-          />
-
-          {/* Nama brand */}
-          <p
-            className={`font-display text-lg sm:text-xl text-[#050608] transition-all duration-700 ease-out delay-150 ${
-              logoIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-            }`}
-          >
-            {BRAND_NAME}
-          </p>
-
-          {/* Progress bar tipis, terisi seiring durasi splash */}
-          <div
-            className={`h-0.5 w-32 rounded-full bg-neutral-200 overflow-hidden transition-opacity duration-500 delay-200 ${
-              logoIn ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <div
-              className={`h-full bg-[#0026ff] transition-all ease-linear ${
-                logoIn ? "w-full duration-[1200ms]" : "w-0 duration-0"
-              }`}
-            />
-          </div>
-        </div>
-      )}
-
+    <div className="min-h-screen bg-white text-neutral-900 antialiased selection:bg-neutral-900 selection:text-white">
       {/* ================= Mobile sidebar ================= */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-40 flex">
           <div
-            className="fixed inset-0 bg-black/50"
+            className="fixed inset-0 bg-neutral-900/40"
             onClick={() => setSidebarOpen(false)}
           />
           <div
@@ -1019,22 +566,19 @@ export default function Landing() {
             role="dialog"
             aria-modal="true"
             aria-label="Menu navigasi"
-            className="liquid-glass relative w-72 max-w-[85vw] bg-[var(--color-card)] h-full p-6 flex flex-col gap-1 z-50 shadow-2xl shadow-black/50 transition-colors duration-300"
+            className="relative w-72 max-w-[85vw] bg-white h-full p-6 flex flex-col gap-1 z-50 shadow-2xl"
           >
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-8">
+              <span className="text-lg font-semibold tracking-tight">
+                Parkir<span className="text-[#C90000]">Ku</span>
+              </span>
               <button
                 ref={closeBtnRef}
                 onClick={() => setSidebarOpen(false)}
                 aria-label="Tutup menu"
-                className="h-9 w-9 flex items-center justify-center rounded-lg text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C90000]"
+                className="h-9 w-9 flex items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
               >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path
                     d="M6 6l12 12M18 6L6 18"
                     stroke="currentColor"
@@ -1043,17 +587,6 @@ export default function Landing() {
                   />
                 </svg>
               </button>
-              <button
-                onClick={toggleTheme}
-                aria-label={
-                  theme === "dark"
-                    ? "Aktifkan mode terang"
-                    : "Aktifkan mode gelap"
-                }
-                className="h-9 w-9 flex items-center justify-center rounded-lg text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C90000]"
-              >
-                <ThemeIcon dark={theme === "dark"} />
-              </button>
             </div>
             <nav className="flex flex-col">
               {NAV_LINKS.map((item) => (
@@ -1061,7 +594,7 @@ export default function Landing() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] px-3 py-3 rounded-lg border-b border-[var(--color-border)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  className="text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 px-3 py-3 rounded-lg border-b border-neutral-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
                 >
                   {item.label}
                 </a>
@@ -1069,7 +602,7 @@ export default function Landing() {
               <Link
                 to="/bantuan"
                 onClick={() => setSidebarOpen(false)}
-                className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] px-3 py-3 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                className="text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 px-3 py-3 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
               >
                 Bantuan
               </Link>
@@ -1077,7 +610,7 @@ export default function Landing() {
             <Link
               to={navPath}
               onClick={() => setSidebarOpen(false)}
-              className="mt-4 rounded-full bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-semibold px-4 py-2.5 text-sm text-center hover:opacity-90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="mt-4 rounded-full bg-neutral-900 text-white font-medium px-4 py-3 text-sm text-center hover:bg-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
             >
               {navLabel}
             </Link>
@@ -1086,442 +619,292 @@ export default function Landing() {
       )}
 
       {/* ================= Header ================= */}
-      {/* Navbar sekarang mengambang seperti pill kaca ala glass.html:
-          fixed top-4, liquid-glass, rounded-full, dibatasi max-w agar
-          tetap terasa seperti "kapsul" saat layar lebar. Logic scroll,
-          link, dan tombol di dalamnya tidak berubah sama sekali. */}
-      <header className="fixed top-3 sm:top-4 inset-x-0 z-30 px-3 sm:px-4">
-        <div
-          className={`liquid-glass max-w-6xl mx-auto rounded-full transition-colors duration-300 ${
-            scrollY > 8 ? "shadow-lg shadow-black/20" : ""
-          }`}
-          style={{
-            backgroundColor: `rgba(${themeVars["--color-bg-rgb"]}, ${
-              scrollY > 8 ? 0.85 : 0.55
-            })`,
-          }}
-        >
-          <div className="flex items-center justify-between gap-4 px-4 sm:px-6 h-14 md:h-16 max-w-7xl mx-auto">
-            {/* Logo + mobile trigger */}
-            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <button
-                ref={hamburgerBtnRef}
-                onClick={() => setSidebarOpen(true)}
-                aria-label="Buka menu"
-                className="lg:hidden shrink-0 -ml-1.5 h-9 w-9 flex items-center justify-center rounded-lg text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M3 6h18M3 12h18M3 18h18"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
-
-              <Link
-                to="/"
-                className="flex items-center gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                <img
-                  src="/images/logo.png"
-                  alt="Logo ParkirKu"
-                  className="h-7 w-7 sm:h-8 sm:w-8 object-contain rounded-md shrink-0"
+      <header
+        className={`fixed top-0 inset-x-0 z-30 transition-colors duration-300 ${
+          scrolled
+            ? "bg-white/95 backdrop-blur border-b border-neutral-200"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-20">
+          <div className="flex items-center gap-3 min-w-0">
+            <button
+              ref={hamburgerBtnRef}
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Buka menu"
+              className={`lg:hidden -ml-1.5 h-9 w-9 flex items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 ${
+                scrolled
+                  ? "text-neutral-700 hover:bg-neutral-100 focus-visible:ring-neutral-900"
+                  : "text-white hover:bg-white/10 focus-visible:ring-white"
+              }`}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M4 6h16M4 12h16M4 18h16"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
                 />
-                <div className="min-w-0 leading-tight">
-                  <p className="font-display text-sm font-bold text-[var(--color-text)] truncate flex items-center gap-1.5">
-                    Parkir<span className="gradient-text">Ku</span>
-                    <span className="text-[10px] font-normal text-[var(--color-text-muted)] hidden sm:inline">
-                      by AM
-                    </span>
-                  </p>
-                  <p className="hidden sm:block text-[11px] font-mono text-[var(--color-text-secondary)] tracking-wide truncate">
-                    {BRAND_LOCATION}
-                  </p>
-                </div>
-              </Link>
-            </div>
-
-            {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-1 shrink-0">
-              {NAV_LINKS.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="px-3.5 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-md"
+              </svg>
+            </button>
+            <Link
+              to="/"
+              className={`flex items-center gap-2.5 min-w-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 ${
+                scrolled ? "focus-visible:ring-neutral-900" : "focus-visible:ring-white"
+              }`}
+            >
+              <img
+                src="/images/logo.png"
+                alt="Logo ParkirKu"
+                className="h-8 w-8 object-contain rounded-md shrink-0"
+              />
+              <div className="min-w-0 leading-tight">
+                <p
+                  className={`text-base font-semibold tracking-tight truncate transition-colors duration-300 ${
+                    scrolled ? "text-neutral-900" : "text-white"
+                  }`}
                 >
-                  {item.label}
-                </a>
-              ))}
-              <Link
-                to="/bantuan"
-                className="px-3.5 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-md"
-              >
-                Bantuan
-              </Link>
-            </nav>
-
-            {/* Toggle tema + CTA */}
-            <div className="flex items-center gap-2 shrink-0">
-              <button
-                onClick={toggleTheme}
-                aria-label={
-                  theme === "dark"
-                    ? "Aktifkan mode terang"
-                    : "Aktifkan mode gelap"
-                }
-                className="h-9 w-9 flex items-center justify-center rounded-full text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                <ThemeIcon dark={theme === "dark"} />
-              </button>
-              <Link
-                to={navPath}
-                className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-semibold px-5 py-2 text-sm hover:opacity-90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                <span>{navLabel}</span>
-              </Link>
-            </div>
+                  Parkir<span className="text-[#C90000]">Ku</span>
+                </p>
+                <p
+                  className={`hidden sm:block text-[11px] tracking-wide truncate transition-colors duration-300 ${
+                    scrolled ? "text-neutral-500" : "text-white/70"
+                  }`}
+                >
+                  {BRAND_LOCATION}
+                </p>
+              </div>
+            </Link>
           </div>
+
+          <nav className="hidden lg:flex items-center gap-8">
+            {NAV_LINKS.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className={`text-sm font-medium transition-colors focus-visible:outline-none ${
+                  scrolled
+                    ? "text-neutral-600 hover:text-neutral-900"
+                    : "text-white/85 hover:text-white"
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
+            <Link
+              to="/bantuan"
+              className={`text-sm font-medium transition-colors focus-visible:outline-none ${
+                scrolled
+                  ? "text-neutral-600 hover:text-neutral-900"
+                  : "text-white/85 hover:text-white"
+              }`}
+            >
+              Bantuan
+            </Link>
+          </nav>
+
+          <Link
+            to={navPath}
+            className={`inline-flex items-center rounded-full font-medium px-5 py-2.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 ${
+              scrolled
+                ? "bg-neutral-900 text-white hover:bg-neutral-800 focus-visible:ring-neutral-900"
+                : "bg-white text-neutral-900 hover:bg-neutral-100 focus-visible:ring-white"
+            }`}
+          >
+            {navLabel}
+          </Link>
         </div>
       </header>
 
       {/* ================= Hero ================= */}
-      <section className="relative w-full pt-36 pb-20 md:pt-48 md:pb-32 overflow-hidden min-h-[580px] flex items-center justify-center">
-        {/* Background Image Pelabuhan Tanjung Perak dengan parallax, overlay rata (tanpa efek gelap-terang belang) */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {!heroTextBgError && (
-            <img
-              src="/images/gambar.jpg"
-              alt="Area Parkir Pelabuhan Tanjung Perak"
-              className={`w-full h-full object-cover object-center scale-105 transition-all duration-300 ease-out ${
-                theme === "dark"
-                  ? "brightness-[0.65] contrast-[1.05]"
-                  : "brightness-[0.98] contrast-[1.02]"
-              }`}
-              style={{
-                transform: `translateY(${heroImgOffset}px)`,
-              }}
-              onError={() => setHeroTextBgError(true)}
-            />
-          )}
-          {/* Overlay warna rata (bukan radial gradient) supaya kontras teks tetap
-              terjaga tanpa membuat sebagian gambar gelap dan sebagian terang */}
-          <div
-            className="absolute inset-0 transition-colors duration-300"
-            style={{
-              backgroundColor:
-                theme === "dark"
-                  ? "rgba(0, 0, 0, 0.45)"
-                  : "rgba(255, 255, 255, 0.35)",
-            }}
+      <section className="relative w-full h-screen min-h-[600px]">
+        <div className="absolute inset-0 bg-neutral-900/45 z-10 pointer-events-none" />
+        {!heroImgError ? (
+          <img
+            src="/images/gambar.jpg"
+            alt="Area Parkir Pelabuhan Tanjung Perak"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            onError={() => setHeroImgError(true)}
           />
-          {/* Bottom fade transisi lembut ke section berikutnya */}
-          <div
-            className="absolute inset-x-0 bottom-0 h-32 pointer-events-none transition-colors duration-300"
-            style={{
-              background: `linear-gradient(to bottom, transparent, var(--color-bg))`,
-            }}
-          />
-          {/* Pola dot-grid transparan merata, tanpa mask (tidak ada lagi efek belang) */}
-          <div
-            className="absolute inset-0 opacity-15"
-            style={{
-              backgroundImage: `radial-gradient(var(--color-border) 1.25px, transparent 1.25px)`,
-              backgroundSize: "24px 24px",
-            }}
-          />
-          {/* Hero grid texture ala glass.html, di-mask jadi vignette lembut
-              di tengah atas — murni dekoratif, ditumpuk di atas dot-grid. */}
-          <div className="absolute inset-0 hero-grid opacity-40" />
-        </div>
+        ) : (
+          <div className="absolute inset-0 bg-neutral-900" />
+        )}
 
-        <div
-          className="relative max-w-4xl mx-auto px-6 md:px-12 flex flex-col items-center text-center z-10"
-          style={{
-            transform: `translateY(${heroContentOffset}px)`,
-            opacity: heroContentOpacity,
-          }}
-        >
-          {/* Capsule pill badge like Bag\Ui, sekarang dengan border iridescent
-              ala glass.html */}
-          <Reveal>
-            <div className="iridescent-border inline-flex items-center gap-2 rounded-full liquid-glass bg-[var(--color-card)]/80 px-4 py-1.5 text-xs text-[var(--color-text-secondary)] mb-8 shadow-sm hover:border-neutral-600 transition-colors">
-              <span className="text-[var(--color-text)] font-semibold">
-                Introducing ParkirKu v1
-              </span>
-              <span className="text-[var(--color-border)]">|</span>
-              <span className="inline-flex items-center gap-1 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors">
-                Sistem Terintegrasi ↗
-              </span>
-            </div>
-          </Reveal>
-
-          {/* High-contrast two-tone headline exactly like Bag\Ui, dengan
-              kata "modern" memakai gradient-text + font serif miring ala
-              glass.html sebagai aksen. */}
-          <Reveal delay={60}>
-            <h1 className="font-display text-4xl sm:text-6xl md:text-[4.25rem] font-bold tracking-tight leading-[1.08] mb-6">
-              <span className="text-[var(--color-text)]">
-                Kelola sistem parkir
-              </span>
-              <br />
-              <span className="font-serif-accent gradient-text">
-                modern
-              </span>{" "}
-              <span className="text-[var(--color-text)]">
-                lebih cepat & rapi.
-              </span>
-            </h1>
-          </Reveal>
-
-          {/* Subtitle */}
-          <Reveal delay={120}>
-            <p className="text-[var(--color-text-secondary)] text-base md:text-lg leading-relaxed mb-9 max-w-xl mx-auto">
-              Sistem manajemen parkir terpadu untuk Admin, Petugas, dan Owner —
-              transaksi instan, tarif otomatis, dan rekapitulasi data real-time.
-            </p>
-          </Reveal>
-
-          {/* CTA Buttons in Bag\Ui style */}
-          <Reveal delay={180}>
-            <div className="flex flex-col sm:flex-row items-center gap-3.5">
-              <Link
-                to={navPath}
-                className="inline-flex items-center gap-2 rounded-full bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-semibold px-7 py-3.5 text-sm hover:opacity-90 transition-all shadow-md"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20c0-4 3.5-6 8-6s8 2 8 6"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                {user ? "Ke Dashboard" : "Masuk ke Portal"}
-                <span className="rounded-full bg-black/10 px-2 py-0.5 text-xs font-mono font-bold">
-                  3
-                </span>
-              </Link>
-              <a
-                href="#fitur"
-                className="liquid-glass inline-flex items-center gap-2 rounded-full text-[var(--color-text)] font-medium px-6 py-3.5 text-sm hover:bg-[var(--color-border)] transition-all"
-              >
-                Explore fitur ↗
-              </a>
-            </div>
-            <div className="flex items-center justify-center gap-2 mt-8 text-xs font-mono text-[var(--color-text-muted)] tracking-wider">
-              <span>ADMIN</span>
-              <span className="text-[var(--color-border)]">•</span>
-              <span>PETUGAS</span>
-              <span className="text-[var(--color-border)]">•</span>
-              <span>OWNER</span>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ================= Showcase portal ================= */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24">
-        <Reveal>
-          <div className="mb-10 max-w-lg">
-            <SectionEyebrow>LIBRARY</SectionEyebrow>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-[var(--color-text)] mb-3 tracking-tight">
-              Jelajahi tampilan portal ParkirKu
-            </h2>
-            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-4">
-              Antarmuka modern terintegrasi yang dirancang untuk kecepatan
-              transaksi di lapangan hingga laporan data akurat bagi owner.
-            </p>
+        <div className="relative z-20 h-full flex flex-col justify-center px-6 md:px-12 lg:px-24 max-w-4xl">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.08] tracking-tight text-white mb-6">
+            Kelola sistem parkir <br className="hidden md:block" /> lebih cepat & rapi
+          </h1>
+          <p className="text-lg md:text-xl text-white/90 max-w-xl mb-10 leading-relaxed font-light">
+            Sistem manajemen parkir terpadu untuk Admin, Petugas, dan Owner —
+            transaksi instan, tarif otomatis, dan rekap data real-time.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link
+              to={navPath}
+              className="inline-flex items-center justify-center gap-2 bg-white text-neutral-900 hover:bg-neutral-100 px-8 py-4 rounded-full font-medium transition-colors active:scale-95"
+            >
+              {user ? "Ke Dashboard" : "Masuk ke Portal"}
+            </Link>
             <a
               href="#fitur"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-text)] hover:underline transition-all"
+              className="inline-flex items-center justify-center gap-2 border border-white/40 text-white hover:bg-white/10 px-8 py-4 rounded-full font-medium transition-colors active:scale-95"
             >
-              Lihat semua fitur ↗
+              Lihat fitur
             </a>
           </div>
-        </Reveal>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Card 1: Area Parkir & Fasilitas */}
-          <Reveal delay={80}>
-            <div className="liquid-glass group rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-6 md:p-8 h-full flex flex-col justify-between hover:border-neutral-700 transition-all shadow-xl">
-              <div className="flex items-center gap-1.5 mb-6">
-                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-border)]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-border)]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-border)]" />
-                <span className="h-2.5 w-16 rounded-full bg-[var(--color-border)] ml-auto" />
-              </div>
-              <div className="relative rounded-xl overflow-hidden aspect-[16/10] bg-black mb-5 border border-[var(--color-border)]">
-                <img
-                  src="/images/gambar.jpg"
-                  alt="Area Parkir Pelabuhan Tanjung Perak"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-85"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-5">
-                  <span className="inline-block self-start text-[10px] font-mono uppercase tracking-wider bg-white text-black px-2.5 py-0.5 rounded-full mb-1.5 font-bold shadow-sm">
-                    Lokasi Operasional
-                  </span>
-                  <p className="text-white font-display font-bold text-base sm:text-lg">
-                    Pelabuhan Tanjung Perak
-                  </p>
-                  <p className="text-neutral-400 text-xs">
-                    Sistem parkir terintegrasi gerbang & cetak struk otomatis
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center justify-between text-xs text-[var(--color-text-secondary)] pt-3 border-t border-[var(--color-border)]">
-                <span className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                  Sistem Aktif Realtime
-                </span>
-                <span className="font-mono">Gate & Tiket Cepat</span>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Card 2: Logo Identitas & Terintegrasi */}
-          <Reveal delay={160}>
-            <div className="liquid-glass group rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-6 md:p-8 h-full flex flex-col justify-between hover:border-neutral-700 transition-all shadow-xl">
-              <div className="flex items-center justify-between mb-6">
-                <span className="h-2.5 w-24 rounded-full bg-[var(--color-border)]" />
-                <span className="h-2.5 w-12 rounded-full bg-[var(--color-border)]" />
-              </div>
-              <div className="relative rounded-xl overflow-hidden aspect-[16/10] bg-[var(--color-section)] p-6 flex items-center justify-center mb-5 border border-[var(--color-border)]">
-                <img
-                  src="/parkir_pelabuhan_tanjung_perak.png"
-                  alt="Emblem Parkir Pelabuhan Tanjung Perak"
-                  className="max-h-full max-w-full object-contain drop-shadow-2xl group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="flex items-center justify-between text-xs text-[var(--color-text-secondary)] pt-3 border-t border-[var(--color-border)]">
-                <span className="font-display font-medium text-[var(--color-text)]">
-                  Identitas Resmi Portal Parkir
-                </span>
-                <span className="font-mono text-[var(--color-text)] font-semibold bg-[var(--color-border)]/50 border border-[var(--color-border)] px-2.5 py-0.5 rounded-full">
-                  3 Level Akses
-                </span>
-              </div>
-            </div>
-          </Reveal>
         </div>
       </section>
 
-      {/* Kartu peran */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 pb-16 md:pb-24">
-        <div className="grid sm:grid-cols-3 gap-4 md:gap-5">
-          {ROLES.map((r, i) => (
-            <Reveal key={r.name} delay={i * 80}>
-              <SectionCard hoverable className="h-full">
-                <p className="font-display text-sm font-semibold text-[var(--color-text)] mb-1.5 flex items-center justify-between">
-                  {r.name}
-                  <span className="text-[11px] font-mono text-[var(--color-text-muted)]">
-                    0{i + 1}
-                  </span>
-                </p>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                  {r.desc}
-                </p>
-              </SectionCard>
-            </Reveal>
-          ))}
+      {/* ================= Tentang & Statistik ================= */}
+      <section
+        id="informasi"
+        className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24"
+      >
+        <div className="flex flex-col justify-between">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6">
+              Tentang ParkirKu
+            </h2>
+            <p className="text-neutral-500 leading-relaxed max-w-md mb-8">
+              ParkirKu menyatukan pencatatan transaksi, tarif otomatis, dan
+              pelaporan dalam satu sistem, sehingga petugas di lapangan dan
+              owner di kantor melihat data yang sama secara real-time.
+            </p>
+            <div className="space-y-5 max-w-md">
+              {ROLES.map((r) => (
+                <div key={r.name} className="flex gap-4">
+                  <span className="shrink-0 mt-0.5 h-1.5 w-1.5 rounded-full bg-neutral-900" />
+                  <div>
+                    <p className="text-sm font-semibold text-neutral-900">{r.name}</p>
+                    <p className="text-sm text-neutral-500 leading-relaxed">{r.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-12">
+            {STATS.map((s) => (
+              <div key={s.label}>
+                <div className="text-5xl md:text-6xl font-medium tracking-tight mb-2 tabular-nums">
+                  {s.value}
+                </div>
+                <div className="text-sm text-neutral-500 max-w-[180px]">{s.label}</div>
+              </div>
+            ))}
+          </div>
+          {statistikIlustrasi && (
+            <p className="text-xs text-neutral-400 italic mt-8">
+              *Angka di atas adalah contoh tampilan dan akan otomatis mengikuti
+              data asli saat sistem berjalan.
+            </p>
+          )}
         </div>
       </section>
 
       {/* ================= Fitur ================= */}
-      <section
-        id="fitur"
-        className="scroll-mt-24 max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24"
-      >
-        <Reveal>
-          <div className="text-center mb-10">
-            <SectionEyebrow>KEUNGGULAN</SectionEyebrow>
-            <p className="font-display font-bold text-2xl md:text-3xl text-[var(--color-text)]">
-              Kenapa pakai ParkirKu?
-            </p>
-          </div>
-        </Reveal>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
-          {FEATURES.map((f, i) => (
-            <Reveal key={f.title} delay={i * 80}>
-              <SectionCard
-                hoverable
-                className="h-full text-center flex flex-col items-center"
-              >
-                <div className="h-10 w-10 rounded-full bg-[var(--color-border)]/60 flex items-center justify-center mb-4 text-[var(--color-text)]">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    {f.icon}
-                  </svg>
-                </div>
-                <h3 className="font-display font-semibold text-base mb-2 text-[var(--color-text)]">
-                  {f.title}
-                </h3>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                  {f.desc}
-                </p>
-              </SectionCard>
-            </Reveal>
+      <section id="fitur" className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
+        <div className="mb-12 max-w-lg">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+            Kenapa pakai ParkirKu?
+          </h2>
+          <p className="text-neutral-500 leading-relaxed">
+            Dirancang untuk kecepatan transaksi di lapangan hingga laporan
+            data akurat bagi owner.
+          </p>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {FEATURES.map((f) => (
+            <Card key={f.title} hoverable className="h-full">
+              <div className="h-11 w-11 rounded-full bg-neutral-100 flex items-center justify-center mb-6 text-neutral-900">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  {f.icon}
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
+              <p className="text-sm text-neutral-500 leading-relaxed">{f.desc}</p>
+            </Card>
           ))}
         </div>
       </section>
 
-      {/* ================= Grafik transaksi ================= */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24">
-        <Reveal>
-          <SectionCard>
-            <p className="font-display text-lg font-semibold text-[var(--color-text)] mb-1">
-              Transaksi 7 hari terakhir
-            </p>
-            <p className="text-sm text-[var(--color-text-secondary)] mb-6">
-              {grafikIlustrasi
-                ? "Ilustrasi jumlah transaksi per hari"
-                : "Jumlah transaksi per hari, 7 hari terakhir"}
-            </p>
+      {/* ================= Showcase portal (bento) ================= */}
+      <section className="max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
+        <div className="mb-12 max-w-lg">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+            Tampilan portal ParkirKu
+          </h2>
+          <p className="text-neutral-500 leading-relaxed">
+            Antarmuka terintegrasi mulai dari lokasi operasional hingga
+            identitas resmi portal parkir.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-neutral-100">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
+            <img
+              src="/images/gambar.jpg"
+              alt="Area Parkir Pelabuhan Tanjung Perak"
+              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute bottom-6 left-6 right-6 z-20">
+              <p className="text-white font-semibold text-lg">Pelabuhan Tanjung Perak</p>
+              <p className="text-white/70 text-sm">
+                Gerbang & cetak struk otomatis, aktif realtime
+              </p>
+            </div>
+          </div>
+          <div className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-neutral-50 border border-neutral-200 flex items-center justify-center p-10">
+            <img
+              src="/parkir_pelabuhan_tanjung_perak.png"
+              alt="Emblem Parkir Pelabuhan Tanjung Perak"
+              className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+              <span className="text-sm font-medium text-neutral-900">
+                Identitas Resmi Portal
+              </span>
+              <span className="text-xs font-medium text-neutral-500 bg-white border border-neutral-200 px-3 py-1 rounded-full">
+                3 Level Akses
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      {/* ================= Grafik transaksi ================= */}
+      <section className="bg-neutral-50 py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="max-w-2xl mb-12">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+              Transaksi 7 hari terakhir
+            </h2>
+            <p className="text-neutral-500 leading-relaxed">
+              {grafikIlustrasi
+                ? "Ilustrasi jumlah transaksi per hari."
+                : "Jumlah transaksi per hari, 7 hari terakhir."}
+            </p>
+          </div>
+          <div className="bg-white rounded-3xl border border-neutral-200 p-6 md:p-8">
             {grafikLoading ? (
-              <p className="text-sm text-[var(--color-text-secondary)]">
-                Memuat data...
-              </p>
+              <p className="text-sm text-neutral-500">Memuat data...</p>
             ) : grafikData.length === 0 ? (
-              <p className="text-sm text-[var(--color-text-secondary)]">
-                Belum ada data transaksi.
-              </p>
+              <p className="text-sm text-neutral-500">Belum ada data transaksi.</p>
             ) : (
-              <ResponsiveContainer width="100%" height={260}>
+              <ResponsiveContainer width="100%" height={280}>
                 <LineChart data={grafikData}>
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="var(--color-border)"
-                    vertical={false}
-                  />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" vertical={false} />
                   <XAxis
                     dataKey="label"
-                    stroke="var(--color-text-secondary)"
-                    fontSize={11}
+                    stroke="#737373"
+                    fontSize={12}
                     tickLine={false}
-                    axisLine={{ stroke: "var(--color-border)" }}
+                    axisLine={{ stroke: "#e5e5e5" }}
                   />
                   <YAxis
-                    stroke="var(--color-text-secondary)"
+                    stroke="#737373"
                     fontSize={12}
                     allowDecimals={false}
                     tickLine={false}
@@ -1529,474 +912,274 @@ export default function Landing() {
                   />
                   <Tooltip
                     contentStyle={{
-                      background: "var(--color-card)",
-                      border: "1px solid var(--color-border)",
-                      borderRadius: 8,
+                      background: "#ffffff",
+                      border: "1px solid #e5e5e5",
+                      borderRadius: 12,
                     }}
-                    labelStyle={{ color: "var(--color-text)" }}
+                    labelStyle={{ color: "#171717" }}
                     formatter={(value) => [value, "Jumlah Transaksi"]}
                   />
                   <Line
                     type="monotone"
                     dataKey="val"
-                    stroke="var(--color-text)"
+                    stroke="#171717"
                     strokeWidth={2}
-                    dot={{
-                      r: 3,
-                      fill: "var(--color-text)",
-                      strokeWidth: 0,
-                    }}
+                    dot={{ r: 3, fill: "#171717", strokeWidth: 0 }}
                     activeDot={{ r: 5 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
             )}
-          </SectionCard>
-        </Reveal>
+          </div>
+        </div>
       </section>
 
       {/* ================= Cara kerja / demo ================= */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24 grid md:grid-cols-2 gap-5 items-stretch">
-        <Reveal>
-          <SectionCard className="h-full">
-            <p className="font-display text-lg font-semibold text-[var(--color-text)] mb-2">
-              Cara kerja sistem ini
-            </p>
-            <p className="text-sm text-[var(--color-text-secondary)] mb-4">
-              Video singkat alur transaksi masuk sampai cetak struk.
-            </p>
-            <video
-              controls
-              className="w-full rounded-xl bg-black aspect-video object-cover border border-[var(--color-border)]"
-              poster="/images/gambar.jpg"
-              src="/video.mp4"
-            >
-              Browser Anda tidak mendukung pemutaran video.
-            </video>
-          </SectionCard>
-        </Reveal>
+      <section className="max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32 grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+            Cara kerja sistem ini
+          </h2>
+          <p className="text-neutral-500 leading-relaxed mb-6">
+            Video singkat alur transaksi masuk sampai cetak struk.
+          </p>
+          <video
+            controls
+            className="w-full rounded-3xl bg-neutral-900 aspect-video object-cover"
+            poster="/images/gambar.jpg"
+            src="/video.mp4"
+          >
+            Browser Anda tidak mendukung pemutaran video.
+          </video>
+        </div>
 
-        <Reveal delay={100}>
-          <SectionCard className="h-full flex flex-col justify-center">
-            <p className="font-display text-lg font-semibold text-[var(--color-text)] mb-5">
-              Tiga langkah singkat
+        <div>
+          <h3 className="text-xl font-semibold mb-8">Tiga langkah singkat</h3>
+          <div className="space-y-8">
+            {ALUR.map((a, i) => (
+              <div key={a.no} className="flex gap-5">
+                <div className="flex flex-col items-center">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white text-sm font-medium">
+                    {i + 1}
+                  </span>
+                  {i < ALUR.length - 1 && (
+                    <span className="w-px flex-1 bg-neutral-200 mt-2" aria-hidden="true" />
+                  )}
+                </div>
+                <div className="pb-2">
+                  <p className="text-sm font-semibold text-neutral-900 mb-1">{a.title}</p>
+                  <p className="text-sm text-neutral-500 leading-relaxed">{a.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= Testimoni ================= */}
+      <section id="testimoni" className="scroll-mt-20 bg-neutral-50 py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="max-w-2xl mb-16">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+              Kata mereka tentang ParkirKu
+            </h2>
+            <p className="text-neutral-500 leading-relaxed">
+              Pengalaman langsung dari admin, petugas, dan owner yang memakai
+              ParkirKu setiap hari.
             </p>
-            <div className="space-y-5">
-              {ALUR.map((a, i) => (
-                <div key={a.no} className="flex gap-4">
-                  <div className="flex flex-col items-center">
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--color-border)] font-mono text-xs text-[var(--color-text)]">
-                      {a.no}
-                    </span>
-                    {i < ALUR.length - 1 && (
-                      <span
-                        className="w-px flex-1 bg-[var(--color-border)] mt-1"
-                        aria-hidden="true"
-                      />
-                    )}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {TESTIMONI.map((t, i) => (
+              <div
+                key={t.nama}
+                className="bg-white rounded-3xl p-8 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="mb-6">
+                    <Bintang jumlah={t.bintang} />
                   </div>
-                  <div className="pb-1">
-                    <p className="text-sm font-medium text-[var(--color-text)] mb-0.5">
-                      {a.title}
-                    </p>
-                    <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                      {a.desc}
-                    </p>
+                  <p className="text-neutral-700 leading-relaxed mb-8">"{t.teks}"</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Avatar nama={t.nama} index={i} />
+                  <div>
+                    <div className="font-semibold text-sm">{t.nama}</div>
+                    <div className="text-sm text-neutral-500">{t.peran}</div>
                   </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= Komentar ================= */}
+      <section id="komentar" className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
+        <div className="flex items-center gap-3 mb-1">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
+            Komentar pengguna
+          </h2>
+          <span className="rounded-full bg-neutral-100 text-neutral-900 text-xs font-medium px-2.5 py-0.5">
+            {comments.length}
+          </span>
+        </div>
+        <p className="text-neutral-500 leading-relaxed mb-12">
+          Pengalaman langsung dari pengguna.
+        </p>
+
+        <div className="space-y-6">
+          {/* -------- Form komentar -------- */}
+          <Card>
+            <p className="text-sm font-semibold text-neutral-900 mb-1">
+              Tinggalkan komentar Anda
+            </p>
+            <p className="text-xs text-neutral-500 mb-6">
+              Bagikan pengalaman Anda memakai ParkirKu di sini.
+            </p>
+            <form onSubmit={handleCommentSubmit} className="space-y-4" noValidate>
+              <div className="rounded-2xl bg-neutral-50 border border-neutral-200 px-4 py-3">
+                <p className="text-xs text-neutral-500 mb-2">Rating Anda</p>
+                <RatingInput value={commentRating} onChange={setCommentRating} />
+              </div>
+              <div>
+                <label htmlFor="comment-name" className="block text-xs text-neutral-500 mb-1.5">
+                  Nama
+                </label>
+                <input
+                  id="comment-name"
+                  type="text"
+                  value={commentName}
+                  onChange={(e) => setCommentName(e.target.value)}
+                  placeholder="Nama Anda"
+                  className="w-full rounded-xl bg-white border border-neutral-200 px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 transition-shadow"
+                />
+              </div>
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label htmlFor="comment-text" className="text-xs text-neutral-500">
+                    Komentar
+                  </label>
+                  <span className="text-[10px] text-neutral-400">
+                    {commentText.length}/{KOMENTAR_MAX_LEN}
+                  </span>
+                </div>
+                <textarea
+                  id="comment-text"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value.slice(0, KOMENTAR_MAX_LEN))}
+                  placeholder="Tulis komentar Anda..."
+                  rows={4}
+                  className="w-full rounded-xl bg-white border border-neutral-200 px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 resize-none transition-shadow"
+                />
+              </div>
+              {commentError && (
+                <p className="flex items-center gap-1.5 text-xs text-rose-600" role="alert">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="shrink-0" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+                    <path d="M12 8v5M12 16h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                  {commentError}
+                </p>
+              )}
+              <button
+                type="submit"
+                disabled={commentSubmitting}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-neutral-900 text-white font-medium px-6 py-3 text-sm hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
+              >
+                {commentSubmitting ? (
+                  <>
+                    <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="3" opacity="0.25" />
+                      <path d="M21 12a9 9 0 00-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                    </svg>
+                    Mengirim...
+                  </>
+                ) : (
+                  "Kirim Komentar"
+                )}
+              </button>
+            </form>
+          </Card>
+
+          {/* -------- Daftar komentar (geser kanan/kiri) -------- */}
+          <div className="min-w-0">
+            <div
+              className="flex gap-4 overflow-x-auto overflow-y-hidden pb-2 snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-neutral-200 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+              aria-busy={commentsLoading}
+            >
+              {commentsLoading && (
+                <>
+                  <div className="shrink-0 w-72 snap-start">
+                    <KomentarSkeleton />
+                  </div>
+                  <div className="shrink-0 w-72 snap-start">
+                    <KomentarSkeleton />
+                  </div>
+                </>
+              )}
+
+              {!commentsLoading && comments.length === 0 && (
+                <Card className="shrink-0 w-full text-center py-10">
+                  <p className="text-sm text-neutral-500">Belum ada komentar.</p>
+                  <p className="text-xs text-neutral-400 mt-1">
+                    Jadilah yang pertama berbagi pengalaman Anda.
+                  </p>
+                </Card>
+              )}
+
+              {comments.map((c, i) => (
+                <div
+                  key={c.id}
+                  className="rounded-2xl border border-neutral-200 bg-white p-5 shrink-0 w-72 snap-start hover:border-neutral-900 transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <Avatar nama={c.nama} index={i} size="h-9 w-9 text-sm" />
+                      <p className="text-sm font-medium text-neutral-900 truncate">{c.nama}</p>
+                    </div>
+                    <Bintang jumlah={c.rating ?? 5} />
+                  </div>
+                  <p className="text-sm text-neutral-500 leading-relaxed">{c.teks}</p>
+
+                  {c.balasan && (
+                    <div className="mt-3 pl-3 border-l-2 border-neutral-200 bg-neutral-50 rounded-r-md py-2 pr-2">
+                      <p className="text-xs font-semibold text-neutral-900 mb-1">
+                        Balasan Admin
+                      </p>
+                      <p className="text-sm text-neutral-500 leading-relaxed">{c.balasan}</p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
-          </SectionCard>
-        </Reveal>
-      </section>
-
-      {/* ================= Informasi ================= */}
-      <section
-        id="informasi"
-        className="scroll-mt-24 max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24"
-      >
-        <Reveal>
-          <SectionEyebrow>INFORMASI</SectionEyebrow>
-          <p className="font-display font-bold text-2xl md:text-3xl mb-10 max-w-lg text-[var(--color-text)]">
-            Sekilas kondisi layanan
-          </p>
-        </Reveal>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
-          <Reveal delay={0}>
-            <SectionCard className="h-full">
-              <p className="text-xs font-mono text-[var(--color-text-secondary)] mb-3 tracking-wider uppercase">
-                Slot tersedia
-              </p>
-              <div className="flex items-end gap-2 mb-3">
-                <p className="font-display text-3xl font-bold text-[var(--color-text)]">
-                  <AnimatedCounter
-                    value={Math.max(0, statistik.kapasitas - statistik.terisi)}
-                  />
-                </p>
-                <p className="text-sm text-[var(--color-text-secondary)] mb-1">
-                  / {statistik.kapasitas} slot
-                </p>
-              </div>
-              <div className="h-1.5 rounded-full bg-[var(--color-border)] overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-[var(--color-text)]"
-                  style={{
-                    width: `${
-                      statistik.kapasitas > 0
-                        ? Math.min(
-                            100,
-                            (statistik.terisi / statistik.kapasitas) * 100,
-                          )
-                        : 0
-                    }%`,
-                  }}
-                />
-              </div>
-            </SectionCard>
-          </Reveal>
-          <Reveal delay={80}>
-            <SectionCard className="h-full">
-              <p className="text-xs font-mono text-[var(--color-text-secondary)] mb-3 tracking-wider uppercase">
-                Kualitas layanan
-              </p>
-              <div className="flex items-center gap-2">
-                <p className="font-display text-3xl font-bold text-[var(--color-text)]">
-                  <AnimatedCounter
-                    value={Number(statistik.rating_rata)}
-                    format={(n) => n.toFixed(1)}
-                  />
-                </p>
-                <Bintang jumlah={Math.round(statistik.rating_rata)} />
-              </div>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-                Dari {statistik.jumlah_ulasan}+ ulasan pengguna
-              </p>
-            </SectionCard>
-          </Reveal>
-          <Reveal delay={160} className="sm:col-span-2 md:col-span-1">
-            <SectionCard className="h-full">
-              <p className="text-xs font-mono text-[var(--color-text-secondary)] mb-3 tracking-wider uppercase">
-                Transaksi selesai
-              </p>
-              <p className="font-display text-3xl font-bold text-[var(--color-text)]">
-                <AnimatedCounter
-                  value={statistik.transaksi_selesai}
-                  duration={1600}
-                  format={(n) => Math.round(n).toLocaleString("id-ID")}
-                />
-                +
-              </p>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-                Diproses sejak {BRAND_NAME} digunakan
-              </p>
-            </SectionCard>
-          </Reveal>
+          </div>
         </div>
-        {statistikIlustrasi && (
-          <p className="text-xs text-[var(--color-text-muted)] italic mt-4">
-            *Angka di atas adalah contoh tampilan dan akan otomatis mengikuti
-            data asli saat sistem berjalan.
-          </p>
-        )}
-      </section>
-
-      {/* ================= Testimoni (pinned horizontal scroll ala glass.html) ================= */}
-      <PinnedTestimoni items={TESTIMONI} />
-
-      {/* ================= Komentar ================= */}
-      <section
-        id="komentar"
-        className="scroll-mt-24 max-w-7xl mx-auto px-6 md:px-12 pb-16 md:pb-24"
-      >
-        <Reveal>
-          <SectionEyebrow>DISKUSI</SectionEyebrow>
-          <div className="flex items-center gap-3 mb-1">
-            <p className="font-display font-bold text-2xl md:text-3xl text-[var(--color-text)]">
-              Komentar pengguna
-            </p>
-            <span className="rounded-full bg-[var(--color-border)] text-[var(--color-text)] text-xs font-mono px-2.5 py-0.5 font-semibold">
-              {comments.length}
-            </span>
-          </div>
-          <p className="text-sm text-[var(--color-text-secondary)] mb-10">
-            Pengalaman langsung dari pengguna
-          </p>
-
-          <div className="space-y-5">
-            {/* -------- Form komentar -------- */}
-            <SectionCard>
-              <p className="text-sm font-semibold text-[var(--color-text)] mb-1">
-                Tinggalkan komentar Anda
-              </p>
-              <p className="text-xs text-[var(--color-text-secondary)] mb-5">
-                Bagikan pengalaman Anda memakai ParkirKu di sini.
-              </p>
-              <form
-                onSubmit={handleCommentSubmit}
-                className="space-y-4"
-                noValidate
-              >
-                <div className="rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] px-4 py-3 transition-colors duration-300">
-                  <p className="text-xs text-[var(--color-text-secondary)] mb-2">
-                    Rating Anda
-                  </p>
-                  <RatingInput
-                    value={commentRating}
-                    onChange={setCommentRating}
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="comment-name"
-                    className="block text-xs text-[var(--color-text-secondary)] mb-1.5"
-                  >
-                    Nama
-                  </label>
-                  <input
-                    id="comment-name"
-                    type="text"
-                    value={commentName}
-                    onChange={(e) => setCommentName(e.target.value)}
-                    placeholder="Nama Anda"
-                    className="w-full rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)] px-3.5 py-2.5 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-neutral-400 transition-shadow"
-                  />
-                </div>
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label
-                      htmlFor="comment-text"
-                      className="text-xs text-[var(--color-text-secondary)]"
-                    >
-                      Komentar
-                    </label>
-                    <span className="text-[10px] font-mono text-[var(--color-text-muted)]">
-                      {commentText.length}/{KOMENTAR_MAX_LEN}
-                    </span>
-                  </div>
-                  <textarea
-                    id="comment-text"
-                    value={commentText}
-                    onChange={(e) =>
-                      setCommentText(e.target.value.slice(0, KOMENTAR_MAX_LEN))
-                    }
-                    placeholder="Tulis komentar Anda..."
-                    rows={4}
-                    className="w-full rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)] px-3.5 py-2.5 text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-neutral-400 resize-none transition-shadow"
-                  />
-                </div>
-                {commentError && (
-                  <p
-                    className="flex items-center gap-1.5 text-xs text-rose-500"
-                    role="alert"
-                  >
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      className="shrink-0"
-                      aria-hidden="true"
-                    >
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="9"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      />
-                      <path
-                        d="M12 8v5M12 16h.01"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                    {commentError}
-                  </p>
-                )}
-                <button
-                  type="submit"
-                  disabled={commentSubmitting}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-semibold px-6 py-2.5 text-sm hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-                >
-                  {commentSubmitting ? (
-                    <>
-                      <svg
-                        className="animate-spin h-3.5 w-3.5"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="9"
-                          stroke="currentColor"
-                          strokeWidth="3"
-                          opacity="0.25"
-                        />
-                        <path
-                          d="M21 12a9 9 0 00-9-9"
-                          stroke="currentColor"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                      Mengirim...
-                    </>
-                  ) : (
-                    <>
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M4 20l16-8L4 4l2 8-2 8z"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      Kirim Komentar
-                    </>
-                  )}
-                </button>
-              </form>
-            </SectionCard>
-
-            {/* -------- Daftar komentar (geser kanan/kiri) -------- */}
-            <div className="min-w-0">
-              <div
-                className="flex gap-3.5 overflow-x-auto overflow-y-hidden pb-2 snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-[var(--color-border)] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
-                aria-busy={commentsLoading}
-              >
-                {commentsLoading && (
-                  <>
-                    <div className="shrink-0 w-72 snap-start">
-                      <KomentarSkeleton />
-                    </div>
-                    <div className="shrink-0 w-72 snap-start">
-                      <KomentarSkeleton />
-                    </div>
-                  </>
-                )}
-
-                {!commentsLoading && comments.length === 0 && (
-                  <SectionCard className="shrink-0 w-full text-center py-10">
-                    <svg
-                      width="28"
-                      height="28"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      className="mx-auto mb-3 text-[var(--color-text-secondary)]"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M21 12a8 8 0 11-3.6-6.7L21 4l-1 3.6A7.96 7.96 0 0121 12z"
-                        stroke="currentColor"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <p className="text-sm text-[var(--color-text-secondary)]">
-                      Belum ada komentar.
-                    </p>
-                    <p className="text-xs text-[var(--color-text-secondary)] mt-1">
-                      Jadilah yang pertama berbagi pengalaman Anda.
-                    </p>
-                  </SectionCard>
-                )}
-
-                {comments.map((c, i) => (
-                  <SectionCard
-                    key={c.id}
-                    hoverable
-                    className="p-5 shrink-0 w-72 snap-start"
-                  >
-                    <div className="flex items-start justify-between gap-3 mb-2">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <Avatar nama={c.nama} index={i} />
-                        <p className="text-sm font-medium text-[var(--color-text)] truncate">
-                          {c.nama}
-                        </p>
-                      </div>
-                      <Bintang jumlah={c.rating ?? 5} />
-                    </div>
-                    <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                      {c.teks}
-                    </p>
-
-                    {c.balasan && (
-                      <div className="mt-3 pl-3 border-l-2 border-[var(--color-border)] bg-[var(--color-bg)] rounded-r-md py-2 pr-2">
-                        <p className="flex items-center gap-1.5 text-xs font-mono text-[var(--color-text)] mb-1 font-semibold">
-                          <svg
-                            width="12"
-                            height="12"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            aria-hidden="true"
-                          >
-                            <path
-                              d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20c0-4 3.5-6 8-6s8 2 8 6"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                          Balasan Admin
-                        </p>
-                        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                          {c.balasan}
-                        </p>
-                      </div>
-                    )}
-                  </SectionCard>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Reveal>
       </section>
 
       {/* ================= Bantuan (CTA) ================= */}
-      <section
-        id="bantuan"
-        className="scroll-mt-24 max-w-7xl mx-auto px-6 md:px-12 pb-24"
-      >
-        <Reveal>
-          <SectionCard className="flex flex-col md:flex-row items-center justify-between gap-4 p-8">
-            <div>
-              <p className="font-display font-bold text-xl text-[var(--color-text)] mb-1">
-                Butuh bantuan?
-              </p>
-              <p className="text-sm text-[var(--color-text-secondary)]">
-                Lihat pertanyaan umum seputar akun dan cara pakai di halaman
-                Bantuan.
-              </p>
-            </div>
-            <Link
-              to="/bantuan"
-              className="shrink-0 rounded-full bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-semibold px-6 py-2.5 text-sm hover:opacity-90 transition-all whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              Buka Halaman Bantuan
-            </Link>
-          </SectionCard>
-        </Reveal>
+      <section id="bantuan" className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 pb-24">
+        <div className="bg-neutral-50 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <p className="text-xl font-semibold text-neutral-900 mb-1">Butuh bantuan?</p>
+            <p className="text-sm text-neutral-500">
+              Lihat pertanyaan umum seputar akun dan cara pakai di halaman Bantuan.
+            </p>
+          </div>
+          <Link
+            to="/bantuan"
+            className="shrink-0 rounded-full bg-neutral-900 text-white font-medium px-6 py-3 text-sm hover:bg-neutral-800 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
+          >
+            Buka Halaman Bantuan
+          </Link>
+        </div>
       </section>
 
       {/* ================= Floating quick-help button ================= */}
       <div className="fixed bottom-6 right-6 z-50">
         {helpOpen && (
-          <div className="liquid-glass mb-3 w-64 rounded-2xl bg-[var(--color-card)] p-4 shadow-2xl transition-colors duration-300">
-            <p className="text-sm font-semibold text-[var(--color-text)] mb-1">
-              Bantuan cepat
-            </p>
-            <p className="text-xs text-[var(--color-text-secondary)] mb-3">
+          <div className="mb-3 w-64 rounded-2xl bg-white border border-neutral-200 p-4 shadow-2xl">
+            <p className="text-sm font-semibold text-neutral-900 mb-1">Bantuan cepat</p>
+            <p className="text-xs text-neutral-500 mb-3">
               Chat langsung dengan admin, atau buka daftar pertanyaan umum.
             </p>
             <div className="flex flex-col gap-2">
@@ -2004,15 +1187,9 @@ export default function Landing() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center gap-2 rounded-full bg-emerald-600 text-white font-medium px-3 py-2 text-xs hover:bg-emerald-500 transition-colors"
+                className="flex items-center justify-center gap-2 rounded-full bg-emerald-600 text-white font-medium px-3 py-2.5 text-xs hover:bg-emerald-500 transition-colors"
               >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path
                     d="M4 20l1.4-4.2A8 8 0 1112 20a8 8 0 01-4.6-1.4L4 20z"
                     stroke="currentColor"
@@ -2026,7 +1203,7 @@ export default function Landing() {
               <Link
                 to="/bantuan"
                 onClick={() => setHelpOpen(false)}
-                className="text-center text-xs text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:underline py-1"
+                className="text-center text-xs text-neutral-500 hover:text-neutral-900 hover:underline py-1"
               >
                 Lihat halaman Bantuan →
               </Link>
@@ -2043,121 +1220,123 @@ export default function Landing() {
           }
           aria-label="Bantuan cepat"
           aria-expanded={helpOpen}
-          className="h-12 w-12 rounded-full bg-[var(--color-button-bg)] text-[var(--color-button-text)] flex items-center justify-center shadow-2xl hover:opacity-90 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          className="h-12 w-12 rounded-full bg-neutral-900 text-white flex items-center justify-center shadow-2xl hover:bg-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            aria-hidden="true"
-          >
-            <circle
-              cx="12"
-              cy="12"
-              r="9"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <path
-              d="M9.5 9a2.5 2.5 0 115 .5c0 1.5-2.5 1.5-2.5 3"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+            <path d="M9.5 9a2.5 2.5 0 115 .5c0 1.5-2.5 1.5-2.5 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             <circle cx="12" cy="17" r="1" fill="currentColor" />
           </svg>
         </button>
       </div>
 
       {/* ================= Footer ================= */}
-      <footer className="border-t border-[var(--color-border)] transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-4 justify-between text-center sm:text-left">
-          <div className="flex flex-col items-center sm:items-start gap-4">
-            <div className="flex items-center gap-2.5">
-              <div className="leading-tight text-left">
-                <p className="text-[11px] font-mono text-[var(--color-text-secondary)] tracking-wide">
-                  {BRAND_LOCATION}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-2 max-w-xs">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                className="shrink-0 mt-0.5 text-[#C90000]"
-                aria-hidden="true"
-              >
-                <path
-                  d="M12 21s-7-6.1-7-11a7 7 0 1114 0c0 4.9-7 11-7 11z"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle
-                  cx="12"
-                  cy="10"
-                  r="2.5"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                />
-              </svg>
-              <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed text-left">
-                {BRAND_ADDRESS}
+      <footer className="bg-neutral-900 text-white pt-20 pb-8">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          {/* Top: CTA strip */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pb-16 border-b border-white/10">
+            <div className="max-w-lg">
+              <h3 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+                Siap mengelola parkir lebih rapi?
+              </h3>
+              <p className="text-neutral-400 leading-relaxed">
+                Masuk ke portal Admin, Petugas, atau Owner dan mulai pantau
+                transaksi hari ini.
               </p>
             </div>
-
-            <div className="flex items-center gap-3 pl-0.5">
-              <span className="hidden sm:block h-8 w-px bg-[var(--color-border)]" />
-              <img
-                src="/images/logo-smkn1sanden.png"
-                alt="Logo SMK Negeri 1 Sanden"
-                className="h-10 w-10 shrink-0 object-contain"
-              />
-              <div className="leading-tight text-left">
-                <p className="text-xs text-[var(--color-text-secondary)]">
-                  Dikembangkan oleh siswa
-                </p>
-                <p className="text-xs font-medium text-[var(--color-text)]">
-                  SMK Negeri 1 Sanden, Bantul
-                </p>
-              </div>
-            </div>
-
-            <p className="text-xs text-[var(--color-text-secondary)]">
-              © {new Date().getFullYear()} ParkirKu. Seluruh hak cipta
-              dilindungi.
-            </p>
+            <Link
+              to={navPath}
+              className="shrink-0 bg-white text-neutral-900 hover:bg-neutral-200 px-8 py-4 rounded-full font-medium transition-colors active:scale-95"
+            >
+              {navLabel}
+            </Link>
           </div>
 
-          <div className="flex flex-col items-center sm:items-end gap-2">
-            <span className="font-mono text-[11px] text-[var(--color-text-secondary)] tracking-wider">
-              Sistem manajemen parkir
-            </span>
-            <div className="flex items-center gap-4 text-xs text-[var(--color-text-secondary)]">
-              <a
-                href="#fitur"
-                className="hover:text-[var(--color-text)] transition-colors"
-              >
-                Fitur
-              </a>
-              <a
-                href="#testimoni"
-                className="hover:text-[var(--color-text)] transition-colors"
-              >
-                Testimoni
-              </a>
-              <Link
-                to="/bantuan"
-                className="hover:text-[var(--color-text)] transition-colors"
-              >
-                Bantuan
-              </Link>
+          {/* Middle: Link columns */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-16">
+            <div className="col-span-2 md:col-span-2">
+              <div className="text-2xl font-semibold tracking-tight mb-4">
+                Parkir<span className="text-[#C90000]">Ku</span>
+              </div>
+              <p className="text-sm text-neutral-400 leading-relaxed max-w-xs mb-6">
+                Sistem manajemen parkir terpadu untuk Admin, Petugas, dan Owner.
+              </p>
+              <div className="flex items-start gap-2 max-w-xs mb-4">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="shrink-0 mt-0.5 text-[#C90000]" aria-hidden="true">
+                  <path
+                    d="M12 21s-7-6.1-7-11a7 7 0 1114 0c0 4.9-7 11-7 11z"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.75" />
+                </svg>
+                <p className="text-xs text-neutral-400 leading-relaxed">{BRAND_ADDRESS}</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <img
+                  src="/images/logo-smkn1sanden.png"
+                  alt="Logo SMK Negeri 1 Sanden"
+                  className="h-9 w-9 shrink-0 object-contain"
+                />
+                <div className="leading-tight">
+                  <p className="text-xs text-neutral-400">Dikembangkan oleh siswa</p>
+                  <p className="text-xs font-medium text-white">SMK Negeri 1 Sanden, Bantul</p>
+                </div>
+              </div>
             </div>
+            <div>
+              <h4 className="text-sm font-semibold mb-4 text-white">Halaman</h4>
+              <ul className="space-y-3 text-sm text-neutral-400">
+                <li>
+                  <a href="#fitur" className="hover:text-white transition-colors">Fitur</a>
+                </li>
+                <li>
+                  <a href="#informasi" className="hover:text-white transition-colors">Informasi</a>
+                </li>
+                <li>
+                  <a href="#testimoni" className="hover:text-white transition-colors">Testimoni</a>
+                </li>
+                <li>
+                  <a href="#komentar" className="hover:text-white transition-colors">Komentar</a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold mb-4 text-white">Portal</h4>
+              <ul className="space-y-3 text-sm text-neutral-400">
+                <li>
+                  <Link to="/admin" className="hover:text-white transition-colors">Admin</Link>
+                </li>
+                <li>
+                  <Link to="/petugas" className="hover:text-white transition-colors">Petugas</Link>
+                </li>
+                <li>
+                  <Link to="/owner" className="hover:text-white transition-colors">Owner</Link>
+                </li>
+                <li>
+                  <Link to="/bantuan" className="hover:text-white transition-colors">Bantuan</Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold mb-4 text-white">Kontak</h4>
+              <ul className="space-y-3 text-sm text-neutral-400">
+                <li>
+                  <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
+                    WhatsApp Admin
+                  </a>
+                </li>
+                <li>{BRAND_LOCATION}</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/10 text-sm text-neutral-500">
+            <p>© {new Date().getFullYear()} ParkirKu. Seluruh hak cipta dilindungi.</p>
+            <p className="text-xs text-neutral-500">Dibuat oleh {BRAND_NAME}</p>
           </div>
         </div>
       </footer>
