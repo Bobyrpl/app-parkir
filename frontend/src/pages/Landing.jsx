@@ -15,7 +15,7 @@ const WHATSAPP_URL = "https://wa.me/6285728035284";
 const BRAND_NAME = "Abdulloh Mahbuby, XII RPL I";
 const BRAND_LOCATION = "Pelabuhan Tanjung Perak";
 // TODO: ganti dengan alamat lengkap yang sebenarnya.
-const BRAND_ADDRESS =
+const BRAND_ADDRESS = 
   "Jl. Perak Timur, Pelabuhan Tanjung Perak, Surabaya, Jawa Timur";
 
 // Nav items dipakai bareng oleh navbar desktop dan sidebar mobile, biar
@@ -570,7 +570,7 @@ export default function Landing() {
           >
             <div className="flex items-center justify-between mb-8">
               <span className="text-lg font-semibold tracking-tight">
-                Parkir<span className="text-[#C90000]">Ku</span>
+                Pelabuhan <span className="text-[#C90000]">Tanjung </span> perak
               </span>
               <button
                 ref={closeBtnRef}
@@ -653,25 +653,20 @@ export default function Landing() {
                 scrolled ? "focus-visible:ring-neutral-900" : "focus-visible:ring-white"
               }`}
             >
-              <img
-                src="/images/logo.png"
-                alt="Logo ParkirKu"
-                className="h-8 w-8 object-contain rounded-md shrink-0"
-              />
               <div className="min-w-0 leading-tight">
                 <p
                   className={`text-base font-semibold tracking-tight truncate transition-colors duration-300 ${
                     scrolled ? "text-neutral-900" : "text-white"
                   }`}
                 >
-                  Parkir<span className="text-[#C90000]">Ku</span>
+                 Pelabuhan <span className="text-[#C90000]">Tanjung </span> perak
                 </p>
                 <p
                   className={`hidden sm:block text-[11px] tracking-wide truncate transition-colors duration-300 ${
                     scrolled ? "text-neutral-500" : "text-white/70"
                   }`}
                 >
-                  {BRAND_LOCATION}
+                  {BRAND_ADDRESS}
                 </p>
               </div>
             </Link>
@@ -1256,7 +1251,7 @@ export default function Landing() {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-16">
             <div className="col-span-2 md:col-span-2">
               <div className="text-2xl font-semibold tracking-tight mb-4">
-                Parkir<span className="text-[#C90000]">Ku</span>
+                Pelabuhan <span className="text-[#C90000]">Tanjung </span> perak
               </div>
               <p className="text-sm text-neutral-400 leading-relaxed max-w-xs mb-6">
                 Sistem manajemen parkir terpadu untuk Admin, Petugas, dan Owner.
