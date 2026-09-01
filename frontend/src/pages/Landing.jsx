@@ -758,10 +758,10 @@ export default function Landing() {
         <div className="flex flex-col justify-between">
           <div>
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6">
-              Tentang ParkirKu
+              Tentang <span className="text-[#C90000]">Parkir </span>
             </h2>
             <p className="text-neutral-500 leading-relaxed max-w-md mb-8">
-              ParkirKu menyatukan pencatatan transaksi, tarif otomatis, dan
+              Parkir ini  menyatukan pencatatan transaksi, tarif otomatis, dan
               pelaporan dalam satu sistem, sehingga petugas di lapangan dan
               owner di kantor melihat data yang sama secara real-time.
             </p>
@@ -803,7 +803,7 @@ export default function Landing() {
       <section id="fitur" className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
         <div className="mb-12 max-w-lg">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-            Kenapa pakai ParkirKu?
+            Kenapa <span className="text-[#C90000]">Pakai </span> Parkir ini?
           </h2>
           <p className="text-neutral-500 leading-relaxed">
             Dirancang untuk kecepatan transaksi di lapangan hingga laporan
@@ -829,7 +829,7 @@ export default function Landing() {
       <section className="max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
         <div className="mb-12 max-w-lg">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-            Tampilan portal ParkirKu
+            Tampilan <span className="text-[#C90000]">Area  </span>Parkir
           </h2>
           <p className="text-neutral-500 leading-relaxed">
             Antarmuka terintegrasi mulai dari lokasi operasional hingga
@@ -874,7 +874,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="max-w-2xl mb-12">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-              Transaksi 7 hari terakhir
+              <span className="text-[#C90000]">Transaksi  </span> 7 hari terakhir
             </h2>
             <p className="text-neutral-500 leading-relaxed">
               {grafikIlustrasi
@@ -933,7 +933,7 @@ export default function Landing() {
       <section className="max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32 grid md:grid-cols-2 gap-12 items-center">
         <div>
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-            Cara kerja sistem ini
+            <span className="text-[#C90000]">Cara Kerja </span> sistem ini
           </h2>
           <p className="text-neutral-500 leading-relaxed mb-6">
             Video singkat alur transaksi masuk sampai cetak struk.
@@ -976,7 +976,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="max-w-2xl mb-16">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-              Kata mereka tentang ParkirKu
+              Kata mereka <span className="text-[#C90000]">Tentang  </span>Parkir ini 
             </h2>
             <p className="text-neutral-500 leading-relaxed">
               Pengalaman langsung dari admin, petugas, dan owner yang memakai
