@@ -727,7 +727,7 @@ export default function Landing() {
 
         <div className="relative z-20 h-full flex flex-col justify-center px-6 md:px-12 lg:px-24 max-w-4xl">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.08] tracking-tight text-white mb-6">
-            Kelola sistem parkir <br className="hidden md:block" /> lebih cepat & rapi
+            Kelola System Parkir <br className="hidden md:block" />  <span className="text-[#C90000]">Lebih </span> cepat & rapi
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-xl mb-10 leading-relaxed font-light">
             Sistem manajemen parkir terpadu untuk Admin, Petugas, dan Owner —
