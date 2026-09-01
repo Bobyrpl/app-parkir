@@ -79,7 +79,7 @@ export default function PermintaanAktivasi() {
     return (
         <div>
             <PageHeader
-                eyebrow="AKUN"
+                eyebrow="Akun"
                 title="Permintaan Aktivasi"
                 description="Pengajuan aktivasi ulang dari akun yang dinonaktifkan, dikirim lewat halaman Ajukan Aktivasi Akun."
             />
@@ -96,7 +96,7 @@ export default function PermintaanAktivasi() {
                         onClick={() => setFilter(value)}
                         className={`rounded-md px-3 py-1.5 text-xs font-mono border ${
                             filter === value
-                                ? 'border-[#C90000] bg-[#C90000]/10 text-[#C90000]'
+                                ? 'border-[#171717] bg-[#171717]/10 text-[#171717]'
                                 : 'border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-card)]'
                         }`}
                     >
@@ -108,7 +108,7 @@ export default function PermintaanAktivasi() {
             <Table columns={['Username', 'Nama Akun', 'Catatan Pemohon', 'Diajukan', 'Status', 'Aksi']}>
                 {data.map((p) => (
                     <tr key={p.id_permintaan}>
-                        <td className="px-4 py-3 font-mono text-[#C90000]">{p.username}</td>
+                        <td className="px-4 py-3 font-mono text-[#171717]">{p.username}</td>
                         <td className="px-4 py-3">
                             {p.user ? (
                                 <>
@@ -184,7 +184,7 @@ export default function PermintaanAktivasi() {
                             rows={3}
                             maxLength={500}
                             placeholder="Alasan penolakan..."
-                            className="w-full rounded-md bg-[var(--color-bg)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#C90000] focus:border-transparent resize-none mb-4"
+                            className="w-full rounded-md bg-[var(--color-bg)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717] focus:border-transparent resize-none mb-4"
                         />
                         <div className="flex justify-end gap-2">
                             <Button variant="ghost" onClick={() => setTolakTarget(null)} disabled={processingId === tolakTarget}>

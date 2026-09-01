@@ -37,11 +37,11 @@ export default function StrukCard({ struk, onClose }) {
                     />
                     <div className="p-6 font-mono text-xs sm:text-sm">
                         <div className="text-center mb-4">
-                            <p className="font-display font-bold text-base text-zinc-900 tracking-tight">
-                                SISTEM PARKIR PELABUHAN
+                            <p className="font-semibold text-base text-zinc-900 tracking-tight">
+                                Sistem Parkir Pelabuhan
                             </p>
-                            <p className="text-xs font-semibold text-zinc-600 uppercase">
-                                TANJUNG PERAK SURABAYA
+                            <p className="text-xs font-medium text-zinc-500">
+                                Tanjung Perak Surabaya
                             </p>
                             <p className="text-[11px] text-zinc-500 mt-1">
                                 No. Struk: <span className="font-bold text-zinc-800">{struk.no_struk}</span>
@@ -68,8 +68,8 @@ export default function StrukCard({ struk, onClose }) {
                         <div className="border-t border-dashed border-zinc-300 my-3" />
 
                         <div className="flex justify-between items-baseline pt-1">
-                            <span className="text-xs font-bold text-zinc-600 uppercase tracking-wider">TOTAL BAYAR</span>
-                            <span className="font-display font-bold text-xl sm:text-2xl text-zinc-950">{formatRupiah(struk.biaya_total)}</span>
+                            <span className="text-xs font-semibold text-zinc-500">Total Bayar</span>
+                            <span className="font-semibold text-xl sm:text-2xl text-zinc-950">{formatRupiah(struk.biaya_total)}</span>
                         </div>
 
                         <p className="text-center text-[10px] text-zinc-500 mt-5 pt-3 border-t border-zinc-200">

@@ -79,11 +79,11 @@ function KomentarItem({ komentar, onSaved, onHapus }) {
                     rows={2}
                     maxLength={1000}
                     placeholder="Tulis balasan untuk komentar ini..."
-                    className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#C90000] focus:border-transparent resize-none"
+                    className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717] focus:border-transparent resize-none"
                 />
                 <div className="flex items-center justify-end gap-2 mt-2">
                     {sudahDibalas && balasan.trim() === '' && (
-                        <span className="text-xs text-[#C90000] mr-auto">
+                        <span className="text-xs text-[#171717] mr-auto">
                             Kosongkan lalu kirim untuk menghapus balasan.
                         </span>
                     )}
@@ -110,7 +110,7 @@ function FilterButton({ active, onClick, children }) {
             onClick={onClick}
             className={`rounded-md px-3 py-1.5 text-xs font-mono transition-colors ${
                 active
-                    ? 'bg-[#C90000] text-[var(--color-text)]'
+                    ? 'bg-[#171717] text-[var(--color-text)]'
                     : 'bg-[var(--color-section)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]'
             }`}
         >
@@ -155,7 +155,7 @@ function Pagination({ halaman, totalHalaman, onGanti }) {
                         onClick={() => onGanti(n)}
                         className={`min-w-[32px] rounded-md px-2.5 py-1.5 text-xs font-mono transition-colors ${
                             n === halaman
-                                ? 'bg-[#C90000] text-[var(--color-text)]'
+                                ? 'bg-[#171717] text-[var(--color-text)]'
                                 : 'bg-[var(--color-section)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]'
                         }`}
                     >
@@ -264,7 +264,7 @@ export default function Komentar() {
     return (
         <div>
             <PageHeader
-                eyebrow="LANDING PAGE"
+                eyebrow="Landing page"
                 title="Komentar Pengunjung"
                 description="Lihat dan balas komentar yang dikirim pengunjung lewat landing page."
             />

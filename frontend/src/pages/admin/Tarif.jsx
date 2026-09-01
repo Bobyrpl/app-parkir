@@ -142,7 +142,7 @@ export default function Tarif() {
     return (
         <div>
             <PageHeader
-                eyebrow="DATA MASTER"
+                eyebrow="Data master"
                 title="Tarif Parkir"
                 description="Atur tarif per jam untuk setiap jenis kendaraan."
             />
@@ -171,7 +171,7 @@ export default function Tarif() {
                     <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
                         <div className="flex items-center justify-between mb-5">
                             <div className="flex items-center gap-2">
-                                <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
+                                <span className="w-8 h-8 rounded-lg bg-[#171717]/10 text-[#171717] flex items-center justify-center shrink-0">
                                     {editId ? <Pencil size={15} /> : <Ticket size={15} />}
                                 </span>
                                 <h2 className="font-display text-base text-[var(--color-text)]">
@@ -200,7 +200,7 @@ export default function Tarif() {
                                             jenis_kendaraan: e.target.value,
                                         })
                                     }
-                                    className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#C90000] transition-shadow"
+                                    className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717] transition-shadow"
                                 >
                                     <option value="motor">Motor</option>
                                     <option value="mobil">Mobil</option>
@@ -229,7 +229,7 @@ export default function Tarif() {
                             </div>
 
                             {error && (
-                                <p className="text-sm text-[#C90000] bg-[#C90000]/10 border border-[#C90000]/20 rounded-md px-3 py-2">
+                                <p className="text-sm text-[#171717] bg-[#171717]/10 border border-[#171717]/20 rounded-md px-3 py-2">
                                     {error}
                                 </p>
                             )}

@@ -292,7 +292,7 @@ export default function Layout({ children }) {
               <p className="font-display font-bold text-sm text-[var(--color-text)] leading-tight truncate">
                 ParkirKu
               </p>
-              <p className="text-[10px] leading-none text-[var(--color-text-secondary)] font-mono tracking-wider uppercase mt-0.5 truncate">
+              <p className="text-[11px] leading-none text-[var(--color-text-secondary)] mt-0.5 truncate">
                 Pelabuhan Tanjung Perak
               </p>
             </div>
@@ -323,7 +323,7 @@ export default function Layout({ children }) {
         {/* Menu */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto overflow-x-hidden">
           <p
-            className={`px-3 pb-2 text-[10px] font-mono font-semibold tracking-widest uppercase text-[var(--color-text-muted)] ${
+            className={`px-3 pb-2 text-xs font-medium text-[var(--color-text-muted)] ${
               collapsed ? "md:hidden" : ""
             }`}
           >
@@ -375,7 +375,7 @@ export default function Layout({ children }) {
               <p className="text-xs font-semibold text-[var(--color-text)] truncate leading-tight">
                 {user?.nama_lengkap}
               </p>
-              <p className="text-[11px] text-[var(--color-text-secondary)] font-mono truncate mt-0.5">
+              <p className="text-[11px] text-[var(--color-text-secondary)] truncate mt-0.5">
                 {ROLE_LABEL[user?.role]}
               </p>
             </div>
@@ -453,18 +453,18 @@ export default function Layout({ children }) {
             >
               {isDark ? <Sun size={15} /> : <Moon size={15} />}
             </button>
-            <div className="flex items-center gap-1.5 text-xs font-mono text-[var(--color-text-secondary)] bg-[var(--color-bg)] border border-[var(--color-border)] px-2.5 py-1 rounded-full">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="flex items-center gap-1.5 text-xs text-[var(--color-text-secondary)] bg-[var(--color-bg)] border border-[var(--color-border)] px-2.5 py-1 rounded-full">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
               <span>Online</span>
             </div>
           </div>
         </div>
 
         {/* Top subtle highlight banner */}
-        <div className="hidden md:flex items-center justify-between px-8 py-3 border-b border-[var(--color-border)] bg-[var(--color-card)]/50 backdrop-blur-sm text-xs font-mono text-[var(--color-text-muted)]">
+        <div className="hidden md:flex items-center justify-between px-8 py-3 border-b border-[var(--color-border)] bg-[var(--color-card)]/50 backdrop-blur-sm text-xs text-[var(--color-text-muted)]">
           <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            <span>SISTEM PARKIR PELABUHAN TANJUNG PERAK</span>
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <span>Sistem parkir Pelabuhan Tanjung Perak</span>
           </div>
           <div className="flex items-center gap-4">
             <button

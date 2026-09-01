@@ -38,10 +38,10 @@ const ROLE_BADGE_TONE = { admin: "warning", petugas: "info", owner: "success" };
 // Palet warna avatar inisial — dirotasi berdasarkan nama, biar daftar
 // panjang tidak terasa monoton semua warna kuning.
 const AVATAR_PALETTE = [
-  { bg: "bg-[#C90000]/10", text: "text-[#C90000]" },
-  { bg: "bg-[#C90000]/10", text: "text-[#C90000]" },
+  { bg: "bg-[#171717]/10", text: "text-[#171717]" },
+  { bg: "bg-[#171717]/10", text: "text-[#171717]" },
   { bg: "bg-[#35C48D]/10", text: "text-[#35C48D]" },
-  { bg: "bg-[#C90000]/10", text: "text-[#C90000]" },
+  { bg: "bg-[#171717]/10", text: "text-[#171717]" },
 ];
 
 function warnaAvatar(nama) {
@@ -253,7 +253,7 @@ export default function Users() {
   return (
     <div>
       <PageHeader
-        eyebrow="DATA MASTER"
+        eyebrow="Data master"
         title="Pengguna"
         description="Kelola akun admin, petugas, dan owner."
       />
@@ -272,34 +272,34 @@ export default function Users() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             <StatCard
-              label="ADMIN"
+              label="Admin"
               value={ringkasan.admin}
-              accent="#C90000"
+              accent="#171717"
             />
             <StatCard
-              label="PETUGAS"
+              label="Petugas"
               value={ringkasan.petugas}
-              accent="#C90000"
+              accent="#171717"
             />
             <StatCard
-              label="PELANGGAN"
+              label="Pelanggan"
               value={ringkasan.pelanggan}
-              accent="#C90000"
+              accent="#171717"
             />
             <StatCard
-              label="TOTAL USER"
+              label="Total User"
               value={ringkasan.total}
-              accent="#C90000"
+              accent="#171717"
             />
             <StatCard
-              label="AKTIF"
+              label="Aktif"
               value={ringkasan.aktif}
               accent="#35C48D"
             />
             <StatCard
-              label="TIDAK AKTIF"
+              label="Tidak Aktif"
               value={ringkasan.nonaktif}
-              accent="#C90000"
+              accent="#171717"
             />
           </div>
         )}
@@ -329,7 +329,7 @@ export default function Users() {
         <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
-              <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
+              <span className="w-8 h-8 rounded-lg bg-[#171717]/10 text-[#171717] flex items-center justify-center shrink-0">
                 {editId ? <Pencil size={15} /> : <UserPlus size={15} />}
               </span>
               <h2 className="font-display text-base text-[var(--color-text)]">
@@ -406,7 +406,7 @@ export default function Users() {
               <select
                 value={form.role}
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
-                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#C90000] transition-shadow"
+                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717] transition-shadow"
               >
                 <option value="petugas">Petugas</option>
                 <option value="owner">Owner</option>
@@ -421,13 +421,13 @@ export default function Users() {
                 onChange={(e) =>
                   setForm({ ...form, status_aktif: e.target.checked })
                 }
-                className="accent-[#C90000]"
+                className="accent-[#171717]"
               />
               Akun aktif
             </label>
 
             {error && (
-              <p className="text-sm text-[#C90000] bg-[#C90000]/10 border border-[#C90000]/20 rounded-md px-3 py-2">
+              <p className="text-sm text-[#171717] bg-[#171717]/10 border border-[#171717]/20 rounded-md px-3 py-2">
                 {error}
               </p>
             )}

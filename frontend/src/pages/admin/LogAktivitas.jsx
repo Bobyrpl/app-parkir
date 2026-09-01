@@ -76,7 +76,7 @@ export default function LogAktivitas() {
         <div>
             <div className="flex items-center justify-between flex-wrap gap-3">
                 <PageHeader
-                    eyebrow="AUDIT"
+                    eyebrow="Audit"
                     title="Log Aktivitas"
                     description="Riwayat aktivitas seluruh pengguna sistem."
                 />

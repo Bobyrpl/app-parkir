@@ -1,11 +1,15 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* Satu font family untuk seluruh aplikasi (Landing, Bantuan, Login, Register,
+   dan semua dashboard admin/petugas/owner/pelanggan), supaya identitas visual
+   konsisten di mana pun. `.font-display` dan `.font-mono` dipertahankan
+   sebagai class (banyak dipakai di komponen lama) tapi sekarang sama-sama
+   merender sebagai Inter, bukan font terpisah. */
 :root {
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-serif: 'Playfair Display', serif;
+    --font-display: 'Inter', sans-serif;
     --font-body: 'Inter', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-mono: 'Inter', sans-serif;
 }
 
 body {
@@ -16,12 +20,9 @@ body {
     font-family: var(--font-display);
 }
 
-.font-serif {
-    font-family: var(--font-serif);
-}
-
 .font-mono {
     font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
 }
 
 /* Hormati preferensi reduce-motion pengguna */
@@ -31,194 +32,3 @@ body {
         transition-duration: 0.01ms !important;
     }
 }
-/* =====================================================================
-   GLASS THEME — diekstrak dari glass.html
-   Import file ini di index.css / main.css proyek React kamu, contoh:
-     @import "./glass-theme.css";
-   Tidak ada logic JS di sini — murni CSS, aman ditambahkan tanpa
-   mengubah komponen yang sudah ada.
-   ===================================================================== */
-
-/* Tidak ada @import font di sini — proyek ini sudah memuat Space Grotesk
-   & Playfair Display sendiri di app.css, jadi glass-theme.css tinggal
-   pakai variabel yang sudah ada (--font-display, --font-serif) supaya
-   tidak load font duplikat. */
-
-:root {
-  /* Palet netral dari glass.html. Aksen brand merah (#C90000) milikmu
-     TIDAK diganti — dia tetap dipakai untuk tombol utama & highlight,
-     token di bawah ini cuma untuk permukaan kaca & teks sekunder. */
-  --glass-ink: #0b0d12;
-  --glass-panel: #11141b;
-  --glass-line: #232836;
-  --glass-soft: #9aa3b5;
-  --glass-pink: #dd7bbb;
-  --glass-gold: #d79f1e;
-  --glass-leaf: #5a922c;
-  --glass-sea: #4c7894;
-}
-
-/* Aksen serif miring ala glass.html, pakai font-serif (Playfair Display)
-   yang sudah ada di proyekmu, bukan Instrument Serif — biar tidak load
-   font baru. Cukup gabung dengan utility "italic" bawaan Tailwind. */
-.font-serif-accent {
-  font-family: var(--font-serif, "Playfair Display", serif);
-  font-style: italic;
-  font-weight: 600;
-}
-
-/* ---------- Liquid glass surface ---------- */
-.liquid-glass {
-  background: rgba(255, 255, 255, 0.01);
-  background-blend-mode: luminosity;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: none;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-.liquid-glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.4px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.45) 0%,
-    rgba(255, 255, 255, 0.15) 20%,
-    rgba(255, 255, 255, 0) 40%,
-    rgba(255, 255, 255, 0) 60%,
-    rgba(255, 255, 255, 0.15) 80%,
-    rgba(255, 255, 255, 0.45) 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-/* Di tema light, border kaca putih terlalu terang — dibikin gelap tipis */
-[data-theme="light"] .liquid-glass::before {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.12) 0%,
-    rgba(0, 0, 0, 0.05) 20%,
-    rgba(0, 0, 0, 0) 40%,
-    rgba(0, 0, 0, 0) 60%,
-    rgba(0, 0, 0, 0.05) 80%,
-    rgba(0, 0, 0, 0.12) 100%
-  );
-}
-
-/* ---------- Hero grid texture ---------- */
-.hero-grid {
-  background-image:
-    linear-gradient(var(--glass-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--glass-line) 1px, transparent 1px);
-  background-size: 72px 72px;
-  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 30%, transparent 75%);
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, #000 30%, transparent 75%);
-}
-
-/* ---------- Gradient text ---------- */
-.gradient-text {
-  background: linear-gradient(
-    100deg,
-    var(--glass-pink) 0%,
-    var(--glass-gold) 35%,
-    var(--glass-leaf) 65%,
-    var(--glass-sea) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* ---------- Iridescent border (badge) ---------- */
-@keyframes iridescent {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.iridescent-border {
-  position: relative;
-}
-.iridescent-border::before,
-.iridescent-border::after {
-  content: "";
-  position: absolute;
-  left: -1px;
-  top: -1px;
-  width: calc(100% + 2px);
-  height: calc(100% + 2px);
-  border-radius: inherit;
-  background: linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff, #00ffff, #ffff00);
-  background-size: 200%;
-  animation: iridescent 8s linear infinite;
-  pointer-events: none;
-}
-.iridescent-border::before { z-index: -1; }
-.iridescent-border::after { z-index: -2; filter: blur(20px); opacity: 0.5; }
-
-/* ---------- Glowing effect (border yang mengikuti kursor) ----------
-   Butuh sedikit JS untuk update --start / --active saat mousemove;
-   lihat snippet opsional di glass-theme-glow.js. Tanpa JS itu pun,
-   class ini tetap aman dipasang (glow-nya diam di posisi default). */
-.glow-capture { position: relative; }
-.glowing-effect {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  opacity: 1;
-  transition: opacity 0.3s;
-  --blur: 0px;
-  --spread: 40;
-  --start: 0;
-  --active: 0;
-  --glowingeffect-border-width: 3px;
-  --repeating-conic-gradient-times: 5;
-  --gradient:
-    radial-gradient(circle, var(--glass-pink) 10%, transparent 20%),
-    radial-gradient(circle at 40% 40%, var(--glass-gold) 5%, transparent 15%),
-    radial-gradient(circle at 60% 60%, var(--glass-leaf) 10%, transparent 20%),
-    radial-gradient(circle at 40% 60%, var(--glass-sea) 10%, transparent 20%),
-    repeating-conic-gradient(
-      from 236.84deg at 50% 50%,
-      var(--glass-pink) 0%,
-      var(--glass-gold) calc(25% / var(--repeating-conic-gradient-times)),
-      var(--glass-leaf) calc(50% / var(--repeating-conic-gradient-times)),
-      var(--glass-sea) calc(75% / var(--repeating-conic-gradient-times)),
-      var(--glass-pink) calc(100% / var(--repeating-conic-gradient-times))
-    );
-}
-.glowing-effect .glow { border-radius: inherit; position: absolute; inset: 0; }
-.glowing-effect .glow::after {
-  content: "";
-  position: absolute;
-  inset: calc(-1 * var(--glowingeffect-border-width));
-  border-radius: inherit;
-  border: var(--glowingeffect-border-width) solid transparent;
-  background: var(--gradient);
-  background-attachment: fixed;
-  opacity: var(--active);
-  transition: opacity 0.3s;
-  -webkit-mask-clip: padding-box, border-box;
-  mask-clip: padding-box, border-box;
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-  -webkit-mask-image:
-    linear-gradient(#0000, #0000),
-    conic-gradient(from calc((var(--start) - var(--spread)) * 1deg), #00000000 0deg, #fff, #00000000 calc(var(--spread) * 2deg));
-  mask-image:
-    linear-gradient(#0000, #0000),
-    conic-gradient(from calc((var(--start) - var(--spread)) * 1deg), #00000000 0deg, #fff, #00000000 calc(var(--spread) * 2deg));
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .iridescent-border::before,
-  .iridescent-border::after { animation: none !important; }
-  .glowing-effect .glow::after { transition: none; }
-}
-

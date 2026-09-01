@@ -109,7 +109,7 @@ export default function Rekap() {
             `}</style>
 
             <PageHeader
-                eyebrow="LAPORAN"
+                eyebrow="Laporan"
                 title="Rekap Transaksi"
                 description="Lihat total transaksi & pendapatan pada rentang waktu tertentu."
             />
@@ -131,7 +131,7 @@ export default function Rekap() {
                         Reset
                     </Button>
                 </form>
-                {error && <p className="text-sm text-[#C90000] mt-3">{error}</p>}
+                {error && <p className="text-sm text-[#171717] mt-3">{error}</p>}
             </Card>
 
             {hasil && (
@@ -161,9 +161,9 @@ export default function Rekap() {
                     </div>
 
                     <div className="grid grid-cols-3 gap-4 mb-6 max-w-2xl print:grid-cols-3">
-                        <StatCard label="TOTAL TRANSAKSI" value={hasil.total_transaksi} />
+                        <StatCard label="Total Transaksi" value={hasil.total_transaksi} />
                         <StatCard
-                            label="TOTAL PENDAPATAN"
+                            label="Total Pendapatan"
                             value={`Rp ${Number(hasil.total_pendapatan).toLocaleString('id-ID')}`}
                             accent="#35C48D"
                         />

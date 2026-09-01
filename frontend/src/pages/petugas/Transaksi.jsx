@@ -97,7 +97,7 @@ export default function Transaksi() {
     return (
         <div>
             <PageHeader
-                eyebrow="RIWAYAT"
+                eyebrow="Riwayat"
                 title="Semua Transaksi"
                 description="Daftar seluruh transaksi parkir yang tercatat, dikelompokkan per hari."
             />

@@ -62,7 +62,7 @@ export default function PengaturanDenda() {
     return (
         <div>
             <PageHeader
-                eyebrow="DATA MASTER"
+                eyebrow="Data master"
                 title="Pengaturan Denda"
                 description="Atur nominal denda keterlambatan booking. Denda dihitung otomatis oleh sistem saat kendaraan keluar — petugas tidak perlu memasukkan nominal secara manual."
             />
@@ -70,7 +70,7 @@ export default function PengaturanDenda() {
             <Card className="p-5 max-w-lg">
                 <div className="flex items-center justify-between mb-5">
                     <div className="flex items-center gap-2.5">
-                        <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
+                        <span className="w-8 h-8 rounded-lg bg-[#171717]/10 text-[#171717] flex items-center justify-center shrink-0">
                             <AlertTriangle size={16} />
                         </span>
                         <h2 className="font-display text-base text-[var(--color-text)]">
@@ -147,13 +147,13 @@ export default function PengaturanDenda() {
                                 onChange={(e) =>
                                     setForm({ ...form, aktif: e.target.checked })
                                 }
-                                className="h-4 w-4 rounded border-[var(--color-border)] bg-[var(--color-section)] accent-[#C90000]"
+                                className="h-4 w-4 rounded border-[var(--color-border)] bg-[var(--color-section)] accent-[#171717]"
                             />
                             Aktifkan denda keterlambatan booking
                         </label>
 
                         {error && (
-                            <p className="text-sm text-[#C90000] bg-[#C90000]/10 border border-[#C90000]/20 rounded-md px-3 py-2">
+                            <p className="text-sm text-[#171717] bg-[#171717]/10 border border-[#171717]/20 rounded-md px-3 py-2">
                                 {error}
                             </p>
                         )}

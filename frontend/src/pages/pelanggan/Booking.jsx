@@ -216,17 +216,17 @@ export default function Booking() {
   return (
     <div>
       <PageHeader
-        eyebrow="BOOKING ONLINE"
+        eyebrow="Booking online"
         title="Booking Parkir"
         description="Pesan slot parkir sebelum tiba di pelabuhan. Kendaraan yang dipilih tetap perlu dicek petugas saat datang."
       />
 
       {kodeSukses && (
-        <Card className="p-5 mb-6 border-[#C90000]/40">
+        <Card className="p-5 mb-6 border-[#171717]/40">
           <p className="text-xs font-mono text-[var(--color-text-secondary)] mb-1">
             KODE BOOKING ANDA
           </p>
-          <p className="font-display text-3xl text-[#C90000] tracking-widest">
+          <p className="font-display text-3xl text-[#171717] tracking-widest">
             {kodeSukses}
           </p>
           <p className="text-sm text-[var(--color-text-secondary)] mt-2">
@@ -243,7 +243,7 @@ export default function Booking() {
             <button
               type="button"
               onClick={() => setTambahKendaraan((v) => !v)}
-              className="text-xs font-mono text-[#C90000] hover:underline"
+              className="text-xs font-mono text-[#171717] hover:underline"
             >
               {tambahKendaraan ? "Batal" : "+ Tambah Kendaraan"}
             </button>
@@ -275,7 +275,7 @@ export default function Booking() {
                   })
                 }
                 required
-                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#C90000]"
+                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717]"
               >
                 <option value="">Pilih jenis kendaraan</option>
                 {tarifList.map((t) => (
@@ -315,7 +315,7 @@ export default function Booking() {
                   k.sedang_parkir
                     ? "border-[var(--color-border)] bg-[var(--color-section)] text-[var(--color-text-secondary)] cursor-not-allowed"
                     : form.id_kendaraan === k.id_kendaraan
-                      ? "border-[#C90000] bg-[#C90000]/10 text-[#C90000]"
+                      ? "border-[#171717] bg-[#171717]/10 text-[#171717]"
                       : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]"
                 }`}
               >
@@ -323,7 +323,7 @@ export default function Booking() {
                   {k.plat_nomor} — {k.jenis_kendaraan}
                 </span>
                 {k.sedang_parkir && (
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#C90000]/15 text-[#C90000] shrink-0">
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#171717]/15 text-[#171717] shrink-0">
                     SEDANG PARKIR
                   </span>
                 )}

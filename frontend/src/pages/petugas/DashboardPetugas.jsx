@@ -59,30 +59,30 @@ export default function DashboardPetugas() {
     return (
         <div>
             <PageHeader
-                eyebrow="PANEL PETUGAS"
+                eyebrow="Panel petugas"
                 title="Ringkasan Tugas Hari Ini"
                 description="Catat kendaraan masuk/keluar dan pantau transaksi harian dari sini."
             />
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <StatCard
-                    label="TRANSAKSI HARI INI"
+                    label="Transaksi Hari Ini"
                     value={loading ? "—" : hariIni.transaksi}
                 />
                 <StatCard
-                    label="PENDAPATAN HARI INI"
+                    label="Pendapatan Hari Ini"
                     value={loading ? "—" : hariIni.pendapatan}
                     accent="#35C48D"
                 />
                 <StatCard
-                    label="KENDARAAN DI DALAM"
+                    label="Kendaraan di Dalam"
                     value={kendaraanDidalam}
-                    accent="#C90000"
+                    accent="#171717"
                 />
                 <StatCard
-                    label="BOOKING MENUNGGU"
+                    label="Booking Menunggu"
                     value={bookingMenunggu}
-                    accent="#C90000"
+                    accent="#171717"
                 />
             </div>
 

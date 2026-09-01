@@ -278,17 +278,17 @@ export default function DashboardAdmin() {
             `}</style>
 
             <PageHeader
-                eyebrow="PANEL ADMINISTRATOR"
+                eyebrow="Panel administrator"
                 title="Ringkasan Sistem"
                 description="Pantau statistik master data, transaksi realtime, dan unduh laporan berkala."
             />
 
             {/* Baris kartu ringkasan */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <StatCard label="TOTAL PENGGUNA" value={stats.users} icon={Users} />
-                <StatCard label="JENIS TARIF" value={stats.tarif} icon={Ticket} />
-                <StatCard label="AREA PARKIR" value={stats.area} icon={MapPin} />
-                <StatCard label="KENDARAAN TERDAFTAR" value={stats.kendaraan} icon={Car} />
+                <StatCard label="Total Pengguna" value={stats.users} icon={Users} />
+                <StatCard label="Jenis Tarif" value={stats.tarif} icon={Ticket} />
+                <StatCard label="Area Parkir" value={stats.area} icon={MapPin} />
+                <StatCard label="Kendaraan Terdaftar" value={stats.kendaraan} icon={Car} />
             </div>
 
             {/* Highlight bar periode */}
@@ -298,11 +298,11 @@ export default function DashboardAdmin() {
                         <Receipt size={22} />
                     </span>
                     <div className="min-w-0">
-                        <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-text-secondary)] font-semibold">TRANSAKSI PERIODE INI</p>
-                        <p className="font-display font-bold text-2xl sm:text-3xl text-[var(--color-text)] leading-tight truncate">
+                        <p className="text-xs text-[var(--color-text-secondary)] font-medium">Transaksi periode ini</p>
+                        <p className="font-semibold text-2xl sm:text-3xl text-[var(--color-text)] leading-tight truncate">
                             {loadingRekap ? '—' : totalTransaksi.toLocaleString('id-ID')}
                         </p>
-                        <p className="text-xs text-[var(--color-text-muted)] font-mono mt-0.5 truncate">{periodeLabel}</p>
+                        <p className="text-xs text-[var(--color-text-muted)] mt-0.5 truncate">{periodeLabel}</p>
                     </div>
                 </Card>
                 <Card className="p-5 flex items-center gap-4 border border-[var(--color-border)] bg-[var(--color-card)]/80">
@@ -310,11 +310,11 @@ export default function DashboardAdmin() {
                         <Wallet size={22} />
                     </span>
                     <div className="min-w-0">
-                        <p className="font-mono text-[10px] uppercase tracking-widest text-emerald-400/90 font-semibold">PENDAPATAN PERIODE INI</p>
-                        <p className="font-display font-bold text-2xl sm:text-3xl text-[var(--color-text)] leading-tight truncate">
+                        <p className="text-xs text-emerald-600 font-medium">Pendapatan periode ini</p>
+                        <p className="font-semibold text-2xl sm:text-3xl text-[var(--color-text)] leading-tight truncate">
                             {loadingRekap ? '—' : `Rp ${totalPendapatan.toLocaleString('id-ID')}`}
                         </p>
-                        <p className="text-xs text-[var(--color-text-muted)] font-mono mt-0.5 truncate">{periodeLabel}</p>
+                        <p className="text-xs text-[var(--color-text-muted)] mt-0.5 truncate">{periodeLabel}</p>
                     </div>
                 </Card>
             </div>
@@ -327,14 +327,14 @@ export default function DashboardAdmin() {
                             <TrendingUp size={18} />
                         </span>
                         <div className="min-w-0">
-                            <h2 className="font-display font-bold text-base text-[var(--color-text)] truncate">
+                            <h2 className="font-semibold text-base text-[var(--color-text)] truncate">
                                 Tren Transaksi &amp; Pelanggan Baru
                             </h2>
-                            <p className="text-xs text-[var(--color-text-secondary)] font-mono truncate">{periodeLabel}</p>
+                            <p className="text-xs text-[var(--color-text-secondary)] truncate">{periodeLabel}</p>
                         </div>
                     </div>
                     {loadingRekap ? (
-                        <div className="h-72 flex items-center justify-center text-sm text-[var(--color-text-muted)] font-mono">Memuat grafik...</div>
+                        <div className="h-72 flex items-center justify-center text-sm text-[var(--color-text-muted)]">Memuat grafik...</div>
                     ) : rekap.length === 0 ? (
                         <div className="h-72 flex items-center justify-center text-sm text-[var(--color-text-muted)]">Belum ada data transaksi pada rentang ini.</div>
                     ) : (
@@ -379,7 +379,7 @@ export default function DashboardAdmin() {
                                         return <span style={{ color: 'var(--color-text-secondary)', fontSize: 12, marginRight: 14 }}>{label}</span>;
                                     }}
                                 />
-                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#C90000" strokeWidth={2.5} dot={{ r: 3.5, fill: '#C90000' }} activeDot={{ r: 6 }} />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#171717" strokeWidth={2.5} dot={{ r: 3.5, fill: '#171717' }} activeDot={{ r: 6 }} />
                                 <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#38bdf8" strokeWidth={2} strokeDasharray="4 3" dot={{ r: 3, fill: '#38bdf8' }} />
                                 <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#10b981" strokeWidth={2.5} dot={{ r: 3.5, fill: '#10b981' }} activeDot={{ r: 6 }} />
                             </LineChart>
@@ -397,10 +397,10 @@ export default function DashboardAdmin() {
                             <FileText size={18} />
                         </span>
                         <div>
-                            <h2 className="font-display font-bold text-lg text-[var(--color-text)] print:text-[var(--color-text)]">
+                            <h2 className="font-semibold text-lg text-[var(--color-text)] print:text-[var(--color-text)]">
                                 Tabel Laporan Harian
                             </h2>
-                            <p className="text-xs text-[var(--color-text-secondary)] font-mono print:text-[var(--color-text-muted)] mt-0.5">
+                            <p className="text-xs text-[var(--color-text-secondary)] print:text-[var(--color-text-muted)] mt-0.5">
                                 Periode: {periodeLabel}
                             </p>
                         </div>
@@ -420,7 +420,7 @@ export default function DashboardAdmin() {
                     className="no-print flex flex-wrap items-end gap-3 mb-6 pb-6 border-b border-[var(--color-border)]"
                 >
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-mono uppercase tracking-wider text-[var(--color-text-secondary)]" htmlFor="dari-date">Dari Tanggal</label>
+                        <label className="text-xs text-[var(--color-text-secondary)]" htmlFor="dari-date">Dari tanggal</label>
                         <input
                             id="dari-date"
                             type="date"
@@ -431,7 +431,7 @@ export default function DashboardAdmin() {
                         />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-mono uppercase tracking-wider text-[var(--color-text-secondary)]" htmlFor="sampai-date">Sampai Tanggal</label>
+                        <label className="text-xs text-[var(--color-text-secondary)]" htmlFor="sampai-date">Sampai tanggal</label>
                         <input
                             id="sampai-date"
                             type="date"
@@ -520,7 +520,7 @@ export default function DashboardAdmin() {
                         )}
                         {rekap.length > 0 && (
                             <tr className="bg-[var(--color-section)]/80 font-bold border-t border-[var(--color-border)]">
-                                <td className="px-5 py-3.5 font-mono text-xs text-[var(--color-text)]">TOTAL</td>
+                                <td className="px-5 py-3.5 font-mono text-xs text-[var(--color-text)]">Total</td>
                                 <td className="px-5 py-3.5 font-mono text-xs text-[var(--color-text)]">{totalTransaksi}</td>
                                 <td className="px-5 py-3.5 font-mono text-xs text-emerald-400">
                                     Rp {Number(totalPendapatan).toLocaleString('id-ID')}
@@ -534,7 +534,7 @@ export default function DashboardAdmin() {
 
             <Card className="p-6 no-print">
                 <div className="flex items-center gap-2.5 mb-4">
-                    <span className="w-8 h-8 rounded-lg bg-[#C90000]/10 text-[#C90000] flex items-center justify-center shrink-0">
+                    <span className="w-8 h-8 rounded-lg bg-[#171717]/10 text-[#171717] flex items-center justify-center shrink-0">
                         <Compass size={16} />
                     </span>
                     <h2 className="font-display text-lg text-[var(--color-text)]">
@@ -547,10 +547,10 @@ export default function DashboardAdmin() {
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     {[
-                        { label: 'Pengguna', icon: Users, accent: '#C90000' },
+                        { label: 'Pengguna', icon: Users, accent: '#171717' },
                         { label: 'Tarif', icon: Ticket, accent: '#35C48D' },
-                        { label: 'Area Parkir', icon: MapPin, accent: '#C90000' },
-                        { label: 'Kendaraan', icon: Car, accent: '#C90000' },
+                        { label: 'Area Parkir', icon: MapPin, accent: '#171717' },
+                        { label: 'Kendaraan', icon: Car, accent: '#171717' },
                     ].map(({ label, icon: Icon, accent }) => (
                         <div
                             key={label}
@@ -573,7 +573,7 @@ export default function DashboardAdmin() {
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak
                     </span>
-                    <span className="font-mono">SISTEM MANAJEMEN PARKIR</span>
+                    <span>Sistem manajemen parkir</span>
                 </div>
             </footer>
         </div>

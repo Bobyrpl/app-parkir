@@ -94,7 +94,7 @@ export default function AreaParkir() {
     return (
         <div>
             <PageHeader
-                eyebrow="DATA MASTER"
+                eyebrow="Data master"
                 title="Area Parkir"
                 description="Kelola zona parkir beserta kapasitasnya."
             />
@@ -136,7 +136,7 @@ export default function AreaParkir() {
                                 />
                             </div>
 
-                            {error && <p className="text-sm text-[#C90000]">{error}</p>}
+                            {error && <p className="text-sm text-[#171717]">{error}</p>}
 
                             <div className="flex gap-2 pt-2">
                                 <Button type="submit">{editId ? 'Simpan' : 'Tambah'}</Button>
