@@ -12,7 +12,7 @@ function Bintang({ jumlah }) {
                 <svg key={i} width="13" height="13" viewBox="0 0 20 20" aria-hidden="true">
                     <path
                         d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6L10 1z"
-                        fill={i <= jumlah ? '#FACC15' : 'var(--color-border)'}
+                        fill={i <= jumlah ? '#FACC15' : '#E5E5E5'}
                     />
                 </svg>
             ))}
@@ -50,10 +50,10 @@ function KomentarItem({ komentar, onSaved, onHapus }) {
             <div className="flex items-start justify-between gap-3 flex-wrap">
                 <div>
                     <div className="flex items-center gap-2">
-                        <p className="text-sm text-[var(--color-text)] font-medium">{komentar.nama}</p>
+                        <p className="text-sm text-neutral-900 font-medium">{komentar.nama}</p>
                         <Bintang jumlah={komentar.rating ?? 5} />
                     </div>
-                    <p className="text-xs text-[var(--color-text-secondary)] mt-0.5 font-mono">
+                    <p className="text-xs text-neutral-400 mt-0.5">
                         {new Date(komentar.created_at).toLocaleString('id-ID')}
                     </p>
                 </div>
@@ -61,17 +61,17 @@ function KomentarItem({ komentar, onSaved, onHapus }) {
                     <Badge tone={sudahDibalas ? 'success' : 'warning'}>
                         {sudahDibalas ? 'Sudah dibalas' : 'Belum dibalas'}
                     </Badge>
-                    <Button variant="danger" className="!px-3 !py-1.5 text-xs" onClick={() => onHapus(komentar)}>
+                    <Button variant="danger" size="sm" onClick={() => onHapus(komentar)}>
                         Hapus
                     </Button>
                 </div>
             </div>
 
-            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3">{komentar.teks}</p>
+            <p className="text-sm text-neutral-500 leading-relaxed mt-3">{komentar.teks}</p>
 
             <div className="mt-4">
-                <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
-                    BALASAN ADMIN
+                <label className="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-1.5">
+                    Balasan Admin
                 </label>
                 <textarea
                     value={balasan}
@@ -79,11 +79,11 @@ function KomentarItem({ komentar, onSaved, onHapus }) {
                     rows={2}
                     maxLength={1000}
                     placeholder="Tulis balasan untuk komentar ini..."
-                    className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717] focus:border-transparent resize-none"
+                    className="w-full rounded-xl bg-white border border-neutral-300 px-3 py-2 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900 resize-none transition-all"
                 />
                 <div className="flex items-center justify-end gap-2 mt-2">
                     {sudahDibalas && balasan.trim() === '' && (
-                        <span className="text-xs text-[#171717] mr-auto">
+                        <span className="text-xs text-rose-600 mr-auto">
                             Kosongkan lalu kirim untuk menghapus balasan.
                         </span>
                     )}
@@ -108,10 +108,10 @@ function FilterButton({ active, onClick, children }) {
     return (
         <button
             onClick={onClick}
-            className={`rounded-md px-3 py-1.5 text-xs font-mono transition-colors ${
+            className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                 active
-                    ? 'bg-[#171717] text-[var(--color-text)]'
-                    : 'bg-[var(--color-section)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]'
+                    ? 'bg-neutral-900 text-white'
+                    : 'bg-neutral-100 text-neutral-500 hover:bg-neutral-200'
             }`}
         >
             {children}
@@ -139,24 +139,24 @@ function Pagination({ halaman, totalHalaman, onGanti }) {
             <button
                 onClick={() => onGanti(halaman - 1)}
                 disabled={halaman === 1}
-                className="rounded-md px-3 py-1.5 text-xs font-mono bg-[var(--color-section)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)] disabled:opacity-40 disabled:hover:bg-[var(--color-section)] transition-colors"
+                className="rounded-full px-3 py-1.5 text-xs font-medium bg-neutral-100 text-neutral-500 hover:bg-neutral-200 disabled:opacity-40 disabled:hover:bg-neutral-100 transition-colors"
             >
                 Sebelumnya
             </button>
 
             {nomor.map((n, idx) =>
                 n === '...' ? (
-                    <span key={`dots-${idx}`} className="px-1.5 text-xs text-[var(--color-text-secondary)] font-mono">
+                    <span key={`dots-${idx}`} className="px-1.5 text-xs text-neutral-400">
                         …
                     </span>
                 ) : (
                     <button
                         key={n}
                         onClick={() => onGanti(n)}
-                        className={`min-w-[32px] rounded-md px-2.5 py-1.5 text-xs font-mono transition-colors ${
+                        className={`min-w-[32px] rounded-full px-2.5 py-1.5 text-xs font-medium transition-colors ${
                             n === halaman
-                                ? 'bg-[#171717] text-[var(--color-text)]'
-                                : 'bg-[var(--color-section)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]'
+                                ? 'bg-neutral-900 text-white'
+                                : 'bg-neutral-100 text-neutral-500 hover:bg-neutral-200'
                         }`}
                     >
                         {n}
@@ -167,7 +167,7 @@ function Pagination({ halaman, totalHalaman, onGanti }) {
             <button
                 onClick={() => onGanti(halaman + 1)}
                 disabled={halaman === totalHalaman}
-                className="rounded-md px-3 py-1.5 text-xs font-mono bg-[var(--color-section)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)] disabled:opacity-40 disabled:hover:bg-[var(--color-section)] transition-colors"
+                className="rounded-full px-3 py-1.5 text-xs font-medium bg-neutral-100 text-neutral-500 hover:bg-neutral-200 disabled:opacity-40 disabled:hover:bg-neutral-100 transition-colors"
             >
                 Berikutnya
             </button>
@@ -264,7 +264,7 @@ export default function Komentar() {
     return (
         <div>
             <PageHeader
-                eyebrow="Landing page"
+                eyebrow="LANDING PAGE"
                 title="Komentar Pengunjung"
                 description="Lihat dan balas komentar yang dikirim pengunjung lewat landing page."
             />
@@ -282,7 +282,7 @@ export default function Komentar() {
             </div>
 
             <div className="flex items-center gap-2 mb-5 flex-wrap">
-                <span className="text-xs font-mono text-[var(--color-text-secondary)]">RATING:</span>
+                <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Rating:</span>
                 <FilterButton active={filterRating === 'semua'} onClick={() => gantiFilterRating('semua')}>
                     Semua
                 </FilterButton>
@@ -300,17 +300,17 @@ export default function Komentar() {
                 ))}
             </div>
 
-            {loading && <p className="text-sm text-[var(--color-text-secondary)]">Memuat komentar...</p>}
+            {loading && <p className="text-sm text-neutral-500">Memuat komentar...</p>}
 
             {!loading && filtered.length === 0 && (
-                <Card className="p-6 text-center text-sm text-[var(--color-text-secondary)]">
+                <Card className="p-6 text-center text-sm text-neutral-500">
                     Tidak ada komentar untuk ditampilkan.
                 </Card>
             )}
 
             {!loading && filtered.length > 0 && (
                 <>
-                    <p className="text-xs text-[var(--color-text-secondary)] font-mono mb-3">
+                    <p className="text-xs text-neutral-400 mb-3">
                         Menampilkan {ditampilkan.length} dari {filtered.length} komentar
                         {totalHalaman > 1 && ` — halaman ${halamanAman} dari ${totalHalaman}`}
                     </p>
@@ -344,10 +344,10 @@ export default function Komentar() {
                 onCancel={() => setHapusTarget(null)}
             />
 
-            <footer className="border-t border-[var(--color-border)]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
+            <footer className="border-t border-neutral-200">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-neutral-400 text-center sm:text-left">
                     <span>© {new Date().getFullYear()} Parkir Pelabuhan Tanjung Perak</span>
-                    <span className="font-mono">SISTEM MANAJEMEN PARKIR</span>
+                    <span className="uppercase tracking-wide">Sistem Manajemen Parkir</span>
                 </div>
             </footer>
         </div>

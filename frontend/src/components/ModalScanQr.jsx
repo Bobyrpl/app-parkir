@@ -51,37 +51,37 @@ export default function ModalScanQr({ onDetected, onClose }) {
     }, []);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4 animate-in fade-in duration-200" onClick={onClose}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 animate-in fade-in duration-200" onClick={onClose}>
             <div
-                className="w-full max-w-sm rounded-3xl bg-zinc-900 border border-zinc-800 p-6 shadow-2xl animate-in zoom-in-95 duration-150"
+                className="w-full max-w-sm rounded-3xl bg-white border border-neutral-200 p-6 shadow-xl animate-in zoom-in-95 duration-150"
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="flex items-center justify-between pb-3 mb-4 border-b border-zinc-800">
-                    <div className="flex items-center gap-2 text-zinc-100">
-                        <ScanLine size={18} className="text-zinc-400" />
-                        <h3 className="font-display font-bold text-base">Pindai QR Booking</h3>
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-neutral-200">
+                    <div className="flex items-center gap-2 text-neutral-900">
+                        <ScanLine size={18} className="text-neutral-400" />
+                        <h3 className="font-semibold text-base">Pindai QR Booking</h3>
                     </div>
                     <button
                         onClick={onClose}
-                        className="text-zinc-400 hover:text-zinc-100 p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+                        className="text-neutral-400 hover:text-neutral-900 p-1 rounded-lg hover:bg-neutral-100 transition-colors"
                     >
                         <X size={16} />
                     </button>
                 </div>
 
                 {error ? (
-                    <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-start gap-2.5">
-                        <AlertCircle size={16} className="shrink-0 text-rose-400 mt-0.5" />
+                    <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 text-xs flex items-start gap-2.5">
+                        <AlertCircle size={16} className="shrink-0 text-rose-500 mt-0.5" />
                         <p className="leading-relaxed">{error}</p>
                     </div>
                 ) : (
-                    <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-black shadow-inner">
+                    <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-black">
                         <div id={REGION_ID} className="w-full aspect-square" />
                     </div>
                 )}
 
                 {!error && (
-                    <p className="text-xs text-zinc-400 text-center mt-3 font-mono">
+                    <p className="text-xs text-neutral-500 text-center mt-3">
                         Arahkan kamera ke tiket QR milik pelanggan.
                     </p>
                 )}

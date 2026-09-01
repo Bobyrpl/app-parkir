@@ -76,7 +76,7 @@ export default function LogAktivitas() {
         <div>
             <div className="flex items-center justify-between flex-wrap gap-3">
                 <PageHeader
-                    eyebrow="Audit"
+                    eyebrow="AUDIT"
                     title="Log Aktivitas"
                     description="Riwayat aktivitas seluruh pengguna sistem."
                 />
@@ -88,31 +88,31 @@ export default function LogAktivitas() {
             <Table columns={['Waktu', 'Pengguna', 'Role', 'Aktivitas']}>
                 {data.map((item) => (
                     <tr key={item.id_log}>
-                        <td className="px-4 py-3 font-mono text-xs whitespace-nowrap">
+                        <td className="px-4 py-3 text-xs whitespace-nowrap">
                             {new Date(item.waktu_aktivitas).toLocaleString('id-ID')}
                         </td>
                         <td className="px-4 py-3">{item.user?.nama_lengkap ?? '-'}</td>
                         <td className="px-4 py-3">
                             <Badge tone="neutral">{item.user?.role ?? '-'}</Badge>
                         </td>
-                        <td className="px-4 py-3 text-[var(--color-text-secondary)]">{item.aktivitas}</td>
+                        <td className="px-4 py-3 text-neutral-500">{item.aktivitas}</td>
                     </tr>
                 ))}
                 {data.length === 0 && (
                     <tr>
-                        <td colSpan={4} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
+                        <td colSpan={4} className="px-4 py-6 text-center text-neutral-500 text-sm">
                             Belum ada aktivitas tercatat.
                         </td>
                     </tr>
                 )}
             </Table>
-            <footer className="border-t border-[var(--color-border)]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
+            <footer className="border-t border-neutral-200">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-neutral-400 text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak
                     </span>
-                    <span className="font-mono">SISTEM MANAJEMEN PARKIR</span>
+                    <span className="uppercase tracking-wide">Sistem Manajemen Parkir</span>
                 </div>
             </footer>
         </div>

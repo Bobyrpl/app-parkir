@@ -142,13 +142,13 @@ export default function Tarif() {
     return (
         <div>
             <PageHeader
-                eyebrow="Data master"
+                eyebrow="DATA MASTER"
                 title="Tarif Parkir"
                 description="Atur tarif per jam untuk setiap jenis kendaraan."
             />
 
             <div className="flex items-center justify-between mb-4">
-                <h2 className="font-display text-base text-[var(--color-text)]">
+                <h2 className="font-semibold text-base text-neutral-900">
                     Daftar Tarif
                 </h2>
                 {!showForm && (
@@ -171,17 +171,17 @@ export default function Tarif() {
                     <Card className="p-5 md:col-span-1 h-fit md:sticky md:top-6">
                         <div className="flex items-center justify-between mb-5">
                             <div className="flex items-center gap-2">
-                                <span className="w-8 h-8 rounded-lg bg-[#171717]/10 text-[#171717] flex items-center justify-center shrink-0">
+                                <span className="w-8 h-8 rounded-lg bg-neutral-100 text-neutral-900 flex items-center justify-center shrink-0">
                                     {editId ? <Pencil size={15} /> : <Ticket size={15} />}
                                 </span>
-                                <h2 className="font-display text-base text-[var(--color-text)]">
+                                <h2 className="font-semibold text-base text-neutral-900">
                                     {editId ? "Edit Tarif" : "Tambah Tarif"}
                                 </h2>
                             </div>
                             <button
                                 type="button"
                                 onClick={handleCancel}
-                                className="w-7 h-7 rounded-md flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-section)] transition-colors shrink-0"
+                                className="w-7 h-7 rounded-md flex items-center justify-center text-neutral-400 hover:text-neutral-900 hover:bg-neutral-100 transition-colors shrink-0"
                                 aria-label="Tutup form"
                             >
                                 <X size={15} />
@@ -189,8 +189,8 @@ export default function Tarif() {
                         </div>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
-                                    JENIS KENDARAAN
+                                <label className="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-1.5">
+                                    Jenis Kendaraan
                                 </label>
                                 <select
                                     value={form.jenis_kendaraan}
@@ -200,7 +200,7 @@ export default function Tarif() {
                                             jenis_kendaraan: e.target.value,
                                         })
                                     }
-                                    className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717] transition-shadow"
+                                    className="w-full rounded-xl bg-white border border-neutral-300 px-3 py-2.5 text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900 transition-all"
                                 >
                                     <option value="motor">Motor</option>
                                     <option value="mobil">Mobil</option>
@@ -210,8 +210,8 @@ export default function Tarif() {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
-                                    TARIF PER JAM (Rp)
+                                <label className="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-1.5">
+                                    Tarif per Jam (Rp)
                                 </label>
                                 <Input
                                     type="number"
@@ -229,7 +229,7 @@ export default function Tarif() {
                             </div>
 
                             {error && (
-                                <p className="text-sm text-[#171717] bg-[#171717]/10 border border-[#171717]/20 rounded-md px-3 py-2">
+                                <p className="text-sm text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2">
                                     {error}
                                 </p>
                             )}
@@ -261,7 +261,7 @@ export default function Tarif() {
                             Array.from({ length: 4 }).map((_, i) => (
                                 <tr key={i}>
                                     <td className="px-4 py-3" colSpan={3}>
-                                        <div className="h-9 rounded-md bg-[var(--color-section)] animate-pulse" />
+                                        <div className="h-9 rounded-xl bg-neutral-100 animate-pulse" />
                                     </td>
                                 </tr>
                             ))}
@@ -272,7 +272,7 @@ export default function Tarif() {
                                 return (
                                     <tr
                                         key={item.id_tarif}
-                                        className="transition-colors hover:bg-[var(--color-section)]"
+                                        className="transition-colors hover:bg-neutral-50"
                                     >
                                         <td className="px-4 py-3 capitalize">
                                             <Badge
@@ -287,7 +287,7 @@ export default function Tarif() {
                                                 </span>
                                             </Badge>
                                         </td>
-                                        <td className="px-4 py-3 font-mono text-[var(--color-text)]">
+                                        <td className="px-4 py-3 text-neutral-900">
                                             Rp{" "}
                                             {Number(
                                                 item.tarif_per_jam,
@@ -322,8 +322,8 @@ export default function Tarif() {
                         {!loadingData && data.length === 0 && (
                             <tr>
                                 <td colSpan={3} className="px-4 py-14 text-center">
-                                    <div className="flex flex-col items-center gap-2.5 text-[var(--color-text-secondary)]">
-                                        <span className="w-11 h-11 rounded-full bg-[var(--color-section)] flex items-center justify-center">
+                                    <div className="flex flex-col items-center gap-2.5 text-neutral-500">
+                                        <span className="w-11 h-11 rounded-full bg-neutral-100 flex items-center justify-center">
                                             <Inbox size={18} />
                                         </span>
                                         <p className="text-sm">
@@ -347,13 +347,13 @@ export default function Tarif() {
                 onCancel={() => setHapusId(null)}
             />
 
-            <footer className="border-t border-[var(--color-border)]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
+            <footer className="border-t border-neutral-200">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-neutral-400 text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak
                     </span>
-                    <span className="font-mono">SISTEM MANAJEMEN PARKIR</span>
+                    <span className="uppercase tracking-wide">Sistem Manajemen Parkir</span>
                 </div>
             </footer>
         </div>

@@ -13,7 +13,7 @@ export default function StrukCard({ struk, onClose }) {
     }
 
     return (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 z-50 print:bg-white print:p-0 animate-in fade-in duration-200">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 sm:p-6 z-50 print:bg-white print:p-0 animate-in fade-in duration-200">
             {/* Saat print: sembunyikan semua elemen lain di halaman, tampilkan hanya #struk-print-area */}
             <style>{`
                 @media print {
@@ -31,24 +31,24 @@ export default function StrukCard({ struk, onClose }) {
             `}</style>
 
             <div className="relative w-full max-w-sm animate-in zoom-in-95 duration-150">
-                <div id="struk-print-area" className="bg-white text-zinc-900 rounded-3xl overflow-hidden shadow-2xl border border-zinc-200">
+                <div id="struk-print-area" className="bg-white text-neutral-900 rounded-3xl overflow-hidden shadow-xl border border-neutral-200">
                     <div
-                        className="h-2.5 w-full bg-zinc-950"
+                        className="h-2.5 w-full bg-neutral-900"
                     />
                     <div className="p-6 font-mono text-xs sm:text-sm">
                         <div className="text-center mb-4">
-                            <p className="font-semibold text-base text-zinc-900 tracking-tight">
-                                Sistem Parkir Pelabuhan
+                            <p className="font-semibold text-base text-neutral-900 tracking-tight">
+                                SISTEM PARKIR PELABUHAN
                             </p>
-                            <p className="text-xs font-medium text-zinc-500">
-                                Tanjung Perak Surabaya
+                            <p className="text-xs font-semibold text-neutral-500 uppercase">
+                                TANJUNG PERAK SURABAYA
                             </p>
-                            <p className="text-[11px] text-zinc-500 mt-1">
-                                No. Struk: <span className="font-bold text-zinc-800">{struk.no_struk}</span>
+                            <p className="text-[11px] text-neutral-400 mt-1">
+                                No. Struk: <span className="font-bold text-neutral-700">{struk.no_struk}</span>
                             </p>
                         </div>
 
-                        <div className="border-t border-dashed border-zinc-300 my-3" />
+                        <div className="border-t border-dashed border-neutral-300 my-3" />
 
                         <Row label="Plat Nomor" value={struk.plat_nomor} strong />
                         <Row label="Jenis Kendaraan" value={struk.jenis_kendaraan} />
@@ -58,22 +58,22 @@ export default function StrukCard({ struk, onClose }) {
                         <Row label="Durasi Parkir" value={`${struk.durasi_jam} jam`} />
                         <Row label="Tarif / Jam" value={formatRupiah(struk.tarif_per_jam)} />
 
-                        <div className="border-t border-dashed border-zinc-300 my-3" />
+                        <div className="border-t border-dashed border-neutral-300 my-3" />
 
                         <Row label="Biaya Parkir" value={formatRupiah(struk.biaya_parkir ?? struk.biaya_total)} />
                         {adaDenda && (
                             <Row label="Denda Keterlambatan" value={formatRupiah(struk.denda)} strong />
                         )}
 
-                        <div className="border-t border-dashed border-zinc-300 my-3" />
+                        <div className="border-t border-dashed border-neutral-300 my-3" />
 
                         <div className="flex justify-between items-baseline pt-1">
-                            <span className="text-xs font-semibold text-zinc-500">Total Bayar</span>
-                            <span className="font-semibold text-xl sm:text-2xl text-zinc-950">{formatRupiah(struk.biaya_total)}</span>
+                            <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">TOTAL BAYAR</span>
+                            <span className="font-bold text-xl sm:text-2xl text-neutral-900">{formatRupiah(struk.biaya_total)}</span>
                         </div>
 
-                        <p className="text-center text-[10px] text-zinc-500 mt-5 pt-3 border-t border-zinc-200">
-                            Petugas: <span className="font-medium text-zinc-700">{struk.petugas}</span> • Simpan struk ini sebagai bukti pembayaran sah.
+                        <p className="text-center text-[10px] text-neutral-400 mt-5 pt-3 border-t border-neutral-200">
+                            Petugas: <span className="font-medium text-neutral-600">{struk.petugas}</span> • Simpan struk ini sebagai bukti pembayaran sah.
                         </p>
                     </div>
                 </div>
@@ -83,7 +83,7 @@ export default function StrukCard({ struk, onClose }) {
                         variant="primary"
                         onClick={handleCetak}
                         icon={Printer}
-                        className="flex-1 shadow-lg"
+                        className="flex-1"
                     >
                         Cetak Struk
                     </Button>
@@ -104,8 +104,8 @@ export default function StrukCard({ struk, onClose }) {
 function Row({ label, value, strong }) {
     return (
         <div className="flex justify-between py-1">
-            <span className="text-zinc-600">{label}</span>
-            <span className={strong ? 'font-bold text-zinc-950' : 'text-zinc-800'}>{value}</span>
+            <span className="text-neutral-500">{label}</span>
+            <span className={strong ? 'font-bold text-neutral-900' : 'text-neutral-700'}>{value}</span>
         </div>
     );
 }

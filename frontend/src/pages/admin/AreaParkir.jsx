@@ -94,7 +94,7 @@ export default function AreaParkir() {
     return (
         <div>
             <PageHeader
-                eyebrow="Data master"
+                eyebrow="DATA MASTER"
                 title="Area Parkir"
                 description="Kelola zona parkir beserta kapasitasnya."
             />
@@ -108,13 +108,13 @@ export default function AreaParkir() {
             <div className={showForm ? 'grid md:grid-cols-3 gap-6' : ''}>
                 {showForm && (
                     <Card className="p-5 md:col-span-1 h-fit">
-                        <h2 className="font-display text-base text-[var(--color-text)] mb-4">
+                        <h2 className="font-semibold text-base text-neutral-900 mb-4">
                             {editId ? 'Edit Area' : 'Tambah Area'}
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-3">
                             <div>
-                                <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
-                                    NAMA AREA
+                                <label className="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-1.5">
+                                    Nama Area
                                 </label>
                                 <Input
                                     value={form.nama_area}
@@ -124,8 +124,8 @@ export default function AreaParkir() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
-                                    KAPASITAS
+                                <label className="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-1.5">
+                                    Kapasitas
                                 </label>
                                 <Input
                                     type="number"
@@ -136,7 +136,7 @@ export default function AreaParkir() {
                                 />
                             </div>
 
-                            {error && <p className="text-sm text-[#171717]">{error}</p>}
+                            {error && <p className="text-sm text-rose-600">{error}</p>}
 
                             <div className="flex gap-2 pt-2">
                                 <Button type="submit">{editId ? 'Simpan' : 'Tambah'}</Button>
@@ -153,8 +153,8 @@ export default function AreaParkir() {
                         {data.map((item) => (
                             <tr key={item.id_area}>
                                 <td className="px-4 py-3">{item.nama_area}</td>
-                                <td className="px-4 py-3 font-mono">{item.kapasitas}</td>
-                                <td className="px-4 py-3 font-mono">{item.terisi}</td>
+                                <td className="px-4 py-3">{item.kapasitas}</td>
+                                <td className="px-4 py-3">{item.terisi}</td>
                                 <td className="px-4 py-3">
                                     {item.terisi >= item.kapasitas ? (
                                         <Badge tone="danger">Penuh</Badge>
@@ -172,7 +172,7 @@ export default function AreaParkir() {
                         ))}
                         {data.length === 0 && (
                             <tr>
-                                <td colSpan={5} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
+                                <td colSpan={5} className="px-4 py-6 text-center text-neutral-500 text-sm">
                                     Belum ada area parkir.
                                 </td>
                             </tr>
@@ -191,13 +191,13 @@ export default function AreaParkir() {
                 onCancel={() => setHapusId(null)}
             />
 
-            <footer className="border-t border-[var(--color-border)]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
+            <footer className="border-t border-neutral-200">
+                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-neutral-400 text-center sm:text-left">
                     <span>
                         © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
                         Perak
                     </span>
-                    <span className="font-mono">SISTEM MANAJEMEN PARKIR</span>
+                    <span className="uppercase tracking-wide">Sistem Manajemen Parkir</span>
                 </div>
             </footer>
         </div>

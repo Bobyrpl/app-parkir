@@ -2,9 +2,6 @@ import { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
-import { useTheme, BRAND_ACCENT } from "../context/ThemeContext";
-import { THEME_LABELS } from "../config/theme.config";
-import { Sun, Moon } from "lucide-react";
 import { ConfirmDialog } from "./ui";
 
 /* Ikon garis tipis (24x24, stroke) — satu per menu, biar tiap item mudah dikenali sekilas */
@@ -140,7 +137,7 @@ function ProfileAvatar() {
       onClick={pilihFile}
       disabled={uploading}
       title="Ganti foto profil"
-      className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden bg-[var(--color-card)] text-[var(--color-text)] text-xs font-semibold border border-[var(--color-border)] hover:border-[var(--color-text-secondary)] transition-colors disabled:cursor-wait shadow-sm"
+      className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full overflow-hidden bg-neutral-100 text-neutral-900 text-xs font-semibold border border-neutral-200 hover:border-neutral-400 transition-colors disabled:cursor-wait"
     >
       {user?.foto_profil_url ? (
         <img
@@ -160,7 +157,7 @@ function ProfileAvatar() {
       >
         {uploading ? (
           <svg
-            className="h-4 w-4 animate-spin text-[var(--color-text)]"
+            className="h-4 w-4 animate-spin text-white"
             viewBox="0 0 24 24"
             fill="none"
           >
@@ -216,7 +213,6 @@ export default function Layout({ children }) {
   const [collapsed, setCollapsed] = useState(
     () => localStorage.getItem("sidebarCollapsed") === "1",
   );
-  const { themeVars, isDark, toggleTheme } = useTheme();
 
   function toggleCollapsed() {
     setCollapsed((prev) => {
@@ -232,22 +228,19 @@ export default function Layout({ children }) {
   }
 
   return (
-    <div
-      style={themeVars}
-      className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] flex flex-col md:flex-row antialiased transition-colors duration-300"
-    >
+    <div className="min-h-screen bg-white text-neutral-900 flex flex-col md:flex-row antialiased font-sans">
       {/* Overlay gelap di belakang sidebar saat dibuka di mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm md:hidden animate-in fade-in duration-200"
+          className="fixed inset-0 z-40 bg-black/50 md:hidden animate-in fade-in duration-200"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar: off-canvas di mobile, statis + bisa dikecilkan di layar md ke atas */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 shrink-0 bg-[var(--color-card)]/95 backdrop-blur-md border-r border-[var(--color-border)] flex flex-col
-                shadow-2xl shadow-black/50
+        className={`fixed inset-y-0 left-0 z-50 shrink-0 bg-white border-r border-neutral-200 flex flex-col
+                shadow-xl shadow-neutral-200/60
                 transition-[transform,width] duration-300 ease-in-out
                 md:static md:translate-x-0 md:shadow-none
                 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
@@ -257,7 +250,7 @@ export default function Layout({ children }) {
         <button
           onClick={toggleCollapsed}
           title={collapsed ? "Lebarkan menu" : "Kecilkan menu"}
-          className="hidden md:flex absolute -right-3.5 top-7 z-10 h-7 w-7 items-center justify-center rounded-full bg-[var(--color-bg)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-card)] transition-all shadow-md"
+          className="hidden md:flex absolute -right-3.5 top-7 z-10 h-7 w-7 items-center justify-center rounded-full bg-white border border-neutral-200 text-neutral-400 hover:text-neutral-900 hover:bg-neutral-50 transition-all shadow-sm"
         >
           <svg
             viewBox="0 0 24 24"
@@ -276,7 +269,7 @@ export default function Layout({ children }) {
 
         {/* Brand */}
         <div
-          className={`px-5 py-5 border-b border-[var(--color-border)] flex items-center ${
+          className={`px-5 py-5 border-b border-neutral-200 flex items-center ${
             collapsed ? "md:justify-center md:px-0" : "justify-between"
           }`}
         >
@@ -286,13 +279,13 @@ export default function Layout({ children }) {
             <img
               src="/images/logo.png"
               alt="Logo ParkirKu"
-              className="h-8 w-8 object-contain rounded-lg shrink-0 drop-shadow"
+              className="h-8 w-8 object-contain rounded-lg shrink-0"
             />
             <div className={`min-w-0 ${collapsed ? "md:hidden" : ""}`}>
-              <p className="font-display font-bold text-sm text-[var(--color-text)] leading-tight truncate">
+              <p className="font-semibold text-sm text-neutral-900 leading-tight truncate">
                 ParkirKu
               </p>
-              <p className="text-[11px] leading-none text-[var(--color-text-secondary)] mt-0.5 truncate">
+              <p className="text-[10px] leading-none text-neutral-400 tracking-wide uppercase mt-0.5 truncate">
                 Pelabuhan Tanjung Perak
               </p>
             </div>
@@ -300,7 +293,7 @@ export default function Layout({ children }) {
           {/* Tombol tutup, hanya tampil di mobile */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="md:hidden text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-card)] rounded-lg p-1.5 transition-colors shrink-0"
+            className="md:hidden text-neutral-400 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg p-1.5 transition-colors shrink-0"
             aria-label="Tutup menu"
           >
             <svg
@@ -323,7 +316,7 @@ export default function Layout({ children }) {
         {/* Menu */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto overflow-x-hidden">
           <p
-            className={`px-3 pb-2 text-xs font-medium text-[var(--color-text-muted)] ${
+            className={`px-3 pb-2 text-[10px] font-semibold tracking-widest uppercase text-neutral-400 ${
               collapsed ? "md:hidden" : ""
             }`}
           >
@@ -341,8 +334,8 @@ export default function Layout({ children }) {
                   collapsed ? "md:justify-center md:px-2" : ""
                 } ${
                   isActive
-                    ? "bg-[var(--color-button-bg)] text-[var(--color-button-text)] font-semibold shadow-md shadow-black/20"
-                    : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg)]/80 hover:text-[var(--color-text)]"
+                    ? "bg-neutral-900 text-white font-medium"
+                    : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"
                 }`
               }
             >
@@ -351,7 +344,7 @@ export default function Layout({ children }) {
                   <Icon
                     name={item.icon}
                     className={`h-[18px] w-[18px] shrink-0 transition-transform group-hover:scale-105 ${
-                      isActive ? "text-[var(--color-button-text)]" : "text-[var(--color-text-secondary)] group-hover:text-[var(--color-text)]"
+                      isActive ? "text-white" : "text-neutral-400 group-hover:text-neutral-900"
                     }`}
                   />
                   <span className={`truncate ${collapsed ? "md:hidden" : ""}`}>
@@ -364,18 +357,18 @@ export default function Layout({ children }) {
         </nav>
 
         {/* Profil & keluar */}
-        <div className="p-3 border-t border-[var(--color-border)] space-y-2 bg-[var(--color-card)]/50">
+        <div className="p-3 border-t border-neutral-200 space-y-2 bg-neutral-50">
           <div
-            className={`flex items-center gap-3 p-2 rounded-xl bg-[var(--color-bg)]/50 border border-[var(--color-border)] ${
+            className={`flex items-center gap-3 p-2 rounded-xl bg-white border border-neutral-200 ${
               collapsed ? "md:justify-center md:p-1.5" : ""
             }`}
           >
             <ProfileAvatar />
             <div className={`min-w-0 ${collapsed ? "md:hidden" : ""}`}>
-              <p className="text-xs font-semibold text-[var(--color-text)] truncate leading-tight">
+              <p className="text-xs font-semibold text-neutral-900 truncate leading-tight">
                 {user?.nama_lengkap}
               </p>
-              <p className="text-[11px] text-[var(--color-text-secondary)] truncate mt-0.5">
+              <p className="text-[11px] text-neutral-500 truncate mt-0.5">
                 {ROLE_LABEL[user?.role]}
               </p>
             </div>
@@ -384,7 +377,7 @@ export default function Layout({ children }) {
           <button
             onClick={() => setShowLogoutConfirm(true)}
             title={collapsed ? "Keluar" : undefined}
-            className={`w-full flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-medium text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-all ${
+            className={`w-full flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 transition-all ${
               collapsed ? "md:justify-center md:px-2" : ""
             }`}
           >
@@ -407,13 +400,13 @@ export default function Layout({ children }) {
       </aside>
 
       {/* Konten Utama */}
-      <main className="flex-1 overflow-y-auto min-w-0 bg-[var(--color-bg)] flex flex-col">
+      <main className="flex-1 overflow-y-auto min-w-0 bg-white flex flex-col">
         {/* Header mobile dengan tombol hamburger */}
-        <div className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)] bg-[var(--color-card)]/90 backdrop-blur-md">
+        <div className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 py-3 border-b border-neutral-200 bg-white/95 backdrop-blur-sm">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-card)] rounded-lg p-2 transition-colors"
+              className="text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg p-2 transition-colors"
               aria-label="Buka menu"
             >
               <svg
@@ -437,47 +430,24 @@ export default function Layout({ children }) {
                 alt="Logo ParkirKu"
                 className="h-6 w-6 object-contain rounded"
               />
-              <span className="font-display font-bold text-sm text-[var(--color-text)]">
+              <span className="font-semibold text-sm text-neutral-900">
                 ParkirKu
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              title={isDark ? THEME_LABELS.dark.title : THEME_LABELS.light.title}
-              aria-label={isDark ? THEME_LABELS.dark.ariaLabel : THEME_LABELS.light.ariaLabel}
-              className="h-8 w-8 flex items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors"
-              style={{ "--tw-ring-color": BRAND_ACCENT }}
-            >
-              {isDark ? <Sun size={15} /> : <Moon size={15} />}
-            </button>
-            <div className="flex items-center gap-1.5 text-xs text-[var(--color-text-secondary)] bg-[var(--color-bg)] border border-[var(--color-border)] px-2.5 py-1 rounded-full">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              <span>Online</span>
-            </div>
+          <div className="flex items-center gap-1.5 text-xs text-neutral-500 bg-neutral-50 border border-neutral-200 px-2.5 py-1 rounded-full">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <span>Online</span>
           </div>
         </div>
 
         {/* Top subtle highlight banner */}
-        <div className="hidden md:flex items-center justify-between px-8 py-3 border-b border-[var(--color-border)] bg-[var(--color-card)]/50 backdrop-blur-sm text-xs text-[var(--color-text-muted)]">
+        <div className="hidden md:flex items-center justify-between px-8 py-3 border-b border-neutral-200 bg-neutral-50 text-xs text-neutral-400">
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            <span>Sistem parkir Pelabuhan Tanjung Perak</span>
+            <span className="tracking-wide uppercase">Sistem Parkir Pelabuhan Tanjung Perak</span>
           </div>
-          <div className="flex items-center gap-4">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              title={isDark ? THEME_LABELS.dark.title : THEME_LABELS.light.title}
-              aria-label={isDark ? THEME_LABELS.dark.ariaLabel : THEME_LABELS.light.ariaLabel}
-              className="h-7 w-7 flex items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors"
-            >
-              {isDark ? <Sun size={13} /> : <Moon size={13} />}
-            </button>
-            <span className="text-[var(--color-text-secondary)]">Portal {ROLE_LABEL[user?.role]}</span>
-          </div>
+          <span className="text-neutral-500">Portal {ROLE_LABEL[user?.role]}</span>
         </div>
 
         {/* Content Container */}
