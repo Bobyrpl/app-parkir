@@ -791,7 +791,7 @@ export default function Landing() {
             ))}
           </div>
           {statistikIlustrasi && (
-            <p className="text-xs text-neutral-400 italic mt-8">
+            <p className="text-xs text-neutral-400 italic mt-8-">
               *Angka di atas adalah contoh tampilan dan akan otomatis mengikuti
               data asli saat sistem berjalan.
             </p>
