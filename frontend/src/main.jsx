@@ -20,13 +20,13 @@ class ErrorBoundary extends Component {
     render() {
         if (this.state.error) {
             return (
-                <div className="min-h-screen bg-[#080A0D] flex items-center justify-center px-6">
-                    <div className="w-full max-w-md rounded-xl bg-[#080A0D] border border-[#444444] p-8 text-center">
-                        <div className="mx-auto mb-5 w-14 h-14 rounded-full bg-[#C90000]/15 flex items-center justify-center">
-                            <AlertTriangle size={26} strokeWidth={2} className="text-[#C90000]" />
+                <div className="min-h-screen bg-[#ffffff] flex items-center justify-center px-6">
+                    <div className="w-full max-w-md rounded-xl bg-[#424242] border border-[#444444] p-8 text-center">
+                        <div className="mx-auto mb-5 w-14 h-14 rounded-full bg-[#ffffff]/15 flex items-center justify-center">
+                            <AlertTriangle size={26} strokeWidth={2} className="text-[#c9ae00]" />
                         </div>
 
-                        <p className="text-xs font-mono text-[#C90000] tracking-wider mb-2">
+                        <p className="text-xs font-mono text-[#ffee03] tracking-wider mb-2">
                             ERROR
                         </p>
                         <h1 className="font-display text-xl text-white mb-2">
@@ -38,7 +38,7 @@ class ErrorBoundary extends Component {
 
                         <button
                             onClick={() => window.location.reload()}
-                            className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-[#C90000] text-white text-sm font-medium px-4 py-2.5 hover:bg-[#5A0000] transition-colors"
+                            className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-[#0379ff] text-white text-sm font-medium px-4 py-2.5 hover:bg-[#1500fc] transition-colors"
                         >
                             <RotateCcw size={16} strokeWidth={2} />
                             Muat Ulang Halaman

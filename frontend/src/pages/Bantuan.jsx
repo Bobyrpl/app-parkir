@@ -23,6 +23,15 @@ import { useToast } from "../context/ToastContext";
 
 const BRAND_NAME = "ParkirKu";
 const BRAND_LOCATION = "Pelabuhan Tanjung Perak";
+const BRAND_ADDRESS = "Pelabuhan Tanjung Perak, Surabaya, Jawa Timur";
+const WHATSAPP_URL =
+    "https://wa.me/6285728035284?text=Halo%20Admin%2C%20saya%20butuh%20bantuan%20terkait%20ParkirKu";
+
+// Tujuan tombol CTA di footer + label-nya.
+// Sesuaikan navPath/navLabel ini jika sudah ada logic auth (mis. arahkan ke
+// dashboard sesuai role bila user sudah login, atau ke /login bila belum).
+const navPath = "/login";
+const navLabel = "Masuk ke Portal";
 
 const FAQ = [
     {
@@ -65,7 +74,7 @@ const KONTAK = [
         icon: MessageCircle,
         label: "WhatsApp Admin",
         value: "0857-2803-5284",
-        href: "https://wa.me/6285728035284?text=Halo%20Admin%2C%20saya%20butuh%20bantuan%20terkait%20ParkirKu",
+        href: WHATSAPP_URL,
         action: "Chat sekarang",
         meta: "Respons tercepat, jam operasional",
     },
@@ -161,11 +170,6 @@ export default function Bantuan() {
                     </Link>
 
                     <Link to="/" className="flex items-center gap-2.5 shrink-0">
-                        <img
-                            src="/images/logo.png"
-                            alt="Logo ParkirKu"
-                            className="h-7 w-7 object-contain rounded"
-                        />
                         <span className="font-semibold text-sm tracking-tight text-neutral-900">
                             {BRAND_NAME}
                         </span>
@@ -480,12 +484,114 @@ export default function Bantuan() {
                 </div>
             </section>
 
-            <footer className="border-t border-neutral-200 mt-auto">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-neutral-500">
-                    <p>
-                        © {new Date().getFullYear()} {BRAND_NAME} • {BRAND_LOCATION}
-                    </p>
-                    <p className="text-neutral-400">Sistem parkir elektronik terpadu</p>
+            {/* ================= Footer ================= */}
+            <footer className="bg-neutral-900 text-white pt-20 pb-8">
+                <div className="max-w-7xl mx-auto px-6 md:px-12">
+                    {/* Top: CTA strip */}
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pb-16 border-b border-white/10">
+                        <div className="max-w-lg">
+                            <h3 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+                                Siap mengelola parkir lebih rapi?
+                            </h3>
+                            <p className="text-neutral-400 leading-relaxed">
+                                Masuk ke portal Admin, Petugas, atau Owner dan mulai pantau
+                                transaksi hari ini.
+                            </p>
+                        </div>
+                        <Link
+                            to={navPath}
+                            className="shrink-0 bg-white text-neutral-900 hover:bg-neutral-200 px-8 py-4 rounded-full font-medium transition-colors active:scale-95"
+                        >
+                            {navLabel}
+                        </Link>
+                    </div>
+
+                    {/* Middle: Link columns */}
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-16">
+                        <div className="col-span-2 md:col-span-2">
+                            <div className="text-2xl font-semibold tracking-tight mb-4">
+                                Pelabuhan <span className="text-[#C90000]">Tanjung </span> perak
+                            </div>
+                            <p className="text-sm text-neutral-400 leading-relaxed max-w-xs mb-6">
+                                Sistem manajemen parkir terpadu untuk Admin, Petugas, dan Owner.
+                            </p>
+                            <div className="flex items-start gap-2 max-w-xs mb-4">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="shrink-0 mt-0.5 text-[#C90000]" aria-hidden="true">
+                                    <path
+                                        d="M12 21s-7-6.1-7-11a7 7 0 1114 0c0 4.9-7 11-7 11z"
+                                        stroke="currentColor"
+                                        strokeWidth="1.75"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                    <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.75" />
+                                </svg>
+                                <p className="text-xs text-neutral-400 leading-relaxed">{BRAND_ADDRESS}</p>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <img
+                                    src="/images/logo-smkn1sanden.png"
+                                    alt="Logo SMK Negeri 1 Sanden"
+                                    className="h-9 w-9 shrink-0 object-contain"
+                                />
+                                <div className="leading-tight">
+                                    <p className="text-xs text-neutral-400">Dikembangkan oleh siswa</p>
+                                    <p className="text-xs font-medium text-white">SMK Negeri 1 Sanden, Bantul</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-semibold mb-4 text-white">Halaman</h4>
+                            <ul className="space-y-3 text-sm text-neutral-400">
+                                <li>
+                                    <a href="#fitur" className="hover:text-white transition-colors">Fitur</a>
+                                </li>
+                                <li>
+                                    <a href="#informasi" className="hover:text-white transition-colors">Informasi</a>
+                                </li>
+                                <li>
+                                    <a href="#testimoni" className="hover:text-white transition-colors">Testimoni</a>
+                                </li>
+                                <li>
+                                    <a href="#komentar" className="hover:text-white transition-colors">Komentar</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-semibold mb-4 text-white">Portal</h4>
+                            <ul className="space-y-3 text-sm text-neutral-400">
+                                <li>
+                                    <Link to="/admin" className="hover:text-white transition-colors">Admin</Link>
+                                </li>
+                                <li>
+                                    <Link to="/petugas" className="hover:text-white transition-colors">Petugas</Link>
+                                </li>
+                                <li>
+                                    <Link to="/owner" className="hover:text-white transition-colors">Owner</Link>
+                                </li>
+                                <li>
+                                    <Link to="/bantuan" className="hover:text-white transition-colors">Bantuan</Link>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-sm font-semibold mb-4 text-white">Kontak</h4>
+                            <ul className="space-y-3 text-sm text-neutral-400">
+                                <li>
+                                    <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
+                                        WhatsApp Admin
+                                    </a>
+                                </li>
+                                <li>{BRAND_LOCATION}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Bottom bar */}
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/10 text-sm text-neutral-500">
+                        <p>© {new Date().getFullYear()} ParkirKu. Seluruh hak cipta dilindungi.</p>
+                        <p className="text-xs text-neutral-500">Dibuat oleh {BRAND_NAME}</p>
+                    </div>
                 </div>
             </footer>
         </div>

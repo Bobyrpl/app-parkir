@@ -14,7 +14,6 @@ import {
 const WHATSAPP_URL = "https://wa.me/6285728035284";
 const BRAND_NAME = "Abdulloh Mahbuby, XII RPL I";
 const BRAND_LOCATION = "Pelabuhan Tanjung Perak";
-// TODO: ganti dengan alamat lengkap yang sebenarnya.
 const BRAND_ADDRESS = 
   "Jl. Perak Timur, Pelabuhan Tanjung Perak, Surabaya, Jawa Timur";
 
