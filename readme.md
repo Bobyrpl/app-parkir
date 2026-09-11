@@ -23,9 +23,9 @@ Mencatat kendaraan masuk/keluar, booking slot parkir, dan transaksi pembayaran Q
 
 ## 🌐 Live Demo
 
-| Bagian                    | Link                                                                              |
-| ------------------------- | --------------------------------------------------------------------------------- |
-| **Frontend (React)**      | [app-parkir.vercel.app](https://app-parkir.vercel.app)                            |
+| Bagian                    | Link                                                                         |
+| ------------------------- | ---------------------------------------------------------------------------- |
+| **Frontend (React)**      | [app-parkir.vercel.app](https://app-parkir.vercel.app)                       |
 | **Backend API (Laravel)** | [Rilway-backend](https://backend-apk-parkir-production-ec0c.up.railway.app/) |
 
 ## 📋 Tentang Proyek
@@ -283,6 +283,10 @@ Proyek ini dibuat untuk keperluan Uji Kompetensi Keahlian (UKK). Saran dan masuk
 Proyek ini dibuat untuk tujuan pembelajaran/tugas sekolah — silakan sesuaikan lisensi (mis. [MIT](https://opensource.org/licenses/MIT)) sesuai kebutuhan.
 
 ---
+
+## DEsain app parkir
+
+[!canva](https://www.canva.com/design/DAHQKkzuc4M/ABVykNbpNdk1RGKh8DtNWA/edit)
 
 ## 👤 Penulis
 
