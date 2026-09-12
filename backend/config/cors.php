@@ -31,7 +31,7 @@ return [
     // FRONTEND_URL di-set lewat env var Railway untuk production.
     'allowed_origins' => [
         'http://localhost:5173',
-        env('FRONTEND_URL', 'https://app-parkir.vercel.app'),
+        env('FRONTEND_URL', 'https://app-parkir.vercel.app/'),
     ],
 
     'allowed_origins_patterns' => [],
