@@ -42,7 +42,7 @@ export default function Login() {
                 {/* Panel kiri - identitas sistem, gaya gelap seperti footer landing page */}
                 <div className="relative hidden md:flex flex-col items-center justify-center text-center bg-neutral-900 text-white p-10">
                     <img
-                        src="/images/logo.png"
+                        src="/parkir_pelabuhan_tanjung_perak.png"
                         alt="Logo ParkirKu"
                         className="h-16 w-16 object-contain rounded-2xl mb-6 border border-white/10"
                     />
