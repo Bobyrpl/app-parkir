@@ -496,7 +496,7 @@ export default function DashboardAdmin() {
                                         content={<RevenueTooltip />}
                                         cursor={{ fill: 'rgba(0,0,0,0.03)' }}
                                     />
-                                    <Bar yAxisId="left" dataKey="pendapatan" stackId="rekap" radius={[6, 6, 0, 0]} barSize={28}>
+                                    <Bar yAxisId="left" dataKey="pendapatan" radius={[6, 6, 0, 0]} barSize={28}>
                                         {rekap.map((d, i) => (
                                             <Cell
                                                 key={i}
@@ -516,12 +516,11 @@ export default function DashboardAdmin() {
                                     />
                                     {hasJumlahUser && (
                                         <Bar
-                                            yAxisId="left"
+                                            yAxisId="right"
                                             dataKey="jumlah_user"
-                                            stackId="rekap"
                                             fill="#3b82f6"
                                             radius={[6, 6, 0, 0]}
-                                            barSize={28}
+                                            barSize={12}
                                         />
                                     )}
                                 </ComposedChart>
