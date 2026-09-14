@@ -15,6 +15,45 @@ import {
     Wallet, Receipt,
 } from 'lucide-react';
 
+function RevenueTooltip({ active, payload, label }) {
+    if (!active || !payload || payload.length === 0) return null;
+    const d = payload[0].payload;
+    return (
+        <div className="bg-white border border-neutral-200 rounded-xl px-3.5 py-3 shadow-lg text-xs min-w-[170px]">
+            <p className="font-semibold text-neutral-900 mb-2">{label}</p>
+            <div className="flex items-center justify-between gap-4 mb-1">
+                <span className="flex items-center gap-1.5 text-neutral-500">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                    Pendapatan
+                </span>
+                <span className="font-semibold text-neutral-900">
+                    Rp {Number(d.pendapatan || 0).toLocaleString('id-ID')}
+                </span>
+            </div>
+            <div className="flex items-center justify-between gap-4 mb-1">
+                <span className="flex items-center gap-1.5 text-neutral-500">
+                    <span className="w-2 h-2 rounded-full bg-neutral-900" />
+                    Transaksi
+                </span>
+                <span className="font-semibold text-neutral-900">
+                    {Number(d.jumlah_transaksi || 0).toLocaleString('id-ID')}
+                </span>
+            </div>
+            {d.jumlah_user !== undefined && (
+                <div className="flex items-center justify-between gap-4">
+                    <span className="flex items-center gap-1.5 text-neutral-500">
+                        <span className="w-2 h-2 rounded-full bg-blue-500" />
+                        Pelanggan Baru
+                    </span>
+                    <span className="font-semibold text-neutral-900">
+                        {Number(d.jumlah_user || 0).toLocaleString('id-ID')}
+                    </span>
+                </div>
+            )}
+        </div>
+    );
+}
+
 function toDateInputValue(date) {
     return date.toISOString().slice(0, 10);
 }
@@ -434,9 +473,8 @@ export default function DashboardAdmin() {
                                         tickFormatter={(value) => `${(value / 1000).toLocaleString('id-ID')}rb`}
                                     />
                                     <Tooltip
-                                        contentStyle={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
-                                        labelStyle={{ color: '#171717', fontWeight: 600 }}
-                                        formatter={(value) => [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Pendapatan']}
+                                        content={<RevenueTooltip />}
+                                        cursor={{ fill: 'rgba(0,0,0,0.03)' }}
                                     />
                                     <Bar dataKey="pendapatan" radius={[6, 6, 0, 0]} barSize={28}>
                                         {rekap.map((d, i) => (
