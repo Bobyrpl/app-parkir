@@ -205,9 +205,9 @@ function ProfileAvatar() {
 }
 
 /* Bottom nav mobile: maksimal 4 menu utama tampil sebagai tab,
-   sisanya (kalau ada) + profil/keluar dibuka lewat tab "Menu"
-   yang memicu sidebar off-canvas yang sama dengan tombol hamburger. */
-function MobileBottomNav({ menu, onOpenMenu }) {
+   sisanya (kalau ada) dibuka lewat tab "Menu" yang memunculkan
+   bottom sheet sendiri (bukan sidebar kiri). */
+function MobileBottomNav({ menu, moreOpen, onToggleMore }) {
   const tabs = menu.slice(0, 4);
   const hasMore = menu.length > tabs.length;
 
@@ -221,25 +221,26 @@ function MobileBottomNav({ menu, onOpenMenu }) {
           key={item.to}
           to={item.to}
           end={item.end}
+          onClick={() => onToggleMore(false)}
           className="flex flex-col items-center justify-center gap-0.5 min-w-0 flex-1 py-1"
         >
           {({ isActive }) => (
             <>
               <span
                 className={`flex items-center justify-center h-7 w-7 rounded-full transition-colors ${
-                  isActive ? "bg-neutral-900" : "bg-transparent"
+                  isActive && !moreOpen ? "bg-neutral-900" : "bg-transparent"
                 }`}
               >
                 <Icon
                   name={item.icon}
                   className={`h-[18px] w-[18px] shrink-0 ${
-                    isActive ? "text-white" : "text-neutral-400"
+                    isActive && !moreOpen ? "text-white" : "text-neutral-400"
                   }`}
                 />
               </span>
               <span
                 className={`text-[10px] leading-none truncate max-w-full px-1 ${
-                  isActive ? "text-neutral-900 font-semibold" : "text-neutral-500"
+                  isActive && !moreOpen ? "text-neutral-900 font-semibold" : "text-neutral-500"
                 }`}
               >
                 {item.label}
@@ -252,16 +253,20 @@ function MobileBottomNav({ menu, onOpenMenu }) {
       {hasMore && (
         <button
           type="button"
-          onClick={onOpenMenu}
-          className="flex flex-col items-center justify-center gap-0.5 min-w-0 flex-1 py-1 text-neutral-500"
+          onClick={() => onToggleMore((prev) => !prev)}
+          className="flex flex-col items-center justify-center gap-0.5 min-w-0 flex-1 py-1"
         >
-          <span className="flex items-center justify-center h-7 w-7 rounded-full">
+          <span
+            className={`flex items-center justify-center h-7 w-7 rounded-full transition-colors ${
+              moreOpen ? "bg-neutral-900" : "bg-transparent"
+            }`}
+          >
             <svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.75"
-              className="h-[18px] w-[18px] text-neutral-400"
+              className={`h-[18px] w-[18px] ${moreOpen ? "text-white" : "text-neutral-400"}`}
             >
               <path
                 strokeLinecap="round"
@@ -270,10 +275,108 @@ function MobileBottomNav({ menu, onOpenMenu }) {
               />
             </svg>
           </span>
-          <span className="text-[10px] leading-none">Menu</span>
+          <span
+            className={`text-[10px] leading-none ${
+              moreOpen ? "text-neutral-900 font-semibold" : "text-neutral-500"
+            }`}
+          >
+            Menu
+          </span>
         </button>
       )}
     </nav>
+  );
+}
+
+/* Bottom sheet berisi menu sisa (yang tidak kebagian slot di bottom nav)
+   + profil singkat & tombol keluar. Muncul di atas bottom nav saat tab
+   "Menu" dipencet, murni komponen mobile — tidak menyentuh sidebar kiri. */
+function MobileMoreSheet({ open, onClose, moreItems, user, roleLabel, onLogoutClick }) {
+  if (!open) return null;
+
+  return (
+    <>
+      <div
+        className="md:hidden fixed inset-0 z-40 bg-black/40 animate-in fade-in duration-150"
+        onClick={onClose}
+      />
+      <div
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl border-t border-neutral-200 shadow-2xl max-h-[70vh] overflow-y-auto"
+        style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+      >
+        <div className="flex justify-center pt-2.5 pb-1">
+          <span className="h-1 w-10 rounded-full bg-neutral-200" />
+        </div>
+
+        {/* Profil singkat */}
+        <div className="flex items-center gap-3 px-4 pt-2 pb-3 border-b border-neutral-100">
+          <ProfileAvatar />
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-neutral-900 truncate leading-tight">
+              {user?.nama_lengkap}
+            </p>
+            <p className="text-[11px] text-neutral-500 truncate mt-0.5">
+              {roleLabel}
+            </p>
+          </div>
+        </div>
+
+        {/* Sisa menu */}
+        <div className="px-2 py-2 grid grid-cols-3 gap-1.5">
+          {moreItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `flex flex-col items-center justify-center gap-1.5 rounded-xl px-2 py-3 text-center ${
+                  isActive
+                    ? "bg-neutral-900 text-white"
+                    : "bg-neutral-50 text-neutral-600"
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <Icon
+                    name={item.icon}
+                    className={`h-5 w-5 shrink-0 ${isActive ? "text-white" : "text-neutral-400"}`}
+                  />
+                  <span className="text-[11px] leading-tight">{item.label}</span>
+                </>
+              )}
+            </NavLink>
+          ))}
+        </div>
+
+        {/* Keluar */}
+        <div className="px-4 pt-2 pb-1">
+          <button
+            onClick={() => {
+              onClose();
+              onLogoutClick();
+            }}
+            className="w-full flex items-center justify-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-medium text-rose-600 bg-rose-50 border border-rose-100"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              className="h-4 w-4 shrink-0"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            Keluar Akun
+          </button>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -282,6 +385,7 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const menu = MENU[user?.role] || [];
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [collapsed, setCollapsed] = useState(
     () => localStorage.getItem("sidebarCollapsed") === "1",
@@ -474,29 +578,9 @@ export default function Layout({ children }) {
 
       {/* Konten Utama */}
       <main className="flex-1 overflow-y-auto min-w-0 bg-white flex flex-col">
-        {/* Header mobile dengan tombol hamburger */}
+        {/* Header mobile: logo & status saja, navigasi sepenuhnya lewat bottom nav */}
         <div className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 py-3 border-b border-neutral-200 bg-white/95 backdrop-blur-sm">
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg p-2 transition-colors"
-              aria-label="Buka menu"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
             <div className="flex items-center gap-2">
               <img
                 src="/images/logo.png"
@@ -530,7 +614,19 @@ export default function Layout({ children }) {
       </main>
 
       {/* Bottom nav khusus mobile, referensi tab bar gaya app native */}
-      <MobileBottomNav menu={menu} onOpenMenu={() => setSidebarOpen(true)} />
+      <MobileBottomNav
+        menu={menu}
+        moreOpen={mobileMoreOpen}
+        onToggleMore={setMobileMoreOpen}
+      />
+      <MobileMoreSheet
+        open={mobileMoreOpen}
+        onClose={() => setMobileMoreOpen(false)}
+        moreItems={menu.slice(4)}
+        user={user}
+        roleLabel={ROLE_LABEL[user?.role]}
+        onLogoutClick={() => setShowLogoutConfirm(true)}
+      />
 
       {/* Logout Confirmation Dialog */}
       <ConfirmDialog
