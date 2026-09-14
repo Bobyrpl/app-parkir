@@ -17,13 +17,6 @@ const BRAND_LOCATION = "Pelabuhan Tanjung Perak";
 const BRAND_ADDRESS = 
   "Jl. Perak Timur, Pelabuhan Tanjung Perak, Surabaya, Jawa Timur";
 
-// URL embed Google Maps untuk lokasi Pelabuhan Tanjung Perak. Tidak butuh
-// API key karena memakai mode embed publik (?output=embed).
-const MAPS_EMBED_URL =
-  "https://www.google.com/maps?q=Pelabuhan+Tanjung+Perak,+Surabaya&output=embed";
-const MAPS_LINK_URL =
-  "https://www.google.com/maps/search/?api=1&query=Pelabuhan+Tanjung+Perak+Surabaya";
-
 // Nav items dipakai bareng oleh navbar desktop dan sidebar mobile, biar
 // keduanya selalu sinkron kalau link berubah.
 const NAV_LINKS = [
@@ -31,7 +24,6 @@ const NAV_LINKS = [
   { href: "#informasi", label: "Informasi" },
   { href: "#testimoni", label: "Testimoni" },
   { href: "#komentar", label: "Komentar" },
-  { href: "#faq", label: "FAQ" },
 ];
 
 // Bentuk bintang tunggal dipakai ulang di beberapa tempat (rating tampilan,
@@ -213,105 +205,6 @@ const ALUR = [
   },
 ];
 
-// Daftar metode pembayaran yang didukung di gerbang keluar — menggantikan
-// section showcase foto/logo sebelumnya.
-const PAYMENT_METHODS = [
-  {
-    title: "Tunai",
-    desc: "Bayar langsung di gerbang keluar, struk tercetak otomatis.",
-    icon: (
-      <path
-        d="M3 7h18v10H3V7zm0 0l2-3h14l2 3M8 12a2 2 0 104 0 2 2 0 00-4 0z"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    ),
-  },
-  {
-    title: "QRIS",
-    desc: "Scan QR di gerbang, pembayaran langsung terverifikasi sistem.",
-    icon: (
-      <path
-        d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h3m-3 3h6v-6h-3"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    ),
-  },
-  {
-    title: "Kartu Debit",
-    desc: "Mendukung mesin EDC untuk transaksi kartu debit/kredit.",
-    icon: (
-      <path
-        d="M3 6h18v12H3V6zm0 5h18"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    ),
-  },
-  {
-    title: "E-Wallet",
-    desc: "GoPay, OVO, Dana, dan dompet digital lain didukung penuh.",
-    icon: (
-      <path
-        d="M4 7a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V7zm12 5h2v2h-2v-2z"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    ),
-  },
-];
-
-// Jam operasional area parkir, ditampilkan di strip info sebelum Testimoni.
-const JAM_OPERASIONAL = [
-  { hari: "Senin - Jumat", jam: "05.00 - 22.00 WIB" },
-  { hari: "Sabtu - Minggu", jam: "05.00 - 23.00 WIB" },
-  { hari: "Hari Libur Nasional", jam: "Buka 24 Jam" },
-];
-
-// Kontak darurat/cepat, ditampilkan berdampingan dengan jam operasional.
-const KONTAK_DARURAT = [
-  { label: "Pos Keamanan", value: "(031) 123-4567" },
-  { label: "WhatsApp Admin", value: "+62 857-2803-5284" },
-];
-
-// Pertanyaan yang sering diajukan, ditampilkan sebagai accordion sebelum CTA
-// Bantuan di bagian bawah halaman.
-const FAQ_ITEMS = [
-  {
-    q: "Bagaimana cara mendapatkan struk parkir?",
-    a: "Struk tercetak otomatis dari mesin di gerbang keluar setelah pembayaran berhasil diverifikasi oleh sistem.",
-  },
-  {
-    q: "Apakah bisa bayar memakai e-wallet?",
-    a: "Bisa. Sistem mendukung QRIS serta dompet digital seperti GoPay, OVO, dan Dana di gerbang keluar.",
-  },
-  {
-    q: "Apa yang harus dilakukan jika struk hilang?",
-    a: "Hubungi petugas di pos keamanan terdekat dan sebutkan nomor plat kendaraan serta perkiraan waktu masuk.",
-  },
-  {
-    q: "Apakah area parkir buka 24 jam?",
-    a: "Jam operasional mengikuti jadwal reguler pada hari kerja dan akhir pekan, namun tetap buka 24 jam pada hari libur nasional.",
-  },
-  {
-    q: "Bagaimana cara menghubungi admin jika ada kendala?",
-    a: "Admin dapat dihubungi lewat tombol Bantuan Cepat di pojok kanan bawah halaman ini, atau melalui halaman Bantuan.",
-  },
-];
-
 function Bintang({ jumlah }) {
   return (
     <div className="flex gap-1" aria-label={`${jumlah} dari 5 bintang`}>
@@ -424,50 +317,6 @@ function KomentarSkeleton() {
   );
 }
 
-// Satu baris accordion FAQ: klik pertanyaan untuk buka/tutup jawaban.
-function FaqItem({ item, isOpen, onToggle }) {
-  return (
-    <div className="border-b border-neutral-200 py-5">
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-expanded={isOpen}
-        className="w-full flex items-center justify-between gap-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 rounded-sm"
-      >
-        <span className="text-sm md:text-base font-medium text-neutral-900">
-          {item.q}
-        </span>
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden="true"
-          className={`shrink-0 text-neutral-500 transition-transform duration-300 ${
-            isOpen ? "rotate-45" : ""
-          }`}
-        >
-          <path
-            d="M12 5v14M5 12h14"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
-      </button>
-      <div
-        className={`grid transition-all duration-300 ease-in-out ${
-          isOpen ? "grid-rows-[1fr] mt-3 opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
-      >
-        <div className="overflow-hidden">
-          <p className="text-sm text-neutral-500 leading-relaxed pr-6">{item.a}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Landing() {
   const { user } = useAuth();
   const navPath = user ? dashboardPath(user.role) : "/login";
@@ -476,7 +325,6 @@ export default function Landing() {
   const [helpOpen, setHelpOpen] = useState(false);
   const [heroImgError, setHeroImgError] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [openFaq, setOpenFaq] = useState(0);
 
   // Nav transparan di atas hero, berubah jadi putih solid begitu pengguna
   // scroll melewati hero — pola yang sama dipakai referensi (nav putih di
@@ -976,84 +824,46 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ================= Metode Pembayaran ================= */}
+      {/* ================= Showcase portal (bento) ================= */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
         <div className="mb-12 max-w-lg">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-            Metode <span className="text-[#C90000]">Pembayaran</span>
+            Tampilan <span className="text-[#C90000]">Area  </span>Parkir
           </h2>
           <p className="text-neutral-500 leading-relaxed">
-            Fleksibel dan cepat — pilih cara bayar yang paling nyaman saat
-            keluar dari area parkir.
+            Antarmuka terintegrasi mulai dari lokasi operasional hingga
+            identitas resmi portal parkir.
           </p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {PAYMENT_METHODS.map((p) => (
-            <Card key={p.title} hoverable className="h-full">
-              <div className="h-11 w-11 rounded-full bg-neutral-100 flex items-center justify-center mb-6 text-neutral-900">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  {p.icon}
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold mb-2">{p.title}</h3>
-              <p className="text-sm text-neutral-500 leading-relaxed">{p.desc}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* ================= Peta Lokasi ================= */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-              Lokasi <span className="text-[#C90000]">Area </span> Parkir
-            </h2>
-            <p className="text-neutral-500 leading-relaxed mb-6 max-w-md">
-              Berada tepat di kawasan operasional Pelabuhan Tanjung Perak,
-              mudah dijangkau dari pintu masuk utama pelabuhan.
-            </p>
-            <div className="flex items-start gap-3 mb-6">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="shrink-0 mt-0.5 text-[#C90000]" aria-hidden="true">
-                <path
-                  d="M12 21s-7-6.1-7-11a7 7 0 1114 0c0 4.9-7 11-7 11z"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.75" />
-              </svg>
-              <p className="text-sm text-neutral-600 leading-relaxed">{BRAND_ADDRESS}</p>
-            </div>
-            <a
-              href={MAPS_LINK_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-neutral-900 text-white font-medium px-6 py-3 text-sm hover:bg-neutral-800 transition-colors"
-            >
-              Buka di Google Maps
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M7 17L17 7M7 7h10v10"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
-          </div>
-          <div className="rounded-3xl overflow-hidden border border-neutral-200 aspect-[4/3]">
-            <iframe
-              title="Peta Lokasi Pelabuhan Tanjung Perak"
-              src={MAPS_EMBED_URL}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-neutral-100">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
+            <img
+              src="/images/gambar.jpg"
+              alt="Area Parkir Pelabuhan Tanjung Perak"
+              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
             />
+            <div className="absolute bottom-6 left-6 right-6 z-20">
+              <p className="text-white font-semibold text-lg">Pelabuhan Tanjung Perak</p>
+              <p className="text-white/70 text-sm">
+                Gerbang & cetak struk otomatis, aktif realtime
+              </p>
+            </div>
+          </div>
+          <div className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-neutral-50 border border-neutral-200 flex items-center justify-center p-10">
+            <img
+              src="/parkir_pelabuhan_tanjung_perak.png"
+              alt="Emblem Parkir Pelabuhan Tanjung Perak"
+              className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+              <span className="text-sm font-medium text-neutral-900">
+                Identitas Resmi Portal
+              </span>
+              <span className="text-xs font-medium text-neutral-500 bg-white border border-neutral-200 px-3 py-1 rounded-full">
+                3 Level Akses
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -1160,59 +970,8 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ================= Jam Operasional & Kontak Darurat ================= */}
-      <section className="bg-neutral-50 py-16">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div>
-            <div className="flex items-center gap-2 mb-5">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-[#C90000]" aria-hidden="true">
-                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.75" />
-                <path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <h3 className="text-lg font-semibold text-neutral-900">Jam Operasional</h3>
-            </div>
-            <div className="space-y-3">
-              {JAM_OPERASIONAL.map((j) => (
-                <div
-                  key={j.hari}
-                  className="flex items-center justify-between text-sm border-b border-neutral-200 pb-3"
-                >
-                  <span className="text-neutral-600">{j.hari}</span>
-                  <span className="font-medium text-neutral-900">{j.jam}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className="flex items-center gap-2 mb-5">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-[#C90000]" aria-hidden="true">
-                <path
-                  d="M4 20l1.4-4.2A8 8 0 1112 20a8 8 0 01-4.6-1.4L4 20z"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <h3 className="text-lg font-semibold text-neutral-900">Kontak Darurat</h3>
-            </div>
-            <div className="space-y-3">
-              {KONTAK_DARURAT.map((k) => (
-                <div
-                  key={k.label}
-                  className="flex items-center justify-between text-sm border-b border-neutral-200 pb-3"
-                >
-                  <span className="text-neutral-600">{k.label}</span>
-                  <span className="font-medium text-neutral-900">{k.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ================= Testimoni ================= */}
-      <section id="testimoni" className="scroll-mt-20 py-24 lg:py-32">
+      <section id="testimoni" className="scroll-mt-20 bg-neutral-50 py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="max-w-2xl mb-16">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
@@ -1227,7 +986,7 @@ export default function Landing() {
             {TESTIMONI.map((t, i) => (
               <div
                 key={t.nama}
-                className="bg-neutral-50 rounded-3xl p-8 flex flex-col justify-between"
+                className="bg-white rounded-3xl p-8 flex flex-col justify-between"
               >
                 <div>
                   <div className="mb-6">
@@ -1391,32 +1150,8 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ================= FAQ ================= */}
-      <section id="faq" className="scroll-mt-20 bg-neutral-50 py-24 lg:py-32">
-        <div className="max-w-3xl mx-auto px-6 md:px-12">
-          <div className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-              Pertanyaan <span className="text-[#C90000]">Umum</span>
-            </h2>
-            <p className="text-neutral-500 leading-relaxed">
-              Jawaban singkat untuk hal-hal yang sering ditanyakan pengguna.
-            </p>
-          </div>
-          <div className="bg-white rounded-3xl border border-neutral-200 px-6 md:px-8">
-            {FAQ_ITEMS.map((item, i) => (
-              <FaqItem
-                key={item.q}
-                item={item}
-                isOpen={openFaq === i}
-                onToggle={() => setOpenFaq((prev) => (prev === i ? null : i))}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ================= Bantuan (CTA) ================= */}
-      <section id="bantuan" className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 py-24">
+      <section id="bantuan" className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 pb-24">
         <div className="bg-neutral-50 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <p className="text-xl font-semibold text-neutral-900 mb-1">Butuh bantuan?</p>
@@ -1559,9 +1294,6 @@ export default function Landing() {
                 </li>
                 <li>
                   <a href="#komentar" className="hover:text-white transition-colors">Komentar</a>
-                </li>
-                <li>
-                  <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
                 </li>
               </ul>
             </div>
