@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import api from '../../api/axios';
 import { PageHeader, StatCard, Card, Table, Button } from '../../components/ui';
 import {
-    Legend, LineChart, Line, XAxis, YAxis,
-    CartesianGrid, Tooltip, ResponsiveContainer,
+    ComposedChart, Bar, Line, XAxis, YAxis,
+    CartesianGrid, Tooltip, ResponsiveContainer, Cell,
 } from 'recharts';
 import {
     Document, Packer, Paragraph, Table as DocxTable, TableRow, TableCell,
@@ -140,6 +140,22 @@ export default function DashboardAdmin() {
             new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
         return dari === sampai ? fmt(dari) : `${fmt(dari)} — ${fmt(sampai)}`;
     }, [dari, sampai]);
+
+    // Hari dengan pendapatan tertinggi pada rentang yang sedang ditampilkan,
+    // dipakai untuk badge "Peak" dan highlight bar pada grafik tren.
+    const peakInfo = useMemo(() => {
+        if (rekap.length === 0) return null;
+        let peak = rekap[0];
+        for (const d of rekap) {
+            if ((d.pendapatan || 0) > (peak.pendapatan || 0)) peak = d;
+        }
+        return peak;
+    }, [rekap]);
+
+    const avgTicket = useMemo(() => {
+        if (totalTransaksi === 0) return 0;
+        return Math.round(totalPendapatan / totalTransaksi);
+    }, [totalTransaksi, totalPendapatan]);
 
     function handleCetak() {
         window.print();
@@ -322,68 +338,84 @@ export default function DashboardAdmin() {
             {/* Grafik Trend */}
             <div className="mb-8 no-print">
                 <Card className="p-6">
-                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-neutral-200">
-                        <span className="w-9 h-9 rounded-xl bg-neutral-100 text-neutral-900 flex items-center justify-center shrink-0">
-                            <TrendingUp size={18} />
-                        </span>
+                    <div className="flex items-start justify-between mb-1 flex-wrap gap-2">
                         <div className="min-w-0">
-                            <h2 className="font-semibold text-base text-neutral-900 truncate">
-                                Tren Transaksi &amp; Pelanggan Baru
+                            <h2 className="font-semibold text-base text-neutral-900 truncate flex items-center gap-1.5">
+                                Tren Pendapatan
+                                <TrendingUp size={16} className="text-neutral-400" />
                             </h2>
-                            <p className="text-xs text-neutral-500 truncate">{periodeLabel}</p>
+                            <p className="text-xs text-neutral-500 mt-0.5 truncate">{periodeLabel}</p>
                         </div>
+                        {peakInfo && (
+                            <span className="inline-flex items-center gap-1.5 bg-neutral-900 text-white px-3 py-1.5 rounded-full text-xs font-semibold shrink-0">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                                Peak: Rp {Number(peakInfo.pendapatan).toLocaleString('id-ID')}
+                            </span>
+                        )}
                     </div>
+
                     {loadingRekap ? (
                         <div className="h-72 flex items-center justify-center text-sm text-neutral-400">Memuat grafik...</div>
                     ) : rekap.length === 0 ? (
                         <div className="h-72 flex items-center justify-center text-sm text-neutral-400">Belum ada data transaksi pada rentang ini.</div>
                     ) : (
-                        <ResponsiveContainer width="100%" height={340}>
-                            <LineChart data={rekap}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#E5E5E5" />
-                                <XAxis dataKey="label" stroke="#A3A3A3" fontSize={11} />
-                                <YAxis
-                                    yAxisId="jumlah"
-                                    stroke="#A3A3A3"
-                                    fontSize={11}
-                                    allowDecimals={false}
-                                />
-                                <YAxis
-                                    yAxisId="rupiah"
-                                    orientation="right"
-                                    stroke="#A3A3A3"
-                                    fontSize={11}
-                                    tickFormatter={(value) => `Rp${(value / 1000).toLocaleString('id-ID')}rb`}
-                                />
-                                <Tooltip
-                                    contentStyle={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
-                                    labelStyle={{ color: '#171717', fontWeight: 600 }}
-                                    formatter={(value, name) => {
-                                        if (name === 'pendapatan') {
-                                            return [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Pendapatan'];
-                                        }
-                                        if (name === 'jumlah_user') {
-                                            return [value, 'Pelanggan Baru'];
-                                        }
-                                        return [value, 'Jumlah Transaksi'];
-                                    }}
-                                />
-                                <Legend
-                                    formatter={(value) => {
-                                        const label =
-                                            value === 'pendapatan'
-                                                ? 'Pendapatan'
-                                                : value === 'jumlah_user'
-                                                ? 'Pelanggan Baru'
-                                                : 'Jumlah Transaksi';
-                                        return <span style={{ color: '#737373', fontSize: 12, marginRight: 14 }}>{label}</span>;
-                                    }}
-                                />
-                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#171717" strokeWidth={2.5} dot={{ r: 3.5, fill: '#171717' }} activeDot={{ r: 6 }} />
-                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#3b82f6" strokeWidth={2} strokeDasharray="4 3" dot={{ r: 3, fill: '#3b82f6' }} />
-                                <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#10b981" strokeWidth={2.5} dot={{ r: 3.5, fill: '#10b981' }} activeDot={{ r: 6 }} />
-                            </LineChart>
-                        </ResponsiveContainer>
+                        <>
+                            <ResponsiveContainer width="100%" height={280}>
+                                <ComposedChart data={rekap} margin={{ top: 24, right: 8, left: 0, bottom: 0 }}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E5E5" vertical={false} />
+                                    <XAxis
+                                        dataKey="label"
+                                        stroke="#A3A3A3"
+                                        fontSize={11}
+                                        tickLine={false}
+                                        axisLine={{ stroke: '#E5E5E5' }}
+                                    />
+                                    <YAxis
+                                        stroke="#A3A3A3"
+                                        fontSize={11}
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tickFormatter={(value) => `${(value / 1000).toLocaleString('id-ID')}rb`}
+                                    />
+                                    <Tooltip
+                                        contentStyle={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
+                                        labelStyle={{ color: '#171717', fontWeight: 600 }}
+                                        formatter={(value) => [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Pendapatan']}
+                                    />
+                                    <Bar dataKey="pendapatan" radius={[6, 6, 0, 0]} barSize={28}>
+                                        {rekap.map((d, i) => (
+                                            <Cell
+                                                key={i}
+                                                fill={peakInfo && d.tanggal === peakInfo.tanggal ? '#10b981' : '#E5E5E5'}
+                                                stroke={peakInfo && d.tanggal === peakInfo.tanggal ? '#059669' : '#D4D4D4'}
+                                            />
+                                        ))}
+                                    </Bar>
+                                    <Line
+                                        type="monotone"
+                                        dataKey="pendapatan"
+                                        stroke="#171717"
+                                        strokeWidth={2.5}
+                                        dot={{ r: 3.5, fill: '#171717', strokeWidth: 0 }}
+                                        activeDot={{ r: 6 }}
+                                    />
+                                </ComposedChart>
+                            </ResponsiveContainer>
+
+                            <div className="mt-3 pt-3 border-t border-neutral-100 flex items-center justify-between text-xs flex-wrap gap-2">
+                                <div className="flex items-center gap-1.5 text-neutral-500">
+                                    <Receipt size={14} />
+                                    <span>Avg. Ticket:</span>
+                                    <span className="font-semibold text-neutral-900">Rp {avgTicket.toLocaleString('id-ID')}</span>
+                                </div>
+                                {peakInfo && (
+                                    <div className="flex items-center gap-1.5 text-neutral-500">
+                                        <span>Hari Tertinggi:</span>
+                                        <span className="font-semibold text-neutral-900">{peakInfo.label}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </>
                     )}
                 </Card>
             </div>
