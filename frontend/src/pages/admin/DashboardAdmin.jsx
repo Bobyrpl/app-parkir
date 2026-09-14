@@ -221,6 +221,14 @@ export default function DashboardAdmin() {
         return peak;
     }, [rekap]);
 
+    // Apakah data periode ini menyertakan jumlah_user (Pelanggan Baru).
+    // Dipakai untuk memutuskan apakah garis biru + sumbu kanan perlu
+    // ditampilkan sama sekali di grafik tren.
+    const hasJumlahUser = useMemo(
+        () => rekap.some((d) => d.jumlah_user !== undefined && d.jumlah_user !== null),
+        [rekap]
+    );
+
     const avgTicket = useMemo(() => {
         if (totalTransaksi === 0) return 0;
         return Math.round(totalPendapatan / totalTransaksi);
@@ -466,17 +474,29 @@ export default function DashboardAdmin() {
                                         axisLine={{ stroke: '#E5E5E5' }}
                                     />
                                     <YAxis
+                                        yAxisId="left"
                                         stroke="#A3A3A3"
                                         fontSize={11}
                                         tickLine={false}
                                         axisLine={false}
                                         tickFormatter={(value) => `${(value / 1000).toLocaleString('id-ID')}rb`}
                                     />
+                                    {hasJumlahUser && (
+                                        <YAxis
+                                            yAxisId="right"
+                                            orientation="right"
+                                            stroke="#3b82f6"
+                                            fontSize={11}
+                                            tickLine={false}
+                                            axisLine={false}
+                                            allowDecimals={false}
+                                        />
+                                    )}
                                     <Tooltip
                                         content={<RevenueTooltip />}
                                         cursor={{ fill: 'rgba(0,0,0,0.03)' }}
                                     />
-                                    <Bar dataKey="pendapatan" radius={[6, 6, 0, 0]} barSize={28}>
+                                    <Bar yAxisId="left" dataKey="pendapatan" radius={[6, 6, 0, 0]} barSize={28}>
                                         {rekap.map((d, i) => (
                                             <Cell
                                                 key={i}
@@ -486,6 +506,7 @@ export default function DashboardAdmin() {
                                         ))}
                                     </Bar>
                                     <Line
+                                        yAxisId="left"
                                         type="monotone"
                                         dataKey="pendapatan"
                                         stroke="#171717"
@@ -493,6 +514,17 @@ export default function DashboardAdmin() {
                                         dot={{ r: 3.5, fill: '#171717', strokeWidth: 0 }}
                                         activeDot={{ r: 6 }}
                                     />
+                                    {hasJumlahUser && (
+                                        <Line
+                                            yAxisId="right"
+                                            type="monotone"
+                                            dataKey="jumlah_user"
+                                            stroke="#3b82f6"
+                                            strokeWidth={2}
+                                            dot={{ r: 3, fill: '#3b82f6', strokeWidth: 0 }}
+                                            activeDot={{ r: 5 }}
+                                        />
+                                    )}
                                 </ComposedChart>
                             </ResponsiveContainer>
 
