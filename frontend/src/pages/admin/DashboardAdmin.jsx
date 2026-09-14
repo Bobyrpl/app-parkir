@@ -515,14 +515,12 @@ export default function DashboardAdmin() {
                                         activeDot={{ r: 6 }}
                                     />
                                     {hasJumlahUser && (
-                                        <Line
+                                        <Bar
                                             yAxisId="right"
-                                            type="monotone"
                                             dataKey="jumlah_user"
-                                            stroke="#3b82f6"
-                                            strokeWidth={2}
-                                            dot={{ r: 3, fill: '#3b82f6', strokeWidth: 0 }}
-                                            activeDot={{ r: 5 }}
+                                            fill="#3b82f6"
+                                            radius={[6, 6, 0, 0]}
+                                            barSize={12}
                                         />
                                     )}
                                 </ComposedChart>
