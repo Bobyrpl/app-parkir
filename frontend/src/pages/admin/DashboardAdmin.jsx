@@ -23,7 +23,7 @@ function RevenueTooltip({ active, payload, label }) {
             <p className="font-semibold text-neutral-900 mb-2">{label}</p>
             <div className="flex items-center justify-between gap-4 mb-1">
                 <span className="flex items-center gap-1.5 text-neutral-500">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#10b981' }} />
                     Pendapatan
                 </span>
                 <span className="font-semibold text-neutral-900">
@@ -32,7 +32,7 @@ function RevenueTooltip({ active, payload, label }) {
             </div>
             <div className="flex items-center justify-between gap-4 mb-1">
                 <span className="flex items-center gap-1.5 text-neutral-500">
-                    <span className="w-2 h-2 rounded-full bg-neutral-900" />
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#171717' }} />
                     Transaksi
                 </span>
                 <span className="font-semibold text-neutral-900">
@@ -42,7 +42,7 @@ function RevenueTooltip({ active, payload, label }) {
             {d.jumlah_user !== undefined && (
                 <div className="flex items-center justify-between gap-4">
                     <span className="flex items-center gap-1.5 text-neutral-500">
-                        <span className="w-2 h-2 rounded-full bg-blue-500" />
+                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#3b82f6' }} />
                         Pelanggan Baru
                     </span>
                     <span className="font-semibold text-neutral-900">
