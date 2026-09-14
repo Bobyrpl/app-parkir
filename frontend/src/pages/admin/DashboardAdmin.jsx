@@ -109,6 +109,26 @@ export default function DashboardAdmin() {
         loadRekap(d, s);
     }
 
+    // Preset periode untuk pill "Hari Ini / Mingguan / Bulanan" di kartu grafik.
+    function handleChartPeriod(period) {
+        const end = new Date();
+        let start = new Date();
+
+        if (period === 'today') {
+            start = new Date();
+        } else if (period === 'weekly') {
+            start.setDate(end.getDate() - 6);
+        } else if (period === 'monthly') {
+            start.setDate(end.getDate() - 29);
+        }
+
+        const d = toDateInputValue(start);
+        const s = toDateInputValue(end);
+        setDari(d);
+        setSampai(s);
+        loadRekap(d, s);
+    }
+
     const { totalTransaksi, totalPendapatan } = useMemo(() => {
         return {
             totalTransaksi: rekap.reduce((sum, d) => sum + (d.jumlah_transaksi || 0), 0),
@@ -133,6 +153,16 @@ export default function DashboardAdmin() {
         if (dari === start30 && sampai === end) return 30;
         return null;
     }, [dari, sampai]);
+
+    // Menandai pill "Hari Ini / Mingguan / Bulanan" mana yang sedang aktif
+    // di kartu grafik, murni untuk highlight visual.
+    const activeChartPeriod = useMemo(() => {
+        const end = toDateInputValue(new Date());
+        if (dari === end && sampai === end) return 'today';
+        if (activePreset === 7) return 'weekly';
+        if (activePreset === 30) return 'monthly';
+        return null;
+    }, [dari, sampai, activePreset]);
 
     const periodeLabel = useMemo(() => {
         if (!dari || !sampai) return '';
@@ -338,7 +368,7 @@ export default function DashboardAdmin() {
             {/* Grafik Trend */}
             <div className="mb-8 no-print">
                 <Card className="p-6">
-                    <div className="flex items-start justify-between mb-1 flex-wrap gap-2">
+                    <div className="flex items-start justify-between mb-1 flex-wrap gap-3">
                         <div className="min-w-0">
                             <h2 className="font-semibold text-base text-neutral-900 truncate flex items-center gap-1.5">
                                 Tren Pendapatan
@@ -346,13 +376,39 @@ export default function DashboardAdmin() {
                             </h2>
                             <p className="text-xs text-neutral-500 mt-0.5 truncate">{periodeLabel}</p>
                         </div>
-                        {peakInfo && (
-                            <span className="inline-flex items-center gap-1.5 bg-neutral-900 text-white px-3 py-1.5 rounded-full text-xs font-semibold shrink-0">
+
+                        {/* Pill Hari Ini / Mingguan / Bulanan */}
+                        <div className="flex items-center p-1 bg-neutral-100 rounded-full shrink-0">
+                            {[
+                                { key: 'today', label: 'Hari Ini' },
+                                { key: 'weekly', label: 'Mingguan' },
+                                { key: 'monthly', label: 'Bulanan' },
+                            ].map(({ key, label }) => (
+                                <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() => handleChartPeriod(key)}
+                                    disabled={loadingRekap}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all disabled:opacity-60 ${
+                                        activeChartPeriod === key
+                                            ? 'bg-neutral-900 text-white'
+                                            : 'text-neutral-500 hover:text-neutral-900'
+                                    }`}
+                                >
+                                    {label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {peakInfo && (
+                        <div className="flex justify-end mb-1">
+                            <span className="inline-flex items-center gap-1.5 bg-neutral-900 text-white px-3 py-1.5 rounded-full text-xs font-semibold">
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                                 Peak: Rp {Number(peakInfo.pendapatan).toLocaleString('id-ID')}
                             </span>
-                        )}
-                    </div>
+                        </div>
+                    )}
 
                     {loadingRekap ? (
                         <div className="h-72 flex items-center justify-center text-sm text-neutral-400">Memuat grafik...</div>
