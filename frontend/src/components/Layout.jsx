@@ -204,6 +204,79 @@ function ProfileAvatar() {
   );
 }
 
+/* Bottom nav mobile: maksimal 4 menu utama tampil sebagai tab,
+   sisanya (kalau ada) + profil/keluar dibuka lewat tab "Menu"
+   yang memicu sidebar off-canvas yang sama dengan tombol hamburger. */
+function MobileBottomNav({ menu, onOpenMenu }) {
+  const tabs = menu.slice(0, 4);
+  const hasMore = menu.length > tabs.length;
+
+  return (
+    <nav
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex items-stretch justify-around bg-white border-t border-neutral-200 px-1 pt-1.5"
+      style={{ paddingBottom: "max(0.375rem, env(safe-area-inset-bottom))" }}
+    >
+      {tabs.map((item) => (
+        <NavLink
+          key={item.to}
+          to={item.to}
+          end={item.end}
+          className="flex flex-col items-center justify-center gap-0.5 min-w-0 flex-1 py-1"
+        >
+          {({ isActive }) => (
+            <>
+              <span
+                className={`flex items-center justify-center h-7 w-7 rounded-full transition-colors ${
+                  isActive ? "bg-neutral-900" : "bg-transparent"
+                }`}
+              >
+                <Icon
+                  name={item.icon}
+                  className={`h-[18px] w-[18px] shrink-0 ${
+                    isActive ? "text-white" : "text-neutral-400"
+                  }`}
+                />
+              </span>
+              <span
+                className={`text-[10px] leading-none truncate max-w-full px-1 ${
+                  isActive ? "text-neutral-900 font-semibold" : "text-neutral-500"
+                }`}
+              >
+                {item.label}
+              </span>
+            </>
+          )}
+        </NavLink>
+      ))}
+
+      {hasMore && (
+        <button
+          type="button"
+          onClick={onOpenMenu}
+          className="flex flex-col items-center justify-center gap-0.5 min-w-0 flex-1 py-1 text-neutral-500"
+        >
+          <span className="flex items-center justify-center h-7 w-7 rounded-full">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              className="h-[18px] w-[18px] text-neutral-400"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </span>
+          <span className="text-[10px] leading-none">Menu</span>
+        </button>
+      )}
+    </nav>
+  );
+}
+
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -451,10 +524,13 @@ export default function Layout({ children }) {
         </div>
 
         {/* Content Container */}
-        <div className="p-4 sm:p-6 md:p-8 max-w-7xl w-full mx-auto flex-1">
+        <div className="p-4 pb-24 sm:p-6 md:p-8 md:pb-8 max-w-7xl w-full mx-auto flex-1">
           {children}
         </div>
       </main>
+
+      {/* Bottom nav khusus mobile, referensi tab bar gaya app native */}
+      <MobileBottomNav menu={menu} onOpenMenu={() => setSidebarOpen(true)} />
 
       {/* Logout Confirmation Dialog */}
       <ConfirmDialog
