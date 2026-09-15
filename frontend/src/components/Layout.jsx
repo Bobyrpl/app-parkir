@@ -205,11 +205,10 @@ function ProfileAvatar() {
 }
 
 /* Bottom nav mobile: maksimal 4 menu utama tampil sebagai tab,
-   sisanya (kalau ada) dibuka lewat tab "Menu" yang memunculkan
-   bottom sheet sendiri (bukan sidebar kiri). */
+   sisanya (kalau ada) + profil & tombol keluar selalu dibuka lewat
+   tab "Akun" yang memunculkan bottom sheet sendiri (bukan sidebar kiri). */
 function MobileBottomNav({ menu, moreOpen, onToggleMore }) {
   const tabs = menu.slice(0, 4);
-  const hasMore = menu.length > tabs.length;
 
   return (
     <nav
@@ -250,47 +249,48 @@ function MobileBottomNav({ menu, moreOpen, onToggleMore }) {
         </NavLink>
       ))}
 
-      {hasMore && (
-        <button
-          type="button"
-          onClick={() => onToggleMore((prev) => !prev)}
-          className="flex flex-col items-center justify-center gap-0.5 min-w-0 flex-1 py-1"
+      {/* Tab Akun: selalu ada di semua role, isinya profil + sisa menu (kalau ada)
+          + tombol keluar. Ini satu-satunya jalan logout di mobile, jadi jangan
+          disembunyikan walau menu utama role tsb cuma sedikit (mis. pelanggan). */}
+      <button
+        type="button"
+        onClick={() => onToggleMore((prev) => !prev)}
+        className="flex flex-col items-center justify-center gap-0.5 min-w-0 flex-1 py-1"
+      >
+        <span
+          className={`flex items-center justify-center h-7 w-7 rounded-full transition-colors ${
+            moreOpen ? "bg-neutral-900" : "bg-transparent"
+          }`}
         >
-          <span
-            className={`flex items-center justify-center h-7 w-7 rounded-full transition-colors ${
-              moreOpen ? "bg-neutral-900" : "bg-transparent"
-            }`}
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            className={`h-[18px] w-[18px] ${moreOpen ? "text-white" : "text-neutral-400"}`}
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              className={`h-[18px] w-[18px] ${moreOpen ? "text-white" : "text-neutral-400"}`}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </span>
-          <span
-            className={`text-[10px] leading-none ${
-              moreOpen ? "text-neutral-900 font-semibold" : "text-neutral-500"
-            }`}
-          >
-            Menu
-          </span>
-        </button>
-      )}
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5z"
+            />
+          </svg>
+        </span>
+        <span
+          className={`text-[10px] leading-none ${
+            moreOpen ? "text-neutral-900 font-semibold" : "text-neutral-500"
+          }`}
+        >
+          Akun
+        </span>
+      </button>
     </nav>
   );
 }
 
-/* Bottom sheet berisi menu sisa (yang tidak kebagian slot di bottom nav)
-   + profil singkat & tombol keluar. Muncul di atas bottom nav saat tab
-   "Menu" dipencet, murni komponen mobile — tidak menyentuh sidebar kiri. */
+/* Bottom sheet berisi profil singkat, sisa menu (kalau ada), & tombol
+   keluar. Muncul di atas bottom nav saat tab "Akun" dipencet, murni
+   komponen mobile — tidak menyentuh sidebar kiri. */
 function MobileMoreSheet({ open, onClose, moreItems, user, roleLabel, onLogoutClick }) {
   if (!open) return null;
 
@@ -321,7 +321,8 @@ function MobileMoreSheet({ open, onClose, moreItems, user, roleLabel, onLogoutCl
           </div>
         </div>
 
-        {/* Sisa menu */}
+        {/* Sisa menu (hanya tampil kalau memang ada menu yang tidak kebagian tab) */}
+        {moreItems.length > 0 && (
         <div className="px-2 py-2 grid grid-cols-3 gap-1.5">
           {moreItems.map((item) => (
             <NavLink
@@ -349,6 +350,7 @@ function MobileMoreSheet({ open, onClose, moreItems, user, roleLabel, onLogoutCl
             </NavLink>
           ))}
         </div>
+        )}
 
         {/* Keluar */}
         <div className="px-4 pt-2 pb-1">
