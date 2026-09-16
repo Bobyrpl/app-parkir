@@ -286,7 +286,7 @@ Proyek ini dibuat untuk tujuan pembelajaran/tugas sekolah — silakan sesuaikan 
 
 ## DEsain app parkir
 
-[!canva](https://www.canva.com/design/DAHQKkzuc4M/ABVykNbpNdk1RGKh8DtNWA/edit)
+[canva](https://www.canva.com/design/DAHQKkzuc4M/ABVykNbpNdk1RGKh8DtNWA/edit)
 
 ## 👤 Penulis
 

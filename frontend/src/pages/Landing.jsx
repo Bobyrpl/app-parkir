@@ -245,20 +245,6 @@ const PAYMENT_METHODS = [
     ),
   },
   {
-    title: "Kartu Debit",
-    desc: "Mendukung mesin EDC untuk transaksi kartu debit/kredit.",
-    icon: (
-      <path
-        d="M3 6h18v12H3V6zm0 5h18"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    ),
-  },
-  {
     title: "E-Wallet",
     desc: "GoPay, OVO, Dana, dan dompet digital lain didukung penuh.",
     icon: (
