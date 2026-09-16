@@ -26,7 +26,7 @@ class ErrorBoundary extends Component {
                             <AlertTriangle size={26} strokeWidth={2} className="text-[#c9ae00]" />
                         </div>
 
-                        <p className="text-xs font-mono text-[#ffee03] tracking-wider mb-2">
+                        <p className="text-xs font-mono text-[#ff0303] tracking-wider mb-2">
                             ERROR
                         </p>
                         <h1 className="font-display text-xl text-white mb-2">
