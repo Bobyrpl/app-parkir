@@ -2,13 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Backend Laravel dan frontend React sekarang digabung dalam satu project.
-// React (SPA) di-build lewat Vite dan di-serve lewat view "app" di bawah.
-// Semua endpoint API tetap ada di routes/api.php, diakses lewat /api/...
-//
-// Catch-all route ini melempar semua request non-API ke React Router,
-// supaya routing di sisi frontend (BrowserRouter) tetap berfungsi walau
-// user refresh / buka langsung URL seperti /admin atau /petugas/masuk.
-Route::get('/{any}', function () {
-    return view('app');
-})->where('any', '^(?!api).*$');
+// Backend ini murni REST API. Frontend React (SPA) jalan terpisah
+// di project "frontend/" (dev server Vite, port 5173).
+// Semua endpoint API ada di routes/api.php, diakses lewat /api/...
+
+Route::get('/', function () {
+    return response()->json([
+        'message' => 'Aplikasi Parkir UKK API is running.',
+    ]);
+});
