@@ -14,6 +14,7 @@ class CheckRole
      *   Route::middleware(['auth:sanctum', 'role:admin'])->group(...)
      *   Route::middleware(['auth:sanctum', 'role:admin,petugas'])->group(...)
      */
+    //  {#67b,12}
     public function handle(Request $request, Closure $next, ...$roles)
     {
         $user = $request->user();

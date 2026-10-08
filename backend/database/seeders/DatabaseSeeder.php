@@ -12,14 +12,14 @@ class DatabaseSeeder extends Seeder
 
     /**
      * Seed the application's database.
+     *
+     * Catatan: seeder bawaan Laravel (User::factory()->create([...]))
+     * sengaja dihapus, karena kolomnya (name, email) tidak cocok dengan
+     * skema tb_user yang dipakai aplikasi ini (nama_lengkap, username,
+     * no_telp, role, dst). Dipindah ke TbUserSeeder yang sesuai skema asli.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $this->call(TbUserSeeder::class);
     }
 }

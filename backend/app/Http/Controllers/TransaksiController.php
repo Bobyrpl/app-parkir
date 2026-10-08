@@ -42,6 +42,7 @@ class TransaksiController extends Controller
         return response()->json($transaksi);
     }
 
+    //  {#516,78}
     public function kendaraanMasuk(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -80,6 +81,7 @@ class TransaksiController extends Controller
             }
         }
 
+        //  {#f94,39}
         try {
             $transaksi = DB::transaction(function () use ($request, $booking) {
                 $transaksi = Transaksi::create([
@@ -190,6 +192,26 @@ class TransaksiController extends Controller
             'data'    => $transaksi,
         ]);
     }
+    // GET /api/transaksi/{id}/karcis
+    // Ambil data karcis masuk untuk dicetak setelah kendaraan masuk
+    public function cetakKarcis($id)
+    {
+        $transaksi = Transaksi::with(['kendaraan', 'tarif', 'area', 'user:id_user,nama_lengkap'])->find($id);
+
+        if (! $transaksi) {
+            return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+        }
+
+        return response()->json([
+            'id_parkir'       => $transaksi->id_parkir,
+            'plat_nomor'      => $transaksi->kendaraan->plat_nomor,
+            'jenis_kendaraan' => $transaksi->kendaraan->jenis_kendaraan,
+            'nama_area'       => $transaksi->area->nama_area,
+            'tarif_per_jam'   => $transaksi->tarif->tarif_per_jam,
+            'waktu_masuk'     => $transaksi->waktu_masuk,
+            'petugas'         => $transaksi->user->nama_lengkap,
+        ]);
+    }
 
     public function cetakStruk($id)
     {
@@ -206,6 +228,13 @@ class TransaksiController extends Controller
             'area'           => $transaksi->area->nama_area,
             'waktu_masuk'    => $transaksi->waktu_masuk,
             'waktu_keluar'   => $transaksi->waktu_keluar,
+            // Ditampilkan di struk sebagai durasi dalam DETIK (selisih waktu_masuk
+            // & waktu_keluar apa adanya, tidak dibulatkan) - hanya untuk keterangan.
+            // Diformat jadi "X menit YY detik" (atau "YY detik" saja kalau < 1 menit)
+            // di frontend (lihat StrukCard.jsx). Perhitungan biaya TETAP per jam
+            // (lihat Transaksi::hitungBiayaKeluar() & durasi_jam), jadi kolom itu
+            // sengaja tidak diubah/dihapus.
+            'durasi_detik'   => (int) $transaksi->waktu_masuk->diffInSeconds($transaksi->waktu_keluar),
             'durasi_jam'     => $transaksi->durasi_jam,
             'tarif_per_jam'  => $transaksi->tarif->tarif_per_jam,
             // biaya_total sudah termasuk denda - biaya_parkir dikirim terpisah
@@ -272,7 +301,7 @@ class TransaksiController extends Controller
         $query = Transaksi::with([
                 'kendaraan:id_kendaraan,plat_nomor,jenis_kendaraan',
                 'area:id_area,nama_area',
-                'booking:id_booking,kode_booking,tanggal_rencana,jam_rencana_keluar',
+                'booking:id_booking,kode_booking,tanggal_rencana,tanggal_rencana_keluar,jam_rencana_keluar',
             ])
             ->where('status', 'masuk')
             ->orderBy('waktu_masuk', 'asc');
@@ -297,7 +326,7 @@ class TransaksiController extends Controller
         $transaksi = Transaksi::with([
                 'kendaraan:id_kendaraan,plat_nomor,jenis_kendaraan',
                 'area:id_area,nama_area',
-                'booking:id_booking,kode_booking,tanggal_rencana,jam_rencana_keluar',
+                'booking:id_booking,kode_booking,tanggal_rencana,tanggal_rencana_keluar,jam_rencana_keluar',
             ])
             ->where('status', 'masuk')
             ->whereHas('booking', function ($q) use ($kode_booking) {
@@ -415,5 +444,110 @@ class TransaksiController extends Controller
         });
 
         return response()->json($hasil);
+    }
+
+    // POST /api/transaksi/{id}/generate-midtrans-token
+    // Dipanggil setelah kendaraan keluar & petugas pilih metode QRIS.
+    // Generate Snap Token dari Midtrans untuk ditampilkan ke customer.
+    public function generateMidtransToken(Request $request, $id)
+    {
+        $transaksi = Transaksi::with(['kendaraan', 'tarif'])->find($id);
+
+        if (!$transaksi) {
+                return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+            }
+
+
+        if ($transaksi->status !== 'keluar') {
+            return response()->json(['message' => 'Kendaraan belum diproses keluar'], 422);
+        }
+
+        if ($transaksi->metode_bayar !== 'qris') {
+            return response()->json(['message' => 'Metode pembayaran bukan QRIS'], 422);
+        }
+
+        if ($transaksi->midtrans_snap_token) {
+            // Token sudah ada, return saja
+            return response()->json([
+                'token' => $transaksi->midtrans_snap_token,
+                'order_id' => $transaksi->midtrans_order_id,
+            ]);
+        }
+
+        try {
+            $midtransService = new \App\Services\MidtransService();
+            $result = $midtransService->createSnapToken($transaksi, (int) $transaksi->biaya_total);
+
+            return response()->json($result, 201);
+        } catch (\Exception $e) {
+            \Log::error('Generate Midtrans Token Error: ' . $e->getMessage());
+            return response()->json(['message' => 'Gagal generate token Midtrans'], 500);
+        }
+    }
+
+    // POST /api/transaksi/midtrans-callback
+    // Webhook dari Midtrans untuk notifikasi status pembayaran
+    // Endpoint PUBLIC (tidak perlu auth) karena callback dari Midtrans
+    public function midtransCallback(Request $request)
+    {
+        try {
+            $midtransService = new \App\Services\MidtransService();
+            $notification = $midtransService->handleNotification();
+
+            $orderId = $notification['order_id'];
+            $status = $notification['status'];
+
+            // Parse order ID: format PARKIR-{id_parkir}-{timestamp}
+            $parts = explode('-', $orderId);
+            if (count($parts) < 2) {
+                return response()->json(['message' => 'Invalid order ID format'], 400);
+            }
+
+            $id_parkir = intval($parts[1]);
+            $transaksi = Transaksi::find($id_parkir);
+
+            if (!$transaksi) {
+                return response()->json(['message' => 'Transaksi tidak ditemukan'], 404);
+            }
+
+            if ($transaksi->midtrans_order_id !== $orderId) {
+                return response()->json(['message' => 'Order ID does not match'], 400);
+            }
+
+            // Update status pembayaran berdasarkan response Midtrans
+            if ($status === 'settlement' || $status === 'capture') {
+                $transaksi->update([
+                    'status_pembayaran' => 'lunas',
+                    'midtrans_status' => $status,
+                    'midtrans_payment_type' => $notification['type'],
+                ]);
+
+                LogAktivitas::catat(0, 'Pembayaran QRIS konfirmasi otomatis dari Midtrans (id_parkir: ' . $id_parkir . ')');
+            } elseif ($status === 'pending') {
+                $transaksi->update([
+                    'midtrans_status' => $status,
+                ]);
+            } elseif ($status === 'deny' || $status === 'expire' || $status === 'cancel') {
+                $transaksi->update([
+                    'status_pembayaran' => 'menunggu',
+                    'midtrans_status' => $status,
+                ]);
+            }
+
+            // Fraud detection
+            if ($notification['fraud'] === 'challenge') {
+                $transaksi->update(['midtrans_status' => 'challenge']);
+            } elseif ($notification['fraud'] === 'accept') {
+                // Accept fraud status jika sebelumnya challenge
+                if ($transaksi->midtrans_status === 'challenge') {
+                    $transaksi->update(['status_pembayaran' => 'lunas']);
+                }
+            }
+
+            return response()->json(['status' => 'ok']);
+        } catch (\Exception $e) {
+            \Log::error('Midtrans Callback Error: ' . $e->getMessage());
+            return response()->json(['message' => 'Callback processing failed'], 500);
+        }
     }
 }

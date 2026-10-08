@@ -2,303 +2,250 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LogAktivitas;
 use App\Models\User;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    /**
-     * POST /api/register
-     * Registrasi akun baru (publik, tidak perlu login).
-     * Role SELALU "pelanggan" — tidak bisa dipilih/dikirim dari client.
-     * Role admin/owner/petugas hanya boleh dibuat oleh admin lewat menu Kelola User.
-     * Passkey langsung digenerate saat registrasi supaya bisa
-     * ditampilkan ke user (buat auto-login lain kali).
-     */
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'nama_lengkap' => 'required|string|max:50',
-            'username'     => 'required|string|max:50|unique:tb_user,username',
-            'no_telp'      => 'required|string|max:20|unique:tb_user,no_telp',
-            'password'     => 'required|string|min:6|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Data tidak valid',
-                'errors'  => $validator->errors(),
-            ], 422);
-        }
-
-        $user = User::create([
-            'nama_lengkap' => $request->nama_lengkap,
-            'username'     => $request->username,
-            'no_telp'      => $request->no_telp,
-            'password'     => $request->password, // otomatis ke-hash (cast 'hashed')
-            'role'         => 'pelanggan', // dipaksa di sini — registrasi publik selalu jadi pelanggan
-            'status_aktif' => true,
-        ]);
-
-        $token = $user->createToken('token-' . $user->username)->plainTextToken;
-
-        // Generate passkey langsung saat register (bukan cuma pas login)
-        $passkey = $this->buatPasskeyBaru($user);
-
-        LogAktivitas::catat($user->id_user, 'Registrasi akun baru sebagai ' . $user->role);
-
-        return response()->json([
-            'message' => 'Registrasi berhasil',
-            'user'    => [
-                'id_user'         => $user->id_user,
-                'nama_lengkap'    => $user->nama_lengkap,
-                'username'        => $user->username,
-                'no_telp'         => $user->no_telp,
-                'role'            => $user->role,
-                'foto_profil_url' => $user->foto_profil_url,
-            ],
-            'token'         => $token,
-            'passkey_token' => $passkey,
-        ], 201);
-    }
-
-    /**
-     * POST /api/login
-     * Login pakai username & password (bukan email).
-     * Semua role (admin, petugas, owner) lewat endpoint yang sama.
-     * Setelah berhasil, generate passkey_token baru (buat auto-login
-     * di kunjungan berikutnya lewat endpoint /api/login-passkey).
-     */
+    // POST /api/login
+    //  {#bf2,20}
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $credentials = $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Data tidak valid',
-                'errors'  => $validator->errors(),
-            ], 422);
+        $user = User::where('username', $credentials['username'])->first();
+
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            return response()->json(['message' => 'Username atau password salah'], 401);
         }
 
-        $user = User::where('username', $request->username)->first();
-
-        // Cek user ada, password cocok, dan akun masih aktif
-        if (! $user || ! Auth::attempt($request->only('username', 'password'))) {
-            return response()->json([
-                'message' => 'Username atau password salah',
-            ], 401);
-        }
-
-        if (! $user->status_aktif) {
-            return response()->json([
-                'message' => 'Akun anda nonaktif, hubungi admin',
-            ], 403);
-        }
-
-        // Buat token Sanctum baru untuk user ini
-        $token = $user->createToken('token-' . $user->username)->plainTextToken;
-
-        // Buat & simpan passkey baru (dipakai buat auto-login lain kali)
-        $passkey = $this->buatPasskeyBaru($user);
-
-        // Catat ke log aktivitas
-        LogAktivitas::catat($user->id_user, 'Login sebagai ' . $user->role);
+        $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Login berhasil',
-            'user'    => [
-                'id_user'         => $user->id_user,
-                'nama_lengkap'    => $user->nama_lengkap,
-                'username'        => $user->username,
-                'role'            => $user->role,
-                'foto_profil_url' => $user->foto_profil_url,
-            ],
-            'token'         => $token,
-            'passkey_token' => $passkey,
-        ], 200);
+            'token' => $token,
+            'user' => $user,
+        ]);
     }
 
-    /**
-     * POST /api/login-passkey
-     * Auto-login pakai passkey_token yang tersimpan di localStorage
-     * frontend, jadi user tidak perlu ketik username/password lagi
-     * selama passkey masih valid. Passkey lama otomatis diganti
-     * dengan yang baru tiap dipakai (rotasi, biar lebih aman).
-     */
+    // POST /api/login-passkey
+    // Login alternatif tanpa username/password, memakai passkey_token yang
+    // sebelumnya dibuat lewat generatePasskey() (harus sudah login sekali
+    // dengan username/password dulu untuk generate passkey-nya).
+    //  {#6a0,20}
     public function loginWithPasskey(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'passkey_token' => 'required|string',
+        $validated = $request->validate([
+            'passkey' => 'required|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Data tidak valid',
-                'errors'  => $validator->errors(),
-            ], 422);
+        $user = User::where('passkey_token', $validated['passkey'])->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Passkey tidak valid'], 401);
         }
 
-        $user = User::where('passkey_token', $request->passkey_token)->first();
-
-        if (! $user || ! $user->status_aktif) {
-            return response()->json([
-                'message' => 'Passkey tidak valid, silakan login ulang',
-            ], 401);
-        }
-
-        $token = $user->createToken('token-' . $user->username)->plainTextToken;
-
-        // Rotasi passkey supaya token lama tidak bisa dipakai lagi
-        $passkeyBaru = $this->buatPasskeyBaru($user);
-
-        LogAktivitas::catat($user->id_user, 'Login otomatis (passkey) sebagai ' . $user->role);
+        $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Login berhasil',
-            'user'    => [
-                'id_user'         => $user->id_user,
-                'nama_lengkap'    => $user->nama_lengkap,
-                'username'        => $user->username,
-                'role'            => $user->role,
-                'foto_profil_url' => $user->foto_profil_url,
-            ],
-            'token'         => $token,
-            'passkey_token' => $passkeyBaru,
-        ], 200);
+            'token' => $token,
+            'user' => $user,
+        ]);
     }
 
-    /**
-     * POST /api/logout
-     * Menghapus token yang sedang dipakai (harus sudah login/auth:sanctum).
-     * Passkey ikut dihapus supaya perangkat ini tidak auto-login lagi.
-     */
+    // POST /api/register
+    //  {#4ca,24}
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'username' => 'required|string|unique:tb_user,username',
+            'email' => 'required|email|unique:tb_user,email',
+            'password' => 'required|string|min:6',
+            'nama_lengkap' => 'required|string',
+        ]);
+
+        $user = User::create([
+            'username' => $validated['username'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'nama_lengkap' => $validated['nama_lengkap'],
+            'role' => 'pelanggan',
+        ]);
+
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user' => $user,
+        ], 201);
+    }
+
+    // POST /api/logout
     public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logout berhasil']);
+    }
+
+    // GET /api/user
+    public function user(Request $request)
+    {
+        return response()->json($request->user());
+    }
+
+    // PUT /api/user/update
+    public function updateProfile(Request $request)
     {
         $user = $request->user();
 
-        LogAktivitas::catat($user->id_user, 'Logout dari sistem');
+        $validated = $request->validate([
+            'nama_lengkap' => 'nullable|string',
+            'email' => 'nullable|email|unique:tb_user,email,' . $user->id_user . ',id_user',
+            'no_telepon' => 'nullable|string',
+        ]);
 
-        $user->passkey_token = null;
-        $user->save();
+        $user->update($validated);
 
-        // Hapus hanya token yang sedang dipakai saat request ini
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json([
-            'message' => 'Logout berhasil',
-        ], 200);
+        return response()->json($user);
     }
 
-    /**
-     * GET /api/me
-     * Ambil data user yang sedang login (buat cek role di frontend).
-     */
+    // PUT /api/user/change-password
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = $request->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['message' => 'Password saat ini salah'], 422);
+        }
+
+        $user->update(['password' => Hash::make($request->new_password)]);
+
+        return response()->json(['message' => 'Password berhasil diubah']);
+    }
+
+    // GET /api/me
     public function me(Request $request)
     {
         $user = $request->user();
 
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 401);
+        }
+
         return response()->json([
-            'id_user'         => $user->id_user,
-            'nama_lengkap'    => $user->nama_lengkap,
-            'username'        => $user->username,
-            'role'            => $user->role,
-            'foto_profil_url' => $user->foto_profil_url,
+            'id' => $user->id_user,
+            'username' => $user->username,
+            'email' => $user->email,
+            'nama_lengkap' => $user->nama_lengkap,
+            'role' => $user->role,
+            'created_at' => $user->created_at,
         ]);
     }
 
-    /**
-     * POST /api/profile/foto
-     * Upload / ganti foto profil milik sendiri. Bisa dipakai oleh
-     * SEMUA role yang sedang login (admin, petugas, owner, pelanggan) —
-     * beda dengan /api/users yang khusus admin kelola akun orang lain.
-     * Foto diupload ke Cloudinary, otomatis di-crop persegi 400x400
-     * fokus wajah dan dikompres/format-optimasi otomatis.
-     */
-    public function updateFoto(Request $request)
+    // GET /api/user/dashboard-data
+    public function dashboardData(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'foto_profil' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
+        $user = $request->user();
+        $role = $user->role;
 
-        if ($validator->fails()) {
+        if ($role === 'admin') {
+            $totalUsers = User::count();
+            $totalTransaksi = Transaksi::count();
+            $totalPendapatan = Transaksi::where('status_pembayaran', 'lunas')->sum('biaya_total');
+            $totalDenda = Transaksi::sum('denda');
+
             return response()->json([
-                'message' => 'Data tidak valid',
-                'errors'  => $validator->errors(),
-            ], 422);
+                'totalUsers' => $totalUsers,
+                'totalTransaksi' => $totalTransaksi,
+                'totalPendapatan' => $totalPendapatan,
+                'totalDenda' => $totalDenda,
+            ]);
+        } elseif ($role === 'petugas') {
+            $transaksiHariIni = Transaksi::whereDate('waktu_masuk', today())->count();
+            $transaksiSelesai = Transaksi::whereDate('waktu_keluar', today())
+                ->where('status', 'keluar')
+                ->count();
+            $pendapatanHariIni = Transaksi::whereDate('waktu_masuk', today())
+                ->where('status_pembayaran', 'lunas')
+                ->sum('biaya_total');
+
+            return response()->json([
+                'transaksiHariIni' => $transaksiHariIni,
+                'transaksiSelesai' => $transaksiSelesai,
+                'pendapatanHariIni' => $pendapatanHariIni,
+            ]);
+        } else {
+            return response()->json(['message' => 'Unauthorized'], 403);
         }
-
-        $user = $request->user();
-
-        // Hapus foto lama di Cloudinary dulu biar tidak menumpuk file yatim
-        if ($user->foto_profil_public_id) {
-            Cloudinary::destroy($user->foto_profil_public_id);
-        }
-
-        $uploaded = Cloudinary::upload($request->file('foto_profil')->getRealPath(), [
-            'folder' => 'foto_profil',
-            'transformation' => [
-                'width'   => 400,
-                'height'  => 400,
-                'crop'    => 'fill',
-                'gravity' => 'face',
-                'quality' => 'auto',
-                'fetch_format' => 'auto',
-            ],
-        ]);
-
-        $user->foto_profil = $uploaded->getSecurePath();
-        $user->foto_profil_public_id = $uploaded->getPublicId();
-        $user->save();
-
-        LogAktivitas::catat($user->id_user, 'Memperbarui foto profil');
-
-        return response()->json([
-            'message'         => 'Foto profil berhasil diperbarui',
-            'foto_profil_url' => $user->foto_profil_url,
-        ]);
     }
 
-    /**
-     * DELETE /api/profile/foto
-     * Hapus foto profil sendiri, balik ke avatar inisial di frontend.
-     */
-    public function hapusFoto(Request $request)
+    // POST /api/user/request-activation
+    public function requestActivation(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'email' => 'required|email',
+            'name' => 'required|string',
+            'role' => 'required|in:admin,petugas,owner',
+        ]);
+
+        $existing = User::where('email', $request->email)
+            ->orWhere('username', $request->username)
+            ->first();
+
+        if ($existing) {
+            return response()->json(['message' => 'User sudah terdaftar'], 422);
+        }
+
+        \App\Models\PermintaanAktivasi::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'nama_lengkap' => $request->name,
+            'role' => $request->role,
+            'status' => 'pending',
+        ]);
+
+        return response()->json(['message' => 'Permintaan aktivasi berhasil dikirim'], 201);
+    }
+
+    // POST /api/user/generate-passkey
+    public function generatePasskey(Request $request)
     {
         $user = $request->user();
 
-        if ($user->foto_profil_public_id) {
-            Cloudinary::destroy($user->foto_profil_public_id);
-            $user->foto_profil = null;
-            $user->foto_profil_public_id = null;
-            $user->save();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        LogAktivitas::catat($user->id_user, 'Menghapus foto profil');
+        $passkey = Str::random(32);
 
-        return response()->json([
-            'message'         => 'Foto profil berhasil dihapus',
-            'foto_profil_url' => null,
-        ]);
-    }
-
-    /**
-     * Generate passkey token acak (60 karakter, sama seperti pendekatan
-     * remember_token bawaan Laravel), simpan ke user, kembalikan nilainya.
-     */
-    private function buatPasskeyBaru(User $user): string
-    {
-        $passkey = Str::random(60);
         $user->passkey_token = $passkey;
         $user->save();
 
         return $passkey;
+    }
+
+    // GET /api/config
+    // Endpoint publik untuk config yang aman ditampilkan ke frontend
+    public function config()
+    {
+        return response()->json([
+            'midtrans_client_key' => config('midtrans.client_key'),
+            'midtrans_snap_url' => config('midtrans.snap_url'),
+            'midtrans_is_production' => (bool) config('midtrans.is_production'),
+            'app_name' => config('app.name'),
+        ]);
     }
 }

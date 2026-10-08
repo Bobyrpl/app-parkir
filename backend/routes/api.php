@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\StatistikController;
+use App\Http\Controllers\MidtransController;
 
 
 
@@ -24,6 +25,7 @@ use App\Http\Controllers\StatistikController;
 */
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/config', [AuthController::class, 'config']);
 Route::post('/login-passkey', [AuthController::class, 'loginWithPasskey']);
 
 /*
@@ -50,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
     |----------------------------------------------------------------
     */
     //
+    //  {#bcd,18}
     Route::middleware('role:admin')->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('tarif', TarifController::class)->except(['index', 'show']);
@@ -58,7 +61,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('kendaraan', KendaraanController::class)->except(['index', 'store']);
     Route::get('/log-aktivitas', [LogAktivitasController::class, 'index']);
     Route::post('/komentar/{id}/balas', [KomentarController::class, 'balas']);
-    Route::get('/transaksi/rekap-harian', [TransaksiController::class, 'rekapHarian']); // pindah ke sini
+    // /transaksi/rekap-harian TIDAK didaftarkan di sini (khusus admin) karena
+    // dashboard Petugas dan Owner juga memanggilnya. Route-nya ada di bawah,
+    // di dalam grup auth:sanctum tanpa batasan role (lihat dekat akhir file).
 
     // Tinjau & proses pengajuan aktivasi ulang akun yang dinonaktifkan
     Route::get('/permintaan-aktivasi', [PermintaanAktivasiController::class, 'index']);
@@ -109,10 +114,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:petugas')->group(function () {
     Route::post('/transaksi/masuk', [TransaksiController::class, 'kendaraanMasuk']);
     Route::post('/transaksi/{id}/keluar', [TransaksiController::class, 'kendaraanKeluar']);
+    Route::get('/transaksi/{id}/karcis', [TransaksiController::class, 'cetakKarcis']);
     Route::get('/transaksi/{id}/struk', [TransaksiController::class, 'cetakStruk']);
     Route::get('/transaksi', [TransaksiController::class, 'index']);
     Route::get('/transaksi/kendaraan-didalam', [TransaksiController::class, 'kendaraanDidalam']);
-    Route::get('/transaksi/sedang-parkir', [TransaksiController::class, 'sedangParkir']); // ⬅️ baris baru
+    Route::get('/transaksi/sedang-parkir', [TransaksiController::class, 'sedangParkir']); // â¬…ï¸ baris baru
+    Route::post('/transaksi/{id}/generate-midtrans-token', [MidtransController::class, 'generateToken']);
     Route::get('/transaksi/cari-booking/{kode_booking}', [TransaksiController::class, 'cariBookingSedangParkir']);
 
     // QRIS statis - petugas menekan ini setelah memastikan pembayaran
@@ -167,13 +174,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
-//
-//  {#d1c,15}
-Route::get('/komentar', [KomentarController::class, 'index']);
-Route::post('/komentar', [KomentarController::class, 'store']);
-
 // PUBLIK - ajukan aktivasi ulang akun yang dinonaktifkan (tidak perlu login,
 // karena akun yang statusnya nonaktif memang tidak bisa login).
+//  {#a4e,8}
 Route::post('/permintaan-aktivasi', [PermintaanAktivasiController::class, 'store']);
 
 Route::get('/komentar', [KomentarController::class, 'index']);
@@ -181,3 +184,8 @@ Route::post('/komentar', [KomentarController::class, 'store']);
 Route::get('/statistik/ringkasan', [StatistikController::class, 'ringkasan']);
 Route::get('/transaksi/rekap-harian-publik', [TransaksiController::class, 'rekapHarianPublik']);
 Route::delete('/komentar/{id}', [KomentarController::class, 'destroy']);
+
+// Webhook callback dari Midtrans - PUBLIC endpoint untuk notifikasi pembayaran
+Route::post('/transaksi/midtrans-callback', [MidtransController::class, 'callback']);
+
+

@@ -31,6 +31,10 @@ class Transaksi extends Model
         'metode_bayar',
         'status_pembayaran',
         'qris_ref_id',
+        'midtrans_order_id',
+        'midtrans_payment_type',
+        'midtrans_status',
+        'midtrans_snap_token',
     ];
 
     protected $casts = [
@@ -73,14 +77,8 @@ class Transaksi extends Model
      * HELPER PROSES TRANSAKSI
      * ========================================================== */
 
-    // Hitung durasi (jam, dibulatkan ke atas) & biaya saat kendaraan keluar
-    // Perhitungan biaya didelegasikan ke FUNCTION MySQL fn_hitung_biaya_parkir
-    // (lihat migration 2026_07_23_010000_add_db_objects_untuk_parkir.php)
     //
-    // CATATAN: method ini HANYA menghitung biaya parkir murni (tarif x jam).
-    // Denda (kalau ada) ditambahkan terpisah oleh controller setelah method
-    // ini dipanggil, supaya logika tarif dan logika denda tidak bercampur
-    // di satu tempat.
+    //  {#300,17}
     public function hitungBiayaKeluar(): void
     {
         $masuk  = $this->waktu_masuk;
@@ -88,7 +86,7 @@ class Transaksi extends Model
 
         $jam = (int) ceil($masuk->diffInMinutes($keluar) / 60);
         $jam = max(1, $jam); // minimal dihitung 1 jam
-
+        
         $biaya = DB::selectOne(
             'SELECT fn_hitung_biaya_parkir(?, ?, ?) AS biaya',
             [$masuk, $keluar, $this->tarif->tarif_per_jam]
@@ -99,19 +97,7 @@ class Transaksi extends Model
         $this->status      = 'keluar';
     }
 
-    // Hitung denda keterlambatan booking SECARA OTOMATIS berdasarkan
-    // pengaturan denda yang diatur admin (tb_pengaturan_denda), tanpa
-    // input manual dari petugas.
-    //
-    // Aturan:
-    // - Cuma berlaku untuk transaksi yang berasal dari booking
-    //   (id_booking terisi) dan booking-nya punya jam_rencana_keluar.
-    // - Kalau fitur denda dimatikan admin (aktif = false), selalu 0.
-    // - Waktu keluar aktual dibandingkan dengan rencana keluar booking;
-    //   selisih dikurangi dulu dengan toleransi_menit sebelum dihitung.
-    // - Jam keterlambatan dibulatkan ke atas (telat 1 menit tetap kena
-    //   1 jam denda), dikalikan denda_per_jam dari pengaturan.
-    // - Tidak terlambat (atau bukan dari booking) -> 0.
+    
     public function hitungDenda(): int
     {
         if (! $this->id_booking || ! $this->booking) {
@@ -130,8 +116,8 @@ class Transaksi extends Model
             return 0;
         }
 
-        $tanggal = $booking->tanggal_rencana->format('Y-m-d');
-        $rencanaKeluar = Carbon::parse($tanggal . ' ' . $booking->jam_rencana_keluar);
+        $tanggalKeluar = $booking->tanggal_rencana_keluar ?? $booking->tanggal_rencana;
+        $rencanaKeluar = Carbon::parse($tanggalKeluar->format('Y-m-d') . ' ' . $booking->jam_rencana_keluar);
         $aktualKeluar  = $this->waktu_keluar ?? now();
 
         $menitTerlambat = $rencanaKeluar->diffInMinutes($aktualKeluar, false);

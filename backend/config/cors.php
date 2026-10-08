@@ -7,16 +7,13 @@ return [
     | Cross-Origin Resource Sharing (CORS) Configuration
     |--------------------------------------------------------------------------
     |
-    | Backend ini diakses oleh frontend React yang jalan di origin/port
-    | berbeda:
-    |   - Development : http://localhost:5173 (Vite dev server)
-    |   - Production   : https://app-parkir.vercel.app (Vercel)
+    | Sekarang React di-serve langsung dari project Laravel yang sama
+    | (satu domain, satu port), jadi CORS sebenarnya sudah tidak wajib lagi.
+    | Konfigurasi ini dibiarkan aktif untuk jaga-jaga kalau suatu saat ada
+    | client lain (mobile app, domain terpisah, dsb) yang perlu akses API.
     |
     */
 
-    // Path mana saja yang kena middleware CORS.
-    // '/login' ditambahkan karena route ini dipanggil langsung
-    // dari frontend (bukan lewat prefix /api).
     'paths' => [
         'api/*',
         'sanctum/csrf-cookie',
@@ -27,11 +24,9 @@ return [
 
     'allowed_methods' => ['*'],
 
-    // Bisa lebih dari satu origin sekaligus: dev + production.
-    // FRONTEND_URL di-set lewat env var Railway untuk production.
+    // link fronend kalau sudah di hosting di ganti nama domain.com/app{#510,3}
     'allowed_origins' => [
-        'http://localhost:5173',
-        env('FRONTEND_URL', 'https://app-parkir.vercel.app'),
+        env('FRONTEND_URL', 'http://localhost:8000'),
     ],
 
     'allowed_origins_patterns' => [],
@@ -42,8 +37,6 @@ return [
 
     'max_age' => 0,
 
-    // Bearer token (Sanctum) tidak butuh cookie, tapi biarkan true
-    // supaya aman kalau nanti ada bagian yang pakai cookie/session.
     'supports_credentials' => true,
 
 ];

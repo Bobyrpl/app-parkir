@@ -23,11 +23,13 @@ class PembayaranController extends Controller
         $transaksi = Transaksi::findOrFail($id);
 
         if ($transaksi->status_pembayaran === 'lunas') {
-            return response()->json(['message' => 'Transaksi sudah lunas.'], 422);
+            return response()->json(['message' => 'Pembayaran QRIS sudah lunas.']);
         }
 
         $transaksi->update([
             'metode_bayar' => 'qris',
+            'status' => 'keluar',
+            'waktu_keluar' => now(),
             'status_pembayaran' => 'lunas',
         ]);
 

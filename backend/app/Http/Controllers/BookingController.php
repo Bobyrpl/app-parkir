@@ -115,17 +115,24 @@ class BookingController extends Controller
         // date_format/after dan gagal. Normalisasi manual di sini sebelum
         // divalidasi.
         $request->merge([
-            'jam_rencana_keluar' => $request->jam_rencana_keluar ?: null,
+            'jam_rencana_keluar'     => $request->jam_rencana_keluar ?: null,
+            'tanggal_rencana_keluar' => $request->tanggal_rencana_keluar ?: null,
         ]);
 
         $validator = Validator::make($request->all(), [
-            'id_kendaraan'        => 'required|exists:tb_kendaraan,id_kendaraan',
-            'id_area'             => 'required|exists:tb_area_parkir,id_area',
-            'id_tarif'            => 'required|exists:tb_tarif,id_tarif',
-            'tanggal_rencana'     => 'required|date|after_or_equal:today',
-            'jam_rencana_masuk'   => 'required|date_format:H:i',
-            'jam_rencana_keluar'  => 'nullable|date_format:H:i|after:jam_rencana_masuk',
-            'catatan'             => 'nullable|string|max:255',
+            'id_kendaraan'            => 'required|exists:tb_kendaraan,id_kendaraan',
+            'id_area'                 => 'required|exists:tb_area_parkir,id_area',
+            'id_tarif'                => 'required|exists:tb_tarif,id_tarif',
+            'tanggal_rencana'         => 'required|date|after_or_equal:today',
+            'tanggal_rencana_keluar'  => 'nullable|date|after_or_equal:tanggal_rencana',
+            'jam_rencana_masuk'       => 'required|date_format:H:i',
+            // 'after:jam_rencana_masuk' sengaja DIHAPUS - dulu itu valid karena
+            // masuk & keluar dianggap di hari yang sama. Sekarang keluar bisa
+            // di tanggal_rencana_keluar (hari lain), jadi jam keluar boleh lebih
+            // awal dari jam masuk (mis. masuk jam 14:00 tgl 1, keluar jam 10:00
+            // tgl 8 itu valid).
+            'jam_rencana_keluar'      => 'nullable|date_format:H:i',
+            'catatan'                 => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -160,9 +167,10 @@ class BookingController extends Controller
             'id_kendaraan'        => $request->id_kendaraan,
             'id_area'             => $request->id_area,
             'id_tarif'            => $request->id_tarif,
-            'tanggal_rencana'     => $request->tanggal_rencana,
-            'jam_rencana_masuk'   => $request->jam_rencana_masuk,
-            'jam_rencana_keluar'  => $request->jam_rencana_keluar,
+            'tanggal_rencana'         => $request->tanggal_rencana,
+            'tanggal_rencana_keluar'  => $request->tanggal_rencana_keluar,
+            'jam_rencana_masuk'       => $request->jam_rencana_masuk,
+            'jam_rencana_keluar'      => $request->jam_rencana_keluar,
             'kode_booking'        => Booking::buatKodeBooking(),
             'status'              => 'menunggu',
             'catatan'             => $request->catatan,

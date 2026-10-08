@@ -14,6 +14,12 @@ return new class extends Migration
             $table->unsignedInteger('kapasitas');
             $table->unsignedInteger('terisi')->default(0);
         });
+
+        // Data awal area parkir (sesuai data production).
+        \Illuminate\Support\Facades\DB::table('tb_area_parkir')->insert([
+            ['nama_area' => 'Area A - Motor', 'kapasitas' => 50, 'terisi' => 0],
+            ['nama_area' => 'Area B - Mobil', 'kapasitas' => 30, 'terisi' => 0],
+        ]);
     }
 
     public function down(): void

@@ -20,6 +20,7 @@ class PengaturanDendaController extends Controller
 
     // PUT /api/pengaturan-denda
     // Khusus admin. Body: { denda_per_jam, toleransi_menit, aktif }
+    //  {#be9,28}
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [

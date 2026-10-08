@@ -19,6 +19,7 @@ class Booking extends Model
         'id_area',
         'id_tarif',
         'tanggal_rencana',
+        'tanggal_rencana_keluar',
         'jam_rencana_masuk',
         'jam_rencana_keluar',
         'kode_booking',
@@ -27,7 +28,8 @@ class Booking extends Model
     ];
 
     protected $casts = [
-        'tanggal_rencana' => 'date',
+        'tanggal_rencana'        => 'date',
+        'tanggal_rencana_keluar' => 'date',
     ];
 
     /* ==========================================================

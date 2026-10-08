@@ -14,9 +14,10 @@ return new class extends Migration
             $table->string('jenis_kendaraan', 30);
             $table->string('warna', 30)->nullable();
             $table->string('pemilik', 50)->nullable();
-            $table->unsignedBigInteger('id_user')->nullable();
-
-            $table->foreign('id_user')->references('id_user')->on('tb_user')->nullOnDelete();
+            $table->foreignId('id_user')
+                ->nullable()
+                ->constrained('tb_user', 'id_user')
+                ->nullOnDelete();
         });
     }
 
