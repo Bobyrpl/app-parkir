@@ -51,6 +51,7 @@ export default function Booking() {
   const [form, setForm] = useState({
     id_kendaraan: "",
     tanggal_rencana: "",
+    tanggal_rencana_keluar: "",
     jam_rencana_masuk: "",
     jam_rencana_keluar: "",
     catatan: "",
@@ -159,6 +160,7 @@ export default function Booking() {
         id_tarif: tarifOtomatis.id_tarif,
         id_area: areaOtomatis.id_area,
         tanggal_rencana: form.tanggal_rencana,
+        tanggal_rencana_keluar: form.tanggal_rencana_keluar,
         jam_rencana_masuk: form.jam_rencana_masuk,
         jam_rencana_keluar: form.jam_rencana_keluar,
         catatan: form.catatan,
@@ -170,6 +172,7 @@ export default function Booking() {
       setForm({
         id_kendaraan: "",
         tanggal_rencana: "",
+        tanggal_rencana_keluar: "",
         jam_rencana_masuk: "",
         jam_rencana_keluar: "",
         catatan: "",
@@ -239,7 +242,7 @@ export default function Booking() {
       <div className="max-w-xl space-y-6">
         <Card className="p-5">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-display text-base text-[var(--color-text)]">Kendaraan</h2>
+            <h2 className="font-display text-base text-[#171717]">Kendaraan</h2>
             <button
               type="button"
               onClick={() => setTambahKendaraan((v) => !v)}
@@ -275,7 +278,7 @@ export default function Booking() {
                   })
                 }
                 required
-                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717]"
+                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[#171717] focus:outline-none focus:ring-2 focus:ring-[#171717]"
               >
                 <option value="">Pilih jenis kendaraan</option>
                 {tarifList.map((t) => (
@@ -333,7 +336,7 @@ export default function Booking() {
         </Card>
 
         <Card className="p-5">
-          <h2 className="font-display text-base text-[var(--color-text)] mb-3">
+          <h2 className="font-display text-base text-[#171717] mb-3">
             Rencana Parkir
           </h2>
           <form onSubmit={handleSubmit} className="space-y-3">
@@ -343,7 +346,7 @@ export default function Booking() {
                 <span className="text-xs font-mono text-[var(--color-text-secondary)]">
                   TARIF (OTOMATIS)
                 </span>
-                <span className="text-sm text-[var(--color-text)]">
+                <span className="text-sm text-[#171717]">
                   {tarifOtomatis
                     ? `${tarifOtomatis.jenis_kendaraan} — Rp ${Number(tarifOtomatis.tarif_per_jam).toLocaleString("id-ID")}/jam`
                     : "—"}
@@ -353,7 +356,7 @@ export default function Booking() {
                 <span className="text-xs font-mono text-[var(--color-text-secondary)]">
                   AREA (OTOMATIS)
                 </span>
-                <span className="text-sm text-[var(--color-text)]">
+                <span className="text-sm text-[#171717]">
                   {areaOtomatis
                     ? `${areaOtomatis.nama_area} (${areaOtomatis.terisi}/${areaOtomatis.kapasitas})`
                     : "—"}
@@ -361,20 +364,55 @@ export default function Booking() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
-                TANGGAL RENCANA
-              </label>
-              <Input
-                type="date"
-                min={today}
-                value={form.tanggal_rencana}
-                onChange={(e) =>
-                  setForm({ ...form, tanggal_rencana: e.target.value })
-                }
-                required
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
+                  TANGGAL MASUK
+                </label>
+                <Input
+                  type="date"
+                  min={today}
+                  value={form.tanggal_rencana}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      tanggal_rencana: e.target.value,
+                      // Kalau tanggal keluar yang sudah diisi jadi lebih awal
+                      // dari tanggal masuk yang baru dipilih, kosongkan lagi
+                      // supaya tidak submit kombinasi yang tidak valid.
+                      tanggal_rencana_keluar:
+                        form.tanggal_rencana_keluar &&
+                        form.tanggal_rencana_keluar < e.target.value
+                          ? ""
+                          : form.tanggal_rencana_keluar,
+                    })
+                  }
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">
+                  TANGGAL KELUAR (OPSIONAL)
+                </label>
+                <Input
+                  type="date"
+                  min={form.tanggal_rencana || today}
+                  value={form.tanggal_rencana_keluar}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      tanggal_rencana_keluar: e.target.value,
+                    })
+                  }
+                  disabled={!form.tanggal_rencana}
+                />
+              </div>
             </div>
+            <p className="text-xs text-[var(--color-text-secondary)] -mt-1">
+              Booking lebih dari 1 hari? Isi tanggal keluar (mis. masuk tgl 1,
+              keluar tgl 8), supaya denda keterlambatan dihitung dari tanggal
+              keluar yang benar, bukan hari yang sama dengan tanggal masuk.
+            </p>
 
             <div className="grid grid-cols-2 gap-3">
               <div>

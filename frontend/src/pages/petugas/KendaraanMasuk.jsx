@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import { PageHeader, Card, Button, Input } from "../../components/ui";
 import { useToast } from "../../context/ToastContext";
 import ModalScanQr from "../../components/ModalScanQr";
+import KarcisMasukCard from "../../components/KarcisMasukCard";
 
 // Cari tarif yang jenis_kendaraan-nya sama persis dengan kendaraan yang dipilih
 function cariTarifOtomatis(tarifList, jenisKendaraan) {
@@ -48,6 +49,7 @@ export default function KendaraanMasuk() {
     const [bookingInfo, setBookingInfo] = useState(null);
     const [cariBookingLoading, setCariBookingLoading] = useState(false);
     const [scanOpen, setScanOpen] = useState(false);
+    const [karcisData, setKarcisData] = useState(null);
 
     // Menandai apakah id_tarif / id_area saat ini adalah hasil pengisian otomatis,
     // supaya bisa dikasih label "otomatis" di UI. Begitu petugas mengubahnya sendiri
@@ -74,7 +76,7 @@ export default function KendaraanMasuk() {
                 id_booking: b.id_booking,
             });
             // Tarif & area sudah ditentukan sejak booking dibuat, jadi bukan hasil
-            // auto-fill di halaman ini — tampilkan sebagai pilihan tetap (bisa diubah manual bila perlu).
+            // auto-fill di halaman ini  - tampilkan sebagai pilihan tetap (bisa diubah manual bila perlu).
             setTarifOtomatis(false);
             setAreaOtomatis(false);
             showSuccess(`Booking ditemukan: ${b.kendaraan?.plat_nomor}`);
@@ -142,7 +144,7 @@ export default function KendaraanMasuk() {
     // tinggal pilih manual dari dropdown seperti biasa.
     //
     // Guard tambahan: kalau kendaraan ini sedang_parkir (masih di dalam, belum
-    // tercatat keluar), tolak pemilihan sejak di sini juga — jangan andalkan
+    // tercatat keluar), tolak pemilihan sejak di sini juga  - jangan andalkan
     // disabled di tombol saja, karena data bisa saja stale/berubah di antara
     // render. Backend (/transaksi/masuk) sudah menolak kasus ini juga, tapi
     // memberi tahu petugas lebih awal di sini jauh lebih jelas UX-nya.
@@ -188,9 +190,15 @@ export default function KendaraanMasuk() {
         setSubmitting(true);
         try {
             const res = await api.post("/transaksi/masuk", form);
-            showSuccess(
-                `Kendaraan berhasil dicatat masuk. ID transaksi: ${res.data.data.id_parkir}`,
-            );
+            const idParkir = res.data.data.id_parkir;
+            
+            if (!form.id_booking) {
+                const karcisRes = await api.get(`/transaksi/${idParkir}/karcis`);
+                setKarcisData(karcisRes.data);
+                showSuccess(`Kendaraan berhasil dicatat masuk. Karcis siap dicetak.`);
+            } else {
+                showSuccess(`Kendaraan booking berhasil dicatat masuk. Tidak perlu karcis fisik.`);
+            }
             setForm({
                 id_kendaraan: "",
                 id_tarif: "",
@@ -226,7 +234,7 @@ export default function KendaraanMasuk() {
 
             <div className="max-w-xl space-y-6">
                 <Card className="p-5">
-                    <h2 className="font-display text-base text-[var(--color-text)] mb-3">
+                    <h2 className="font-display text-base text-[#171717] mb-3">
                         Punya Kode Booking?
                     </h2>
                     <form onSubmit={handleCariBooking} className="flex gap-2">
@@ -250,14 +258,14 @@ export default function KendaraanMasuk() {
                     {bookingInfo && (
                         <p className="mt-3 text-xs text-[#35C48D]">
                             Booking dipakai: {bookingInfo.kendaraan?.plat_nomor}{" "}
-                            — {bookingInfo.area?.nama_area}. Form di bawah
+                             - {bookingInfo.area?.nama_area}. Form di bawah
                             otomatis terisi.
                         </p>
                     )}
                 </Card>
 
                 <Card className="p-5">
-                    <h2 className="font-display text-base text-[var(--color-text)] mb-3">
+                    <h2 className="font-display text-base text-[#171717] mb-3">
                         atau Cari Kendaraan (plat nomor)
                     </h2>
                     <form onSubmit={handleCari} className="flex gap-2">
@@ -288,7 +296,7 @@ export default function KendaraanMasuk() {
                                     }`}
                                 >
                                     <span className="truncate">
-                                        {k.plat_nomor} — {k.jenis_kendaraan}
+                                        {k.plat_nomor}  - {k.jenis_kendaraan}
                                     </span>
                                     {k.sedang_parkir && (
                                         <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#171717]/15 text-[#171717] shrink-0">
@@ -302,7 +310,7 @@ export default function KendaraanMasuk() {
                 </Card>
 
                 <Card className="p-5">
-                    <h2 className="font-display text-base text-[var(--color-text)] mb-3">
+                    <h2 className="font-display text-base text-[#171717] mb-3">
                         Detail Parkir
                     </h2>
                     <form onSubmit={handleSubmit} className="space-y-3">
@@ -327,12 +335,12 @@ export default function KendaraanMasuk() {
                                     setTarifOtomatis(false);
                                 }}
                                 required
-                                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717]"
+                                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[#171717] focus:outline-none focus:ring-2 focus:ring-[#171717]"
                             >
                                 <option value="">Pilih tarif</option>
                                 {tarifList.map((t) => (
                                     <option key={t.id_tarif} value={t.id_tarif}>
-                                        {t.jenis_kendaraan} — Rp{" "}
+                                        {t.jenis_kendaraan}  - Rp{" "}
                                         {Number(t.tarif_per_jam).toLocaleString(
                                             "id-ID",
                                         )}
@@ -440,6 +448,8 @@ export default function KendaraanMasuk() {
                 </Card>
             </div>
 
+            <KarcisMasukCard karcis={karcisData} onClose={() => setKarcisData(null)} />
+
             {scanOpen && (
                 <ModalScanQr
                     onDetected={handleScanDetected}
@@ -459,3 +469,5 @@ export default function KendaraanMasuk() {
         </div>
     );
 }
+
+

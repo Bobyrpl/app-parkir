@@ -1,12 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-// Token warna netral, dipakai bareng oleh Login, Register, dan seluruh
-// dashboard (admin/petugas/owner/pelanggan) lewat CSS variable, supaya satu
-// perubahan di sini otomatis konsisten di semua halaman. Palet ini sama
-// dengan yang dipakai di Landing.jsx dan Bantuan.jsx: monokrom hitam-putih-
-// abu netral, tanpa aksen biru. Warna aksen brand (#C90000) tetap dipakai
-// terpisah, hanya untuk detail kecil seperti wordmark "Ku" — bukan warna
-// interaktif utama.
 export const THEME_VARS = {
   light: {
     "--color-bg": "#ffffff",
@@ -40,8 +33,6 @@ const STORAGE_KEY = "parkirku-theme";
 
 const ThemeContext = createContext(null);
 
-// Default ke mode terang (konsisten dengan Landing & Bantuan yang selalu
-// putih), kecuali OS pengguna secara eksplisit minta mode gelap.
 function getInitialTheme() {
   if (typeof window === "undefined") return "light";
   const saved = window.localStorage.getItem(STORAGE_KEY);
@@ -56,12 +47,9 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, theme);
-    // Sinkronkan juga ke elemen <html>, kalau-kalau ada gaya global yang
-    // ingin ikut mode terang/gelap tanpa lewat inline CSS variables.
     document.documentElement.dataset.theme = theme;
   }, [theme]);
 
-  // Kalau tema diubah di tab/halaman lain (mis. Landing.jsx), ikut sinkron.
   useEffect(() => {
     function handleStorage(e) {
       if (e.key === STORAGE_KEY && (e.newValue === "light" || e.newValue === "dark")) {

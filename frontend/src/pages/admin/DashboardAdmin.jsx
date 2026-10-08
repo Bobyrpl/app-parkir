@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import api from '../../api/axios';
 import { PageHeader, StatCard, Card, Table, Button } from '../../components/ui';
 import {
-    ComposedChart, Bar, Line, XAxis, YAxis,
-    CartesianGrid, Tooltip, ResponsiveContainer, Cell,
+    Legend, LineChart, Line, XAxis, YAxis,
+    CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts';
 import {
     Document, Packer, Paragraph, Table as DocxTable, TableRow, TableCell,
@@ -14,45 +14,6 @@ import {
     TrendingUp, FileText, FileDown, Printer, CalendarRange, Compass,
     Wallet, Receipt,
 } from 'lucide-react';
-
-function RevenueTooltip({ active, payload, label }) {
-    if (!active || !payload || payload.length === 0) return null;
-    const d = payload[0].payload;
-    return (
-        <div className="bg-white border border-neutral-200 rounded-xl px-3.5 py-3 shadow-lg text-xs min-w-[170px]">
-            <p className="font-semibold text-neutral-900 mb-2">{label}</p>
-            <div className="flex items-center justify-between gap-4 mb-1">
-                <span className="flex items-center gap-1.5 text-neutral-500">
-                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#10b981' }} />
-                    Pendapatan
-                </span>
-                <span className="font-semibold text-neutral-900">
-                    Rp {Number(d.pendapatan || 0).toLocaleString('id-ID')}
-                </span>
-            </div>
-            <div className="flex items-center justify-between gap-4 mb-1">
-                <span className="flex items-center gap-1.5 text-neutral-500">
-                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#171717' }} />
-                    Transaksi
-                </span>
-                <span className="font-semibold text-neutral-900">
-                    {Number(d.jumlah_transaksi || 0).toLocaleString('id-ID')}
-                </span>
-            </div>
-            {d.jumlah_user !== undefined && (
-                <div className="flex items-center justify-between gap-4">
-                    <span className="flex items-center gap-1.5 text-neutral-500">
-                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#3b82f6' }} />
-                        Pelanggan Baru
-                    </span>
-                    <span className="font-semibold text-neutral-900">
-                        {Number(d.jumlah_user || 0).toLocaleString('id-ID')}
-                    </span>
-                </div>
-            )}
-        </div>
-    );
-}
 
 function toDateInputValue(date) {
     return date.toISOString().slice(0, 10);
@@ -148,26 +109,6 @@ export default function DashboardAdmin() {
         loadRekap(d, s);
     }
 
-    // Preset periode untuk pill "Hari Ini / Mingguan / Bulanan" di kartu grafik.
-    function handleChartPeriod(period) {
-        const end = new Date();
-        let start = new Date();
-
-        if (period === 'today') {
-            start = new Date();
-        } else if (period === 'weekly') {
-            start.setDate(end.getDate() - 6);
-        } else if (period === 'monthly') {
-            start.setDate(end.getDate() - 29);
-        }
-
-        const d = toDateInputValue(start);
-        const s = toDateInputValue(end);
-        setDari(d);
-        setSampai(s);
-        loadRekap(d, s);
-    }
-
     const { totalTransaksi, totalPendapatan } = useMemo(() => {
         return {
             totalTransaksi: rekap.reduce((sum, d) => sum + (d.jumlah_transaksi || 0), 0),
@@ -193,46 +134,12 @@ export default function DashboardAdmin() {
         return null;
     }, [dari, sampai]);
 
-    // Menandai pill "Hari Ini / Mingguan / Bulanan" mana yang sedang aktif
-    // di kartu grafik, murni untuk highlight visual.
-    const activeChartPeriod = useMemo(() => {
-        const end = toDateInputValue(new Date());
-        if (dari === end && sampai === end) return 'today';
-        if (activePreset === 7) return 'weekly';
-        if (activePreset === 30) return 'monthly';
-        return null;
-    }, [dari, sampai, activePreset]);
-
     const periodeLabel = useMemo(() => {
         if (!dari || !sampai) return '';
         const fmt = (d) =>
             new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
         return dari === sampai ? fmt(dari) : `${fmt(dari)} — ${fmt(sampai)}`;
     }, [dari, sampai]);
-
-    // Hari dengan pendapatan tertinggi pada rentang yang sedang ditampilkan,
-    // dipakai untuk badge "Peak" dan highlight bar pada grafik tren.
-    const peakInfo = useMemo(() => {
-        if (rekap.length === 0) return null;
-        let peak = rekap[0];
-        for (const d of rekap) {
-            if ((d.pendapatan || 0) > (peak.pendapatan || 0)) peak = d;
-        }
-        return peak;
-    }, [rekap]);
-
-    // Apakah data periode ini menyertakan jumlah_user (Pelanggan Baru).
-    // Dipakai untuk memutuskan apakah garis biru + sumbu kanan perlu
-    // ditampilkan sama sekali di grafik tren.
-    const hasJumlahUser = useMemo(
-        () => rekap.some((d) => d.jumlah_user !== undefined && d.jumlah_user !== null),
-        [rekap]
-    );
-
-    const avgTicket = useMemo(() => {
-        if (totalTransaksi === 0) return 0;
-        return Math.round(totalPendapatan / totalTransaksi);
-    }, [totalTransaksi, totalPendapatan]);
 
     function handleCetak() {
         window.print();
@@ -377,7 +284,7 @@ export default function DashboardAdmin() {
             />
 
             {/* Baris kartu ringkasan */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <StatCard label="TOTAL PENGGUNA" value={stats.users} icon={Users} />
                 <StatCard label="JENIS TARIF" value={stats.tarif} icon={Ticket} />
                 <StatCard label="AREA PARKIR" value={stats.area} icon={MapPin} />
@@ -415,131 +322,68 @@ export default function DashboardAdmin() {
             {/* Grafik Trend */}
             <div className="mb-8 no-print">
                 <Card className="p-6">
-                    <div className="flex items-start justify-between mb-1 flex-wrap gap-3">
+                    <div className="flex items-center gap-3 mb-6 pb-4 border-b border-neutral-200">
+                        <span className="w-9 h-9 rounded-xl bg-neutral-100 text-neutral-900 flex items-center justify-center shrink-0">
+                            <TrendingUp size={18} />
+                        </span>
                         <div className="min-w-0">
-                            <h2 className="font-semibold text-base text-neutral-900 truncate flex items-center gap-1.5">
-                                Tren Pendapatan
-                                <TrendingUp size={16} className="text-neutral-400" />
+                            <h2 className="font-semibold text-base text-neutral-900 truncate">
+                                Tren Transaksi &amp; Pelanggan Baru
                             </h2>
-                            <p className="text-xs text-neutral-500 mt-0.5 truncate">{periodeLabel}</p>
-                        </div>
-
-                        {/* Pill Hari Ini / Mingguan / Bulanan */}
-                        <div className="flex items-center p-1 bg-neutral-100 rounded-full shrink-0">
-                            {[
-                                { key: 'today', label: 'Hari Ini' },
-                                { key: 'weekly', label: 'Mingguan' },
-                                { key: 'monthly', label: 'Bulanan' },
-                            ].map(({ key, label }) => (
-                                <button
-                                    key={key}
-                                    type="button"
-                                    onClick={() => handleChartPeriod(key)}
-                                    disabled={loadingRekap}
-                                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all disabled:opacity-60 ${
-                                        activeChartPeriod === key
-                                            ? 'bg-neutral-900 text-white'
-                                            : 'text-neutral-500 hover:text-neutral-900'
-                                    }`}
-                                >
-                                    {label}
-                                </button>
-                            ))}
+                            <p className="text-xs text-neutral-500 truncate">{periodeLabel}</p>
                         </div>
                     </div>
-
-                    {peakInfo && (
-                        <div className="flex justify-end mb-1">
-                            <span className="inline-flex items-center gap-1.5 bg-neutral-900 text-white px-3 py-1.5 rounded-full text-xs font-semibold">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                                Peak: Rp {Number(peakInfo.pendapatan).toLocaleString('id-ID')}
-                            </span>
-                        </div>
-                    )}
-
                     {loadingRekap ? (
                         <div className="h-72 flex items-center justify-center text-sm text-neutral-400">Memuat grafik...</div>
                     ) : rekap.length === 0 ? (
                         <div className="h-72 flex items-center justify-center text-sm text-neutral-400">Belum ada data transaksi pada rentang ini.</div>
                     ) : (
-                        <>
-                            <ResponsiveContainer width="100%" height={280}>
-                                <ComposedChart data={rekap} margin={{ top: 24, right: 8, left: 0, bottom: 0 }}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E5E5" vertical={false} />
-                                    <XAxis
-                                        dataKey="label"
-                                        stroke="#A3A3A3"
-                                        fontSize={11}
-                                        tickLine={false}
-                                        axisLine={{ stroke: '#E5E5E5' }}
-                                    />
-                                    <YAxis
-                                        yAxisId="left"
-                                        stroke="#A3A3A3"
-                                        fontSize={11}
-                                        tickLine={false}
-                                        axisLine={false}
-                                        tickFormatter={(value) => `${(value / 1000).toLocaleString('id-ID')}rb`}
-                                    />
-                                    {hasJumlahUser && (
-                                        <YAxis
-                                            yAxisId="right"
-                                            orientation="right"
-                                            stroke="#3b82f6"
-                                            fontSize={11}
-                                            tickLine={false}
-                                            axisLine={false}
-                                            allowDecimals={false}
-                                        />
-                                    )}
-                                    <Tooltip
-                                        content={<RevenueTooltip />}
-                                        cursor={{ fill: 'rgba(0,0,0,0.03)' }}
-                                    />
-                                    <Bar yAxisId="left" dataKey="pendapatan" radius={[6, 6, 0, 0]} barSize={28}>
-                                        {rekap.map((d, i) => (
-                                            <Cell
-                                                key={i}
-                                                fill={peakInfo && d.tanggal === peakInfo.tanggal ? '#10b981' : '#E5E5E5'}
-                                                stroke={peakInfo && d.tanggal === peakInfo.tanggal ? '#059669' : '#D4D4D4'}
-                                            />
-                                        ))}
-                                    </Bar>
-                                    <Line
-                                        yAxisId="left"
-                                        type="monotone"
-                                        dataKey="pendapatan"
-                                        stroke="#171717"
-                                        strokeWidth={2.5}
-                                        dot={{ r: 3.5, fill: '#171717', strokeWidth: 0 }}
-                                        activeDot={{ r: 6 }}
-                                    />
-                                    {hasJumlahUser && (
-                                        <Bar
-                                            yAxisId="right"
-                                            dataKey="jumlah_user"
-                                            fill="#3b82f6"
-                                            radius={[6, 6, 0, 0]}
-                                            barSize={12}
-                                        />
-                                    )}
-                                </ComposedChart>
-                            </ResponsiveContainer>
-
-                            <div className="mt-3 pt-3 border-t border-neutral-100 flex items-center justify-between text-xs flex-wrap gap-2">
-                                <div className="flex items-center gap-1.5 text-neutral-500">
-                                    <Receipt size={14} />
-                                    <span>Avg. Ticket:</span>
-                                    <span className="font-semibold text-neutral-900">Rp {avgTicket.toLocaleString('id-ID')}</span>
-                                </div>
-                                {peakInfo && (
-                                    <div className="flex items-center gap-1.5 text-neutral-500">
-                                        <span>Hari Tertinggi:</span>
-                                        <span className="font-semibold text-neutral-900">{peakInfo.label}</span>
-                                    </div>
-                                )}
-                            </div>
-                        </>
+                        <ResponsiveContainer width="100%" height={340}>
+                            <LineChart data={rekap}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#E5E5E5" />
+                                <XAxis dataKey="label" stroke="#A3A3A3" fontSize={11} />
+                                <YAxis
+                                    yAxisId="jumlah"
+                                    stroke="#A3A3A3"
+                                    fontSize={11}
+                                    allowDecimals={false}
+                                />
+                                <YAxis
+                                    yAxisId="rupiah"
+                                    orientation="right"
+                                    stroke="#A3A3A3"
+                                    fontSize={11}
+                                    tickFormatter={(value) => `Rp${(value / 1000).toLocaleString('id-ID')}rb`}
+                                />
+                                <Tooltip
+                                    contentStyle={{ background: '#FFFFFF', border: '1px solid #E5E5E5', borderRadius: 12, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
+                                    labelStyle={{ color: '#171717', fontWeight: 600 }}
+                                    formatter={(value, name) => {
+                                        if (name === 'pendapatan') {
+                                            return [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Pendapatan'];
+                                        }
+                                        if (name === 'jumlah_user') {
+                                            return [value, 'Pelanggan Baru'];
+                                        }
+                                        return [value, 'Jumlah Transaksi'];
+                                    }}
+                                />
+                                <Legend
+                                    formatter={(value) => {
+                                        const label =
+                                            value === 'pendapatan'
+                                                ? 'Pendapatan'
+                                                : value === 'jumlah_user'
+                                                ? 'Pelanggan Baru'
+                                                : 'Jumlah Transaksi';
+                                        return <span style={{ color: '#737373', fontSize: 12, marginRight: 14 }}>{label}</span>;
+                                    }}
+                                />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_transaksi" stroke="#171717" strokeWidth={2.5} dot={{ r: 3.5, fill: '#171717' }} activeDot={{ r: 6 }} />
+                                <Line yAxisId="jumlah" type="monotone" dataKey="jumlah_user" stroke="#3b82f6" strokeWidth={2} strokeDasharray="4 3" dot={{ r: 3, fill: '#3b82f6' }} />
+                                <Line yAxisId="rupiah" type="monotone" dataKey="pendapatan" stroke="#10b981" strokeWidth={2.5} dot={{ r: 3.5, fill: '#10b981' }} activeDot={{ r: 6 }} />
+                            </LineChart>
+                        </ResponsiveContainer>
                     )}
                 </Card>
             </div>
@@ -701,7 +545,7 @@ export default function DashboardAdmin() {
                     Gunakan menu di sidebar untuk mengelola data master dan
                     melihat log aktivitas seluruh pengguna sistem.
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     {[
                         { label: 'Pengguna', icon: Users },
                         { label: 'Tarif', icon: Ticket },

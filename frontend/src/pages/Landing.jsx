@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import api from "../api/axios";
 import {
   LineChart,
   Line,
@@ -12,26 +13,23 @@ import {
 } from "recharts";
 
 const WHATSAPP_URL = "https://wa.me/6285728035284";
-const BRAND_NAME = "Abdulloh Mahbuby, XII RPL I";
+const BRAND_NAME = "Sistem Parkir Pelabuhan";
 const BRAND_LOCATION = "Pelabuhan Tanjung Perak";
-const BRAND_ADDRESS = 
+const BRAND_ADDRESS =
   "Jl. Perak Timur, Pelabuhan Tanjung Perak, Surabaya, Jawa Timur";
+const BRAND_FOOTER = "2026 Sistem Manajemen Parkir pelabuhan Tanjung perak. All rights reserved by Abdulloh Mahbubi SMK N 1 Sanden."
 
-// URL embed Google Maps untuk lokasi Pelabuhan Tanjung Perak. Tidak butuh
-// API key karena memakai mode embed publik (?output=embed).
-const MAPS_EMBED_URL =
-  "https://www.google.com/maps?q=Pelabuhan+Tanjung+Perak,+Surabaya&output=embed";
-const MAPS_LINK_URL =
-  "https://www.google.com/maps/search/?api=1&query=Pelabuhan+Tanjung+Perak+Surabaya";
+const KOMENTAR_MAX_LEN = 300;
 
 // Nav items dipakai bareng oleh navbar desktop dan sidebar mobile, biar
 // keduanya selalu sinkron kalau link berubah.
 const NAV_LINKS = [
   { href: "#fitur", label: "Fitur" },
   { href: "#informasi", label: "Informasi" },
+  { href: "#pembayaran", label: "Payment" },
+  { href: "#lokasi", label: "Lokasi" },
   { href: "#testimoni", label: "Testimoni" },
   { href: "#komentar", label: "Komentar" },
-  { href: "#faq", label: "FAQ" },
 ];
 
 // Bentuk bintang tunggal dipakai ulang di beberapa tempat (rating tampilan,
@@ -62,7 +60,7 @@ function playNotifSound() {
     osc.stop(ctx.currentTime + 0.32);
     osc.onended = () => ctx.close();
   } catch {
-    // Audio tidak tersedia (mis. browser lama) — abaikan secara diam-diam.
+    // Audio tidak tersedia (mis. browser lama)  abaikan secara diam-diam.
   }
 }
 
@@ -170,7 +168,7 @@ const KOMENTAR_SEED = [
 ];
 
 // Fallback saat GET /api/transaksi/rekap-harian-publik gagal diakses
-// (mis. server sedang down atau endpoint belum tersedia) — supaya
+// (mis. server sedang down atau endpoint belum tersedia) â€” supaya
 // grafik tidak kosong sebelum data asli berhasil dimuat.
 const GRAFIK_FALLBACK = [
   { label: "Sen", val: 39 },
@@ -182,7 +180,7 @@ const GRAFIK_FALLBACK = [
 ];
 
 // Fallback saat GET /api/statistik/ringkasan gagal diakses publik
-// (mis. server sedang down atau endpoint belum tersedia) — supaya
+// (mis. server sedang down atau endpoint belum tersedia) â€” supaya
 // section stat tidak kosong sebelum data asli berhasil dimuat.
 const STATISTIK_FALLBACK = {
   kapasitas: 80,
@@ -194,109 +192,33 @@ const STATISTIK_FALLBACK = {
 
 // Alur singkat yang menemani video demo, supaya kolom kedua pada
 // section itu tidak kosong dan pengunjung tetap dapat konteks
-// walau video belum/tidak dimuat.
+// walau video belum/tidak dimuat. Nomor langkah dirender dari urutan
+// array, jadi cukup simpan judul dan deskripsinya saja.
 const ALUR = [
   {
-    no: "01",
     title: "Kendaraan masuk",
     desc: "Petugas mencatat plat dan waktu masuk lewat portal Petugas.",
   },
   {
-    no: "02",
     title: "Transaksi berjalan",
     desc: "Tarif dihitung otomatis sesuai durasi dan jenis kendaraan.",
   },
   {
-    no: "03",
     title: "Struk tercetak",
     desc: "Struk keluar otomatis saat kendaraan check-out.",
   },
 ];
 
-// Daftar metode pembayaran yang didukung di gerbang keluar — menggantikan
-// section showcase foto/logo sebelumnya.
-const PAYMENT_METHODS = [
-  {
-    title: "Tunai",
-    desc: "Bayar langsung di gerbang keluar, struk tercetak otomatis.",
-    icon: (
-      <path
-        d="M3 7h18v10H3V7zm0 0l2-3h14l2 3M8 12a2 2 0 104 0 2 2 0 00-4 0z"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    ),
-  },
-  {
-    title: "QRIS",
-    desc: "Scan QR di gerbang, pembayaran langsung terverifikasi sistem.",
-    icon: (
-      <path
-        d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h3m-3 3h6v-6h-3"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    ),
-  },
-  {
-    title: "E-Wallet",
-    desc: "GoPay, OVO, Dana, dan dompet digital lain didukung penuh.",
-    icon: (
-      <path
-        d="M4 7a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V7zm12 5h2v2h-2v-2z"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    ),
-  },
-];
-
-// Jam operasional area parkir, ditampilkan di strip info sebelum Testimoni.
-const JAM_OPERASIONAL = [
-  { hari: "Senin - Jumat", jam: "05.00 - 22.00 WIB" },
-  { hari: "Sabtu - Minggu", jam: "05.00 - 23.00 WIB" },
-  { hari: "Hari Libur Nasional", jam: "Buka 24 Jam" },
-];
-
-// Kontak darurat/cepat, ditampilkan berdampingan dengan jam operasional.
-const KONTAK_DARURAT = [
-  { label: "Pos Keamanan", value: "(031) 123-4567" },
-  { label: "WhatsApp Admin", value: "+62 857-2803-5284" },
-];
-
-// Pertanyaan yang sering diajukan, ditampilkan sebagai accordion sebelum CTA
-// Bantuan di bagian bawah halaman.
-const FAQ_ITEMS = [
-  {
-    q: "Bagaimana cara mendapatkan struk parkir?",
-    a: "Struk tercetak otomatis dari mesin di gerbang keluar setelah pembayaran berhasil diverifikasi oleh sistem.",
-  },
-  {
-    q: "Apakah bisa bayar memakai e-wallet?",
-    a: "Bisa. Sistem mendukung QRIS serta dompet digital seperti GoPay, OVO, dan Dana di gerbang keluar.",
-  },
-  {
-    q: "Apa yang harus dilakukan jika struk hilang?",
-    a: "Hubungi petugas di pos keamanan terdekat dan sebutkan nomor plat kendaraan serta perkiraan waktu masuk.",
-  },
-  {
-    q: "Apakah area parkir buka 24 jam?",
-    a: "Jam operasional mengikuti jadwal reguler pada hari kerja dan akhir pekan, namun tetap buka 24 jam pada hari libur nasional.",
-  },
-  {
-    q: "Bagaimana cara menghubungi admin jika ada kendala?",
-    a: "Admin dapat dihubungi lewat tombol Bantuan Cepat di pojok kanan bawah halaman ini, atau melalui halaman Bantuan.",
-  },
-];
+// Nama brand dipakai di sidebar, header, dan footer dengan pembungkus
+// (ukuran/warna teks) yang berbeda-beda, jadi komponen ini hanya
+// mengembalikan isinya saja.
+function Wordmark() {
+  return (
+    <>
+      Pelabuhan <span className="text-[#C90000]">Tanjung</span> perak
+    </>
+  );
+}
 
 function Bintang({ jumlah }) {
   return (
@@ -376,7 +298,7 @@ function Avatar({ nama, index, size = "h-11 w-11 text-sm" }) {
 }
 
 // Kartu netral standar dipakai di banyak section: border tipis, sudut besar,
-// tanpa bayangan berat — konsisten dengan gaya referensi.
+// tanpa bayangan berat â€” konsisten dengan gaya referensi.
 function Card({ children, className = "", hoverable = false }) {
   return (
     <div
@@ -410,50 +332,6 @@ function KomentarSkeleton() {
   );
 }
 
-// Satu baris accordion FAQ: klik pertanyaan untuk buka/tutup jawaban.
-function FaqItem({ item, isOpen, onToggle }) {
-  return (
-    <div className="border-b border-neutral-200 py-5">
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-expanded={isOpen}
-        className="w-full flex items-center justify-between gap-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 rounded-sm"
-      >
-        <span className="text-sm md:text-base font-medium text-neutral-900">
-          {item.q}
-        </span>
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden="true"
-          className={`shrink-0 text-neutral-500 transition-transform duration-300 ${
-            isOpen ? "rotate-45" : ""
-          }`}
-        >
-          <path
-            d="M12 5v14M5 12h14"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
-      </button>
-      <div
-        className={`grid transition-all duration-300 ease-in-out ${
-          isOpen ? "grid-rows-[1fr] mt-3 opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
-      >
-        <div className="overflow-hidden">
-          <p className="text-sm text-neutral-500 leading-relaxed pr-6">{item.a}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Landing() {
   const { user } = useAuth();
   const navPath = user ? dashboardPath(user.role) : "/login";
@@ -462,10 +340,28 @@ export default function Landing() {
   const [helpOpen, setHelpOpen] = useState(false);
   const [heroImgError, setHeroImgError] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [openFaq, setOpenFaq] = useState(0);
+
+  const [comments, setComments] = useState(KOMENTAR_SEED);
+  const [commentsLoading, setCommentsLoading] = useState(true);
+  const [commentName, setCommentName] = useState("");
+  const [commentText, setCommentText] = useState("");
+  const [commentRating, setCommentRating] = useState(0);
+  const [commentError, setCommentError] = useState("");
+  const [commentSubmitting, setCommentSubmitting] = useState(false);
+
+  const [grafikData, setGrafikData] = useState(GRAFIK_FALLBACK);
+  const [grafikLoading, setGrafikLoading] = useState(true);
+  const [grafikIlustrasi, setGrafikIlustrasi] = useState(true);
+
+  const [statistik, setStatistik] = useState(STATISTIK_FALLBACK);
+  const [statistikIlustrasi, setStatistikIlustrasi] = useState(true);
+
+  const hamburgerBtnRef = useRef(null);
+  const closeBtnRef = useRef(null);
+  const sidebarPanelRef = useRef(null);
 
   // Nav transparan di atas hero, berubah jadi putih solid begitu pengguna
-  // scroll melewati hero — pola yang sama dipakai referensi (nav putih di
+  // scroll melewati hero â€” pola yang sama dipakai referensi (nav putih di
   // atas foto gelap, lalu tetap terbaca begitu masuk ke konten putih).
   useEffect(() => {
     function onScroll() {
@@ -476,42 +372,21 @@ export default function Landing() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const [comments, setComments] = useState(KOMENTAR_SEED);
-  const [commentsLoading, setCommentsLoading] = useState(true);
-  const [commentName, setCommentName] = useState("");
-  const [commentText, setCommentText] = useState("");
-  const [commentRating, setCommentRating] = useState(0);
-  const [commentError, setCommentError] = useState("");
-  const [commentSubmitting, setCommentSubmitting] = useState(false);
-
-  const KOMENTAR_MAX_LEN = 300;
-
-  const [grafikData, setGrafikData] = useState(GRAFIK_FALLBACK);
-  const [grafikLoading, setGrafikLoading] = useState(true);
-  const [grafikIlustrasi, setGrafikIlustrasi] = useState(true);
-
-  const [statistik, setStatistik] = useState(STATISTIK_FALLBACK);
-  const [statistikIlustrasi, setStatistikIlustrasi] = useState(true);
-
   // Ambil rekap transaksi harian PUBLIK (GET /api/transaksi/rekap-harian-publik)
   // untuk grafik di landing page. Beda dari endpoint yang dipakai Dashboard
   // Admin (/api/transaksi/rekap-harian) yang butuh login dan menyertakan
-  // data pendapatan — endpoint publik ini cuma mengembalikan jumlah_transaksi,
+  // data pendapatan â€” endpoint publik ini cuma mengembalikan jumlah_transaksi,
   // aman diakses tanpa autentikasi. Kalau endpoint gagal diakses (server
   // bermasalah), diam-diam fallback ke GRAFIK_FALLBACK supaya section
   // ini tidak pernah kosong/error.
+  //  {#cb8,49}
   useEffect(() => {
     let cancelled = false;
-    fetch(
-      `${import.meta.env.VITE_API_URL || "http://localhost:8000/api"}/transaksi/rekap-harian-publik`,
-    )
+    api
+      .get("/transaksi/rekap-harian-publik")
       .then((res) => {
-        if (!res.ok) throw new Error("Gagal memuat rekap transaksi");
-        return res.json();
-      })
-      .then((data) => {
         if (cancelled) return;
-        const formatted = data.map((d) => ({
+        const formatted = res.data.map((d) => ({
           label: new Date(d.tanggal).toLocaleDateString("id-ID", {
             weekday: "short",
             day: "numeric",
@@ -534,22 +409,17 @@ export default function Landing() {
   }, []);
 
   // Ambil ringkasan statistik (slot tersedia, rating rata-rata, total
-  // transaksi selesai) dari GET /api/statistik/ringkasan — endpoint
+  // transaksi selesai) dari GET /api/statistik/ringkasan â€” endpoint
   // publik, tidak butuh login. Kalau gagal diakses (server down,
   // endpoint belum di-deploy, dsb), diam-diam fallback ke
   // STATISTIK_FALLBACK supaya section statistik tidak pernah kosong/error.
   useEffect(() => {
     let cancelled = false;
-    fetch(
-      `${import.meta.env.VITE_API_URL || "http://localhost:8000/api"}/statistik/ringkasan`,
-    )
+    api
+      .get("/statistik/ringkasan")
       .then((res) => {
-        if (!res.ok) throw new Error("Gagal memuat statistik");
-        return res.json();
-      })
-      .then((data) => {
         if (cancelled) return;
-        setStatistik(data);
+        setStatistik(res.data);
         setStatistikIlustrasi(false);
       })
       .catch(() => {
@@ -565,15 +435,10 @@ export default function Landing() {
   // tampilkan data contoh di atas supaya UI tidak kosong.
   useEffect(() => {
     let cancelled = false;
-    fetch(
-      `${import.meta.env.VITE_API_URL || "http://localhost:8000/api"}/komentar`,
-    )
+    api
+      .get("/komentar")
       .then((res) => {
-        if (!res.ok) throw new Error("Gagal memuat komentar");
-        return res.json();
-      })
-      .then((data) => {
-        if (!cancelled) setComments(data);
+        if (!cancelled) setComments(res.data);
       })
       .catch(() => {
         // biarkan KOMENTAR_SEED tetap tampil
@@ -585,52 +450,6 @@ export default function Landing() {
       cancelled = true;
     };
   }, []);
-
-  async function handleCommentSubmit(e) {
-    e.preventDefault();
-    if (!commentName.trim() || !commentText.trim()) {
-      setCommentError("Nama dan komentar wajib diisi.");
-      return;
-    }
-    if (!commentRating) {
-      setCommentError("Silakan pilih rating bintang terlebih dahulu.");
-      return;
-    }
-    setCommentSubmitting(true);
-    setCommentError("");
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL || "http://localhost:8000/api"}/komentar`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            nama: commentName.trim(),
-            teks: commentText.trim(),
-            rating: commentRating,
-          }),
-        },
-      );
-      if (!res.ok) throw new Error("Gagal mengirim komentar");
-      const saved = await res.json();
-      setComments((prev) => [saved, ...prev]);
-      setCommentName("");
-      setCommentText("");
-      setCommentRating(0);
-      playNotifSound();
-    } catch {
-      setCommentError("Komentar gagal terkirim. Coba lagi beberapa saat lagi.");
-    } finally {
-      setCommentSubmitting(false);
-    }
-  }
-
-  const hamburgerBtnRef = useRef(null);
-  const closeBtnRef = useRef(null);
-  const sidebarPanelRef = useRef(null);
 
   // Accessibility: focus the close button when the mobile sidebar opens,
   // trap Tab inside it, close on Escape, and return focus to the
@@ -669,6 +488,37 @@ export default function Landing() {
     };
   }, [sidebarOpen]);
 
+  async function handleCommentSubmit(e) {
+    e.preventDefault();
+    if (!commentName.trim() || !commentText.trim()) {
+      setCommentError("Nama dan komentar wajib diisi.");
+      return;
+    }
+    if (!commentRating) {
+      setCommentError("Silakan pilih rating bintang terlebih dahulu.");
+      return;
+    }
+    setCommentSubmitting(true);
+    setCommentError("");
+    try {
+      const res = await api.post("/komentar", {
+        nama: commentName.trim(),
+        teks: commentText.trim(),
+        rating: commentRating,
+      });
+      setComments((prev) => [res.data, ...prev]);
+      setCommentName("");
+      setCommentText("");
+      setCommentRating(0);
+      playNotifSound();
+    } catch {
+      setCommentError("Komentar gagal terkirim. Coba lagi beberapa saat lagi.");
+    } finally {
+      setCommentSubmitting(false);
+    }
+  }
+
+  //  {#dab,19}
   const slotTersedia = Math.max(0, statistik.kapasitas - statistik.terisi);
   const STATS = [
     {
@@ -707,7 +557,7 @@ export default function Landing() {
           >
             <div className="flex items-center justify-between mb-8">
               <span className="text-lg font-semibold tracking-tight">
-                Pelabuhan <span className="text-[#C90000]">Tanjung </span> perak
+                <Wordmark />
               </span>
               <button
                 ref={closeBtnRef}
@@ -796,11 +646,11 @@ export default function Landing() {
                     scrolled ? "text-neutral-900" : "text-white"
                   }`}
                 >
-                 Pelabuhan <span className="text-[#C90000]">Tanjung </span> perak
+                  <Wordmark />
                 </p>
                 <p
                   className={`hidden sm:block text-[11px] tracking-wide truncate transition-colors duration-300 ${
-                    scrolled ? "text-neutral-500" : "text-white/70"
+                    scrolled ? "text-neutral-500" : "text-white"
                   }`}
                 >
                   {BRAND_ADDRESS}
@@ -817,7 +667,7 @@ export default function Landing() {
                 className={`text-sm font-medium transition-colors focus-visible:outline-none ${
                   scrolled
                     ? "text-neutral-600 hover:text-neutral-900"
-                    : "text-white/85 hover:text-white"
+                    : "text-white hover:text-white"
                 }`}
               >
                 {item.label}
@@ -828,7 +678,7 @@ export default function Landing() {
               className={`text-sm font-medium transition-colors focus-visible:outline-none ${
                 scrolled
                   ? "text-neutral-600 hover:text-neutral-900"
-                  : "text-white/85 hover:text-white"
+                  : "text-white hover:text-white"
               }`}
             >
               Bantuan
@@ -864,10 +714,11 @@ export default function Landing() {
 
         <div className="relative z-20 h-full flex flex-col justify-center px-6 md:px-12 lg:px-24 max-w-4xl">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.08] tracking-tight text-white mb-6">
-            Kelola System Parkir <br className="hidden md:block" />  <span className="text-[#C90000]">Lebih </span> cepat & rapi
+            Kelola System Parkir <br className="hidden md:block" />
+            <span className="text-[#C90000]">Lebih</span> cepat &amp; rapi
           </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-xl mb-10 leading-relaxed font-light">
-            Sistem manajemen parkir terpadu untuk Admin, Petugas, dan Owner —
+          <p className="text-lg md:text-xl text-white max-w-xl mb-10 leading-relaxed font-light">
+            Sistem manajemen parkir terpadu untuk Admin, Petugas, dan Owner
             transaksi instan, tarif otomatis, dan rekap data real-time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
@@ -892,27 +743,25 @@ export default function Landing() {
         id="informasi"
         className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24"
       >
-        <div className="flex flex-col justify-between">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6">
-              Tentang <span className="text-[#C90000]">Parkir </span>
-            </h2>
-            <p className="text-neutral-500 leading-relaxed max-w-md mb-8">
-              Parkir ini  menyatukan pencatatan transaksi, tarif otomatis, dan
-              pelaporan dalam satu sistem, sehingga petugas di lapangan dan
-              owner di kantor melihat data yang sama secara real-time.
-            </p>
-            <div className="space-y-5 max-w-md">
-              {ROLES.map((r) => (
-                <div key={r.name} className="flex gap-4">
-                  <span className="shrink-0 mt-0.5 h-1.5 w-1.5 rounded-full bg-neutral-900" />
-                  <div>
-                    <p className="text-sm font-semibold text-neutral-900">{r.name}</p>
-                    <p className="text-sm text-neutral-500 leading-relaxed">{r.desc}</p>
-                  </div>
+        <div>
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6">
+            Tentang <span className="text-[#C90000]">Parkir</span>
+          </h2>
+          <p className="text-neutral-500 leading-relaxed max-w-md mb-8">
+            Parkir ini menyatukan pencatatan transaksi, tarif otomatis, dan
+            pelaporan dalam satu sistem, sehingga petugas di lapangan dan
+            owner di kantor melihat data yang sama secara real-time.
+          </p>
+          <div className="space-y-5 max-w-md">
+            {ROLES.map((r) => (
+              <div key={r.name} className="flex gap-4">
+                <span className="shrink-0 mt-0.5 h-1.5 w-1.5 rounded-full bg-neutral-900" />
+                <div>
+                  <p className="text-sm font-semibold text-neutral-900">{r.name}</p>
+                  <p className="text-sm text-neutral-500 leading-relaxed">{r.desc}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -928,7 +777,7 @@ export default function Landing() {
             ))}
           </div>
           {statistikIlustrasi && (
-            <p className="text-xs text-neutral-400 italic mt-8-">
+            <p className="text-xs text-neutral-400 italic mt-8">
               *Angka di atas adalah contoh tampilan dan akan otomatis mengikuti
               data asli saat sistem berjalan.
             </p>
@@ -940,7 +789,7 @@ export default function Landing() {
       <section id="fitur" className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
         <div className="mb-12 max-w-lg">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-            Kenapa <span className="text-[#C90000]">Pakai </span> Parkir ini?
+            Kenapa <span className="text-[#C90000]">Pakai</span> Parkir ini?
           </h2>
           <p className="text-neutral-500 leading-relaxed">
             Dirancang untuk kecepatan transaksi di lapangan hingga laporan
@@ -962,84 +811,46 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ================= Metode Pembayaran ================= */}
+      {/* ================= Showcase portal (bento) ================= */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
         <div className="mb-12 max-w-lg">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-            Metode <span className="text-[#C90000]">Pembayaran</span>
+            Tampilan <span className="text-[#C90000]">Area</span> Parkir
           </h2>
           <p className="text-neutral-500 leading-relaxed">
-            Fleksibel dan cepat — pilih cara bayar yang paling nyaman saat
-            keluar dari area parkir.
+            Antarmuka terintegrasi mulai dari lokasi operasional hingga
+            identitas resmi portal parkir.
           </p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {PAYMENT_METHODS.map((p) => (
-            <Card key={p.title} hoverable className="h-full">
-              <div className="h-11 w-11 rounded-full bg-neutral-100 flex items-center justify-center mb-6 text-neutral-900">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  {p.icon}
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold mb-2">{p.title}</h3>
-              <p className="text-sm text-neutral-500 leading-relaxed">{p.desc}</p>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* ================= Peta Lokasi ================= */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-              Lokasi <span className="text-[#C90000]">Area </span> Parkir
-            </h2>
-            <p className="text-neutral-500 leading-relaxed mb-6 max-w-md">
-              Berada tepat di kawasan operasional Pelabuhan Tanjung Perak,
-              mudah dijangkau dari pintu masuk utama pelabuhan.
-            </p>
-            <div className="flex items-start gap-3 mb-6">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="shrink-0 mt-0.5 text-[#C90000]" aria-hidden="true">
-                <path
-                  d="M12 21s-7-6.1-7-11a7 7 0 1114 0c0 4.9-7 11-7 11z"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.75" />
-              </svg>
-              <p className="text-sm text-neutral-600 leading-relaxed">{BRAND_ADDRESS}</p>
-            </div>
-            <a
-              href={MAPS_LINK_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-neutral-900 text-white font-medium px-6 py-3 text-sm hover:bg-neutral-800 transition-colors"
-            >
-              Buka di Google Maps
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M7 17L17 7M7 7h10v10"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </a>
-          </div>
-          <div className="rounded-3xl overflow-hidden border border-neutral-200 aspect-[4/3]">
-            <iframe
-              title="Peta Lokasi Pelabuhan Tanjung Perak"
-              src={MAPS_EMBED_URL}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-neutral-100">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10" />
+            <img
+              src="/images/gambar.jpg"
+              alt="Area Parkir Pelabuhan Tanjung Perak"
+              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
             />
+            <div className="absolute bottom-6 left-6 right-6 z-20">
+              <p className="text-white font-semibold text-lg">Pelabuhan Tanjung Perak</p>
+              <p className="text-white text-sm">
+                Gerbang &amp; cetak struk otomatis, aktif realtime
+              </p>
+            </div>
+          </div>
+          <div className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-neutral-50 border border-neutral-200 flex items-center justify-center p-10">
+            <img
+              src="/parkir_pelabuhan_tanjung_perak.png"
+              alt="Emblem Parkir Pelabuhan Tanjung Perak"
+              className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+              <span className="text-sm font-medium text-neutral-900">
+                Identitas Resmi Portal
+              </span>
+              <span className="text-xs font-medium text-neutral-500 bg-white border border-neutral-200 px-3 py-1 rounded-full">
+                3 Level Akses
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -1049,7 +860,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="max-w-2xl mb-12">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-              <span className="text-[#C90000]">Transaksi  </span> 7 hari terakhir
+              <span className="text-[#C90000]">Transaksi</span> 7 hari terakhir
             </h2>
             <p className="text-neutral-500 leading-relaxed">
               {grafikIlustrasi
@@ -1108,7 +919,7 @@ export default function Landing() {
       <section className="max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32 grid md:grid-cols-2 gap-12 items-center">
         <div>
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-            <span className="text-[#C90000]">Cara Kerja </span> sistem ini
+            <span className="text-[#C90000]">Cara Kerja</span> sistem ini
           </h2>
           <p className="text-neutral-500 leading-relaxed mb-6">
             Video singkat alur transaksi masuk sampai cetak struk.
@@ -1127,7 +938,7 @@ export default function Landing() {
           <h3 className="text-xl font-semibold mb-8">Tiga langkah singkat</h3>
           <div className="space-y-8">
             {ALUR.map((a, i) => (
-              <div key={a.no} className="flex gap-5">
+              <div key={a.title} className="flex gap-5">
                 <div className="flex flex-col items-center">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white text-sm font-medium">
                     {i + 1}
@@ -1146,74 +957,148 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ================= Jam Operasional & Kontak Darurat ================= */}
-      <section className="bg-neutral-50 py-16">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div>
-            <div className="flex items-center gap-2 mb-5">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-[#C90000]" aria-hidden="true">
-                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.75" />
-                <path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <h3 className="text-lg font-semibold text-neutral-900">Jam Operasional</h3>
+      {/* ================= Testimoni ================= */}
+
+      {/* ================= METODE PEMBAYARAN ================= */}
+      <section id="pembayaran" className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 py-24 lg:py-32">
+        <div className="mb-16">
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+            Metode <span className="text-[#C90000]">Pembayaran</span>
+          </h2>
+          <p className="text-neutral-500 max-w-2xl">
+            Kami menyediakan berbagai metode pembayaran untuk kemudahan Anda
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Cash */}
+          <Card hoverable>
+            <div className="flex items-start gap-4">
+              <div className="h-12 w-12 rounded-2xl bg-green-100 flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="1" />
+                  <path d="M12 2v2m0 16v2M4.22 4.22l1.41 1.41m8.74 8.74l1.41 1.41M2 12h2m16 0h2M4.22 19.78l1.41-1.41m8.74-8.74l1.41-1.41" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-semibold text-neutral-900 mb-1">Uang Tunai</h3>
+                <p className="text-sm text-neutral-500">Pembayaran langsung dengan uang tunai di lokasi parkir</p>
+              </div>
             </div>
-            <div className="space-y-3">
-              {JAM_OPERASIONAL.map((j) => (
-                <div
-                  key={j.hari}
-                  className="flex items-center justify-between text-sm border-b border-neutral-200 pb-3"
-                >
-                  <span className="text-neutral-600">{j.hari}</span>
-                  <span className="font-medium text-neutral-900">{j.jam}</span>
-                </div>
-              ))}
+          </Card>
+
+          {/* QRIS */}
+          <Card hoverable>
+            <div className="flex items-start gap-4">
+              <div className="h-12 w-12 rounded-2xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="M3 9h18M9 3v18" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-semibold text-neutral-900 mb-1">QRIS</h3>
+                <p className="text-sm text-neutral-500">Scan kode QR untuk pembayaran digital instan</p>
+              </div>
             </div>
+          </Card>
+
+          {/* Digital Wallet */}
+          <Card hoverable>
+            <div className="flex items-start gap-4">
+              <div className="h-12 w-12 rounded-2xl bg-purple-100 flex items-center justify-center flex-shrink-0">
+                <svg className="w-6 h-6 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="2" y="5" width="20" height="14" rx="2" />
+                  <path d="M2 10h20M18 15h.01" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-semibold text-neutral-900 mb-1">Dompet Digital</h3>
+                <p className="text-sm text-neutral-500">Semua e-wallet terpopuler tersedia via QRIS</p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </section>
+
+      {/* ================= LOKASI ================= */}
+      <section id="lokasi" className="scroll-mt-20 bg-neutral-50 py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="mb-16">
+            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
+              Lokasi <span className="text-[#C90000]">Parkir</span>
+            </h2>
+            <p className="text-neutral-500 max-w-2xl">
+              Kami berlokasi di Pelabuhan Tanjung Perak, Surabaya yang strategis dan mudah diakses
+            </p>
           </div>
-          <div>
-            <div className="flex items-center gap-2 mb-5">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="text-[#C90000]" aria-hidden="true">
-                <path
-                  d="M4 20l1.4-4.2A8 8 0 1112 20a8 8 0 01-4.6-1.4L4 20z"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <h3 className="text-lg font-semibold text-neutral-900">Kontak Darurat</h3>
-            </div>
-            <div className="space-y-3">
-              {KONTAK_DARURAT.map((k) => (
-                <div
-                  key={k.label}
-                  className="flex items-center justify-between text-sm border-b border-neutral-200 pb-3"
-                >
-                  <span className="text-neutral-600">{k.label}</span>
-                  <span className="font-medium text-neutral-900">{k.value}</span>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Info */}
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-lg font-semibold text-neutral-900 mb-2">Alamat</h3>
+                <p className="text-neutral-600">Jl. Perak Timur, Pelabuhan Tanjung Perak, Surabaya, Jawa Timur 60188</p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-neutral-900 mb-2">Jam Operasional</h3>
+                <div className="space-y-1 text-neutral-600">
+                  <p>Senin - Jumat: 06:00 - 22:00</p>
+                  <p>Sabtu - Minggu: 06:00 - 23:00</p>
+                  <p>Hari Libur Nasional: 06:00 - 23:00</p>
                 </div>
-              ))}
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-neutral-900 mb-2">Hubungi Kami</h3>
+                <a 
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 px-4 py-2.5 rounded-lg transition-colors"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.271c-1.477.784-2.66 1.922-3.505 3.289-1.668 2.663-1.996 5.976-.789 8.831 1.326 3.038 4.009 5.137 7.226 5.514.691.079 1.385.12 2.074.12.694 0 1.386-.041 2.074-.12 3.217-.377 5.9-2.476 7.226-5.514 1.207-2.855.879-6.168-.789-8.831-.845-1.367-2.028-2.505-3.505-3.289a9.87 9.87 0 00-4.869-1.271zm0 1.802c2.476 0 4.5 2.013 4.5 4.5s-2.024 4.5-4.5 4.5c-2.476 0-4.5-2.013-4.5-4.5s2.024-4.5 4.5-4.5z" />
+                  </svg>
+                  WhatsApp Kami
+                </a>
+              </div>
+            </div>
+
+            {/* Map */}
+            <div className="rounded-3xl overflow-hidden shadow-lg border border-neutral-200 h-96">
+              <iframe
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                title="Lokasi Parkir Tanjung Perak"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.5029176833254!2d112.7515!3d-7.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f9c8f8f8f8f9%3A0x8f8f8f8f8f8f8f8f!2sPelabuhan%20Tanjung%20Perak!5e0!3m2!1sid!2sid!4v1234567890"
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ================= Testimoni ================= */}
-      <section id="testimoni" className="scroll-mt-20 py-24 lg:py-32">
+
+      <section id="testimoni" className="scroll-mt-20 bg-neutral-50 py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="max-w-2xl mb-16">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-              Kata mereka <span className="text-[#C90000]">Tentang  </span>Parkir ini 
+              Kata mereka <span className="text-[#C90000]">Tentang</span> Parkir ini
             </h2>
             <p className="text-neutral-500 leading-relaxed">
               Pengalaman langsung dari admin, petugas, dan owner yang memakai
-              Parkir ini  setiap hari.
+              Parkir ini setiap hari.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {TESTIMONI.map((t, i) => (
               <div
                 key={t.nama}
-                className="bg-neutral-50 rounded-3xl p-8 flex flex-col justify-between"
+                className="bg-white rounded-3xl p-8 flex flex-col justify-between"
               >
                 <div>
                   <div className="mb-6">
@@ -1323,86 +1208,60 @@ export default function Landing() {
           </Card>
 
           {/* -------- Daftar komentar (geser kanan/kiri) -------- */}
-          <div className="min-w-0">
-            <div
-              className="flex gap-4 overflow-x-auto overflow-y-hidden pb-2 snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-neutral-200 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
-              aria-busy={commentsLoading}
-            >
-              {commentsLoading && (
-                <>
-                  <div className="shrink-0 w-72 snap-start">
-                    <KomentarSkeleton />
-                  </div>
-                  <div className="shrink-0 w-72 snap-start">
-                    <KomentarSkeleton />
-                  </div>
-                </>
-              )}
-
-              {!commentsLoading && comments.length === 0 && (
-                <Card className="shrink-0 w-full text-center py-10">
-                  <p className="text-sm text-neutral-500">Belum ada komentar.</p>
-                  <p className="text-xs text-neutral-400 mt-1">
-                    Jadilah yang pertama berbagi pengalaman Anda.
-                  </p>
-                </Card>
-              )}
-
-              {comments.map((c, i) => (
-                <div
-                  key={c.id}
-                  className="rounded-2xl border border-neutral-200 bg-white p-5 shrink-0 w-72 snap-start hover:border-neutral-900 transition-colors"
-                >
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <Avatar nama={c.nama} index={i} size="h-9 w-9 text-sm" />
-                      <p className="text-sm font-medium text-neutral-900 truncate">{c.nama}</p>
-                    </div>
-                    <Bintang jumlah={c.rating ?? 5} />
-                  </div>
-                  <p className="text-sm text-neutral-500 leading-relaxed">{c.teks}</p>
-
-                  {c.balasan && (
-                    <div className="mt-3 pl-3 border-l-2 border-neutral-200 bg-neutral-50 rounded-r-md py-2 pr-2">
-                      <p className="text-xs font-semibold text-neutral-900 mb-1">
-                        Balasan Admin
-                      </p>
-                      <p className="text-sm text-neutral-500 leading-relaxed">{c.balasan}</p>
-                    </div>
-                  )}
+          <div
+            className="flex gap-4 overflow-x-auto overflow-y-hidden pb-2 snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-neutral-200 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+            aria-busy={commentsLoading}
+          >
+            {commentsLoading && (
+              <>
+                <div className="shrink-0 w-72 snap-start">
+                  <KomentarSkeleton />
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+                <div className="shrink-0 w-72 snap-start">
+                  <KomentarSkeleton />
+                </div>
+              </>
+            )}
 
-      {/* ================= FAQ ================= */}
-      <section id="faq" className="scroll-mt-20 bg-neutral-50 py-24 lg:py-32">
-        <div className="max-w-3xl mx-auto px-6 md:px-12">
-          <div className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-4">
-              Pertanyaan <span className="text-[#C90000]">Umum</span>
-            </h2>
-            <p className="text-neutral-500 leading-relaxed">
-              Jawaban singkat untuk hal-hal yang sering ditanyakan pengguna.
-            </p>
-          </div>
-          <div className="bg-white rounded-3xl border border-neutral-200 px-6 md:px-8">
-            {FAQ_ITEMS.map((item, i) => (
-              <FaqItem
-                key={item.q}
-                item={item}
-                isOpen={openFaq === i}
-                onToggle={() => setOpenFaq((prev) => (prev === i ? null : i))}
-              />
+            {!commentsLoading && comments.length === 0 && (
+              <Card className="shrink-0 w-full text-center py-10">
+                <p className="text-sm text-neutral-500">Belum ada komentar.</p>
+                <p className="text-xs text-neutral-400 mt-1">
+                  Jadilah yang pertama berbagi pengalaman Anda.
+                </p>
+              </Card>
+            )}
+
+            {comments.map((c, i) => (
+              <div
+                key={c.id}
+                className="rounded-2xl border border-neutral-200 bg-white p-5 shrink-0 w-72 snap-start hover:border-neutral-900 transition-colors"
+              >
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <Avatar nama={c.nama} index={i} size="h-9 w-9 text-sm" />
+                    <p className="text-sm font-medium text-neutral-900 truncate">{c.nama}</p>
+                  </div>
+                  <Bintang jumlah={c.rating ?? 5} />
+                </div>
+                <p className="text-sm text-neutral-500 leading-relaxed">{c.teks}</p>
+
+                {c.balasan && (
+                  <div className="mt-3 pl-3 border-l-2 border-neutral-200 bg-neutral-50 rounded-r-md py-2 pr-2">
+                    <p className="text-xs font-semibold text-neutral-900 mb-1">
+                      Balasan Admin
+                    </p>
+                    <p className="text-sm text-neutral-500 leading-relaxed">{c.balasan}</p>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* ================= Bantuan (CTA) ================= */}
-      <section id="bantuan" className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 py-24">
+      <section id="bantuan" className="scroll-mt-20 max-w-7xl mx-auto px-6 md:px-12 pb-24">
         <div className="bg-neutral-50 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <p className="text-xl font-semibold text-neutral-900 mb-1">Butuh bantuan?</p>
@@ -1450,7 +1309,7 @@ export default function Landing() {
                 onClick={() => setHelpOpen(false)}
                 className="text-center text-xs text-neutral-500 hover:text-neutral-900 hover:underline py-1"
               >
-                Lihat halaman Bantuan →
+                Lihat halaman Bantuan â†’
               </Link>
             </div>
           </div>
@@ -1499,9 +1358,9 @@ export default function Landing() {
 
           {/* Middle: Link columns */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-16">
-            <div className="col-span-2 md:col-span-2">
+            <div className="col-span-2">
               <div className="text-2xl font-semibold tracking-tight mb-4">
-                Pelabuhan <span className="text-[#C90000]">Tanjung </span> perak
+                <Wordmark />
               </div>
               <p className="text-sm text-neutral-400 leading-relaxed max-w-xs mb-6">
                 Sistem manajemen parkir terpadu untuk Admin, Petugas, dan Owner.
@@ -1534,21 +1393,13 @@ export default function Landing() {
             <div>
               <h4 className="text-sm font-semibold mb-4 text-white">Halaman</h4>
               <ul className="space-y-3 text-sm text-neutral-400">
-                <li>
-                  <a href="#fitur" className="hover:text-white transition-colors">Fitur</a>
-                </li>
-                <li>
-                  <a href="#informasi" className="hover:text-white transition-colors">Informasi</a>
-                </li>
-                <li>
-                  <a href="#testimoni" className="hover:text-white transition-colors">Testimoni</a>
-                </li>
-                <li>
-                  <a href="#komentar" className="hover:text-white transition-colors">Komentar</a>
-                </li>
-                <li>
-                  <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
-                </li>
+                {NAV_LINKS.map((item) => (
+                  <li key={item.href}>
+                    <a href={item.href} className="hover:text-white transition-colors">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
@@ -1583,11 +1434,12 @@ export default function Landing() {
 
           {/* Bottom bar */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/10 text-sm text-neutral-500">
-            <p>© {new Date().getFullYear()} ParkirKu. Seluruh hak cipta dilindungi.</p>
-            <p className="text-xs text-neutral-500">Dibuat oleh {BRAND_NAME}</p>
+            <p>© {BRAND_FOOTER}</p>
+            <p className="text-xs text-neutral-500"> {BRAND_NAME}</p>
           </div>
         </div>
       </footer>
     </div>
   );
 }
+

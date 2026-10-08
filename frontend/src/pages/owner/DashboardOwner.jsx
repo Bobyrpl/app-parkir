@@ -61,7 +61,7 @@ export default function DashboardOwner() {
 
             <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
                 <div>
-                    <p className="text-sm text-[var(--color-text)]">
+                    <p className="text-sm text-[#171717]">
                         {sapaanWaktu()}{namaDepan ? `, ${namaDepan}` : ''}.
                     </p>
                     <p className="text-xs text-[var(--color-text-secondary)] font-mono mt-0.5">{tanggalHariIni}</p>
@@ -76,7 +76,7 @@ export default function DashboardOwner() {
 
             {/* Grafik gabungan 7 hari terakhir */}
             <div className="mb-8">
-                <h2 className="font-display text-base text-[var(--color-text)] mb-3 flex items-center gap-2">
+                <h2 className="font-display text-base text-[#171717] mb-3 flex items-center gap-2">
                     <LineChart size={16} className="text-[#171717]" />
                     Tren 7 Hari Terakhir
                 </h2>
@@ -103,7 +103,7 @@ export default function DashboardOwner() {
 
             {/* Menu utama */}
             <div>
-                <h2 className="font-display text-base text-[var(--color-text)] mb-3 flex items-center gap-2">
+                <h2 className="font-display text-base text-[#171717] mb-3 flex items-center gap-2">
                     <LayoutGrid size={16} className="text-[#171717]" />
                     Menu
                 </h2>
@@ -113,7 +113,7 @@ export default function DashboardOwner() {
                             <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-[#35C48D]/10 text-[#35C48D] mb-3">
                                 <FileBarChart size={18} />
                             </span>
-                            <h3 className="font-display text-lg text-[var(--color-text)] mb-2">Rekap Transaksi</h3>
+                            <h3 className="font-display text-lg text-[#171717] mb-2">Rekap Transaksi</h3>
                             <p className="text-sm text-[var(--color-text-secondary)] mb-4">
                                 Pilih rentang tanggal untuk melihat jumlah transaksi dan
                                 total pendapatan pada periode tertentu, lalu ekspor atau cetak laporannya.

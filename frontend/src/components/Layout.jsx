@@ -30,6 +30,7 @@ const ICONS = {
   riwayat: "M12 8v4l2.5 1.5M21 12a9 9 0 11-4.5-7.79M3 4v5h5",
 };
 
+//  tampilan dashboard setiap user  {#c80,33}
 const MENU = {
   admin: [
     { to: "/admin", label: "Ringkasan", end: true, icon: "ringkasan" },
@@ -292,7 +293,7 @@ function MobileBottomNav({ menu, moreOpen, onToggleMore }) {
    keluar. Muncul di atas bottom nav saat tab "Akun" dipencet, murni
    komponen mobile — tidak menyentuh sidebar kiri. */
 function MobileMoreSheet({ open, onClose, moreItems, user, roleLabel, onLogoutClick }) {
-  if (!open) return null;
+    if (!open) return null;
 
   return (
     <>
@@ -456,13 +457,13 @@ export default function Layout({ children }) {
             className={`flex items-center gap-3 min-w-0 ${collapsed ? "md:gap-0" : ""}`}
           >
             <img
-              src="/images/logo.png"
+              src="/parkir_pelabuhan_tanjung_perak.png"
               alt="Logo ParkirKu"
               className="h-8 w-8 object-contain rounded-lg shrink-0"
             />
             <div className={`min-w-0 ${collapsed ? "md:hidden" : ""}`}>
               <p className="font-semibold text-sm text-neutral-900 leading-tight truncate">
-                ParkirKu
+                sistem parkir 
               </p>
               <p className="text-[10px] leading-none text-neutral-400 tracking-wide uppercase mt-0.5 truncate">
                 Pelabuhan Tanjung Perak
@@ -535,7 +536,7 @@ export default function Layout({ children }) {
           ))}
         </nav>
 
-        {/* Profil & keluar */}
+                {/* Profil & keluar */}
         <div className="p-3 border-t border-neutral-200 space-y-2 bg-neutral-50">
           <div
             className={`flex items-center gap-3 p-2 rounded-xl bg-white border border-neutral-200 ${
@@ -553,6 +554,7 @@ export default function Layout({ children }) {
             </div>
           </div>
 
+          
           <button
             onClick={() => setShowLogoutConfirm(true)}
             title={collapsed ? "Keluar" : undefined}
@@ -581,7 +583,7 @@ export default function Layout({ children }) {
       {/* Konten Utama */}
       <main className="flex-1 overflow-y-auto min-w-0 bg-white flex flex-col">
         {/* Header mobile: logo & status saja, navigasi sepenuhnya lewat bottom nav */}
-        <div className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 py-3 border-b border-neutral-200 bg-white/95 backdrop-blur-sm">
+        <div className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 py-3 border-b border-neutral-200 bg-white backdrop-blur-sm">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <img

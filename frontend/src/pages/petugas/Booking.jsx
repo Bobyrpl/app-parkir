@@ -201,6 +201,13 @@ export default function Booking() {
                             <td className="px-4 py-3">{b.area?.nama_area}</td>
                             <td className="px-4 py-3 font-mono text-xs">
                                 {new Date(b.tanggal_rencana).toLocaleDateString('id-ID')} · {b.jam_rencana_masuk?.slice(0, 5)}
+                                {b.tanggal_rencana_keluar && (
+                                    <>
+                                        {' '}s/d{' '}
+                                        {new Date(b.tanggal_rencana_keluar).toLocaleDateString('id-ID')}
+                                        {b.jam_rencana_keluar && ` · ${b.jam_rencana_keluar.slice(0, 5)}`}
+                                    </>
+                                )}
                             </td>
                             <td className="px-4 py-3">
                                 <Badge tone={STATUS_TONE[b.status] || 'neutral'}>{STATUS_LABEL[b.status] || b.status}</Badge>

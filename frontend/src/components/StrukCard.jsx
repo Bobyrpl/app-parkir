@@ -1,12 +1,39 @@
 import { Printer, X } from 'lucide-react';
 import { Button } from './ui';
 
+//  {#0ac,32}
 export default function StrukCard({ struk, onClose }) {
     if (!struk) return null;
 
     const formatRupiah = (n) => 'Rp ' + Number(n).toLocaleString('id-ID');
     const formatWaktu = (t) => (t ? new Date(t).toLocaleString('id-ID') : '-');
     const adaDenda = Number(struk.denda) > 0;
+
+    // Format durasi bertingkat dari total detik:
+    //   < 1 menit  -> "45 detik"
+    //   < 1 jam    -> "5 menit 07 detik"
+    //   >= 1 jam   -> "1 jam 30 menit" (detik tidak ditampilkan lagi di sini)
+    function formatDurasi(totalDetik) {
+        const detikBulat = Math.max(0, Math.floor(Number(totalDetik) || 0));
+
+        const jam = Math.floor(detikBulat / 3600);
+        const sisaSetelahJam = detikBulat % 3600;
+        const menit = Math.floor(sisaSetelahJam / 60);
+        const detik = sisaSetelahJam % 60;
+
+        // >= 1 jam -> tampil jam + menit
+        if (jam > 0) {
+            return menit > 0 ? `${jam} jam ${menit} menit` : `${jam} jam`;
+        }
+
+        // < 1 jam tapi >= 1 menit -> tampil menit + detik
+        if (menit > 0) {
+            return `${menit} menit ${String(detik).padStart(2, '0')} detik`;
+        }
+
+        // < 1 menit -> tampil detik saja
+        return `${detik} detik`;
+    }
 
     function handleCetak() {
         window.print();
@@ -55,7 +82,7 @@ export default function StrukCard({ struk, onClose }) {
                         <Row label="Area Parkir" value={struk.area} />
                         <Row label="Waktu Masuk" value={formatWaktu(struk.waktu_masuk)} />
                         <Row label="Waktu Keluar" value={formatWaktu(struk.waktu_keluar)} />
-                        <Row label="Durasi Parkir" value={`${struk.durasi_jam} jam`} />
+                        <Row label="Durasi Parkir" value={formatDurasi(struk.durasi_detik)} />
                         <Row label="Tarif / Jam" value={formatRupiah(struk.tarif_per_jam)} />
 
                         <div className="border-t border-dashed border-neutral-300 my-3" />

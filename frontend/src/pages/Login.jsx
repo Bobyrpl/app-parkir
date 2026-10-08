@@ -14,6 +14,7 @@ export default function Login() {
     const { showSuccess, showError } = useToast();
     const navigate = useNavigate();
 
+    // menarahkan dashboard setiap user  {#b8f,20}
     async function handleSubmit(e) {
         e.preventDefault();
         setError('');
@@ -42,11 +43,11 @@ export default function Login() {
                 {/* Panel kiri - identitas sistem, gaya gelap seperti footer landing page */}
                 <div className="relative hidden md:flex flex-col items-center justify-center text-center bg-neutral-900 text-white p-10">
                     <img
-                        src="/parkir_pelabuhan_tanjung_perak.png"
+                        src="/images/logo.png"
                         alt="Logo ParkirKu"
                         className="h-16 w-16 object-contain rounded-2xl mb-6 border border-white/10"
                     />
-                    <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium tracking-wide uppercase bg-white/10 text-neutral-300 mb-5">
+                    <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium tracking-wide uppercase bg-white text-neutral-300 mb-5">
                         Portal Terpadu
                     </div>
                     <h2 className="text-2xl md:text-3xl font-semibold tracking-tight leading-snug mb-3">

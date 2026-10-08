@@ -64,7 +64,7 @@ export default function DashboardPetugas() {
                 description="Catat kendaraan masuk/keluar dan pantau transaksi harian dari sini."
             />
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <StatCard
                     label="Transaksi Hari Ini"
                     value={loading ? "—" : hariIni.transaksi}
@@ -88,7 +88,7 @@ export default function DashboardPetugas() {
 
             <div className="grid md:grid-cols-4 gap-4 mb-8">
                 <Card className="p-6 flex flex-col">
-                    <h2 className="font-display text-base text-[var(--color-text)] mb-1">
+                    <h2 className="font-display text-base text-[#171717] mb-1">
                         Kendaraan Masuk
                     </h2>
                     <p className="text-sm text-[var(--color-text-secondary)] mb-4 flex-1">
@@ -100,7 +100,7 @@ export default function DashboardPetugas() {
                 </Card>
 
                 <Card className="p-6 flex flex-col">
-                    <h2 className="font-display text-base text-[var(--color-text)] mb-1">
+                    <h2 className="font-display text-base text-[#171717] mb-1">
                         Kendaraan Keluar
                     </h2>
                     <p className="text-sm text-[var(--color-text-secondary)] mb-4 flex-1">
@@ -112,7 +112,7 @@ export default function DashboardPetugas() {
                 </Card>
 
                 <Card className="p-6 flex flex-col">
-                    <h2 className="font-display text-base text-[var(--color-text)] mb-1">
+                    <h2 className="font-display text-base text-[#171717] mb-1">
                         Riwayat Transaksi
                     </h2>
                     <p className="text-sm text-[var(--color-text-secondary)] mb-4 flex-1">
@@ -126,7 +126,7 @@ export default function DashboardPetugas() {
                 </Card>
 
                 <Card className="p-6 flex flex-col">
-                    <h2 className="font-display text-base text-[var(--color-text)] mb-1">
+                    <h2 className="font-display text-base text-[#171717] mb-1">
                         Booking Masuk
                     </h2>
                     <p className="text-sm text-[var(--color-text-secondary)] mb-4 flex-1">
@@ -141,7 +141,7 @@ export default function DashboardPetugas() {
             </div>
 
             <Card className="p-6">
-                <h2 className="font-display text-lg text-[var(--color-text)] mb-2">
+                <h2 className="font-display text-lg text-[#171717] mb-2">
                     Akses cepat
                 </h2>
                 <p className="text-sm text-[var(--color-text-secondary)]">

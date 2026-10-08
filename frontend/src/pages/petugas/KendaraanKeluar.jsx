@@ -6,18 +6,15 @@ import { useToast } from '../../context/ToastContext';
 import ModalQris from '../../components/ModalQris';
 import ModalScanQr from '../../components/ModalScanQr';
 
-// Jumlah baris kendaraan yang ditampilkan per halaman di tabel.
 const ITEM_PER_HALAMAN = 10;
 
-// Kendaraan dari booking yang jam_rencana_keluar-nya sudah lewat (tapi masih
-// tercatat "masuk" di sini) dianggap overstay - kandidat untuk dikenakan
-// denda saat petugas memprosesnya keluar. Dihitung di frontend supaya update
-// real-time tanpa perlu refresh (waktu sekarang berjalan terus).
 function hitungMenitTerlambat(item) {
     const booking = item.booking;
     if (!booking?.tanggal_rencana || !booking?.jam_rencana_keluar) return null;
 
-    const tanggal = String(booking.tanggal_rencana).slice(0, 10); // ambil YYYY-MM-DD saja
+    const tanggal = String(
+        booking.tanggal_rencana_keluar || booking.tanggal_rencana,
+    ).slice(0, 10);
     const rencanaKeluar = new Date(`${tanggal}T${booking.jam_rencana_keluar}`);
     if (Number.isNaN(rencanaKeluar.getTime())) return null;
 
@@ -25,10 +22,6 @@ function hitungMenitTerlambat(item) {
     return menit > 0 ? menit : null;
 }
 
-// Estimasi denda HANYA untuk ditampilkan sebagai preview ke petugas -
-// nominal final & yang benar-benar tersimpan tetap dihitung backend
-// (Transaksi::hitungDenda()) saat kendaraan diproses keluar, supaya tidak
-// ada celah selisih hitungan/manipulasi dari sisi frontend.
 function estimasiDenda(menitTerlambat, pengaturan) {
     if (!pengaturan?.aktif || !pengaturan?.denda_per_jam) return 0;
     const menitBersih = menitTerlambat - (pengaturan.toleransi_menit || 0);
@@ -45,29 +38,16 @@ function formatDurasiMenit(menit) {
 }
 
 export default function KendaraanKeluar() {
-    // Data mentah lengkap (semua kendaraan yang masih status 'masuk'),
-    // pencarian & filter area dikerjakan di frontend supaya instan.
     const [rawData, setRawData] = useState([]);
     const [areaList, setAreaList] = useState([]);
     const [cari, setCari] = useState('');
     const [filterArea, setFilterArea] = useState('semua');
     const [hanyaTerlambat, setHanyaTerlambat] = useState(false);
-
-    // Halaman aktif untuk tabel (pagination di frontend, 10 baris/halaman).
     const [halaman, setHalaman] = useState(1);
-
-    // Pengaturan denda dari admin (denda_per_jam, toleransi_menit, aktif),
-    // dipakai untuk MENAMPILKAN ESTIMASI saja. Nilai final tetap dihitung
-    // & disimpan otomatis oleh backend saat request keluar dikirim.
     const [pengaturanDenda, setPengaturanDenda] = useState(null);
-
     const [struk, setStruk] = useState(null);
     const [loadingId, setLoadingId] = useState(null);
     const [qrisId, setQrisId] = useState(null);
-
-    // Cari kendaraan booking yang sedang parkir lewat kode booking (ketik
-    // manual atau scan QR pelanggan) - begitu ketemu, hasilnya dipakai untuk
-    // memfilter tabel di bawah supaya baris kendaraannya langsung terlihat.
     const [kodeBooking, setKodeBooking] = useState('');
     const [cariBookingLoading, setCariBookingLoading] = useState(false);
     const [scanOpen, setScanOpen] = useState(false);
@@ -90,12 +70,10 @@ export default function KendaraanKeluar() {
         }
     }
 
-    useEffect(() => {
+useEffect(() => {
         load();
     }, []);
 
-    // Tambahkan info keterlambatan booking ke setiap baris data mentah,
-    // dihitung ulang di render supaya nilainya tetap akurat.
     const rawDataDenganStatus = useMemo(() => {
         return rawData.map((item) => ({
             ...item,
@@ -108,9 +86,6 @@ export default function KendaraanKeluar() {
         [rawDataDenganStatus]
     );
 
-    // Hitung jumlah kendaraan yang sedang di dalam, per area, dari rawData
-    // (bukan dari data yang sudah difilter pencarian, biar ringkasannya tetap
-    // menunjukkan kondisi keseluruhan meski sedang mencari plat tertentu).
     const ringkasanPerArea = useMemo(() => {
         return areaList.map((a) => {
             const jumlahDidalam = rawData.filter((item) => item.area?.id_area === a.id_area).length;
@@ -123,8 +98,6 @@ export default function KendaraanKeluar() {
         });
     }, [areaList, rawData]);
 
-    // Data yang ditampilkan di tabel: gabungan filter pencarian plat nomor +
-    // filter area + filter "hanya booking terlambat"
     const data = useMemo(() => {
         const keyword = cari.trim().toLowerCase();
         return rawDataDenganStatus.filter((item) => {
@@ -135,25 +108,17 @@ export default function KendaraanKeluar() {
         });
     }, [rawDataDenganStatus, cari, filterArea, hanyaTerlambat]);
 
-    // Balik ke halaman 1 setiap kali hasil filter/pencarian berubah, supaya
-    // tidak "nyangkut" di halaman kosong saat hasil filter jadi lebih sedikit.
     useEffect(() => {
         setHalaman(1);
     }, [cari, filterArea, hanyaTerlambat]);
 
     const totalHalaman = Math.max(1, Math.ceil(data.length / ITEM_PER_HALAMAN));
 
-    // Potongan data untuk halaman yang sedang aktif saja.
     const dataHalamanIni = useMemo(() => {
         const mulai = (halaman - 1) * ITEM_PER_HALAMAN;
         return data.slice(mulai, mulai + ITEM_PER_HALAMAN);
     }, [data, halaman]);
 
-    // Dipakai baik oleh submit form kode booking manual maupun hasil scan QR.
-    // Begitu ketemu, isi kolom pencarian plat nomor dengan plat kendaraan
-    // hasil booking - tabel di bawah otomatis kefilter ke baris itu saja
-    // (memakai mekanisme filter `cari` yang sudah ada), lalu balik ke
-    // halaman 1 supaya baris kendaraannya pasti kelihatan.
     async function cariBooking(kode) {
         if (!kode.trim()) return;
         setCariBookingLoading(true);
@@ -163,7 +128,7 @@ export default function KendaraanKeluar() {
             setCari(t.kendaraan?.plat_nomor || '');
             setFilterArea('semua');
             setHanyaTerlambat(false);
-            showSuccess(`Booking ditemukan: ${t.kendaraan?.plat_nomor} — ${t.area?.nama_area}`);
+            showSuccess(`Booking ditemukan: ${t.kendaraan?.plat_nomor} Ã¢â‚¬â€œ ${t.area?.nama_area}`);
         } catch (err) {
             showError(
                 err.response?.data?.message ||
@@ -174,15 +139,20 @@ export default function KendaraanKeluar() {
         }
     }
 
-    function handleCariBookingSubmit(e) {
-        e.preventDefault();
-        cariBooking(kodeBooking);
-    }
-
     function handleScanDetected(kode) {
         setScanOpen(false);
-        setKodeBooking(kode);
-        cariBooking(kode);
+        if (/^\d+$/.test(kode.trim())) {
+            const idParkir = parseInt(kode.trim());
+            const vehicle = rawData.find(v => v.id_parkir === idParkir);
+            if (vehicle) {
+                showSuccess(`Karcis terdeteksi: ${vehicle.kendaraan?.plat_nomor}`);
+            } else {
+                showError(`Karcis #${idParkir} tidak ditemukan. Mungkin sudah keluar atau ID salah.`);
+            }
+        } else {
+            setKodeBooking(kode);
+            cariBooking(kode);
+        }
     }
 
     async function ambilStrukDanTutup(id) {
@@ -192,18 +162,12 @@ export default function KendaraanKeluar() {
         load();
     }
 
-    async function handleKeluar(id, metode) {
+    // PERBAIKAN: Untuk Cash - langsung POST keluar
+    async function handleKeluarCash(id) {
         setLoadingId(id);
         try {
-            // Denda tidak dikirim dari sini - backend yang menghitung otomatis.
-            await api.post(`/transaksi/${id}/keluar`, { metode_bayar: metode });
-
-            if (metode === 'cash') {
-                await ambilStrukDanTutup(id);
-            } else {
-                setQrisId(id);
-                load();
-            }
+            await api.post(`/transaksi/${id}/keluar`, { metode_bayar: 'cash' });
+            await ambilStrukDanTutup(id);
         } catch (err) {
             showError(err.response?.data?.message || 'Gagal memproses kendaraan keluar, silakan coba lagi.');
         } finally {
@@ -211,238 +175,277 @@ export default function KendaraanKeluar() {
         }
     }
 
+    // Untuk QRIS: buka modal dulu. Kendaraan dicatat keluar hanya setelah pembayaran lunas.
+    function handleKeluarQris(id) {
+        setLoadingId(id);
+        setQrisId(id);
+    }
+
+    // PERBAIKAN: Baru POST setelah user confirm pembayaran
     async function handleQrisLunas() {
         const id = qrisId;
         setQrisId(null);
         try {
+            // ModalQris sudah memproses keluar dan konfirmasi pembayaran.
             await ambilStrukDanTutup(id);
-        } catch {
-            showError('Pembayaran diterima, tapi gagal mengambil data struk. Coba buka ulang dari Riwayat Transaksi.');
+        } catch (err) {
+            showError(err.response?.data?.message || 'Gagal mengambil struk kendaraan.');
+        } finally {
+            setLoadingId(null);
         }
     }
 
+    // PERBAIKAN: Batalkan - langsung tutup modal, jangan load ulang
     function handleQrisBatal() {
         setQrisId(null);
-        load();
+        setLoadingId(null);
+        showError('Pembayaran dibatalkan. Kendaraan masih tercatat sedang parkir.');
     }
 
     return (
-        <div>
-            <PageHeader
-                eyebrow="Transaksi"
-                title="Kendaraan Keluar"
-                description="Daftar kendaraan yang masih berada di area parkir."
-            />
+        <div className="space-y-6">
+            <PageHeader title="Kendaraan Keluar" desc="Proses checkout kendaraan yang sedang parkir" />
 
-            {/* Cari kendaraan booking yang mau keluar - ketik kode manual atau scan QR pelanggan */}
-            <Card className="p-5 mb-6">
-                <h2 className="font-display text-base text-[var(--color-text)] mb-3">
-                    Kendaraan Booking Mau Keluar?
-                </h2>
-                <form onSubmit={handleCariBookingSubmit} className="flex gap-2">
-                    <Input
-                        className="font-mono uppercase"
-                        value={kodeBooking}
-                        onChange={(e) => setKodeBooking(e.target.value)}
-                        placeholder="mis. BKG-7F3K9A"
-                    />
-                    <Button type="submit" disabled={cariBookingLoading}>
-                        {cariBookingLoading ? 'Mencari...' : 'Cari'}
-                    </Button>
-                    <Button type="button" variant="ghost" onClick={() => setScanOpen(true)}>
-                        Scan QR
-                    </Button>
-                </form>
-                <p className="mt-3 text-xs text-[var(--color-text-secondary)]">
-                    Ketik atau scan kode booking pelanggan - tabel di bawah otomatis menampilkan
-                    kendaraannya supaya tinggal diproses keluar.
-                </p>
-            </Card>
-
-            {/* Ringkasan jumlah kendaraan di dalam, per area */}
-            {ringkasanPerArea.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
-                    {ringkasanPerArea.map((a) => (
-                        <button
-                            key={a.id_area}
-                            type="button"
-                            onClick={() =>
-                                setFilterArea((prev) => (prev === String(a.id_area) ? 'semua' : String(a.id_area)))
-                            }
-                            className={`text-left rounded-lg border p-3 transition ${
-                                filterArea === String(a.id_area)
-                                    ? 'border-[#171717] bg-[#171717]/10'
-                                    : 'border-[var(--color-border)] bg-[var(--color-section)] hover:bg-[var(--color-section)]'
-                            }`}
-                        >
-                            <p className="text-xs font-mono text-[var(--color-text-secondary)] truncate">{a.nama_area}</p>
-                            <p className="text-2xl font-display text-[var(--color-text)] mt-1">
-                                {a.jumlahDidalam}
-                                <span className="text-xs text-[var(--color-text-secondary)] font-mono ml-1">
-                                    / {a.kapasitas} terisi
-                                </span>
-                            </p>
-                        </button>
-                    ))}
-                </div>
-            )}
-
-            <div className="flex flex-col sm:flex-row gap-2 mb-4">
-                <Input
-                    className="font-mono uppercase sm:max-w-xs"
-                    value={cari}
-                    onChange={(e) => setCari(e.target.value)}
-                    placeholder="Cari plat nomor..."
-                />
-                <select
-                    value={filterArea}
-                    onChange={(e) => setFilterArea(e.target.value)}
-                    className="rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717] sm:max-w-xs"
-                >
-                    <option value="semua">Semua area</option>
-                    {areaList.map((a) => (
-                        <option key={a.id_area} value={a.id_area}>
-                            {a.nama_area}
-                        </option>
-                    ))}
-                </select>
-
-                {/* Filter cepat: kendaraan booking yang sudah lewat jam rencana
-                    keluar, supaya gampang dicari untuk dikenakan denda. */}
-                <button
-                    type="button"
-                    onClick={() => setHanyaTerlambat((prev) => !prev)}
-                    className={`rounded-md px-3 py-2 text-sm font-mono border whitespace-nowrap ${
-                        hanyaTerlambat
-                            ? 'border-[#171717] bg-[#171717]/15 text-[#171717]'
-                            : 'border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-[var(--color-section)]'
-                    }`}
-                >
-                    Booking Terlambat{jumlahTerlambat > 0 ? ` (${jumlahTerlambat})` : ''}
-                </button>
-
-                {(cari || filterArea !== 'semua' || hanyaTerlambat) && (
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => {
-                            setCari('');
-                            setFilterArea('semua');
-                            setHanyaTerlambat(false);
-                        }}
-                    >
-                        Reset
-                    </Button>
-                )}
+            {/* Ringkasan kapasitas per area */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {ringkasanPerArea.map((area) => (
+                    <Card key={area.id_area} className="p-4">
+                        <p className="text-xs text-[var(--color-text-secondary)] uppercase tracking-tight">
+                            {area.nama_area}
+                        </p>
+                        <p className="mt-1 text-2xl font-bold text-[#171717]">
+                            {area.jumlahDidalam}/{area.kapasitas}
+                        </p>
+                        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[var(--color-bg-secondary)]">
+                            <div
+                                className="h-full bg-blue-500"
+                                style={{ width: `${(area.jumlahDidalam / area.kapasitas) * 100}%` }}
+                            />
+                        </div>
+                    </Card>
+                ))}
             </div>
 
-            <Table columns={['Plat Nomor', 'Jenis', 'Area', 'Waktu Masuk', 'Booking', 'Aksi']}>
-                {dataHalamanIni.map((item) => {
-                    const terlambat = item.menitTerlambat !== null;
-                    return (
-                        <tr key={item.id_parkir}>
-                            <td className="px-4 py-3 font-mono uppercase">{item.kendaraan?.plat_nomor}</td>
-                            <td className="px-4 py-3 capitalize">{item.kendaraan?.jenis_kendaraan}</td>
-                            <td className="px-4 py-3">{item.area?.nama_area}</td>
-                            <td className="px-4 py-3 font-mono text-xs">
-                                {new Date(item.waktu_masuk).toLocaleString('id-ID')}
-                            </td>
-                            <td className="px-4 py-3">
-                                {item.booking ? (
-                                    terlambat ? (
-                                        <div>
-                                            <Badge tone="danger">Terlambat</Badge>
-                                            <p className="text-xs text-[#171717] font-mono mt-1">
-                                                +{formatDurasiMenit(item.menitTerlambat)}
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <Badge tone="neutral">{item.booking.kode_booking}</Badge>
-                                    )
-                                ) : (
-                                    <span className="text-xs text-[var(--color-text-secondary)]">-</span>
-                                )}
-                            </td>
-                            <td className="px-4 py-3">
-                                <div className="flex flex-col gap-2">
-                                    {terlambat && (
-                                        <p className="text-xs text-[var(--color-text-secondary)] font-mono">
-                                            Est. denda:{' '}
-                                            <span className="text-[#171717]">
-                                                Rp{' '}
-                                                {estimasiDenda(
-                                                    item.menitTerlambat,
-                                                    pengaturanDenda
-                                                ).toLocaleString('id-ID')}
-                                            </span>
-                                            <span className="block text-[10px] text-[var(--color-text-secondary)]">
-                                                (dihitung otomatis saat kendaraan keluar)
-                                            </span>
-                                        </p>
-                                    )}
-                                    <div className="flex gap-2">
-                                        <Button
-                                            onClick={() => handleKeluar(item.id_parkir, 'cash')}
-                                            disabled={loadingId === item.id_parkir}
-                                        >
-                                            {loadingId === item.id_parkir ? 'Memproses...' : 'Cash'}
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            onClick={() => handleKeluar(item.id_parkir, 'qris')}
-                                            disabled={loadingId === item.id_parkir}
-                                        >
-                                            {loadingId === item.id_parkir ? 'Memproses...' : 'QRIS'}
-                                        </Button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    );
-                })}
-                {data.length === 0 && (
-                    <tr>
-                        <td colSpan={6} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
-                            {cari || filterArea !== 'semua' || hanyaTerlambat
-                                ? 'Tidak ada kendaraan yang cocok dengan pencarian/filter ini.'
-                                : 'Tidak ada kendaraan di dalam area parkir.'}
-                        </td>
-                    </tr>
-                )}
-            </Table>
+            {/* Filter & Pencarian */}
+            <Card className="space-y-4 p-4">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <Input
+                        placeholder="Cari plat nomor..."
+                        value={cari}
+                        onChange={(e) => setCari(e.target.value)}
+                    />
+                    <select
+                        value={filterArea}
+                        onChange={(e) => setFilterArea(e.target.value)}
+                        className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 placeholder-neutral-400"
+                    >
+                        <option value="semua">Semua Area</option>
+                        {areaList.map((area) => (
+                            <option key={area.id_area} value={area.id_area}>
+                                {area.nama_area}
+                            </option>
+                        ))}
+                    </select>
+                    <label className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2">
+                        <input
+                            type="checkbox"
+                            checked={hanyaTerlambat}
+                            onChange={(e) => setHanyaTerlambat(e.target.checked)}
+                            className="h-4 w-4"
+                        />
+                        <span className="text-sm text-neutral-700">Hanya yang Terlambat</span>
+                        {jumlahTerlambat > 0 && (
+                            <Badge tone="warning" className="ml-auto text-xs">
+                                {jumlahTerlambat}
+                            </Badge>
+                        )}
+                    </label>
+                </div>
 
-            {/* Kontrol pagination - hanya tampil kalau datanya lebih dari 1 halaman */}
-            {data.length > 0 && totalHalaman > 1 && (
-                <div className="flex items-center justify-between mt-4 text-sm">
-                    <p className="text-[var(--color-text-secondary)] font-mono text-xs">
-                        Menampilkan {(halaman - 1) * ITEM_PER_HALAMAN + 1}
-                        {'–'}
-                        {Math.min(halaman * ITEM_PER_HALAMAN, data.length)} dari {data.length} kendaraan
+                {/* Cari Booking */}
+                <div className="border-t border-neutral-200 pt-4">
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-tight text-neutral-600">
+                        Cari Booking
                     </p>
-                    <div className="flex items-center gap-2">
+                    <div className="flex gap-2">
+                        <Input
+                            placeholder="Ketik atau scan kode booking..."
+                            value={kodeBooking}
+                            onChange={(e) => setKodeBooking(e.target.value)}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    cariBooking(kodeBooking);
+                                    setKodeBooking('');
+                                }
+                            }}
+                        />
                         <Button
-                            type="button"
                             variant="outline"
-                            onClick={() => setHalaman((h) => Math.max(1, h - 1))}
-                            disabled={halaman === 1}
+                            onClick={() => setScanOpen(true)}
+                            disabled={cariBookingLoading}
                         >
-                            Sebelumnya
+                            Scan Qr
                         </Button>
-                        <span className="font-mono text-xs text-[var(--color-text-secondary)] whitespace-nowrap">
-                            Hal. {halaman} / {totalHalaman}
-                        </span>
                         <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => setHalaman((h) => Math.min(totalHalaman, h + 1))}
-                            disabled={halaman === totalHalaman}
+                            variant="primary"
+                            onClick={() => {
+                                cariBooking(kodeBooking);
+                                setKodeBooking('');
+                            }}
+                            disabled={cariBookingLoading}
                         >
-                            Selanjutnya
+                            {cariBookingLoading ? 'Mencari...' : 'Cari'}
                         </Button>
                     </div>
                 </div>
-            )}
+            </Card>
 
+            {/* Tabel Kendaraan */}
+            <Card>
+                <Table>
+                    <thead className="bg-[var(--color-bg-secondary)]">
+                        <tr>
+                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-neutral-600">
+                                Plat Nomor
+                            </th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-neutral-600">
+                                Jenis
+                            </th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-neutral-600">
+                                Area
+                            </th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-neutral-600">
+                                Durasi
+                            </th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-neutral-600">
+                                Booking
+                            </th>
+                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase text-neutral-600">
+                                Aksi
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-200">
+                        {dataHalamanIni.map((item) => {
+                            const terlambat = item.menitTerlambat !== null;
+                            return (
+                                <tr key={item.id_parkir} className={terlambat ? 'bg-amber-50' : ''}>
+                                    <td className="px-4 py-3 font-semibold text-neutral-900">
+                                        {item.kendaraan?.plat_nomor}
+                                    </td>
+                                    <td className="px-4 py-3 text-xs capitalize text-neutral-600">
+                                        {item.kendaraan?.jenis_kendaraan}
+                                    </td>
+                                    <td className="px-4 py-3 text-xs text-neutral-600">
+                                        {item.area?.nama_area}
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        <p className="text-xs text-neutral-900 font-mono">
+                                            {new Date(item.waktu_masuk).toLocaleTimeString('id-ID')}
+                                        </p>
+                                        <p className="text-[10px] text-neutral-500 font-mono">
+                                            ~
+                                            {((Date.now() - new Date(item.waktu_masuk).getTime()) / (1000 * 60 * 60)).toFixed(1)}{' '}
+                                            jam
+                                        </p>
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        {item.booking ? (
+                                            terlambat ? (
+                                                <div className="text-xs">
+                                                    <Badge tone="warning">{item.booking.kode_booking}</Badge>
+                                                    <p className="text-xs text-[#171717] font-mono mt-1">
+                                                        +{formatDurasiMenit(item.menitTerlambat)}
+                                                    </p>
+                                                </div>
+                                            ) : (
+                                                <Badge tone="neutral">{item.booking.kode_booking}</Badge>
+                                            )
+                                        ) : (
+                                            <span className="text-xs text-[var(--color-text-secondary)]">-</span>
+                                        )}
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        <div className="flex flex-col gap-2">
+                                            {terlambat && (
+                                                <p className="text-xs text-[var(--color-text-secondary)] font-mono">
+                                                    Est. denda:{' '}
+                                                    <span className="text-[#171717]">
+                                                        Rp{' '}
+                                                        {estimasiDenda(
+                                                            item.menitTerlambat,
+                                                            pengaturanDenda
+                                                        ).toLocaleString('id-ID')}
+                                                    </span>
+                                                    <span className="block text-[10px] text-[var(--color-text-secondary)]">
+                                                        (dihitung otomatis saat kendaraan keluar)
+                                                    </span>
+                                                </p>
+                                            )}
+                                            <div className="flex gap-2">
+                                                <Button
+                                                    onClick={() => handleKeluarCash(item.id_parkir)}
+                                                    disabled={loadingId === item.id_parkir}
+                                                >
+                                                    {loadingId === item.id_parkir ? 'Memproses...' : 'Cash'}
+                                                </Button>
+                                                <Button
+                                                    variant="outline"
+                                                    onClick={() => handleKeluarQris(item.id_parkir)}
+                                                    disabled={loadingId === item.id_parkir}
+                                                >
+                                                    {loadingId === item.id_parkir ? 'Memproses...' : 'QRIS'}
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                        {data.length === 0 && (
+                            <tr>
+                                <td colSpan={6} className="px-4 py-6 text-center text-[var(--color-text-secondary)] text-sm">
+                                    {cari || filterArea !== 'semua' || hanyaTerlambat
+                                        ? 'Tidak ada kendaraan yang cocok dengan pencarian/filter ini.'
+                                        : 'Tidak ada kendaraan di dalam area parkir.'}
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </Table>
+
+                {data.length > 0 && totalHalaman > 1 && (
+                    <div className="flex items-center justify-between border-t border-neutral-200 p-4 text-sm">
+                        <p className="text-[var(--color-text-secondary)] font-mono text-xs">
+                            Menampilkan {(halaman - 1) * ITEM_PER_HALAMAN + 1}Ã¢â‚¬â€œ
+                            {Math.min(halaman * ITEM_PER_HALAMAN, data.length)} dari {data.length} kendaraan
+                        </p>
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setHalaman((h) => Math.max(1, h - 1))}
+                                disabled={halaman === 1}
+                            >
+                                Ã¢â€ Â Sebelumnya
+                            </Button>
+                            <span className="text-xs font-mono text-neutral-600">
+                                {halaman} / {totalHalaman}
+                            </span>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setHalaman((h) => Math.min(totalHalaman, h + 1))}
+                                disabled={halaman === totalHalaman}
+                            >
+                                Selanjutnya Ã¢â€ â€™
+                            </Button>
+                        </div>
+                    </div>
+                )}
+            </Card>
+
+            {/* Modals */}
             <StrukCard struk={struk} onClose={() => setStruk(null)} />
 
             {qrisId && (
@@ -453,19 +456,7 @@ export default function KendaraanKeluar() {
                 />
             )}
 
-            {scanOpen && (
-                <ModalScanQr onDetected={handleScanDetected} onClose={() => setScanOpen(false)} />
-            )}
-
-            <footer className="border-t border-[var(--color-border)]">
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col sm:flex-row items-center gap-2 justify-between text-xs text-[var(--color-text-secondary)] text-center sm:text-left">
-                    <span>
-                        © {new Date().getFullYear()} Parkir Pelabuhan Tanjung
-                        Perak
-                    </span>
-                    <span className="font-mono">SISTEM MANAJEMEN PARKIR</span>
-                </div>
-            </footer>
+            {scanOpen && <ModalScanQr onDetected={handleScanDetected} onClose={() => setScanOpen(false)} />}
         </div>
     );
 }

@@ -3,6 +3,7 @@ import { Html5Qrcode } from 'html5-qrcode';
 import { ScanLine, X, AlertCircle } from 'lucide-react';
 import { Button } from './ui';
 
+//  {#c6b,46}
 const REGION_ID = 'qr-scanner-region';
 
 export default function ModalScanQr({ onDetected, onClose }) {
@@ -23,7 +24,7 @@ export default function ModalScanQr({ onDetected, onClose }) {
                     if (selesai) return;
                     selesai = true;
                     scanner
-                        .stop()
+                        .stop() //<-- setelah berhasil scan maka kamera ditutup 
                         .catch(() => {})
                         .finally(() => {
                             sudahDihentikan = true;

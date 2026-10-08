@@ -56,7 +56,7 @@ export default function TambahKendaraan() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 <Card className="p-4 sm:p-5 md:col-span-1 h-fit">
-                    <h2 className="font-display text-base text-[var(--color-text)] mb-4">Tambah Kendaraan</h2>
+                    <h2 className="font-display text-base text-[#171717] mb-4">Tambah Kendaraan</h2>
                     <form onSubmit={handleSubmit} className="space-y-3">
                         <div>
                             <label className="block text-xs font-mono text-[var(--color-text-secondary)] mb-1.5">PLAT NOMOR</label>
@@ -72,7 +72,7 @@ export default function TambahKendaraan() {
                             <select
                                 value={form.jenis_kendaraan}
                                 onChange={(e) => setForm({ ...form, jenis_kendaraan: e.target.value })}
-                                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[#171717]"
+                                className="w-full rounded-md bg-[var(--color-section)] border border-[var(--color-border)] px-3 py-2 text-sm text-[#171717] focus:outline-none focus:ring-2 focus:ring-[#171717]"
                             >
                                 <option value="motor">Motor</option>
                                 <option value="mobil">Mobil</option>
