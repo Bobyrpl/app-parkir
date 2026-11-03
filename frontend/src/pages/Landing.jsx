@@ -168,7 +168,7 @@ const KOMENTAR_SEED = [
   {
     id: "seed-3",
     nama: "buby",
-    teks: "Apa bila komentar ini muncul maka website yg anda kunjungi sudah tidak aktif "
+    teks: "Apa bila komentar ini muncul maka website yg anda kunjungi sudah tidak aktif ",
     rating: 5,
   }
 ];
