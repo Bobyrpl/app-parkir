@@ -15,6 +15,9 @@
         "vite": "^7.0.7"
     },
     "dependencies": {
+        "@capacitor/android": "^8.5.3",
+        "@capacitor/cli": "^8.5.3",
+        "@capacitor/core": "^8.5.3",
         "@popperjs/core": "^2.11.8",
         "axios": "^1.19.0",
         "bootstrap": "^5.3.8",

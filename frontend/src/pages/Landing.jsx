@@ -165,6 +165,12 @@ const KOMENTAR_SEED = [
     teks: "Fitur cetak struknya sangat membantu pekerjaan saya sehari-hari.",
     rating: 4,
   },
+  {
+    id: "seed-3",
+    nama: "buby",
+    teks: "Apa bila komentar ini muncul maka website yg anda kunjungi sudah tidak aktif "
+    rating: 5,
+  }
 ];
 
 // Fallback saat GET /api/transaksi/rekap-harian-publik gagal diakses
